@@ -2,7 +2,7 @@
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
 import BiliIcon from '../../icon/src/icon.vue'
-import type { MessageType } from './message'
+import type { MessagePosition, MessageType } from './message'
 
 defineOptions({ name: 'BiliMessageItem' })
 
@@ -14,6 +14,7 @@ const props = withDefaults(
     showClose?: boolean
     showProgress?: boolean
     pauseOnHover?: boolean
+    position?: MessagePosition
   }>(),
   {
     message: '',
@@ -21,7 +22,8 @@ const props = withDefaults(
     duration: 3000,
     showClose: false,
     showProgress: true,
-    pauseOnHover: true
+    pauseOnHover: true,
+    position: 'top'
   }
 )
 
@@ -107,7 +109,7 @@ defineExpose({ close })
   <Transition name="bili-message" appear @after-leave="emit('destroy')">
     <div
       v-if="visible"
-      :class="[ns.b(), ns.m(type), ns.is('paused', paused)]"
+      :class="[ns.b(), ns.m(type), ns.is('paused', paused), ns.m(`at-${position}`)]"
       role="alert"
       @mouseenter="handleMouseEnter"
       @mouseleave="handleMouseLeave"

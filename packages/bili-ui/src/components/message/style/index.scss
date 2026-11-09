@@ -1,16 +1,61 @@
 @use '../../../styles/mixins' as *;
 
+// Each position gets its own fixed container so messages never mix stacks.
 .bili-message-container {
   position: fixed;
-  top: 24px;
-  left: 50%;
   z-index: var(--bili-z-index-message);
   display: flex;
   flex-direction: column;
   gap: 12px;
-  align-items: center;
+  max-width: min(480px, calc(100vw - 32px));
   pointer-events: none;
-  transform: translateX(-50%);
+
+  &--top,
+  &--bottom {
+    left: 50%;
+    align-items: center;
+    transform: translateX(-50%);
+  }
+
+  &--top-left,
+  &--bottom-left {
+    left: 24px;
+    align-items: flex-start;
+  }
+
+  &--top-right,
+  &--bottom-right {
+    right: 24px;
+    align-items: flex-end;
+  }
+
+  &--top,
+  &--top-left,
+  &--top-right {
+    top: 24px;
+  }
+
+  &--bottom,
+  &--bottom-left,
+  &--bottom-right {
+    bottom: 24px;
+    // Newest message sits closest to the bottom edge.
+    flex-direction: column-reverse;
+  }
+}
+
+@media (max-width: 640px) {
+  .bili-message-container {
+    &--top-left,
+    &--bottom-left {
+      left: 16px;
+    }
+
+    &--top-right,
+    &--bottom-right {
+      right: 16px;
+    }
+  }
 }
 
 @include b(message) {
@@ -167,4 +212,14 @@
 .bili-message-leave-to {
   opacity: 0;
   transform: translateY(-14px) scale(0.96);
+}
+
+// Bottom messages enter from below so the motion follows the stack direction.
+.bili-message--at-bottom.bili-message-enter-from,
+.bili-message--at-bottom.bili-message-leave-to,
+.bili-message--at-bottom-left.bili-message-enter-from,
+.bili-message--at-bottom-left.bili-message-leave-to,
+.bili-message--at-bottom-right.bili-message-enter-from,
+.bili-message--at-bottom-right.bili-message-leave-to {
+  transform: translateY(14px) scale(0.96);
 }

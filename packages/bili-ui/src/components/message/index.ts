@@ -4,5 +4,6 @@ export type {
   MessageInstance,
   MessageOptions,
   MessageParams,
+  MessagePosition,
   MessageType
 } from './src/message'

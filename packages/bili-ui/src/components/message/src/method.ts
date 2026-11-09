@@ -4,24 +4,31 @@ import type {
   MessageInstance,
   MessageOptions,
   MessageParams,
+  MessagePosition,
   MessageType
 } from './message'
 
 interface InternalInstance extends MessageInstance {
   id: number
   wrapper: HTMLElement
+  position: MessagePosition
 }
 
 const instances: InternalInstance[] = []
+const containers = new Map<MessagePosition, HTMLElement>()
 let seed = 0
-let container: HTMLElement | null = null
 
-const getContainer = (): HTMLElement => {
-  if (!container) {
-    container = document.createElement('div')
-    container.className = 'bili-message-container'
-    document.body.appendChild(container)
-  }
+const getContainer = (position: MessagePosition): HTMLElement => {
+  const existing = containers.get(position)
+  // A cached node can be detached if the host cleared body; recreate in that case.
+  if (existing && existing.isConnected) return existing
+
+  const container = document.createElement('div')
+  container.className = `bili-message-container bili-message-container--${position}`
+  // Screen readers announce new alerts in a live region.
+  container.setAttribute('role', 'region')
+  document.body.appendChild(container)
+  containers.set(position, container)
   return container
 }
 
@@ -31,6 +38,14 @@ const destroy = (id: number) => {
   const [instance] = instances.splice(index, 1)
   render(null, instance.wrapper)
   instance.wrapper.remove()
+
+  // Drop the container once nothing is left in it. Checking the DOM (rather than
+  // the instance list) also covers hosts that clear `body` between renders.
+  const container = containers.get(instance.position)
+  if (container && container.childElementCount === 0) {
+    container.remove()
+    containers.delete(instance.position)
+  }
 }
 
 const createMessage = (params: MessageParams, type?: MessageType): MessageInstance => {
@@ -39,6 +54,7 @@ const createMessage = (params: MessageParams, type?: MessageType): MessageInstan
   }
 
   const options: MessageOptions = typeof params === 'string' ? { message: params } : { ...params }
+  const position = options.position ?? 'top'
   const id = seed++
   const wrapper = document.createElement('div')
   wrapper.className = 'bili-message-wrapper'
@@ -50,16 +66,18 @@ const createMessage = (params: MessageParams, type?: MessageType): MessageInstan
     showClose: options.showClose ?? false,
     showProgress: options.showProgress ?? true,
     pauseOnHover: options.pauseOnHover ?? true,
+    position,
     onClose: () => options.onClose?.(),
     onDestroy: () => destroy(id)
   })
 
   render(vnode, wrapper)
-  getContainer().appendChild(wrapper)
+  getContainer(position).appendChild(wrapper)
 
   const instance: InternalInstance = {
     id,
     wrapper,
+    position,
     close: () => (vnode.component?.exposed as { close?: () => void } | undefined)?.close?.()
   }
   instances.push(instance)
@@ -72,7 +90,7 @@ export interface MessageApi {
   warning: (options: MessageParams) => MessageInstance
   error: (options: MessageParams) => MessageInstance
   info: (options: MessageParams) => MessageInstance
-  closeAll: () => void
+  closeAll: (position?: MessagePosition) => void
 }
 
 export const BiliMessage = ((options: MessageParams) =>
@@ -82,14 +100,30 @@ BiliMessage.success = options => createMessage(options, 'success')
 BiliMessage.warning = options => createMessage(options, 'warning')
 BiliMessage.error = options => createMessage(options, 'error')
 BiliMessage.info = options => createMessage(options, 'info')
-BiliMessage.closeAll = () => {
-  ;[...instances].forEach(instance => instance.close())
+BiliMessage.closeAll = position => {
+  ;[...instances]
+    .filter(instance => !position || instance.position === position)
+    .forEach(instance => instance.close())
 }
 
 declare module 'vue' {
   interface ComponentCustomProperties {
     $message: MessageApi
   }
+}
+
+/**
+ * Test-only hook: unmounts every message and drops all containers immediately,
+ * without waiting for leave transitions. Not part of the public API.
+ */
+export const __resetMessages = () => {
+  ;[...instances].forEach(instance => {
+    render(null, instance.wrapper)
+    instance.wrapper.remove()
+  })
+  instances.length = 0
+  containers.forEach(container => container.remove())
+  containers.clear()
 }
 
 export default BiliMessage
