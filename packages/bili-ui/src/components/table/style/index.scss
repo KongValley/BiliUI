@@ -31,17 +31,89 @@
 
   @include e(head) {
     .#{$namespace}-table__cell {
+      position: relative;
       font-size: var(--bili-font-size-sm);
       font-weight: var(--bili-font-weight-medium);
       color: var(--bili-text-secondary);
       white-space: nowrap;
       background-color: var(--bili-bg-muted);
+      transition:
+        background-color var(--bili-transition-duration) var(--bili-transition-function),
+        color var(--bili-transition-duration) var(--bili-transition-function);
 
       &.is-sortable {
         cursor: pointer;
         user-select: none;
       }
+
+      &.is-sorted {
+        color: var(--bili-text-primary);
+      }
+
+      &.is-dragging {
+        opacity: 0.45;
+      }
+
+      &.is-drag-over {
+        background-color: var(--bili-color-primary-light);
+        box-shadow: inset 2px 0 0 var(--bili-color-primary);
+      }
     }
+  }
+
+  @include when(draggable) {
+    .#{$namespace}-table__head .#{$namespace}-table__cell {
+      cursor: grab;
+    }
+
+    .#{$namespace}-table__head .#{$namespace}-table__cell.is-sortable {
+      cursor: grab;
+    }
+  }
+
+  @include when(resizing) {
+    user-select: none;
+
+    .#{$namespace}-table__head .#{$namespace}-table__cell,
+    .#{$namespace}-table__head .#{$namespace}-table__cell.is-sortable {
+      cursor: col-resize;
+    }
+  }
+
+  @include e(resize-handle) {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    width: 8px;
+    height: 100%;
+    cursor: col-resize;
+    user-select: none;
+    touch-action: none;
+
+    // A hairline hint, invisible until the header is hovered.
+    &::after {
+      position: absolute;
+      top: 25%;
+      right: 3px;
+      width: 2px;
+      height: 50%;
+      content: '';
+      background-color: var(--bili-border-color);
+      border-radius: 1px;
+      opacity: 0;
+      transition: opacity var(--bili-transition-duration) var(--bili-transition-function);
+    }
+
+    &:hover::after,
+    &.is-active::after {
+      background-color: var(--bili-color-primary);
+      opacity: 1;
+    }
+  }
+
+  .#{$namespace}-table__head .#{$namespace}-table__cell:hover .#{$namespace}-table__resize-handle::after {
+    opacity: 1;
   }
 
   @include e(cell-label) {
@@ -51,10 +123,17 @@
 
   @include e(sorter) {
     display: inline-flex;
-    flex-direction: column;
-    gap: 0;
+    gap: 2px;
+    align-items: center;
     margin-left: 6px;
     vertical-align: middle;
+  }
+
+  // Stack the two chevrons so they read as one control.
+  @include e(sorter-icons) {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 0;
   }
 
   @include e(sort-icon) {
@@ -71,6 +150,20 @@
       color: var(--bili-color-primary);
       transform: scale(1.25);
     }
+  }
+
+  // Priority badge shown when several columns are sorted at once.
+  @include e(sort-index) {
+    min-width: 14px;
+    height: 14px;
+    margin-left: 2px;
+    font-size: 10px;
+    font-weight: var(--bili-font-weight-medium);
+    line-height: 14px;
+    color: var(--bili-color-on-primary);
+    text-align: center;
+    background-color: var(--bili-color-primary);
+    border-radius: var(--bili-radius-round);
   }
 
   @include e(row) {

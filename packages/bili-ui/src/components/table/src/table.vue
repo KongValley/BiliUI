@@ -1,52 +1,58 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
 import { addUnit } from '../../../utils/dom'
 import { getProp } from '../../../utils/object'
 import BiliIcon from '../../icon/src/icon.vue'
 import { vLoading } from '../../loading/src/directive'
-import {
-  tableProps,
-  type TableColumn,
-  type TableSortOrder
-} from './table'
+import { tableProps, type TableColumn } from './table'
+import { useTableSort, type SortPayload } from './use-table-sort'
+import { getColumnKey, useTableDrag } from './use-table-drag'
 
 defineOptions({ name: 'BiliTable' })
 
 const props = defineProps(tableProps)
 
 const emit = defineEmits<{
-  'sort-change': [payload: { prop: string; order: TableSortOrder }]
+  'sort-change': [payload: SortPayload]
+  'column-order-change': [order: string[]]
+  'column-resize': [key: string, width: number]
 }>()
 
 const ns = useNamespace('table')
 
-const sortProp = ref('')
-const sortOrder = ref<TableSortOrder>(null)
+const headerRef = ref<HTMLElement | null>(null)
 
-const sortedData = computed(() => {
-  if (!sortProp.value || !sortOrder.value) return props.data
+const { sorts, getSortPriority, getSortOrder, toggleSort, sortedData } = useTableSort(
+  () => props.columns,
+  () => props.multiSort,
+  payload => emit('sort-change', payload)
+)
 
-  const data = [...props.data]
-  const direction = sortOrder.value === 'asc' ? 1 : -1
-
-  data.sort((left, right) => {
-    const leftValue = getProp(left, sortProp.value)
-    const rightValue = getProp(right, sortProp.value)
-
-    if (leftValue === rightValue) return 0
-    if (leftValue === null || leftValue === undefined) return -1 * direction
-    if (rightValue === null || rightValue === undefined) return 1 * direction
-
-    if (typeof leftValue === 'number' && typeof rightValue === 'number') {
-      return (leftValue - rightValue) * direction
-    }
-
-    return String(leftValue).localeCompare(String(rightValue), 'zh-CN') * direction
-  })
-
-  return data
-})
+const {
+  orderedColumns,
+  getColumnWidth,
+  dragging,
+  dragKey,
+  overKey,
+  resizing,
+  startColumnDrag,
+  onColumnDragOver,
+  finishColumnDrag,
+  cancelColumnDrag,
+  startResize
+} = useTableDrag(
+  () => props.columns,
+  headerRef,
+  {
+    draggable: () => props.draggableColumns,
+    resizable: () => props.resizableColumns,
+    minWidth: () => props.minColumnWidth,
+    sensitivity: () => props.resizeSensitivity,
+    onOrderChange: order => emit('column-order-change', order),
+    onColumnResize: (key, width) => emit('column-resize', key, width)
+  }
+)
 
 const getValue = (row: any, column: TableColumn) =>
   column.prop ? getProp(row, column.prop) : undefined
@@ -69,29 +75,27 @@ const getRowKey = (row: any, index: number): string | number => {
   return index
 }
 
-const columnStyle = (column: TableColumn) => ({
-  width: column.width !== undefined ? addUnit(column.width) : undefined,
+// Width lives on <col> so header and body stay in sync; the header only needs
+// alignment and a min-width guard.
+const columnStyle = (column: TableColumn, index: number) => ({
   minWidth: column.minWidth !== undefined ? addUnit(column.minWidth) : undefined,
-  textAlign: column.align ?? 'left'
+  textAlign: column.align ?? 'left',
+  width: (() => {
+    const width = getColumnWidth(column, index)
+    return width !== undefined ? addUnit(width) : undefined
+  })()
 })
 
-const handleSort = (column: TableColumn) => {
-  if (!column.sortable || !column.prop) return
-
-  if (sortProp.value !== column.prop) {
-    sortProp.value = column.prop
-    sortOrder.value = 'asc'
-  } else if (sortOrder.value === 'asc') {
-    sortOrder.value = 'desc'
-  } else if (sortOrder.value === 'desc') {
-    sortProp.value = ''
-    sortOrder.value = null
-  } else {
-    sortOrder.value = 'asc'
-  }
-
-  emit('sort-change', { prop: column.prop, order: sortOrder.value })
+const handleSort = (column: TableColumn, event: MouseEvent) => {
+  // A header drag should never trigger a sort.
+  if (dragging.value) return
+  toggleSort(column, event.shiftKey)
 }
+
+const canResize = (column: TableColumn) =>
+  props.resizableColumns && column.resizable !== false
+
+const columnKeyAt = (column: TableColumn, index: number) => getColumnKey(column, index)
 </script>
 
 <template>
@@ -101,67 +105,110 @@ const handleSort = (column: TableColumn) => {
       ns.b(),
       ns.m(size),
       ns.is('border', border),
-      ns.is('stripe', stripe)
+      ns.is('stripe', stripe),
+      ns.is('draggable', draggableColumns),
+      ns.is('resizing', resizing)
     ]"
   >
     <div :class="ns.e('wrapper')">
       <table :class="ns.e('inner')" cellspacing="0" cellpadding="0">
         <colgroup>
           <col
-            v-for="(column, index) in columns"
-            :key="index"
-            :style="{ width: column.width !== undefined ? addUnit(column.width) : undefined }"
+            v-for="(column, index) in orderedColumns"
+            :key="columnKeyAt(column, index)"
+            :style="{
+              width: getColumnWidth(column, index) !== undefined
+                ? addUnit(getColumnWidth(column, index))
+                : column.width !== undefined
+                  ? addUnit(column.width)
+                  : undefined
+            }"
           />
         </colgroup>
 
-        <thead :class="ns.e('head')">
+        <thead ref="headerRef" :class="ns.e('head')">
           <tr>
             <th
-              v-for="(column, index) in columns"
-              :key="index"
+              v-for="(column, index) in orderedColumns"
+              :key="columnKeyAt(column, index)"
               :class="[
                 ns.e('cell'),
                 ns.is('sortable', column.sortable),
-                ns.is('sorted', sortProp === column.prop && !!sortOrder)
+                ns.is('sorted', !!getSortOrder(column.prop)),
+                ns.is('dragging', dragKey === columnKeyAt(column, index)),
+                ns.is('drag-over', overKey === columnKeyAt(column, index)),
+                column.className
               ]"
-              :style="columnStyle(column)"
+              :style="columnStyle(column, index)"
+              :draggable="draggableColumns ? 'true' : undefined"
               :aria-sort="
-                sortProp === column.prop && sortOrder
-                  ? sortOrder === 'asc'
+                getSortOrder(column.prop)
+                  ? getSortOrder(column.prop) === 'asc'
                     ? 'ascending'
                     : 'descending'
                   : undefined
               "
-              @click="handleSort(column)"
+              @click="handleSort(column, $event)"
+              @dragstart="startColumnDrag($event, columnKeyAt(column, index))"
+              @dragover.prevent="onColumnDragOver(columnKeyAt(column, index))"
+              @drop.prevent="finishColumnDrag"
+              @dragend="finishColumnDrag"
+              @dragleave="cancelColumnDrag"
             >
               <span :class="ns.e('cell-label')">
                 <slot :name="getHeaderSlot(column, index)" :column="column">
                   {{ column.label ?? '' }}
                 </slot>
               </span>
+
               <span v-if="column.sortable" :class="ns.e('sorter')">
-                <BiliIcon
-                  :class="[ns.e('sort-icon'), ns.is('asc', sortProp === column.prop && sortOrder === 'asc')]"
-                  name="chevron-up"
-                />
-                <BiliIcon
-                  :class="[ns.e('sort-icon'), ns.is('desc', sortProp === column.prop && sortOrder === 'desc')]"
-                  name="chevron-down"
-                />
+                <span :class="ns.e('sorter-icons')">
+                  <BiliIcon
+                    :class="[
+                      ns.e('sort-icon'),
+                      ns.is('asc', getSortOrder(column.prop) === 'asc')
+                    ]"
+                    name="chevron-up"
+                  />
+                  <BiliIcon
+                    :class="[
+                      ns.e('sort-icon'),
+                      ns.is('desc', getSortOrder(column.prop) === 'desc')
+                    ]"
+                    name="chevron-down"
+                  />
+                </span>
+                <span
+                  v-if="multiSort && getSortPriority(column.prop) > 0 && sorts.length > 1"
+                  :class="ns.e('sort-index')"
+                  :aria-label="`排序优先级 ${getSortPriority(column.prop)}`"
+                >
+                  {{ getSortPriority(column.prop) }}
+                </span>
               </span>
+
+              <span
+                v-if="canResize(column)"
+                :class="[ns.e('resize-handle'), ns.is('active', resizing)]"
+                role="separator"
+                aria-orientation="vertical"
+                :aria-label="`调整${column.label ?? ''}列宽`"
+                @pointerdown="startResize($event, columnKeyAt(column, index))"
+                @click.stop
+              />
             </th>
           </tr>
         </thead>
 
         <tbody>
           <tr
-            v-for="(row, rowIndex) in sortedData"
+            v-for="(row, rowIndex) in sortedData(props.data)"
             :key="getRowKey(row, rowIndex)"
             :class="ns.e('row')"
           >
             <td
-              v-for="(column, columnIndex) in columns"
-              :key="columnIndex"
+              v-for="(column, columnIndex) in orderedColumns"
+              :key="columnKeyAt(column, columnIndex)"
               :class="[ns.e('cell'), column.className]"
               :style="{ textAlign: column.align ?? 'left' }"
             >
@@ -177,8 +224,8 @@ const handleSort = (column: TableColumn) => {
             </td>
           </tr>
 
-          <tr v-if="!sortedData.length">
-            <td :colspan="Math.max(columns.length, 1)" :class="ns.e('empty')">
+          <tr v-if="!sortedData(props.data).length">
+            <td :colspan="Math.max(orderedColumns.length, 1)" :class="ns.e('empty')">
               <slot name="empty">{{ emptyText }}</slot>
             </td>
           </tr>
