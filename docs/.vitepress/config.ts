@@ -42,7 +42,8 @@ export default defineConfig({
           text: '布局',
           items: [
             { text: 'Layout 布局', link: '/components/layout' },
-            { text: 'Grid 栅格', link: '/components/grid' }
+            { text: 'Grid 栅格', link: '/components/grid' },
+            { text: 'Menu 导航菜单', link: '/components/menu' }
           ]
         },
         {

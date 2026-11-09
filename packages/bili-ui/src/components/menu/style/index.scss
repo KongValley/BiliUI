@@ -1,0 +1,286 @@
+@use '../../../styles/mixins' as *;
+
+@include b(menu) {
+  --bili-menu-item-height: 36px;
+  --bili-menu-item-padding: 10px;
+  --bili-menu-radius: var(--bili-radius-base);
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  font-size: var(--bili-font-size-base);
+  color: var(--bili-text-regular);
+
+  @include e(list) {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    list-style: none !important;
+
+    li {
+      display: flex;
+      list-style: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+
+      &::marker {
+        content: '';
+      }
+    }
+  }
+
+  // ---------------------------------------------------------------- horizontal
+  @include m(horizontal) {
+    width: 100%;
+
+    .#{$namespace}-menu__list-horizontal {
+      flex: 1;
+      overflow: hidden;
+    }
+  }
+
+  // ------------------------------------------------------------------ vertical
+  @include m(vertical) {
+    align-items: stretch;
+    width: 100%;
+
+    .#{$namespace}-menu__list-vertical {
+      flex-direction: column;
+      align-items: stretch;
+      width: 100%;
+    }
+  }
+
+  @include e(more) {
+    display: inline-flex;
+    flex-shrink: 0;
+    gap: 4px;
+    align-items: center;
+    height: var(--bili-menu-item-height);
+    padding: 0 10px;
+    font: inherit;
+    font-size: var(--bili-font-size-sm);
+    color: var(--bili-text-regular);
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    border-radius: var(--bili-menu-radius);
+    transition:
+      color var(--bili-transition-duration) var(--bili-transition-function),
+      background-color var(--bili-transition-duration) var(--bili-transition-function);
+
+    &:hover,
+    &.is-open {
+      color: var(--bili-color-primary);
+      background-color: var(--bili-color-primary-light);
+    }
+  }
+
+  @include e(more-arrow) {
+    font-size: 12px;
+    transition: transform var(--bili-transition-duration) var(--bili-transition-function-spring);
+  }
+
+  @include when(open) {
+    .#{$namespace}-menu__more-arrow {
+      transform: rotate(180deg);
+    }
+  }
+
+  @include e(panel) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-width: 168px;
+    padding: 4px;
+    background-color: var(--bili-bg-elevated);
+    border: 1px solid var(--bili-border-color-light);
+    border-radius: var(--bili-radius-md);
+    box-shadow: var(--bili-shadow-base);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Menu item
+// ---------------------------------------------------------------------------
+
+@include b(menu-item) {
+  @include e(inner) {
+    position: relative;
+    display: flex;
+    flex: 1;
+    gap: 8px;
+    align-items: center;
+    min-width: 0;
+    height: var(--bili-menu-item-height);
+    padding: 0 var(--bili-menu-item-padding);
+    font: inherit;
+    font-size: inherit;
+    color: inherit;
+    white-space: nowrap;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    border-radius: var(--bili-menu-radius);
+    transition:
+      color var(--bili-transition-duration) var(--bili-transition-function),
+      background-color var(--bili-transition-duration) var(--bili-transition-function);
+
+    &:hover:not(:disabled) {
+      color: var(--bili-color-primary);
+      background-color: var(--bili-fill-color-light);
+    }
+
+    &.is-active {
+      font-weight: var(--bili-font-weight-medium);
+      color: var(--bili-color-primary);
+      background-color: var(--bili-color-primary-light);
+    }
+
+    &.is-disabled,
+    &:disabled {
+      cursor: not-allowed;
+      opacity: var(--bili-disabled-opacity);
+    }
+
+    &.is-collapsed {
+      justify-content: center;
+      padding: 0;
+    }
+  }
+
+  @include e(icon) {
+    flex-shrink: 0;
+    font-size: 16px;
+  }
+
+  @include e(label) {
+    @include utils-ellipsis;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Sub menu
+// ---------------------------------------------------------------------------
+
+@include b(sub-menu) {
+  position: relative;
+  flex-direction: column;
+
+  @include e(title) {
+    display: flex;
+    flex: 1;
+    gap: 8px;
+    align-items: center;
+    width: 100%;
+    height: var(--bili-menu-item-height);
+    padding: 0 var(--bili-menu-item-padding);
+    font: inherit;
+    font-size: inherit;
+    color: inherit;
+    white-space: nowrap;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    border-radius: var(--bili-menu-radius);
+    transition:
+      color var(--bili-transition-duration) var(--bili-transition-function),
+      background-color var(--bili-transition-duration) var(--bili-transition-function);
+
+    &:hover:not(:disabled),
+    .#{$namespace}-sub-menu.is-open > & {
+      color: var(--bili-color-primary);
+      background-color: var(--bili-fill-color-light);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: var(--bili-disabled-opacity);
+    }
+  }
+
+  @include e(icon) {
+    flex-shrink: 0;
+    font-size: 16px;
+  }
+
+  @include e(label) {
+    @include utils-ellipsis;
+
+    flex: 1;
+    text-align: left;
+  }
+
+  @include e(arrow) {
+    flex-shrink: 0;
+    font-size: 12px;
+    transition: transform var(--bili-transition-duration) var(--bili-transition-function-spring);
+
+    &.is-inline {
+      transform: rotate(0deg);
+    }
+  }
+
+  @include when(open) {
+    > .#{$namespace}-sub-menu__title .#{$namespace}-sub-menu__arrow.is-inline {
+      transform: rotate(180deg);
+    }
+  }
+
+  @include e(inline) {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0 0 0 26px;
+    animation: bili-fade-in var(--bili-transition-duration) var(--bili-transition-function);
+  }
+
+  @include e(popup) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    flex-direction: column;
+    align-items: stretch;
+    min-width: 160px;
+    padding: 4px;
+    background-color: var(--bili-bg-elevated);
+    border: 1px solid var(--bili-border-color-light);
+    border-radius: var(--bili-radius-md);
+    box-shadow: var(--bili-shadow-base);
+  }
+
+  // The trigger of a collapsed rail has no label, so centre its icon.
+  @include when(collapsed) {
+    > .#{$namespace}-sub-menu__title {
+      justify-content: center;
+      padding: 0;
+    }
+  }
+}
+
+// Nested popups (horizontal sub menus) must stack vertically.
+.bili-sub-menu__popup .bili-sub-menu,
+.bili-menu__panel .bili-sub-menu {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.bili-sub-menu__popup .bili-menu-item__inner,
+.bili-menu__panel .bili-menu-item__inner {
+  width: 100%;
+}
+
+.bili-menu-popup-enter-active,
+.bili-menu-popup-leave-active {
+  transition:
+    opacity var(--bili-transition-duration-fast) var(--bili-transition-function),
+    transform var(--bili-transition-duration) var(--bili-transition-function-out);
+}
+
+.bili-menu-popup-enter-from,
+.bili-menu-popup-leave-to {
+  opacity: 0;
+  transform: translateY(-4px) scale(0.97);
+}

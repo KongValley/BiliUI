@@ -4,7 +4,7 @@ Bili UI 是一套基于 **Vue 3 + TypeScript** 的 PC 端组件库，采用 **SC
 
 ## 特性
 
-- **20 个核心组件**：覆盖基础、布局、表单、反馈与数据展示场景
+- **21 个核心组件**：覆盖基础、布局、表单、反馈与数据展示场景
 - **三层设计令牌**：SCSS 原始值 → 语义 CSS 变量 → 组件变量，支持运行时换肤
 - **亮暗双主题**：通过 `html.dark` 切换，所有组件内置暗色语义适配
 - **TypeScript 友好**：Props、Events、Slots 均有类型推导，构建产物附带 `.d.ts`
@@ -75,7 +75,7 @@ document.documentElement.classList.toggle('dark')
 │  ├─ src/utils/              # 安装器、DOM/对象工具
 │  └─ src/styles/             # 设计令牌、暗色主题、BEM mixins
 ├─ docs/                      # VitePress 文档与在线示例
-│  ├─ components/             # 20 篇组件文档
+│  ├─ components/             # 21 篇组件文档
 │  └─ examples/               # 可交互示例源码
 └─ pnpm-workspace.yaml
 ```
@@ -84,7 +84,7 @@ document.documentElement.classList.toggle('dark')
 
 **基础**：Button、Icon（131 个内置图标）、Space、Divider、Tag
 
-**布局**：Layout（Header/Aside/Content/Footer）、Grid（Row/Col 24 栅格）
+**布局**：Layout（Header/Aside/Content/Footer）、Grid（Row/Col 24 栅格）、Menu（横向/竖向/折叠）
 
 **表单**：Input、Checkbox / CheckboxGroup、Radio / RadioGroup、Switch、Select、Form / FormItem
 
