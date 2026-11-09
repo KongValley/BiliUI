@@ -25,6 +25,11 @@ export interface TableSortState {
   order: Exclude<TableSortOrder, null>
 }
 
+export type TableRowKey = string | number
+
+/** Identity used to track a selected row across sorting and re-ordering. */
+export type TableRowKeyResolver = string | ((row: any, index: number) => TableRowKey)
+
 export const tableProps = {
   data: {
     type: Array as PropType<any[]>,
@@ -46,8 +51,30 @@ export const tableProps = {
     default: '暂无数据'
   },
   rowKey: {
-    type: [String, Function] as PropType<string | ((row: any) => string | number)>,
+    type: [String, Function] as PropType<TableRowKeyResolver>,
     default: undefined
+  },
+  /** Show a leading checkbox column for row selection. */
+  selection: Boolean,
+  /**
+   * Selected row keys. Pass it to control the selection, or leave it out and
+   * listen to `update:selectedKeys` / `selection-change`.
+   */
+  selectedKeys: {
+    type: Array as PropType<TableRowKey[]>,
+    default: undefined
+  },
+  /** Only selectable rows get a working checkbox. */
+  selectable: {
+    type: Function as PropType<(row: any, index: number) => boolean>,
+    default: undefined
+  },
+  /** Clicking anywhere on a row toggles its selection. */
+  selectOnClickRow: Boolean,
+  /** Width of the selection column. */
+  selectionWidth: {
+    type: Number,
+    default: 48
   },
   /** Allow dragging a header to reorder columns. */
   draggableColumns: Boolean,

@@ -170,6 +170,28 @@
     &:hover .#{$namespace}-table__cell {
       background-color: var(--bili-fill-color-lighter);
     }
+
+    &.is-selectable {
+      cursor: pointer;
+    }
+  }
+
+  // Selection tint must beat both hover and stripe backgrounds.
+  tbody tr.is-selected .#{$namespace}-table__cell,
+  tbody tr.is-selected:hover .#{$namespace}-table__cell {
+    background-color: var(--bili-color-primary-light);
+  }
+
+  @include e(selection-cell) {
+    width: 48px;
+    padding-right: 4px;
+    padding-left: 4px;
+    text-align: center;
+    cursor: default;
+
+    .#{$namespace}-checkbox {
+      vertical-align: middle;
+    }
   }
 
   @include e(empty) {

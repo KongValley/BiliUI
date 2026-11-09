@@ -4,10 +4,12 @@ import { useNamespace } from '../../../hooks/use-namespace'
 import { addUnit } from '../../../utils/dom'
 import { getProp } from '../../../utils/object'
 import BiliIcon from '../../icon/src/icon.vue'
+import BiliCheckbox from '../../checkbox/src/checkbox.vue'
 import { vLoading } from '../../loading/src/directive'
 import { tableProps, type TableColumn } from './table'
 import { useTableSort, type SortPayload } from './use-table-sort'
 import { getColumnKey, useTableDrag } from './use-table-drag'
+import { useTableSelection, type SelectionPayload } from './use-table-selection'
 
 defineOptions({ name: 'BiliTable' })
 
@@ -17,6 +19,10 @@ const emit = defineEmits<{
   'sort-change': [payload: SortPayload]
   'column-order-change': [order: string[]]
   'column-resize': [key: string, width: number]
+  'update:selectedKeys': [keys: Array<string | number>]
+  'selection-change': [payload: SelectionPayload]
+  select: [payload: SelectionPayload]
+  'select-all': [payload: SelectionPayload]
 }>()
 
 const ns = useNamespace('table')
@@ -56,7 +62,6 @@ const {
 
 const getValue = (row: any, column: TableColumn) =>
   column.prop ? getProp(row, column.prop) : undefined
-
 const getCellText = (row: any, column: TableColumn, index: number): string => {
   const value = getValue(row, column)
   if (column.formatter) return column.formatter(row, column, value, index)
@@ -70,10 +75,54 @@ const getHeaderSlot = (column: TableColumn, index: number): string =>
   `header-${column.prop ?? index}`
 
 const getRowKey = (row: any, index: number): string | number => {
-  if (typeof props.rowKey === 'function') return props.rowKey(row)
+  if (typeof props.rowKey === 'function') return props.rowKey(row, index)
   if (typeof props.rowKey === 'string') return getProp(row, props.rowKey) ?? index
   return index
 }
+
+// ---------------------------------------------------------------------------
+// Selection
+// ---------------------------------------------------------------------------
+
+const selectionState = useTableSelection({
+  data: () => props.data,
+  rowKey: () => props.rowKey,
+  selectedKeys: () => props.selectedKeys,
+  selectable: () => props.selectable,
+  onChange: payload => {
+    emit('update:selectedKeys', payload.keys)
+    emit('selection-change', payload)
+  },
+  onUpdateKeys: () => undefined
+})
+
+const handleRowToggle = (row: any, index: number, checked?: boolean) => {
+  if (!props.selection) return
+  // `toggleRow` returns the resulting payload; re-reading the selection here
+  // would still see the stale value while a v-model update is in flight.
+  const payload = selectionState.toggleRow(row, index, checked)
+  if (!payload) return
+  emit('select', payload)
+}
+
+const handleSelectAll = (checked?: boolean) => {
+  if (!props.selection) return
+  emit('select-all', selectionState.toggleAll(checked))
+}
+
+const handleRowClick = (event: MouseEvent, row: any, index: number) => {
+  if (!props.selection || !props.selectOnClickRow) return
+  // Clicks on interactive elements inside the row keep their own behaviour.
+  const target = event.target as HTMLElement | null
+  if (target?.closest('input, button, a, label, select, textarea')) return
+  handleRowToggle(row, index)
+}
+
+defineExpose({
+  clearSelection: selectionState.clearSelection,
+  selectedRows: selectionState.selectedRows,
+  toggleAllSelection: selectionState.toggleAll
+})
 
 // Width lives on <col> so header and body stay in sync; the header only needs
 // alignment and a min-width guard.
@@ -113,6 +162,7 @@ const columnKeyAt = (column: TableColumn, index: number) => getColumnKey(column,
     <div :class="ns.e('wrapper')">
       <table :class="ns.e('inner')" cellspacing="0" cellpadding="0">
         <colgroup>
+          <col v-if="selection" :style="{ width: addUnit(selectionWidth) }" />
           <col
             v-for="(column, index) in orderedColumns"
             :key="columnKeyAt(column, index)"
@@ -128,6 +178,15 @@ const columnKeyAt = (column: TableColumn, index: number) => getColumnKey(column,
 
         <thead ref="headerRef" :class="ns.e('head')">
           <tr>
+            <th v-if="selection" :class="[ns.e('cell'), ns.e('selection-cell')]">
+              <BiliCheckbox
+                :model-value="selectionState.allSelected.value"
+                :indeterminate="selectionState.partiallySelected.value"
+                :disabled="!selectionState.selectableRows.value.length"
+                aria-label="全选"
+                @change="checked => handleSelectAll(checked)"
+              />
+            </th>
             <th
               v-for="(column, index) in orderedColumns"
               :key="columnKeyAt(column, index)"
@@ -204,8 +263,21 @@ const columnKeyAt = (column: TableColumn, index: number) => getColumnKey(column,
           <tr
             v-for="(row, rowIndex) in sortedData(props.data)"
             :key="getRowKey(row, rowIndex)"
-            :class="ns.e('row')"
+            :class="[
+              ns.e('row'),
+              ns.is('selected', selectionState.isSelected(row, rowIndex)),
+              ns.is('selectable', selectionState.isSelectable(row, rowIndex))
+            ]"
+            @click="handleRowClick($event, row, rowIndex)"
           >
+            <td v-if="selection" :class="[ns.e('cell'), ns.e('selection-cell')]">
+              <BiliCheckbox
+                :model-value="selectionState.isSelected(row, rowIndex)"
+                :disabled="!selectionState.isSelectable(row, rowIndex)"
+                :aria-label="`选择第 ${rowIndex + 1} 行`"
+                @change="checked => handleRowToggle(row, rowIndex, checked)"
+              />
+            </td>
             <td
               v-for="(column, columnIndex) in orderedColumns"
               :key="columnKeyAt(column, columnIndex)"
@@ -225,7 +297,10 @@ const columnKeyAt = (column: TableColumn, index: number) => getColumnKey(column,
           </tr>
 
           <tr v-if="!sortedData(props.data).length">
-            <td :colspan="Math.max(orderedColumns.length, 1)" :class="ns.e('empty')">
+            <td
+              :colspan="Math.max(orderedColumns.length + (selection ? 1 : 0), 1)"
+              :class="ns.e('empty')"
+            >
               <slot name="empty">{{ emptyText }}</slot>
             </td>
           </tr>

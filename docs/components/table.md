@@ -15,6 +15,10 @@ import DemoDrag from '../examples/table/drag.vue'
 import dragCode from '../examples/table/drag.vue?raw'
 import DemoSorting from '../examples/table/sorting.vue'
 import sortingCode from '../examples/table/sorting.vue?raw'
+import DemoSelection from '../examples/table/selection.vue'
+import selectionCode from '../examples/table/selection.vue?raw'
+import DemoSelectionAdvanced from '../examples/table/selection-advanced.vue'
+import selectionAdvancedCode from '../examples/table/selection-advanced.vue?raw'
 </script>
 
 ## 基础用法
@@ -51,6 +55,22 @@ import sortingCode from '../examples/table/sorting.vue?raw'
   <DemoSorting />
 </DemoBlock>
 
+## 勾选
+
+开启 `selection` 后会在首列渲染复选框，表头复选框支持全选与半选。用 `v-model:selected-keys` 双向绑定选中行的 key（需要配合 `row-key`，否则回退到行索引）。
+
+<DemoBlock :code="selectionCode">
+  <DemoSelection />
+</DemoBlock>
+
+### 行禁用与整行点击
+
+`selectable` 返回 `false` 的行复选框不可用，也不会被全选选中；开启 `select-on-click-row` 后点击行任意非交互区域即可切换选中，行内按钮、链接等元素不受影响。
+
+<DemoBlock :code="selectionAdvancedCode">
+  <DemoSelectionAdvanced />
+</DemoBlock>
+
 ## API
 
 ### Props
@@ -70,6 +90,11 @@ import sortingCode from '../examples/table/sorting.vue?raw'
 | `resize-sensitivity` | 每拖动 1px 对应的列宽变化 | `number` | `1` |
 | `min-column-width` | 列宽下限（px） | `number` | `60` |
 | `multi-sort` | 是否允许 `Shift` 点击叠加多列排序 | `boolean` | `false` |
+| `selection` | 是否显示勾选列 | `boolean` | `false` |
+| `selected-keys` | 选中行的 key，配合 `v-model:selected-keys` 使用 | `Array<string \| number>` | — |
+| `selectable` | 判断某行是否可勾选 | `(row, index) => boolean` | — |
+| `select-on-click-row` | 是否允许点击整行切换选中 | `boolean` | `false` |
+| `selection-width` | 勾选列宽度（px） | `number` | `48` |
 
 ### Events
 
@@ -78,6 +103,10 @@ import sortingCode from '../examples/table/sorting.vue?raw'
 | `sort-change` | 排序变化 | `{ prop, order, sorts }`，`order` 为 `'asc' \| 'desc' \| null`，`sorts` 为按优先级排列的完整排序状态 |
 | `column-order-change` | 拖动表头改变列顺序后触发 | `(order: string[])`，元素为各列的 key（`prop` 或 `slot`） |
 | `column-resize` | 拖动边界调整列宽后触发 | `(key: string, width: number)` |
+| `update:selectedKeys` | 选中项变化（`v-model:selected-keys`） | `(keys: Array<string \| number>)` |
+| `selection-change` | 选中项变化 | `{ keys, rows, row? }` |
+| `select` | 单行选中状态变化 | `{ keys, rows, row }` |
+| `select-all` | 表头全选 / 取消全选 | `{ keys, rows }` |
 
 ### Slots
 
@@ -105,6 +134,9 @@ import sortingCode from '../examples/table/sorting.vue?raw'
 
 ## 说明
 
+- **勾选**通过 `row-key` 建立行身份，排序或列拖拽改变位置后选中状态依然保持；未传 `row-key` 时回退到行索引，排序后可能错位，建议始终提供。
+- 全选只会选中当前 `data` 中通过 `selectable` 校验的行；已有但不在当前数据中的 key 会被保留（便于跨页多选）。
+- 组件实例暴露 `clearSelection()`、`toggleAllSelection()` 与 `selectedRows`，可用于工具栏操作。
 - **列拖拽**与**列宽拖拽**互不干扰：拖动表头主体换顺序，拖动表头右边界改宽度；拖拽过程中点击不会触发排序。
 - 列宽调整只影响视觉宽度，不修改 `columns` 配置；如需持久化，请监听 `column-resize` 并在下次渲染时通过 `width` 传回。
 - `column-order-change` 返回的 key 顺序可直接保存，下次渲染时按该顺序排列 `columns` 即可恢复。
