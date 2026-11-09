@@ -1,0 +1,205 @@
+@use '../../../styles/mixins' as *;
+
+@include b(chart) {
+  position: relative;
+  width: 100%;
+  font-family: var(--bili-font-family);
+
+  @include e(canvas) {
+    position: relative;
+    width: 100%;
+  }
+
+  svg {
+    display: block;
+    overflow: visible;
+  }
+
+  @include e(grid-line) {
+    stroke: var(--bili-chart-grid-color);
+    stroke-width: 1;
+    stroke-dasharray: 3 4;
+  }
+
+  @include e(axis-label) {
+    font-size: 11px;
+    fill: var(--bili-chart-label-color);
+    font-variant-numeric: tabular-nums;
+  }
+
+  @include e(line) {
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  @include e(area) {
+    opacity: 0.12;
+    stroke: none;
+  }
+
+  @include e(guide) {
+    stroke: var(--bili-border-color);
+    stroke-width: 1;
+    stroke-dasharray: 4 3;
+  }
+
+  @include e(active-dot) {
+    stroke: var(--bili-bg-container);
+    stroke-width: 2;
+  }
+
+  @include e(hit-area) {
+    fill: transparent;
+    cursor: pointer;
+  }
+
+  @include e(bar) {
+    cursor: pointer;
+    transition: opacity var(--bili-transition-duration-fast) var(--bili-transition-function);
+
+    &.is-dimmed {
+      opacity: 0.35;
+    }
+  }
+
+  @include e(slice) {
+    cursor: pointer;
+    transition:
+      opacity var(--bili-transition-duration-fast) var(--bili-transition-function),
+      transform var(--bili-transition-duration-fast) var(--bili-transition-function-out);
+
+    &.is-dimmed {
+      opacity: 0.45;
+    }
+
+    &.is-active {
+      opacity: 1;
+    }
+  }
+
+  @include e(slice-label) {
+    font-size: 11px;
+    font-weight: var(--bili-font-weight-medium);
+    fill: var(--bili-color-white);
+    pointer-events: none;
+  }
+
+  @include e(gauge-track) {
+    fill: var(--bili-fill-color);
+  }
+
+  @include e(gauge-value) {
+    transition: opacity var(--bili-transition-duration) var(--bili-transition-function);
+  }
+
+  @include e(gauge-number) {
+    font-size: 30px;
+    font-weight: var(--bili-font-weight-semibold);
+    fill: var(--bili-text-primary);
+    font-variant-numeric: tabular-nums;
+  }
+
+  @include e(gauge-unit) {
+    font-size: 14px;
+    font-weight: var(--bili-font-weight-regular);
+    fill: var(--bili-text-secondary);
+  }
+
+  @include e(gauge-label) {
+    font-size: 13px;
+    fill: var(--bili-text-secondary);
+  }
+
+  @include e(gauge-scale) {
+    font-size: 11px;
+    fill: var(--bili-text-placeholder);
+  }
+
+  @include e(empty) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-size: var(--bili-font-size-sm);
+    color: var(--bili-text-secondary);
+  }
+}
+
+@include b(chart-legend) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  justify-content: center;
+  padding: 4px 0 0;
+  margin: 0;
+  list-style: none !important;
+
+  @include e(item) {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+    font-size: var(--bili-font-size-xs);
+    color: var(--bili-text-secondary);
+    list-style: none !important;
+
+    &.is-muted {
+      opacity: 0.5;
+    }
+  }
+
+  @include e(dot) {
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+  }
+
+  @include e(text) {
+    @include utils-ellipsis;
+  }
+}
+
+@include b(chart-tooltip) {
+  position: absolute;
+  z-index: 3;
+  min-width: 108px;
+  padding: 8px 10px;
+  font-size: var(--bili-font-size-xs);
+  line-height: 1.6;
+  color: var(--bili-text-primary);
+  pointer-events: none;
+  background-color: var(--bili-bg-elevated);
+  border: 1px solid var(--bili-border-color-light);
+  border-radius: var(--bili-radius-base);
+  box-shadow: var(--bili-shadow-base);
+
+  @include e(title) {
+    margin-bottom: 4px;
+    font-weight: var(--bili-font-weight-medium);
+    color: var(--bili-text-secondary);
+  }
+
+  @include e(row) {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    white-space: nowrap;
+  }
+
+  @include e(dot) {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+
+  @include e(name) {
+    flex: 1;
+    color: var(--bili-text-secondary);
+  }
+
+  @include e(value) {
+    font-weight: var(--bili-font-weight-medium);
+    font-variant-numeric: tabular-nums;
+    color: var(--bili-text-primary);
+  }
+}

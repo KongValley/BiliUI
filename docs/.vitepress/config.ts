@@ -70,6 +70,7 @@ export default defineConfig({
           text: '数据',
           items: [
             { text: 'Card 卡片', link: '/components/card' },
+            { text: 'Chart 图表', link: '/components/chart' },
             { text: 'Table 表格', link: '/components/table' },
             { text: 'Pagination 分页', link: '/components/pagination' }
           ]

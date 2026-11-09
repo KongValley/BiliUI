@@ -24,6 +24,12 @@ import {
   BiliLayoutFooter
 } from './components/layout'
 import { BiliMenu, BiliMenuItem, BiliSubMenu } from './components/menu'
+import {
+  BiliLineChart,
+  BiliBarChart,
+  BiliPieChart,
+  BiliGaugeChart
+} from './components/chart'
 
 export * from './components/button'
 export * from './components/icon'
@@ -45,6 +51,7 @@ export * from './components/card'
 export * from './components/grid'
 export * from './components/layout'
 export * from './components/menu'
+export * from './components/chart'
 export * from './components/message'
 
 export const components = [
@@ -77,5 +84,9 @@ export const components = [
   BiliLayoutFooter,
   BiliMenu,
   BiliMenuItem,
-  BiliSubMenu
+  BiliSubMenu,
+  BiliLineChart,
+  BiliBarChart,
+  BiliPieChart,
+  BiliGaugeChart
 ]

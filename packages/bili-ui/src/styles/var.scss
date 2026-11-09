@@ -44,6 +44,19 @@ $font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang 
   --bili-color-info-hover: #{color.mix(#ffffff, $color-info, 14%)};
   --bili-color-info-light: #{color.mix(#ffffff, $color-info, 94%)};
 
+  // chart series palette (kept separate so charts can be retinted independently)
+  --bili-chart-color-1: #e0356b;
+  --bili-chart-color-2: #4f7cff;
+  --bili-chart-color-3: #22a06b;
+  --bili-chart-color-4: #e6a23c;
+  --bili-chart-color-5: #8b5cf6;
+  --bili-chart-color-6: #06b6d4;
+  --bili-chart-color-7: #f97316;
+  --bili-chart-color-8: #64748b;
+  --bili-chart-grid-color: var(--bili-border-color-lighter);
+  --bili-chart-axis-color: var(--bili-border-color-light);
+  --bili-chart-label-color: var(--bili-text-secondary);
+
   // text
   --bili-text-primary: #1f2329;
   --bili-text-regular: #4e5969;
