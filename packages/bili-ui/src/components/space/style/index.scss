@@ -1,0 +1,20 @@
+@use '../../../styles/mixins' as *;
+
+@include b(space) {
+  display: inline-flex;
+  align-items: center;
+
+  @include m(vertical) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  @include when(wrap) {
+    flex-wrap: wrap;
+  }
+
+  @include when(fill) {
+    display: flex;
+    width: 100%;
+  }
+}

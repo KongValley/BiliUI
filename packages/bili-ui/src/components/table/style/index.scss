@@ -1,0 +1,131 @@
+@use '../../../styles/mixins' as *;
+
+@include b(table) {
+  position: relative;
+  width: 100%;
+  font-size: var(--bili-font-size-base);
+  color: var(--bili-text-regular);
+  background-color: var(--bili-bg-container);
+
+  @include e(wrapper) {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: inherit;
+    @include utils-scrollbar;
+  }
+
+  @include e(inner) {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  @include e(cell) {
+    padding: 11px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--bili-border-color-lighter);
+    transition:
+      background-color var(--bili-transition-duration) var(--bili-transition-function),
+      color var(--bili-transition-duration) var(--bili-transition-function);
+  }
+
+  @include e(head) {
+    .#{$namespace}-table__cell {
+      font-size: var(--bili-font-size-sm);
+      font-weight: var(--bili-font-weight-medium);
+      color: var(--bili-text-secondary);
+      white-space: nowrap;
+      background-color: var(--bili-bg-muted);
+
+      &.is-sortable {
+        cursor: pointer;
+        user-select: none;
+      }
+    }
+  }
+
+  @include e(cell-label) {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  @include e(sorter) {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 0;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  @include e(sort-icon) {
+    margin: -1px 0;
+    font-size: 9px;
+    line-height: 1;
+    color: var(--bili-text-placeholder);
+    transition:
+      color var(--bili-transition-duration) var(--bili-transition-function),
+      transform var(--bili-transition-duration-fast) var(--bili-transition-function-spring);
+
+    &.is-asc,
+    &.is-desc {
+      color: var(--bili-color-primary);
+      transform: scale(1.25);
+    }
+  }
+
+  @include e(row) {
+    &:hover .#{$namespace}-table__cell {
+      background-color: var(--bili-fill-color-lighter);
+    }
+  }
+
+  @include e(empty) {
+    padding: 44px 12px;
+    font-size: var(--bili-font-size-sm);
+    color: var(--bili-text-secondary);
+    text-align: center;
+    border-bottom: 1px solid var(--bili-border-color-lighter);
+  }
+
+  @include m(sm) {
+    font-size: var(--bili-font-size-sm);
+
+    .#{$namespace}-table__cell {
+      padding: 7px 10px;
+    }
+  }
+
+  @include m(lg) {
+    .#{$namespace}-table__cell {
+      padding: 14px 16px;
+    }
+  }
+
+  @include when(border) {
+    border: 1px solid var(--bili-border-color-light);
+    border-radius: var(--bili-radius-md);
+    overflow: hidden;
+
+    .#{$namespace}-table__cell {
+      border-right: 1px solid var(--bili-border-color-lighter);
+
+      &:last-child {
+        border-right: 0;
+      }
+    }
+
+    .#{$namespace}-table__head .#{$namespace}-table__cell {
+      border-bottom-color: var(--bili-border-color-light);
+    }
+  }
+
+  @include when(stripe) {
+    tbody tr:nth-child(even) .#{$namespace}-table__cell {
+      background-color: var(--bili-bg-muted);
+    }
+
+    tbody tr:hover .#{$namespace}-table__cell {
+      background-color: var(--bili-fill-color-lighter);
+    }
+  }
+}

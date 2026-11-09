@@ -1,0 +1,53 @@
+// ============================================================================
+// Bili UI · Dark theme
+// Semantic token overrides, activated by `html.dark` (VitePress compatible).
+// ============================================================================
+
+html.dark {
+  --bili-color-primary: #fb7299;
+  --bili-color-primary-hover: #ff8fb1;
+  --bili-color-primary-active: #e05c85;
+  --bili-color-primary-light: #3a1d27;
+  --bili-color-on-primary: #2b0a14;
+
+  --bili-color-success: #34c084;
+  --bili-color-success-hover: #4fd39b;
+  --bili-color-success-light: #13291f;
+
+  --bili-color-warning: #f0b45a;
+  --bili-color-warning-hover: #f6c47a;
+  --bili-color-warning-light: #2e2415;
+
+  --bili-color-danger: #f06a6e;
+  --bili-color-danger-hover: #f58b8e;
+  --bili-color-danger-light: #331a1c;
+
+  --bili-color-info: #9aa1ad;
+  --bili-color-info-hover: #b3b9c4;
+  --bili-color-info-light: #24282f;
+
+  --bili-text-primary: #e8eaed;
+  --bili-text-regular: #c2c8d0;
+  --bili-text-secondary: #8b939e;
+  --bili-text-placeholder: #646c79;
+  --bili-text-inverse: #1f2329;
+
+  --bili-bg-page: #121417;
+  --bili-bg-container: #1b1e23;
+  --bili-bg-elevated: #24282f;
+  --bili-bg-muted: #20242a;
+  --bili-bg-disabled: #262b33;
+
+  --bili-border-color: #3a404a;
+  --bili-border-color-light: #2e343d;
+  --bili-border-color-lighter: #262b33;
+
+  --bili-fill-color: #2a2f37;
+  --bili-fill-color-light: #24282f;
+  --bili-fill-color-lighter: #20242a;
+
+  --bili-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --bili-shadow-base: 0 4px 12px rgba(0, 0, 0, 0.45);
+  --bili-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.55);
+  --bili-shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.6);
+}

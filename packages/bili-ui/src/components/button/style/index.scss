@@ -1,0 +1,165 @@
+@use '../../../styles/mixins' as *;
+
+$button-types: primary, success, warning, danger, info;
+
+@include b(button) {
+  --bili-button-height: var(--bili-control-height-md);
+  --bili-button-padding: var(--bili-control-padding-md);
+  --bili-button-font-size: var(--bili-font-size-base);
+  --bili-button-radius: var(--bili-radius-base);
+  --bili-button-color: var(--bili-text-regular);
+  --bili-button-bg: var(--bili-bg-container);
+  --bili-button-border: var(--bili-border-color);
+  --bili-button-hover-color: var(--bili-color-primary);
+  --bili-button-hover-bg: var(--bili-color-primary-light);
+  --bili-button-hover-border: var(--bili-color-primary-hover);
+  --bili-button-active-color: var(--bili-color-primary-active);
+  --bili-button-active-bg: var(--bili-color-primary-light);
+  --bili-button-active-border: var(--bili-color-primary-active);
+  --bili-button-on-color: var(--bili-color-on-primary);
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: var(--bili-button-height);
+  padding: 0 var(--bili-button-padding);
+  margin: 0;
+  font-family: inherit;
+  font-size: var(--bili-button-font-size);
+  font-weight: var(--bili-font-weight-medium);
+  line-height: 1;
+  color: var(--bili-button-color);
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+  background-color: var(--bili-button-bg);
+  border: 1px solid var(--bili-button-border);
+  border-radius: var(--bili-button-radius);
+  outline: none;
+  will-change: transform;
+  transition:
+    color var(--bili-transition-duration) var(--bili-transition-function),
+    background-color var(--bili-transition-duration) var(--bili-transition-function),
+    border-color var(--bili-transition-duration) var(--bili-transition-function),
+    box-shadow var(--bili-transition-duration) var(--bili-transition-function),
+    transform var(--bili-transition-duration-fast) var(--bili-transition-function-out);
+
+  &:hover:not(:disabled) {
+    color: var(--bili-button-hover-color);
+    background-color: var(--bili-button-hover-bg);
+    border-color: var(--bili-button-hover-border);
+  }
+
+  &:active:not(:disabled) {
+    color: var(--bili-button-active-color);
+    background-color: var(--bili-button-active-bg);
+    border-color: var(--bili-button-active-border);
+    transform: scale(var(--bili-press-scale));
+    transition-duration: var(--bili-transition-duration-fast);
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 3px var(--bili-color-primary-light);
+  }
+
+  @include e(text) {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  @include e(loading) {
+    font-size: 1.05em;
+    animation: bili-fade-in var(--bili-transition-duration-fast) var(--bili-transition-function);
+  }
+
+  @include e(icon) {
+    font-size: 1.05em;
+    transition: transform var(--bili-transition-duration) var(--bili-transition-function-out);
+  }
+
+  &:hover:not(:disabled) .#{$namespace}-button__icon {
+    transform: scale(1.12);
+  }
+
+  @include m(sm) {
+    --bili-button-height: var(--bili-control-height-sm);
+    --bili-button-padding: var(--bili-control-padding-sm);
+    --bili-button-font-size: var(--bili-font-size-sm);
+  }
+
+  @include m(lg) {
+    --bili-button-height: var(--bili-control-height-lg);
+    --bili-button-padding: var(--bili-control-padding-lg);
+    --bili-button-font-size: var(--bili-font-size-base);
+  }
+
+  @include when(round) {
+    --bili-button-radius: var(--bili-radius-round);
+  }
+
+  @include when(circle) {
+    width: var(--bili-button-height);
+    padding: 0;
+    border-radius: 50%;
+  }
+
+  @include when(block) {
+    display: flex;
+    width: 100%;
+  }
+
+  @include when(disabled) {
+    cursor: not-allowed;
+    opacity: var(--bili-disabled-opacity);
+
+    &:hover,
+    &:active {
+      color: var(--bili-button-color);
+      background-color: var(--bili-button-bg);
+      border-color: var(--bili-button-border);
+    }
+  }
+
+  @include when(loading) {
+    cursor: default;
+  }
+
+  @each $type in $button-types {
+    @include m($type) {
+      --bili-button-color: var(--bili-button-on-color);
+      --bili-button-bg: var(--bili-color-#{$type});
+      --bili-button-border: var(--bili-color-#{$type});
+      --bili-button-hover-color: var(--bili-button-on-color);
+      --bili-button-hover-bg: var(--bili-color-#{$type}-hover);
+      --bili-button-hover-border: var(--bili-color-#{$type}-hover);
+      --bili-button-active-color: var(--bili-button-on-color);
+      --bili-button-active-bg: var(--bili-color-#{$type});
+      --bili-button-active-border: var(--bili-color-#{$type});
+
+      &.is-plain {
+        --bili-button-color: var(--bili-color-#{$type});
+        --bili-button-bg: var(--bili-color-#{$type}-light);
+        --bili-button-border: var(--bili-color-#{$type}-hover);
+        --bili-button-hover-color: var(--bili-button-on-color);
+        --bili-button-hover-bg: var(--bili-color-#{$type});
+        --bili-button-hover-border: var(--bili-color-#{$type});
+        --bili-button-active-color: var(--bili-button-on-color);
+        --bili-button-active-bg: var(--bili-color-#{$type});
+        --bili-button-active-border: var(--bili-color-#{$type});
+      }
+    }
+  }
+
+  @include m(warning) {
+    --bili-button-on-color: #3d2600;
+  }
+}
+
+html.dark .bili-button--success,
+html.dark .bili-button--danger,
+html.dark .bili-button--info {
+  --bili-button-on-color: #101418;
+}

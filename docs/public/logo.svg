@@ -1,0 +1,14 @@
+<svg width="240" height="240" viewBox="0 0 240 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bili-logo-gradient" x1="28" y1="16" x2="212" y2="224" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FB7299" />
+      <stop offset="1" stop-color="#E0356B" />
+    </linearGradient>
+  </defs>
+  <rect width="240" height="240" rx="56" fill="url(#bili-logo-gradient)" />
+  <path
+    d="M96 74.5C96 67.596 103.464 63.309 109.5 66.75L175.5 104.25C181.5 107.669 181.5 116.331 175.5 119.75L109.5 157.25C103.464 160.691 96 156.404 96 149.5V74.5Z"
+    fill="white"
+  />
+  <circle cx="76" cy="120" r="10" fill="white" fill-opacity="0.62" />
+</svg>

@@ -1,0 +1,137 @@
+// ============================================================================
+// Bili UI · Base
+// ============================================================================
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+[class^='bili-'],
+[class*=' bili-'] {
+  box-sizing: border-box;
+  font-family: var(--bili-font-family);
+}
+
+// ---------------------------------------------------------------------------
+// Shared transitions
+// ---------------------------------------------------------------------------
+
+.bili-fade-enter-active,
+.bili-fade-leave-active {
+  transition: opacity var(--bili-transition-duration) var(--bili-transition-function);
+}
+
+.bili-fade-enter-from,
+.bili-fade-leave-to {
+  opacity: 0;
+}
+
+.bili-zoom-enter-active,
+.bili-zoom-leave-active {
+  transform-origin: var(--bili-zoom-origin, center);
+  transition:
+    opacity var(--bili-transition-duration-fast) var(--bili-transition-function),
+    transform var(--bili-transition-duration) var(--bili-transition-function-out);
+}
+
+.bili-zoom-enter-from,
+.bili-zoom-leave-to {
+  opacity: 0;
+  transform: scale(0.94);
+}
+
+// ---------------------------------------------------------------------------
+// Keyframes
+// ---------------------------------------------------------------------------
+
+@keyframes bili-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes bili-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes bili-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20%,
+  60% {
+    transform: translateX(-3px);
+  }
+  40%,
+  80% {
+    transform: translateX(3px);
+  }
+}
+
+@keyframes bili-pop-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes bili-skeleton-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Reduced motion
+// Users who ask for less motion get instant state changes, but feedback such as
+// the loading spinner keeps spinning so loading state stays legible.
+// ---------------------------------------------------------------------------
+
+@media (prefers-reduced-motion: reduce) {
+  [class^='bili-'],
+  [class*=' bili-'] {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+
+  .bili-icon.is-spin,
+  .bili-loading__spinner {
+    animation-duration: 1s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .bili-zoom-enter-from,
+  .bili-zoom-leave-to {
+    transform: none;
+  }
+}

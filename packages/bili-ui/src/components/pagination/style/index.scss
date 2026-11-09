@@ -1,0 +1,149 @@
+@use '../../../styles/mixins' as *;
+
+@include b(pagination) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  font-size: var(--bili-font-size-sm);
+  color: var(--bili-text-regular);
+
+  @include e(total) {
+    margin-right: 4px;
+    color: var(--bili-text-secondary);
+  }
+
+  @include e(pager) {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    padding: 0 !important;
+    margin: 0 !important;
+    list-style: none !important;
+
+    // Host pages often style bare `li` elements (markers, spacing between rows).
+    // Reset them fully so page numbers always line up on one baseline.
+    li {
+      display: flex;
+      padding: 0 !important;
+      margin: 0 !important;
+      list-style: none !important;
+
+      &::marker {
+        content: '';
+      }
+    }
+  }
+
+  @include e(button) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 30px;
+    height: 30px;
+    padding: 0 6px;
+    font-size: var(--bili-font-size-sm);
+    color: var(--bili-text-regular);
+    cursor: pointer;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--bili-radius-base);
+    transition:
+      color var(--bili-transition-duration) var(--bili-transition-function),
+      background-color var(--bili-transition-duration) var(--bili-transition-function),
+      border-color var(--bili-transition-duration) var(--bili-transition-function),
+      transform var(--bili-transition-duration-fast) var(--bili-transition-function-spring);
+
+    &:hover:not(:disabled) {
+      color: var(--bili-color-primary);
+      background-color: var(--bili-fill-color-light);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0) scale(0.94);
+    }
+
+    &.is-active {
+      font-weight: var(--bili-font-weight-medium);
+      color: var(--bili-color-primary);
+      background-color: var(--bili-color-primary-light);
+      border-color: var(--bili-color-primary-hover);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.45;
+    }
+  }
+
+  @include when(background) {
+    .#{$namespace}-pagination__button {
+      background-color: var(--bili-fill-color-light);
+
+      &.is-active {
+        color: var(--bili-color-on-primary);
+        background-color: var(--bili-color-primary);
+        border-color: var(--bili-color-primary);
+      }
+    }
+  }
+
+  @include e(sizes) {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  @include e(select) {
+    height: 30px;
+    padding: 0 8px;
+    font-size: var(--bili-font-size-sm);
+    color: var(--bili-text-regular);
+    cursor: pointer;
+    background-color: var(--bili-bg-container);
+    border: 1px solid var(--bili-border-color);
+    border-radius: var(--bili-radius-base);
+    outline: none;
+
+    &:focus {
+      border-color: var(--bili-color-primary);
+    }
+  }
+
+  @include e(jumper) {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+    color: var(--bili-text-secondary);
+  }
+
+  @include e(jump-input) {
+    width: 52px;
+    height: 30px;
+    padding: 0 6px;
+    text-align: center;
+    color: var(--bili-text-regular);
+    background-color: var(--bili-bg-container);
+    border: 1px solid var(--bili-border-color);
+    border-radius: var(--bili-radius-base);
+    outline: none;
+
+    &:focus {
+      border-color: var(--bili-color-primary);
+      box-shadow: 0 0 0 3px var(--bili-color-primary-light);
+    }
+  }
+
+  @include when(small) {
+    .#{$namespace}-pagination__button {
+      min-width: 26px;
+      height: 26px;
+      font-size: var(--bili-font-size-xs);
+    }
+
+    .#{$namespace}-pagination__select,
+    .#{$namespace}-pagination__jump-input {
+      height: 26px;
+      font-size: var(--bili-font-size-xs);
+    }
+  }
+}

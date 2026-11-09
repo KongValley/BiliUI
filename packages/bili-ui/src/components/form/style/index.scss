@@ -1,0 +1,103 @@
+@use '../../../styles/mixins' as *;
+
+@include b(form) {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+
+  @include m(inline) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0 20px;
+  }
+}
+
+@include b(form-item) {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+
+  @include e(label) {
+    flex-shrink: 0;
+    padding-top: 6px;
+    font-size: var(--bili-font-size-base);
+    line-height: 1.4;
+    color: var(--bili-text-regular);
+    text-align: right;
+    word-break: break-word;
+  }
+
+  @include e(asterisk) {
+    margin-right: 2px;
+    color: var(--bili-color-danger);
+  }
+
+  @include e(content) {
+    flex: 1;
+    min-width: 0;
+  }
+
+  @include e(control) {
+    display: flex;
+    align-items: center;
+    min-height: 32px;
+  }
+
+  @include e(error) {
+    margin-top: 4px;
+    font-size: var(--bili-font-size-xs);
+    line-height: 1.4;
+    color: var(--bili-color-danger);
+    animation: bili-error-in var(--bili-transition-duration) var(--bili-transition-function-out);
+  }
+
+  @include m(top) {
+    flex-direction: column;
+    gap: 6px;
+
+    .#{$namespace}-form-item__label {
+      padding-top: 0;
+      text-align: left;
+    }
+  }
+
+  @include m(left) {
+    .#{$namespace}-form-item__label {
+      text-align: left;
+    }
+  }
+
+  @include when(error) {
+    .#{$namespace}-form-item__control {
+      .#{$namespace}-input,
+      .#{$namespace}-select {
+        border-color: var(--bili-color-danger);
+        animation: bili-shake var(--bili-transition-duration-slow) var(--bili-transition-function);
+      }
+    }
+  }
+}
+
+@keyframes bili-error-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.bili-form-item-fade-enter-active {
+  transition: opacity var(--bili-transition-duration) var(--bili-transition-function-out);
+}
+
+.bili-form-item-fade-leave-active {
+  transition: opacity var(--bili-transition-duration-fast) var(--bili-transition-function-in);
+}
+
+.bili-form-item-fade-enter-from,
+.bili-form-item-fade-leave-to {
+  opacity: 0;
+}

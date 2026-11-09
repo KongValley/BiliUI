@@ -1,0 +1,14 @@
+node_modules/
+dist/
+coverage/
+*.log
+.DS_Store
+
+docs/.vitepress/cache/
+docs/.vitepress/dist/
+
+.vscode/
+.idea/
+
+# Local agent tooling state, not part of the library
+.zcode/

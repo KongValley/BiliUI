@@ -1,0 +1,80 @@
+@use 'sass:math';
+@use '../../../styles/mixins' as *;
+
+$grid-columns: 24;
+$breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px
+);
+
+@include b(row) {
+  display: flex;
+  flex-wrap: wrap;
+
+  @include when(nowrap) {
+    flex-wrap: nowrap;
+  }
+}
+
+@include b(col) {
+  position: relative;
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: 100%;
+}
+
+@for $i from 0 through $grid-columns {
+  .#{$namespace}-col--#{$i} {
+    @if $i == 0 {
+      display: none;
+    } @else {
+      flex: 0 0 math.percentage(math.div($i, $grid-columns));
+      max-width: math.percentage(math.div($i, $grid-columns));
+    }
+  }
+}
+
+@each $name, $min in $breakpoints {
+  @if $min == 0 {
+    @for $i from 0 through $grid-columns {
+      .#{$namespace}-col--#{$name}-#{$i} {
+        @if $i == 0 {
+          display: none;
+        } @else {
+          display: block;
+          flex: 0 0 math.percentage(math.div($i, $grid-columns));
+          max-width: math.percentage(math.div($i, $grid-columns));
+        }
+      }
+
+      @if $i > 0 {
+        .#{$namespace}-col--#{$name}-offset-#{$i} {
+          margin-left: math.percentage(math.div($i, $grid-columns));
+        }
+      }
+    }
+  } @else {
+    @media (min-width: $min) {
+      @for $i from 0 through $grid-columns {
+        .#{$namespace}-col--#{$name}-#{$i} {
+          @if $i == 0 {
+            display: none;
+          } @else {
+            display: block;
+            flex: 0 0 math.percentage(math.div($i, $grid-columns));
+            max-width: math.percentage(math.div($i, $grid-columns));
+          }
+        }
+
+        @if $i > 0 {
+          .#{$namespace}-col--#{$name}-offset-#{$i} {
+            margin-left: math.percentage(math.div($i, $grid-columns));
+          }
+        }
+      }
+    }
+  }
+}

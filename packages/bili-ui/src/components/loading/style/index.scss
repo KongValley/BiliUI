@@ -1,0 +1,90 @@
+@use '../../../styles/mixins' as *;
+
+@include b(loading) {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  color: var(--bili-color-primary);
+
+  @include e(spinner) {
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--bili-color-primary-light);
+    border-top-color: var(--bili-color-primary);
+    border-radius: 50%;
+    animation: bili-rotate 0.8s linear infinite;
+  }
+
+  @include e(text) {
+    font-size: var(--bili-font-size-sm);
+    color: var(--bili-text-secondary);
+    animation: bili-fade-in var(--bili-transition-duration) var(--bili-transition-function);
+  }
+
+  @include m(sm) {
+    .#{$namespace}-loading__spinner {
+      width: 18px;
+      height: 18px;
+    }
+
+    .#{$namespace}-loading__text {
+      font-size: var(--bili-font-size-xs);
+    }
+  }
+
+  @include m(lg) {
+    .#{$namespace}-loading__spinner {
+      width: 32px;
+      height: 32px;
+      border-width: 3px;
+    }
+
+    .#{$namespace}-loading__text {
+      font-size: var(--bili-font-size-base);
+    }
+  }
+
+  @include when(overlay) {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    background-color: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(1px);
+  }
+
+  @include when(fullscreen) {
+    position: fixed;
+    inset: 0;
+    z-index: var(--bili-z-index-loading);
+    background-color: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(2px);
+    animation: bili-fade-in var(--bili-transition-duration) var(--bili-transition-function);
+  }
+}
+
+.bili-loading-wrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  border-radius: inherit;
+}
+
+.bili-loading-fade-enter-active,
+.bili-loading-fade-leave-active {
+  transition: opacity var(--bili-transition-duration) var(--bili-transition-function);
+}
+
+.bili-loading-fade-enter-from,
+.bili-loading-fade-leave-to {
+  opacity: 0;
+}
+
+html.dark .bili-loading.is-overlay {
+  background-color: rgba(18, 20, 23, 0.72);
+}
+
+html.dark .bili-loading.is-fullscreen {
+  background-color: rgba(18, 20, 23, 0.88);
+}

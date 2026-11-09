@@ -1,0 +1,136 @@
+@use 'sass:color';
+
+// ============================================================================
+// Bili UI · Design Tokens
+// Layer 1: primitive values  →  Layer 2: semantic CSS variables
+// ============================================================================
+
+$namespace: 'bili' !default;
+
+$color-primary: #e0356b;
+$color-success: #22a06b;
+$color-warning: #e6a23c;
+$color-danger: #e5484d;
+$color-info: #8a919f;
+
+$font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+  'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+
+:root {
+  --bili-color-white: #ffffff;
+  --bili-color-black: #1f2329;
+
+  // brand
+  --bili-color-primary: #{$color-primary};
+  --bili-color-primary-hover: #{color.mix(#ffffff, $color-primary, 12%)};
+  --bili-color-primary-active: #{color.mix(#000000, $color-primary, 12%)};
+  --bili-color-primary-light: #{color.mix(#ffffff, $color-primary, 92%)};
+  --bili-color-on-primary: #ffffff;
+
+  // status
+  --bili-color-success: #{$color-success};
+  --bili-color-success-hover: #{color.mix(#ffffff, $color-success, 12%)};
+  --bili-color-success-light: #{color.mix(#ffffff, $color-success, 92%)};
+
+  --bili-color-warning: #{$color-warning};
+  --bili-color-warning-hover: #{color.mix(#ffffff, $color-warning, 12%)};
+  --bili-color-warning-light: #{color.mix(#ffffff, $color-warning, 92%)};
+
+  --bili-color-danger: #{$color-danger};
+  --bili-color-danger-hover: #{color.mix(#ffffff, $color-danger, 12%)};
+  --bili-color-danger-light: #{color.mix(#ffffff, $color-danger, 92%)};
+
+  --bili-color-info: #{$color-info};
+  --bili-color-info-hover: #{color.mix(#ffffff, $color-info, 14%)};
+  --bili-color-info-light: #{color.mix(#ffffff, $color-info, 94%)};
+
+  // text
+  --bili-text-primary: #1f2329;
+  --bili-text-regular: #4e5969;
+  --bili-text-secondary: #86909c;
+  --bili-text-placeholder: #b4bac3;
+  --bili-text-inverse: #ffffff;
+
+  // background
+  --bili-bg-page: #f5f6f8;
+  --bili-bg-container: #ffffff;
+  --bili-bg-elevated: #ffffff;
+  --bili-bg-muted: #fafbfc;
+  --bili-bg-disabled: #f2f3f5;
+
+  // border
+  --bili-border-color: #d7dbe0;
+  --bili-border-color-light: #e5e8ec;
+  --bili-border-color-lighter: #eef0f3;
+
+  // fill
+  --bili-fill-color: #f2f3f5;
+  --bili-fill-color-light: #f7f8fa;
+  --bili-fill-color-lighter: #fafbfc;
+
+  // radius
+  --bili-radius-sm: 4px;
+  --bili-radius-base: 6px;
+  --bili-radius-md: 8px;
+  --bili-radius-lg: 12px;
+  --bili-radius-round: 999px;
+
+  // typography
+  --bili-font-family: #{$font-family};
+  --bili-font-family-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  --bili-font-size-xs: 12px;
+  --bili-font-size-sm: 13px;
+  --bili-font-size-base: 14px;
+  --bili-font-size-md: 16px;
+  --bili-font-size-lg: 18px;
+  --bili-font-size-xl: 20px;
+  --bili-font-size-xxl: 24px;
+  --bili-font-weight-regular: 400;
+  --bili-font-weight-medium: 500;
+  --bili-font-weight-semibold: 600;
+  --bili-line-height-base: 1.5;
+  --bili-line-height-tight: 1.3;
+
+  // spacing
+  --bili-space-1: 4px;
+  --bili-space-2: 8px;
+  --bili-space-3: 12px;
+  --bili-space-4: 16px;
+  --bili-space-5: 20px;
+  --bili-space-6: 24px;
+  --bili-space-8: 32px;
+
+  // controls
+  --bili-control-height-sm: 28px;
+  --bili-control-height-md: 32px;
+  --bili-control-height-lg: 40px;
+  --bili-control-padding-sm: 8px;
+  --bili-control-padding-md: 11px;
+  --bili-control-padding-lg: 15px;
+
+  // elevation
+  --bili-shadow-sm: 0 1px 2px rgba(31, 35, 41, 0.06);
+  --bili-shadow-base: 0 4px 12px rgba(31, 35, 41, 0.08);
+  --bili-shadow-md: 0 8px 24px rgba(31, 35, 41, 0.12);
+  --bili-shadow-lg: 0 16px 48px rgba(31, 35, 41, 0.16);
+
+  // motion
+  --bili-transition-duration-fast: 0.12s;
+  --bili-transition-duration: 0.2s;
+  --bili-transition-duration-slow: 0.32s;
+  --bili-transition-function: cubic-bezier(0.4, 0, 0.2, 1);
+  --bili-transition-function-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --bili-transition-function-in: cubic-bezier(0.4, 0, 1, 1);
+  --bili-transition-function-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --bili-press-scale: 0.96;
+
+  // z-index
+  --bili-z-index-normal: 1;
+  --bili-z-index-popup: 2000;
+  --bili-z-index-modal: 2000;
+  --bili-z-index-message: 3000;
+  --bili-z-index-loading: 4000;
+
+  // states
+  --bili-disabled-opacity: 0.55;
+}

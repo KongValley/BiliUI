@@ -1,0 +1,20 @@
+@use '../../../styles/mixins' as *;
+
+@include b(icon) {
+  display: inline-flex;
+  flex-shrink: 0;
+  width: 1em;
+  height: 1em;
+  overflow: visible;
+  line-height: 1;
+  vertical-align: -0.125em;
+
+  @include when(spin) {
+    animation: bili-rotate 1s linear infinite;
+  }
+
+  // Filled icons rely on their own geometry; keep them crisp on any background.
+  @include when(fill) {
+    fill-rule: evenodd;
+  }
+}

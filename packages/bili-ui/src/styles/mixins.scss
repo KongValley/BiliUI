@@ -1,0 +1,71 @@
+// ============================================================================
+// Bili UI · SCSS mixins
+// Usage:
+//   @use '../../styles/mixins' as *;
+//   @include b(button) {
+//     @include e(inner) { ... }
+//     @include m(primary) { ... }
+//     @include when(disabled) { ... }
+//   }
+// ============================================================================
+
+$namespace: 'bili' !default;
+
+@mixin b($block) {
+  .#{$namespace}-#{$block} {
+    @content;
+  }
+}
+
+@mixin e($element) {
+  &__#{$element} {
+    @content;
+  }
+}
+
+@mixin m($modifier) {
+  &--#{$modifier} {
+    @content;
+  }
+}
+
+@mixin when($state) {
+  &.is-#{$state} {
+    @content;
+  }
+}
+
+@mixin utils-ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+@mixin utils-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--bili-border-color) transparent;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--bili-border-color);
+    border-radius: var(--bili-radius-round);
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+@mixin utils-focus-ring {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--bili-color-primary-light);
+}
+
+@mixin utils-disabled {
+  cursor: not-allowed;
+  opacity: var(--bili-disabled-opacity);
+}

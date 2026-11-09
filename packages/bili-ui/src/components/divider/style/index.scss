@@ -1,0 +1,62 @@
+@use '../../../styles/mixins' as *;
+
+@include b(divider) {
+  margin: 16px 0;
+  border-top: 1px solid var(--bili-border-color);
+
+  @include when(dashed) {
+    border-top-style: dashed;
+  }
+
+  @include when(with-text) {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border-top: 0;
+
+    &::before,
+    &::after {
+      flex: 1;
+      content: '';
+      border-top: 1px solid var(--bili-border-color);
+    }
+
+    &.is-dashed {
+      &::before,
+      &::after {
+        border-top-style: dashed;
+      }
+    }
+
+    @include m(content-left) {
+      &::before {
+        flex: 0 0 5%;
+      }
+    }
+
+    @include m(content-right) {
+      &::after {
+        flex: 0 0 5%;
+      }
+    }
+  }
+
+  @include e(text) {
+    font-size: var(--bili-font-size-sm);
+    color: var(--bili-text-secondary);
+    white-space: nowrap;
+  }
+
+  @include m(vertical) {
+    display: inline-block;
+    height: 1em;
+    margin: 0 12px;
+    vertical-align: middle;
+    border-top: 0;
+    border-left: 1px solid var(--bili-border-color);
+
+    &.is-dashed {
+      border-left-style: dashed;
+    }
+  }
+}

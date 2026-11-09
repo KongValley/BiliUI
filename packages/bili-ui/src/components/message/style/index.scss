@@ -1,0 +1,170 @@
+@use '../../../styles/mixins' as *;
+
+.bili-message-container {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  z-index: var(--bili-z-index-message);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+
+@include b(message) {
+  position: relative;
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  max-width: 480px;
+  padding: 10px 14px;
+  overflow: hidden;
+  font-size: var(--bili-font-size-base);
+  line-height: 1.5;
+  color: var(--bili-text-primary);
+  pointer-events: auto;
+  background-color: var(--bili-bg-elevated);
+  border: 1px solid var(--bili-border-color-light);
+  border-radius: var(--bili-radius-md);
+  box-shadow: var(--bili-shadow-md);
+
+  @include e(icon) {
+    flex-shrink: 0;
+    font-size: 16px;
+  }
+
+  @include m(success) {
+    .#{$namespace}-message__icon {
+      color: var(--bili-color-success);
+    }
+  }
+
+  @include m(warning) {
+    .#{$namespace}-message__icon {
+      color: var(--bili-color-warning);
+    }
+  }
+
+  @include m(error) {
+    .#{$namespace}-message__icon {
+      color: var(--bili-color-danger);
+    }
+  }
+
+  @include m(info) {
+    .#{$namespace}-message__icon {
+      color: var(--bili-color-info);
+    }
+  }
+
+  @include e(content) {
+    flex: 1;
+    word-break: break-word;
+  }
+
+  @include e(close) {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    margin-left: 4px;
+    padding: 0;
+    font-size: 12px;
+    color: var(--bili-text-secondary);
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    border-radius: 50%;
+    transition:
+      color var(--bili-transition-duration) var(--bili-transition-function),
+      background-color var(--bili-transition-duration) var(--bili-transition-function),
+      transform var(--bili-transition-duration) var(--bili-transition-function-spring);
+
+    &:hover {
+      color: var(--bili-text-primary);
+      background-color: var(--bili-fill-color);
+      transform: scale(1.1);
+    }
+
+    &:active {
+      transform: scale(0.88);
+    }
+  }
+
+  // Countdown bar: purely visual, shrinks right-to-left with the remaining time.
+  @include e(progress) {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--bili-color-info);
+    transform-origin: left center;
+    animation-name: bili-message-countdown;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+  }
+
+  @include m(success) {
+    .#{$namespace}-message__progress {
+      background-color: var(--bili-color-success);
+    }
+  }
+
+  @include m(warning) {
+    .#{$namespace}-message__progress {
+      background-color: var(--bili-color-warning);
+    }
+  }
+
+  @include m(error) {
+    .#{$namespace}-message__progress {
+      background-color: var(--bili-color-danger);
+    }
+  }
+
+  @include when(paused) {
+    .#{$namespace}-message__progress {
+      opacity: 0.6;
+    }
+  }
+}
+
+@keyframes bili-message-countdown {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+
+// A bar that snaps away instantly would be misleading, so hide it entirely for
+// users who ask for reduced motion; the message still closes on schedule.
+@media (prefers-reduced-motion: reduce) {
+  .bili-message__progress {
+    display: none;
+  }
+}
+
+.bili-message-enter-active {
+  transition:
+    opacity var(--bili-transition-duration) var(--bili-transition-function),
+    transform var(--bili-transition-duration-slow) var(--bili-transition-function-out);
+}
+
+.bili-message-leave-active {
+  transition:
+    opacity var(--bili-transition-duration-fast) var(--bili-transition-function-in),
+    transform var(--bili-transition-duration-fast) var(--bili-transition-function-in);
+}
+
+.bili-message-enter-from,
+.bili-message-leave-to {
+  opacity: 0;
+  transform: translateY(-14px) scale(0.96);
+}

@@ -1,0 +1,77 @@
+@use '../../../styles/mixins' as *;
+
+@include b(layout) {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  background-color: var(--bili-bg-page);
+
+  @include m(horizontal) {
+    flex-direction: row;
+  }
+
+  @include when(full-height) {
+    min-height: 100vh;
+  }
+}
+
+@include b(layout-header) {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  padding: 0 20px;
+  background-color: var(--bili-bg-container);
+  border-bottom: 1px solid var(--bili-border-color-light);
+
+  @include when(sticky) {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+}
+
+@include b(layout-aside) {
+  flex-shrink: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: var(--bili-bg-container);
+  border-right: 1px solid var(--bili-border-color-light);
+  transition: width var(--bili-transition-duration) var(--bili-transition-function-out);
+  @include utils-scrollbar;
+
+  @include when(sticky) {
+    position: sticky;
+    top: 0;
+    max-height: 100vh;
+  }
+
+  @include when(collapsed) {
+    overflow-x: hidden;
+  }
+}
+
+@include b(layout-content) {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+}
+
+@include b(layout-footer) {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  font-size: var(--bili-font-size-sm);
+  color: var(--bili-text-secondary);
+  background-color: var(--bili-bg-container);
+  border-top: 1px solid var(--bili-border-color-light);
+}
+
+// When a horizontal layout holds an aside, the main column must be able to
+// shrink alongside it instead of pushing the aside out of view.
+.bili-layout--horizontal > .bili-layout {
+  min-width: 0;
+}

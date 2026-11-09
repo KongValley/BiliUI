@@ -1,0 +1,73 @@
+@use '../../../styles/mixins' as *;
+
+@include b(tooltip) {
+  @include e(trigger) {
+    display: inline-flex;
+    max-width: 100%;
+  }
+
+  @include e(content) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    max-width: 320px;
+    padding: 6px 10px;
+    font-size: var(--bili-font-size-xs);
+    line-height: 1.5;
+    color: var(--bili-color-white);
+    word-break: break-word;
+    pointer-events: none;
+    background-color: #303133;
+    border-radius: var(--bili-radius-base);
+    box-shadow: var(--bili-shadow-base);
+  }
+
+  @include m(light) {
+    color: var(--bili-text-primary);
+    background-color: var(--bili-bg-elevated);
+    border: 1px solid var(--bili-border-color-light);
+    box-shadow: var(--bili-shadow-base);
+  }
+
+  @include e(arrow) {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background-color: inherit;
+    transform: rotate(45deg);
+
+    &[data-placement^='top'] {
+      bottom: -4px;
+    }
+
+    &[data-placement^='bottom'] {
+      top: -4px;
+    }
+
+    &[data-placement^='left'] {
+      right: -4px;
+    }
+
+    &[data-placement^='right'] {
+      left: -4px;
+    }
+  }
+}
+
+.bili-tooltip-fade-enter-active {
+  transition:
+    opacity var(--bili-transition-duration-fast) var(--bili-transition-function),
+    transform var(--bili-transition-duration) var(--bili-transition-function-out);
+}
+
+.bili-tooltip-fade-leave-active {
+  transition:
+    opacity var(--bili-transition-duration-fast) var(--bili-transition-function-in),
+    transform var(--bili-transition-duration-fast) var(--bili-transition-function-in);
+}
+
+.bili-tooltip-fade-enter-from,
+.bili-tooltip-fade-leave-to {
+  opacity: 0;
+  transform: scale(0.92);
+}

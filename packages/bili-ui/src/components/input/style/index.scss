@@ -1,0 +1,142 @@
+@use '../../../styles/mixins' as *;
+
+@include b(input) {
+  --bili-input-height: var(--bili-control-height-md);
+  --bili-input-padding: var(--bili-control-padding-md);
+  --bili-input-font-size: var(--bili-font-size-base);
+
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  height: var(--bili-input-height);
+  padding: 0 var(--bili-input-padding);
+  gap: 6px;
+  font-size: var(--bili-input-font-size);
+  color: var(--bili-text-primary);
+  background-color: var(--bili-bg-container);
+  border: 1px solid var(--bili-border-color);
+  border-radius: var(--bili-radius-base);
+  transition:
+    border-color var(--bili-transition-duration) var(--bili-transition-function),
+    box-shadow var(--bili-transition-duration) var(--bili-transition-function),
+    background-color var(--bili-transition-duration) var(--bili-transition-function);
+
+  &:hover {
+    border-color: var(--bili-color-primary-hover);
+  }
+
+  @include when(focus) {
+    border-color: var(--bili-color-primary);
+    box-shadow: 0 0 0 3px var(--bili-color-primary-light);
+  }
+  @include when(disabled) {
+    cursor: not-allowed;
+    background-color: var(--bili-bg-disabled);
+
+    .#{$namespace}-input__inner {
+      cursor: not-allowed;
+      color: var(--bili-text-placeholder);
+    }
+  }
+
+  @include when(readonly) {
+    background-color: var(--bili-fill-color-lighter);
+  }
+
+  @include e(inner) {
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    background: transparent;
+    border: 0;
+    outline: none;
+
+    &::placeholder {
+      color: var(--bili-text-placeholder);
+    }
+  }
+
+  @include e(prefix) {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 4px;
+    color: var(--bili-text-secondary);
+  }
+
+  @include e(suffix) {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 4px;
+    color: var(--bili-text-secondary);
+  }
+
+  @include e(action) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    font-size: 14px;
+    color: var(--bili-text-secondary);
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    border-radius: 50%;
+    animation: bili-pop-in var(--bili-transition-duration-fast) var(--bili-transition-function-out);
+    transition:
+      color var(--bili-transition-duration) var(--bili-transition-function),
+      transform var(--bili-transition-duration-fast) var(--bili-transition-function-spring);
+
+    &:hover {
+      color: var(--bili-text-regular);
+      transform: scale(1.15);
+    }
+
+    &:active {
+      transform: scale(0.88);
+    }
+  }
+
+  @include e(count) {
+    font-size: var(--bili-font-size-xs);
+    color: var(--bili-text-secondary);
+    white-space: nowrap;
+  }
+
+  @include m(sm) {
+    --bili-input-height: var(--bili-control-height-sm);
+    --bili-input-padding: var(--bili-control-padding-sm);
+    --bili-input-font-size: var(--bili-font-size-sm);
+  }
+
+  @include m(lg) {
+    --bili-input-height: var(--bili-control-height-lg);
+    --bili-input-padding: var(--bili-control-padding-lg);
+    --bili-input-font-size: var(--bili-font-size-base);
+  }
+
+  @include when(textarea) {
+    height: auto;
+    padding: 6px var(--bili-input-padding);
+    align-items: flex-start;
+
+    .#{$namespace}-input__inner {
+      min-height: 1.5em;
+      line-height: 1.5;
+      resize: vertical;
+    }
+
+    .#{$namespace}-input__suffix {
+      align-self: flex-end;
+      padding-bottom: 2px;
+    }
+  }
+}

@@ -1,0 +1,115 @@
+@use '../../../styles/mixins' as *;
+
+$tag-types: primary, success, warning, danger, info;
+
+@include b(tag) {
+  --bili-tag-color: var(--bili-text-regular);
+  --bili-tag-bg: var(--bili-fill-color-light);
+  --bili-tag-border: var(--bili-border-color-light);
+  --bili-tag-on-color: #ffffff;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 24px;
+  padding: 0 8px;
+  font-size: var(--bili-font-size-xs);
+  line-height: 1;
+  color: var(--bili-tag-color);
+  white-space: nowrap;
+  background-color: var(--bili-tag-bg);
+  border: 1px solid var(--bili-tag-border);
+  border-radius: var(--bili-radius-sm);
+  transition:
+    background-color var(--bili-transition-duration) var(--bili-transition-function),
+    border-color var(--bili-transition-duration) var(--bili-transition-function),
+    color var(--bili-transition-duration) var(--bili-transition-function);
+
+  @include m(sm) {
+    height: 20px;
+    padding: 0 6px;
+  }
+
+  @include m(lg) {
+    height: 28px;
+    padding: 0 10px;
+    font-size: var(--bili-font-size-sm);
+  }
+
+  @include when(round) {
+    border-radius: var(--bili-radius-round);
+  }
+
+  @include e(content) {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+  }
+
+  @include e(close) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px;
+    height: 14px;
+    padding: 0;
+    font-size: 10px;
+    color: inherit;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    border-radius: 50%;
+    opacity: 0.65;
+    transition:
+      opacity var(--bili-transition-duration) var(--bili-transition-function),
+      transform var(--bili-transition-duration-fast) var(--bili-transition-function-spring),
+      background-color var(--bili-transition-duration-fast) var(--bili-transition-function);
+
+    &:hover {
+      background-color: currentColor;
+      opacity: 1;
+      transform: scale(1.15);
+
+      .#{$namespace}-icon {
+        color: var(--bili-bg-container);
+      }
+    }
+
+    &:active {
+      transform: scale(0.85);
+    }
+  }
+}
+
+@each $type in $tag-types {
+  .#{$namespace}-tag--#{$type} {
+    --bili-tag-color: var(--bili-color-#{$type});
+    --bili-tag-bg: var(--bili-color-#{$type}-light);
+    --bili-tag-border: var(--bili-color-#{$type}-hover);
+  }
+
+  .#{$namespace}-tag--#{$type}.#{$namespace}-tag--dark {
+    --bili-tag-color: var(--bili-tag-on-color);
+    --bili-tag-bg: var(--bili-color-#{$type});
+    --bili-tag-border: var(--bili-color-#{$type});
+  }
+
+  .#{$namespace}-tag--#{$type}.#{$namespace}-tag--plain {
+    --bili-tag-bg: transparent;
+    --bili-tag-border: var(--bili-color-#{$type});
+  }
+}
+
+.bili-tag--warning {
+  --bili-tag-on-color: #3d2600;
+}
+
+html.dark .bili-tag--primary {
+  --bili-tag-on-color: #2b0a14;
+}
+
+html.dark .bili-tag--success,
+html.dark .bili-tag--danger,
+html.dark .bili-tag--info {
+  --bili-tag-on-color: #101418;
+}

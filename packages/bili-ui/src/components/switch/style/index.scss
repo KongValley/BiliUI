@@ -1,0 +1,127 @@
+@use '../../../styles/mixins' as *;
+
+@include b(switch) {
+  --bili-switch-width: 44px;
+  --bili-switch-height: 24px;
+  --bili-switch-action-size: 20px;
+  --bili-switch-padding: 2px;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  font-size: var(--bili-font-size-base);
+  color: var(--bili-text-regular);
+  vertical-align: middle;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+
+  @include e(core) {
+    position: relative;
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    width: var(--bili-switch-width);
+    height: var(--bili-switch-height);
+    padding: var(--bili-switch-padding);
+    background-color: var(--bili-fill-color);
+    border-radius: var(--bili-radius-round);
+    transition: background-color var(--bili-transition-duration) var(--bili-transition-function);
+  }
+
+  @include e(action) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--bili-switch-action-size);
+    height: var(--bili-switch-action-size);
+    font-size: 12px;
+    color: var(--bili-color-primary);
+    background-color: var(--bili-color-white);
+    border-radius: 50%;
+    box-shadow: var(--bili-shadow-sm);
+    transition:
+      transform var(--bili-transition-duration) var(--bili-transition-function-spring),
+      width var(--bili-transition-duration) var(--bili-transition-function-spring);
+  }
+
+  // Squash the thumb slightly on press so the toggle feels physical.
+  &:active:not(.is-disabled) .#{$namespace}-switch__action {
+    width: calc(var(--bili-switch-action-size) + 3px);
+  }
+
+  @include e(label) {
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  &:hover:not(.is-disabled) .#{$namespace}-switch__core {
+    background-color: var(--bili-border-color);
+  }
+
+  @include when(checked) {
+    .#{$namespace}-switch__core {
+      background-color: var(--bili-color-primary);
+    }
+
+    .#{$namespace}-switch__action {
+      color: var(--bili-color-primary);
+      transform: translateX(
+        calc(var(--bili-switch-width) - var(--bili-switch-action-size) - 2 * var(--bili-switch-padding))
+      );
+    }
+
+    // Keep the enlarged thumb inside the track while pressed.
+    &:active:not(.is-disabled) .#{$namespace}-switch__action {
+      transform: translateX(
+        calc(
+          var(--bili-switch-width) - var(--bili-switch-action-size) - 2 * var(--bili-switch-padding) - 3px
+        )
+      );
+    }
+
+    &:hover:not(.is-disabled) .#{$namespace}-switch__core {
+      background-color: var(--bili-color-primary-hover);
+    }
+  }
+
+  @include m(sm) {
+    --bili-switch-width: 36px;
+    --bili-switch-height: 20px;
+    --bili-switch-action-size: 16px;
+    font-size: var(--bili-font-size-xs);
+
+    .#{$namespace}-switch__action {
+      font-size: 10px;
+    }
+  }
+
+  @include m(lg) {
+    --bili-switch-width: 52px;
+    --bili-switch-height: 28px;
+    --bili-switch-action-size: 24px;
+    font-size: var(--bili-font-size-md);
+
+    .#{$namespace}-switch__action {
+      font-size: 14px;
+    }
+  }
+
+  @include when(disabled) {
+    cursor: not-allowed;
+    opacity: var(--bili-disabled-opacity);
+
+    &:hover .#{$namespace}-switch__core {
+      background-color: var(--bili-fill-color);
+    }
+
+    &.is-checked:hover .#{$namespace}-switch__core {
+      background-color: var(--bili-color-primary);
+    }
+  }
+
+  @include when(loading) {
+    cursor: default;
+  }
+}

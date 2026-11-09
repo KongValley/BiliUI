@@ -1,0 +1,111 @@
+@use '../../../styles/mixins' as *;
+
+@include b(dialog) {
+  position: relative;
+  width: 480px;
+  max-width: calc(100vw - 32px);
+  margin: 15vh auto 30px;
+  background-color: var(--bili-bg-container);
+  border-radius: var(--bili-radius-lg);
+  box-shadow: var(--bili-shadow-lg);
+  outline: none;
+
+  @include e(overlay) {
+    position: fixed;
+    inset: 0;
+    overflow: auto;
+    background-color: rgba(15, 18, 23, 0.45);
+  }
+
+  @include e(header) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 18px 20px 8px;
+  }
+
+  @include e(title) {
+    font-size: var(--bili-font-size-md);
+    font-weight: var(--bili-font-weight-semibold);
+    line-height: 1.4;
+    color: var(--bili-text-primary);
+  }
+
+  @include e(close) {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    font-size: 16px;
+    color: var(--bili-text-secondary);
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    border-radius: var(--bili-radius-sm);
+    transition:
+      color var(--bili-transition-duration) var(--bili-transition-function),
+      background-color var(--bili-transition-duration) var(--bili-transition-function),
+      transform var(--bili-transition-duration) var(--bili-transition-function-spring);
+
+    &:hover {
+      color: var(--bili-text-primary);
+      background-color: var(--bili-fill-color);
+      transform: rotate(90deg);
+    }
+
+    &:active {
+      transform: rotate(90deg) scale(0.88);
+    }
+  }
+
+  @include e(body) {
+    padding: 8px 20px 20px;
+    font-size: var(--bili-font-size-base);
+    line-height: 1.6;
+    color: var(--bili-text-regular);
+  }
+
+  @include e(footer) {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 20px 20px;
+  }
+}
+
+.bili-dialog-enter-active,
+.bili-dialog-leave-active {
+  transition: opacity var(--bili-transition-duration) var(--bili-transition-function);
+}
+
+.bili-dialog-enter-from,
+.bili-dialog-leave-to {
+  opacity: 0;
+}
+
+.bili-dialog-enter-active .bili-dialog {
+  transition:
+    transform var(--bili-transition-duration-slow) var(--bili-transition-function-out),
+    opacity var(--bili-transition-duration) var(--bili-transition-function);
+}
+
+.bili-dialog-leave-active .bili-dialog {
+  transition:
+    transform var(--bili-transition-duration) var(--bili-transition-function-in),
+    opacity var(--bili-transition-duration-fast) var(--bili-transition-function-in);
+}
+
+.bili-dialog-enter-from .bili-dialog {
+  opacity: 0;
+  transform: translateY(-16px) scale(0.96);
+}
+
+.bili-dialog-leave-to .bili-dialog {
+  opacity: 0;
+  transform: translateY(-6px) scale(0.98);
+}
