@@ -1,0 +1,248 @@
+@use '../../../styles/mixins' as *;
+
+@include b(image) {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  line-height: 0;
+  vertical-align: middle;
+  background-color: var(--bili-fill-color-light);
+  border-radius: var(--bili-image-radius, var(--bili-radius-base));
+
+  @include e(inner) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    opacity: 0;
+    transition: opacity var(--bili-transition-duration) var(--bili-transition-function);
+  }
+
+  @include when(loaded) {
+    .#{$namespace}-image__inner {
+      opacity: 1;
+    }
+  }
+
+  @include e(placeholder) {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--bili-text-placeholder);
+    background-color: var(--bili-fill-color-light);
+  }
+
+  @include e(placeholder-icon) {
+    font-size: 24px;
+  }
+
+  @include e(error) {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--bili-font-size-sm);
+    line-height: 1.5;
+    color: var(--bili-text-secondary);
+    background-color: var(--bili-fill-color);
+  }
+
+  @include e(preview-mask) {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    font-family: inherit;
+    font-size: var(--bili-font-size-sm);
+    color: var(--bili-color-white);
+    cursor: zoom-in;
+    background-color: rgba(31, 35, 41, 0.5);
+    border: 0;
+    opacity: 0;
+    transition: opacity var(--bili-transition-duration) var(--bili-transition-function);
+  }
+
+  &:hover .#{$namespace}-image__preview-mask,
+  &:focus-within .#{$namespace}-image__preview-mask {
+    opacity: 1;
+  }
+
+  .#{$namespace}-image__preview-mask:focus-visible {
+    outline: 2px solid var(--bili-color-white);
+    outline-offset: -4px;
+    opacity: 1;
+  }
+}
+
+@mixin image-viewer-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  color: var(--bili-color-white);
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.12);
+  border: 0;
+  border-radius: 50%;
+  transition:
+    background-color var(--bili-transition-duration) var(--bili-transition-function),
+    opacity var(--bili-transition-duration) var(--bili-transition-function);
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.24);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--bili-color-white);
+    outline-offset: 2px;
+  }
+}
+
+@include b(image-viewer) {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: var(--bili-color-white);
+  user-select: none;
+  background-color: rgba(17, 19, 23, 0.82);
+  backdrop-filter: blur(2px);
+  outline: none;
+
+  @include e(canvas) {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 64px 72px;
+    overflow: hidden;
+  }
+
+  @include e(img) {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    cursor: grab;
+    transition:
+      transform var(--bili-transition-duration-slow) var(--bili-transition-function-out),
+      opacity var(--bili-transition-duration) var(--bili-transition-function);
+    will-change: transform;
+
+    &.is-dragging {
+      cursor: grabbing;
+      transition: none;
+    }
+  }
+
+  @include e(close) {
+    @include image-viewer-button;
+
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 3;
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
+  }
+
+  @include e(counter) {
+    position: absolute;
+    top: 28px;
+    left: 24px;
+    z-index: 3;
+    font-size: var(--bili-font-size-sm);
+    font-variant-numeric: tabular-nums;
+    color: rgba(255, 255, 255, 0.86);
+  }
+
+  @include e(arrow) {
+    @include image-viewer-button;
+
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+    width: 44px;
+    height: 44px;
+    font-size: 22px;
+    opacity: 0.8;
+    transform: translateY(-50%);
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  @include e(arrow--prev) {
+    left: 20px;
+  }
+
+  @include e(arrow--next) {
+    right: 20px;
+  }
+
+  @include e(actions) {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    z-index: 3;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    padding: 6px 10px;
+    background-color: rgba(255, 255, 255, 0.12);
+    border-radius: var(--bili-radius-round);
+    backdrop-filter: blur(6px);
+    transform: translateX(-50%);
+  }
+
+  @include e(action) {
+    @include image-viewer-button;
+
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+    background-color: transparent;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+  }
+
+  @include e(scale) {
+    min-width: 44px;
+    font-size: var(--bili-font-size-xs);
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.86);
+  }
+
+  @include e(divider) {
+    width: 1px;
+    height: 16px;
+    margin: 0 2px;
+    background-color: rgba(255, 255, 255, 0.24);
+  }
+}
+
+.bili-image-viewer-enter-active,
+.bili-image-viewer-leave-active {
+  transition: opacity var(--bili-transition-duration) var(--bili-transition-function);
+}
+
+.bili-image-viewer-enter-from,
+.bili-image-viewer-leave-to {
+  opacity: 0;
+}

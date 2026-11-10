@@ -1,0 +1,198 @@
+@use '../../../styles/mixins' as *;
+
+@include b(carousel) {
+  position: relative;
+  width: 100%;
+  outline: none;
+
+  @include e(container) {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background-color: var(--bili-fill-color-light);
+    border-radius: var(--bili-carousel-radius, var(--bili-radius-md));
+  }
+
+  &:focus-visible {
+    border-radius: var(--bili-carousel-radius, var(--bili-radius-md));
+    outline: 2px solid var(--bili-color-primary);
+    outline-offset: 2px;
+  }
+
+  @include e(arrow) {
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    font-size: 18px;
+    color: var(--bili-color-white);
+    cursor: pointer;
+    background-color: rgba(31, 35, 41, 0.36);
+    border: 0;
+    border-radius: 50%;
+    opacity: 0;
+    transition:
+      opacity var(--bili-transition-duration) var(--bili-transition-function),
+      background-color var(--bili-transition-duration) var(--bili-transition-function);
+    transform: translateY(-50%);
+
+    &:hover {
+      background-color: rgba(31, 35, 41, 0.56);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--bili-color-white);
+      outline-offset: 2px;
+    }
+
+    @include when(always) {
+      opacity: 1;
+    }
+  }
+
+  &:hover .#{$namespace}-carousel__arrow.is-hover {
+    opacity: 1;
+  }
+
+  @include e(arrow--prev) {
+    left: 12px;
+  }
+
+  @include e(arrow--next) {
+    right: 12px;
+  }
+
+  @include m(vertical) {
+    @include e(arrow) {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    @include e(arrow--prev) {
+      top: 12px;
+      bottom: auto;
+    }
+
+    @include e(arrow--next) {
+      top: auto;
+      right: auto;
+      bottom: 12px;
+    }
+  }
+
+  @include e(indicators) {
+    z-index: 2;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  @include e(indicators--inside) {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    @include when(vertical) {
+      top: 50%;
+      right: 12px;
+      bottom: auto;
+      left: auto;
+      flex-direction: column;
+      transform: translateY(-50%);
+
+      .#{$namespace}-carousel__indicator {
+        width: 4px;
+        height: 18px;
+
+        @include when(active) {
+          width: 4px;
+          height: 28px;
+        }
+      }
+    }
+  }
+
+  @include e(indicators--outside) {
+    margin-top: 12px;
+
+    .#{$namespace}-carousel__indicator {
+      background-color: var(--bili-border-color);
+
+      &:hover {
+        background-color: var(--bili-border-color);
+        opacity: 0.8;
+      }
+
+      @include when(active) {
+        background-color: var(--bili-color-primary);
+      }
+    }
+  }
+
+  @include e(indicator) {
+    display: block;
+    width: 18px;
+    height: 4px;
+    padding: 0;
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.48);
+    border: 0;
+    border-radius: var(--bili-radius-round);
+    transition:
+      width var(--bili-transition-duration) var(--bili-transition-function),
+      height var(--bili-transition-duration) var(--bili-transition-function),
+      background-color var(--bili-transition-duration) var(--bili-transition-function);
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.8);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--bili-color-white);
+      outline-offset: 2px;
+    }
+
+    @include when(active) {
+      width: 28px;
+      background-color: var(--bili-color-white);
+    }
+  }
+}
+
+@include b(carousel-item) {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+
+  @include when(active) {
+    position: relative;
+    z-index: 1;
+    pointer-events: auto;
+  }
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.#{$namespace}-carousel.is-ready .#{$namespace}-carousel-item {
+  transition:
+    transform var(--bili-transition-duration-slow) var(--bili-transition-function-out),
+    opacity var(--bili-transition-duration-slow) var(--bili-transition-function-out);
+}

@@ -50,7 +50,8 @@ export default defineConfig({
             { text: 'Menu 导航菜单', link: '/components/menu' },
             { text: 'Tabs 标签页', link: '/components/tabs' },
             { text: 'Breadcrumb 面包屑', link: '/components/breadcrumb' },
-            { text: 'Dropdown 下拉菜单', link: '/components/dropdown' }
+            { text: 'Dropdown 下拉菜单', link: '/components/dropdown' },
+            { text: 'Anchor 锚点', link: '/components/anchor' }
           ]
         },
         {
@@ -90,6 +91,8 @@ export default defineConfig({
           items: [
             { text: 'Card 卡片', link: '/components/card' },
             { text: 'Chart 图表', link: '/components/chart' },
+            { text: 'Image 图片', link: '/components/image' },
+            { text: 'Carousel 走马灯', link: '/components/carousel' },
             { text: 'Table 表格', link: '/components/table' },
             { text: 'Tree 树形控件', link: '/components/tree' },
             { text: 'Timeline 时间线', link: '/components/timeline' },
@@ -155,9 +158,7 @@ export default defineConfig({
     },
     resolve: {
       alias: {
-        'bili-ui': fileURLToPath(
-          new URL('../../packages/bili-ui/src/index.ts', import.meta.url)
-        )
+        'bili-ui': fileURLToPath(new URL('../../packages/bili-ui/src/index.ts', import.meta.url))
       }
     }
   }

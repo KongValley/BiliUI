@@ -35,6 +35,9 @@ import { BiliColorPicker } from './components/color-picker'
 import { BiliCalendar } from './components/calendar'
 import { BiliTimeline, BiliTimelineItem } from './components/timeline'
 import { BiliStatistic } from './components/statistic'
+import { BiliImage } from './components/image'
+import { BiliCarousel, BiliCarouselItem } from './components/carousel'
+import { BiliAnchor, BiliAnchorLink } from './components/anchor'
 import { BiliForm, BiliFormItem, BiliFormList } from './components/form'
 import { BiliTooltip } from './components/tooltip'
 import { BiliDialog } from './components/dialog'
@@ -52,12 +55,7 @@ import {
   BiliLayoutFooter
 } from './components/layout'
 import { BiliMenu, BiliMenuItem, BiliSubMenu } from './components/menu'
-import {
-  BiliLineChart,
-  BiliBarChart,
-  BiliPieChart,
-  BiliGaugeChart
-} from './components/chart'
+import { BiliLineChart, BiliBarChart, BiliPieChart, BiliGaugeChart } from './components/chart'
 
 export * from './components/button'
 export * from './components/icon'
@@ -96,6 +94,9 @@ export * from './components/color-picker'
 export * from './components/calendar'
 export * from './components/timeline'
 export * from './components/statistic'
+export * from './components/image'
+export * from './components/carousel'
+export * from './components/anchor'
 export * from './components/form'
 export * from './components/tooltip'
 export * from './components/dialog'
@@ -159,6 +160,11 @@ export const components = [
   BiliTimeline,
   BiliTimelineItem,
   BiliStatistic,
+  BiliImage,
+  BiliCarousel,
+  BiliCarouselItem,
+  BiliAnchor,
+  BiliAnchorLink,
   BiliForm,
   BiliFormItem,
   BiliFormList,

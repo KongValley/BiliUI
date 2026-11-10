@@ -4,24 +4,24 @@ Bili UI 是一套基于 **Vue 3 + TypeScript** 的 PC 端组件库，采用 **SC
 
 ## 特性
 
-- **56 个核心组件**：覆盖基础、布局、表单、反馈、数据展示与图表场景
+- **59 个核心组件**：覆盖基础、布局、表单、反馈、数据展示与图表场景
 - **三层设计令牌**：SCSS 原始值 → 语义 CSS 变量 → 组件变量，支持运行时换肤
 - **亮暗双主题**：通过 `html.dark` 切换，所有组件内置暗色语义适配
 - **TypeScript 友好**：Props、Events、Slots 均有类型推导，构建产物附带 `.d.ts`
 - **ESM + CJS**：支持全量安装与具名引入，ESM 产物可摇树
-- **质量保障**：425 个单元测试覆盖核心交互与表单校验
+- **质量保障**：453 个单元测试覆盖核心交互与表单校验
 
 ## 技术栈
 
-| 领域 | 方案 |
-| --- | --- |
+| 领域 | 方案                                        |
+| ---- | ------------------------------------------- |
 | 框架 | Vue 3（Composition API + `<script setup>`） |
-| 语言 | TypeScript |
-| 构建 | Vite Library Mode + vite-plugin-dts |
-| 样式 | Sass + BEM + CSS Variables |
-| 定位 | @floating-ui/dom |
-| 测试 | Vitest + @vue/test-utils + jsdom |
-| 文档 | VitePress |
+| 语言 | TypeScript                                  |
+| 构建 | Vite Library Mode + vite-plugin-dts         |
+| 样式 | Sass + BEM + CSS Variables                  |
+| 定位 | @floating-ui/dom                            |
+| 测试 | Vitest + @vue/test-utils + jsdom            |
+| 文档 | VitePress                                   |
 
 ## 快速开始
 
@@ -75,7 +75,7 @@ document.documentElement.classList.toggle('dark')
 │  ├─ src/utils/              # 安装器、DOM/对象工具
 │  └─ src/styles/             # 设计令牌、暗色主题、BEM mixins
 ├─ docs/                      # VitePress 文档与在线示例
-│  ├─ components/             # 51 篇组件文档
+│  ├─ components/             # 54 篇组件文档
 │  └─ examples/               # 可交互示例源码
 └─ pnpm-workspace.yaml
 ```
@@ -84,13 +84,13 @@ document.documentElement.classList.toggle('dark')
 
 **基础**：Button、Icon（131 个内置图标）、Space、Divider、Tag、CodeBlock（语法高亮/行号/复制）、Avatar（图片/图标/首字母回退）、Badge（数字/圆点/状态点）
 
-**布局**：Layout（Header/Aside/Content/Footer）、Grid（Row/Col 24 栅格 + flex + xxl）、Menu（横向/竖向/折叠）、Tabs（下划线/卡片/分段）、Breadcrumb、Dropdown
+**布局**：Layout（Header/Aside/Content/Footer）、Grid（Row/Col 24 栅格 + flex + xxl）、Menu（横向/竖向/折叠）、Tabs（下划线/卡片/分段）、Breadcrumb、Dropdown、Anchor（滚动监听/嵌套/平滑定位）
 
 **表单**：Input（前后置组合）、InputNumber、Slider、Upload、Checkbox / CheckboxGroup、Radio / RadioGroup、Switch、Select（多选/分组/远程/虚拟滚动）、Cascader（级联）、TreeSelect、ColorPicker（取色器）、Transfer（穿梭框）、Rate（评分）、Form / FormItem / FormList
 
 **反馈**：Tooltip、Popover / Popconfirm、Dialog、Drawer（四向滑出/焦点锁定）、Alert、Message、Notification、Loading（含 `v-loading` 指令）
 
-**数据**：Card、Table（固定列/树形/展开/合计/虚拟滚动）、Tree（展开/复选/过滤）、Timeline（时间线）、Calendar（日历）、Statistic（数值统计）、Pagination、Progress、Skeleton、Empty、Steps、Collapse、Descriptions、Result
+**数据**：Card、Table（固定列/树形/展开/合计/虚拟滚动）、Tree（展开/复选/过滤）、Timeline（时间线）、Calendar（日历）、Statistic（数值统计）、Image（缩放/旋转/多图预览）、Carousel（自动播放/纵向/指示器）、Pagination、Progress、Skeleton、Empty、Steps、Collapse、Descriptions、Result
 
 **图表**：LineChart、BarChart、PieChart、GaugeChart（SVG 自绘，零额外依赖）
 
@@ -107,12 +107,12 @@ document.documentElement.classList.toggle('dark')
 
 ## Roadmap
 
-P0、P2 已完成；P1 除 DatePicker / TimePicker 外已完成；P3 已完成 Cascader、Tree / TreeSelect、Transfer、Rate、ColorPicker、Calendar、Timeline、Statistic。接下来：
+P0、P2 已完成；P1 除 DatePicker / TimePicker 外已完成；P3 已完成 Cascader、Tree / TreeSelect、Transfer、Rate、ColorPicker、Calendar、Timeline、Statistic、Image、Carousel、Anchor。接下来：
 
 - [ ] DatePicker / TimePicker
 - [ ] ConfigProvider 全局配置（尺寸、禁用、国际化）
 - [ ] 按组件粒度拆分样式，支持按需样式引入
-- [ ] 其余 P3 长尾组件（Image 预览、Carousel、Anchor 等）
+- [ ] 其余 P3 长尾组件（BackTop、Affix、Watermark、Tour、QRCode 等）
 - [ ] `changeset` 发布流程与 CI 全量校验
 - [ ] SSR 与 Nuxt 适配验证
 
