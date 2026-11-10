@@ -106,7 +106,7 @@
       color var(--bili-transition-duration-fast) var(--bili-transition-function),
       border-color var(--bili-transition-duration-fast) var(--bili-transition-function);
 
-    &:hover:not(:disabled) {
+    &:hover:not(:disabled):not(.is-selected) {
       background-color: var(--bili-fill-color-light);
     }
 
@@ -125,6 +125,8 @@
       color: var(--bili-color-on-primary);
       background-color: var(--bili-color-primary);
       border-color: var(--bili-color-primary);
+      animation: bili-calendar-day-in var(--bili-transition-duration)
+        var(--bili-transition-function-spring);
     }
 
     &.is-disabled {
@@ -133,5 +135,14 @@
       background-color: transparent;
       opacity: 0.5;
     }
+  }
+}
+
+@keyframes bili-calendar-day-in {
+  from {
+    transform: scale(0.88);
+  }
+  to {
+    transform: scale(1);
   }
 }

@@ -34,7 +34,8 @@
     border-radius: var(--bili-radius-md);
     transition:
       border-color var(--bili-transition-duration) var(--bili-transition-function),
-      background-color var(--bili-transition-duration) var(--bili-transition-function);
+      background-color var(--bili-transition-duration) var(--bili-transition-function),
+      box-shadow var(--bili-transition-duration) var(--bili-transition-function);
 
     &:hover {
       border-color: var(--bili-color-primary);
@@ -43,6 +44,12 @@
     &.is-dragover {
       background-color: var(--bili-color-primary-light);
       border-color: var(--bili-color-primary);
+      box-shadow: 0 0 0 3px var(--bili-color-primary-light);
+    }
+
+    &:hover .#{$namespace}-upload__upload-icon,
+    &.is-dragover .#{$namespace}-upload__upload-icon {
+      transform: translateY(-2px) scale(1.06);
     }
 
     &:focus-visible {
@@ -53,6 +60,7 @@
 
   @include e(upload-icon) {
     color: var(--bili-color-primary);
+    transition: transform var(--bili-transition-duration) var(--bili-transition-function-spring);
   }
 
   @include e(drag-text) {
@@ -96,6 +104,14 @@
     border-radius: var(--bili-radius-base);
     animation: bili-upload-item-in var(--bili-transition-duration)
       var(--bili-transition-function-out);
+    transition:
+      background-color var(--bili-transition-duration-fast) var(--bili-transition-function),
+      border-color var(--bili-transition-duration-fast) var(--bili-transition-function);
+
+    &:hover {
+      background-color: var(--bili-fill-color-light);
+      border-color: var(--bili-border-color);
+    }
   }
 
   @include e(thumb) {
@@ -169,11 +185,13 @@
     border-radius: var(--bili-radius-sm);
     transition:
       color var(--bili-transition-duration-fast) var(--bili-transition-function),
-      background-color var(--bili-transition-duration-fast) var(--bili-transition-function);
+      background-color var(--bili-transition-duration-fast) var(--bili-transition-function),
+      transform var(--bili-transition-duration-fast) var(--bili-transition-function-spring);
 
     &:hover:not(:disabled) {
       color: var(--bili-color-primary);
       background-color: var(--bili-fill-color);
+      transform: scale(1.12);
     }
 
     &:disabled {

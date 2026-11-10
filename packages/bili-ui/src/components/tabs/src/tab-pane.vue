@@ -53,7 +53,7 @@ onBeforeUnmount(() => tabs.unregister(props.name))
     v-show="isActive"
     :id="`${tabs.id.value}-panel-${name}`"
     ref="el"
-    :class="ns.b()"
+    :class="[ns.b(), ns.is('active', isActive)]"
     role="tabpanel"
     :aria-hidden="!isActive"
   >

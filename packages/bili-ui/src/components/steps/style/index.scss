@@ -7,6 +7,21 @@
   @include m(horizontal) {
     flex-direction: row;
     gap: 0;
+
+    // Icon + connector on the first row, title and description underneath.
+    .#{$namespace}-step {
+      flex-direction: column;
+    }
+
+    .#{$namespace}-step__head {
+      flex: none;
+      width: 100%;
+    }
+
+    .#{$namespace}-step__main {
+      max-width: none;
+      padding: 8px 16px 0 0;
+    }
   }
 
   @include m(vertical) {
@@ -18,7 +33,9 @@
     }
 
     .#{$namespace}-step__head {
+      flex: none;
       flex-direction: column;
+      width: var(--bili-step-icon-size);
     }
 
     .#{$namespace}-step__line {
@@ -124,6 +141,8 @@
       background-color: var(--bili-step-active-color);
       border-color: var(--bili-step-active-color);
       box-shadow: 0 0 0 3px var(--bili-color-primary-light);
+      animation: bili-step-icon-in var(--bili-transition-duration)
+        var(--bili-transition-function-spring);
     }
 
     .#{$namespace}-step__title {
@@ -136,6 +155,8 @@
       color: var(--bili-color-white);
       background-color: var(--bili-step-active-color);
       border-color: var(--bili-step-active-color);
+      animation: bili-step-icon-in var(--bili-transition-duration)
+        var(--bili-transition-function-spring);
     }
 
     .#{$namespace}-step__line {
@@ -148,6 +169,8 @@
       color: var(--bili-color-white);
       background-color: var(--bili-step-error-color);
       border-color: var(--bili-step-error-color);
+      animation: bili-step-icon-in var(--bili-transition-duration)
+        var(--bili-transition-function-spring);
     }
 
     .#{$namespace}-step__title {
@@ -188,7 +211,13 @@
 .bili-steps.is-simple {
   .bili-step {
     flex: none;
+    flex-direction: row;
     align-items: center;
+  }
+
+  .bili-step__head {
+    flex: none;
+    width: auto;
   }
 
   .bili-step__main {
@@ -219,5 +248,14 @@
   .bili-step:last-child::after {
     content: '';
     padding: 0;
+  }
+}
+
+@keyframes bili-step-icon-in {
+  from {
+    transform: scale(0.82);
+  }
+  to {
+    transform: scale(1);
   }
 }

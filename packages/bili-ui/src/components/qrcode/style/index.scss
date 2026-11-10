@@ -18,6 +18,8 @@
     display: block;
     width: 100%;
     height: 100%;
+    animation: bili-scale-in var(--bili-transition-duration)
+      var(--bili-transition-function-out) both;
   }
 
   @include e(empty) {
@@ -33,5 +35,6 @@
     background-color: var(--bili-qrcode-empty-bg);
     border: 1px dashed var(--bili-qrcode-empty-border-color);
     border-radius: var(--bili-qrcode-radius);
+    animation: bili-fade-in var(--bili-transition-duration) var(--bili-transition-function-out);
   }
 }

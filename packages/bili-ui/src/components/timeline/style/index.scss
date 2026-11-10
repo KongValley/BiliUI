@@ -54,7 +54,15 @@
     border: var(--bili-timeline-dot-border-width) solid
       var(--bili-timeline-dot-color, var(--bili-color-primary));
     border-radius: 50%;
+    transition:
+      transform var(--bili-transition-duration-fast) var(--bili-transition-function-spring),
+      background-color var(--bili-transition-duration) var(--bili-transition-function),
+      border-color var(--bili-transition-duration) var(--bili-transition-function);
     z-index: 1;
+  }
+
+  &:hover .#{$namespace}-timeline-item__dot {
+    transform: scale(1.15);
   }
 
   @include e(line) {

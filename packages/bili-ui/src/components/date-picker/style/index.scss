@@ -264,7 +264,7 @@
       color var(--bili-transition-duration-fast) var(--bili-transition-function),
       border-color var(--bili-transition-duration-fast) var(--bili-transition-function);
 
-    &:hover:not(:disabled) {
+    &:hover:not(:disabled):not(.is-selected) {
       background-color: var(--bili-fill-color-light);
     }
 
@@ -300,6 +300,8 @@
       color: var(--bili-date-picker-selected-color);
       background-color: var(--bili-date-picker-selected-bg);
       border-color: var(--bili-date-picker-selected-bg);
+      animation: bili-date-picker-day-in var(--bili-transition-duration)
+        var(--bili-transition-function-spring);
     }
 
     &.is-disabled {
@@ -328,6 +330,10 @@
     background: transparent;
     border: 1px solid transparent;
     border-radius: var(--bili-radius-sm);
+    transition:
+      background-color var(--bili-transition-duration-fast) var(--bili-transition-function),
+      color var(--bili-transition-duration-fast) var(--bili-transition-function),
+      border-color var(--bili-transition-duration-fast) var(--bili-transition-function);
 
     &:hover {
       background-color: var(--bili-fill-color-light);
@@ -337,6 +343,8 @@
       font-weight: var(--bili-font-weight-medium);
       color: var(--bili-date-picker-selected-color);
       background-color: var(--bili-date-picker-selected-bg);
+      animation: bili-date-picker-day-in var(--bili-transition-duration)
+        var(--bili-transition-function-spring);
     }
   }
 }
@@ -349,4 +357,13 @@
 .bili-date-picker-fade-enter-from,
 .bili-date-picker-fade-leave-to {
   opacity: 0;
+}
+
+@keyframes bili-date-picker-day-in {
+  from {
+    transform: scale(0.88);
+  }
+  to {
+    transform: scale(1);
+  }
 }

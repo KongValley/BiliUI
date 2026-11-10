@@ -11,6 +11,7 @@
     font-size: var(--bili-font-size-sm);
     line-height: 1.4;
     color: var(--bili-text-secondary);
+    animation: bili-fade-in var(--bili-transition-duration) var(--bili-transition-function-out);
   }
 
   @include e(value-row) {
@@ -18,6 +19,8 @@
     gap: 4px;
     align-items: baseline;
     min-width: 0;
+    animation: bili-rise-in var(--bili-transition-duration-slow)
+      var(--bili-transition-function-out) 40ms both;
   }
 
   @include e(value) {

@@ -45,7 +45,11 @@
     cursor: pointer;
     background: transparent;
     border: 0;
-    transition: color var(--bili-transition-duration) var(--bili-transition-function);
+    transition:
+      color var(--bili-transition-duration) var(--bili-transition-function),
+      background-color var(--bili-transition-duration) var(--bili-transition-function),
+      border-color var(--bili-transition-duration) var(--bili-transition-function),
+      box-shadow var(--bili-transition-duration) var(--bili-transition-function);
 
     &:hover:not(:disabled) {
       color: var(--bili-tabs-hover-color);
@@ -84,11 +88,13 @@
     border-radius: 50%;
     transition:
       color var(--bili-transition-duration-fast) var(--bili-transition-function),
-      background-color var(--bili-transition-duration-fast) var(--bili-transition-function);
+      background-color var(--bili-transition-duration-fast) var(--bili-transition-function),
+      transform var(--bili-transition-duration-fast) var(--bili-transition-function-spring);
 
     &:hover {
       color: var(--bili-text-primary);
       background-color: var(--bili-fill-color);
+      transform: scale(1.12);
     }
   }
 
@@ -242,7 +248,10 @@
 }
 
 @include b(tab-pane) {
-  animation: bili-tabs-pane-in var(--bili-transition-duration) var(--bili-transition-function-out);
+  &.is-active {
+    animation: bili-tabs-pane-in var(--bili-transition-duration)
+      var(--bili-transition-function-out);
+  }
 }
 
 @keyframes bili-tabs-pane-in {

@@ -17,6 +17,8 @@
     align-items: center;
     justify-content: center;
     color: var(--bili-text-placeholder);
+    animation: bili-rise-in var(--bili-transition-duration-slow)
+      var(--bili-transition-function-out) both;
   }
 
   @include e(svg) {
@@ -37,6 +39,8 @@
     font-size: var(--bili-font-size-sm);
     line-height: 1.5;
     color: var(--bili-text-secondary);
+    animation: bili-rise-in var(--bili-transition-duration-slow)
+      var(--bili-transition-function-out) 40ms both;
   }
 
   @include e(footer) {
@@ -45,6 +49,8 @@
     align-items: center;
     justify-content: center;
     margin-top: 2px;
+    animation: bili-rise-in var(--bili-transition-duration-slow)
+      var(--bili-transition-function-out) 80ms both;
   }
 
   @include when(small) {

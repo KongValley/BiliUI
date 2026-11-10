@@ -14,6 +14,8 @@
     background-position: var(--bili-watermark-position, 0 0);
     opacity: var(--bili-watermark-opacity);
     z-index: var(--bili-watermark-z-index, 9);
+    animation: bili-fade-in var(--bili-transition-duration-slow)
+      var(--bili-transition-function-out);
 
     @include when(empty) {
       display: none;

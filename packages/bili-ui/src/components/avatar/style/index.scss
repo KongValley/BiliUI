@@ -22,14 +22,17 @@
     display: block;
     width: 100%;
     height: 100%;
+    animation: bili-fade-in var(--bili-transition-duration) var(--bili-transition-function-out);
   }
 
   @include e(icon) {
     font-size: 1.15em;
+    animation: bili-scale-in var(--bili-transition-duration) var(--bili-transition-function-out);
   }
 
   @include e(text) {
     letter-spacing: 0.01em;
+    animation: bili-fade-in var(--bili-transition-duration) var(--bili-transition-function-out);
   }
 
   @include m(circle) {
