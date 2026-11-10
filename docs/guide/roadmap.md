@@ -1,6 +1,6 @@
 # Bili UI 组件开发计划
 
-> 现状：25 个组件目录 / 28 个对外组件，197 个单测。
+> 现状：42 个组件目录 / 62 个对外组件，361 个单测。
 > 每个组件的完成标准一致：`index.ts` + `src` + `style` + `__tests__` + 文档页 + 示例 + 注册导出 + 全量校验通过。
 
 ## 批次划分
@@ -118,16 +118,16 @@ success / warning / info / error / 403 / 404 / 500 预设插画、标题 + 副�
 
 ---
 
-## P2 · 现有组件能力补强（4 项）
+## P2 · 现有组件能力补强（4 项，已完成 ✅）
 
-### 18. Select
+### 18. Select ✅
 
 - `multiple` 多选 + tags 折叠（`max-tag-count`）+ 全选
 - 选项分组（`OptionGroup`）
 - 远程搜索（`filter-method` / `remote` + loading 态）
 - 虚拟滚动（选项超过 200 条时）
 
-### 19. Table
+### 19. Table ✅
 
 - 固定列（`fixed: 'left' | 'right'`）与固定表头
 - 展开行（`expandable` + `expand` 插槽）
@@ -135,12 +135,12 @@ success / warning / info / error / 403 / 404 / 500 预设插画、标题 + 副�
 - 合计行（`summary-method`）
 - 虚拟滚动（大数据量）
 
-### 20. Input / Form
+### 20. Input / Form ✅
 
 - Input：`prepend` / `append` 组合、`InputNumber` 联动
 - Form：动态增减字段（`FormList`）、`validateFields` 局部校验、跨字段依赖校验、`scrollToError`
 
-### 21. Grid
+### 21. Grid ✅
 
 `flex` 模式（`justify` / `align` + 自动宽度）、`span` 在 flex 下的自适应、断点补全 `xs` / `sm` / `md` / `lg` / `xl` / `xxl`。
 

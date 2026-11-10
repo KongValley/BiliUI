@@ -2,6 +2,7 @@
 import { computed, ref, watch } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
 import BiliIcon from '../../icon/src/icon.vue'
+import { useFormItem } from '../../form/src/types'
 import { inputNumberProps } from './input-number'
 
 defineOptions({ name: 'BiliInputNumber' })
@@ -16,6 +17,7 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('input-number')
+const formItem = useFormItem()
 
 const inputRef = ref<HTMLInputElement | null>(null)
 const draft = ref<string>('')
@@ -53,12 +55,14 @@ const canIncrease = computed(
 const commit = (value: number | undefined) => {
   if (value === undefined || Number.isNaN(value)) {
     emit('update:modelValue', undefined)
+    formItem?.validate('change')
     return
   }
   const next = clampValue(value)
   if (next !== props.modelValue) {
     emit('update:modelValue', next)
     emit('change', next)
+    formItem?.validate('change')
   } else {
     draft.value = String(next)
   }
@@ -95,6 +99,7 @@ const handleBlur = (event: FocusEvent) => {
   commit(parsed === undefined ? undefined : parsed)
   draft.value = displayValue.value
   emit('blur', event)
+  formItem?.validate('blur')
 }
 
 const handleKeydown = (event: KeyboardEvent) => {

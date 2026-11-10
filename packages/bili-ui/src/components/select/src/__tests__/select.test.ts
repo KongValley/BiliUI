@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import Select from '../select.vue'
@@ -84,5 +84,158 @@ describe('BiliSelect', () => {
     await wrapper.find('.bili-select').trigger('click')
     await flushPromises()
     expect(document.body.querySelector('.bili-select__panel')).toBeNull()
+  })
+
+  it('toggles multiple values and keeps the panel open', async () => {
+    const wrapper = mount(Select, {
+      props: { modelValue: [], options, multiple: true },
+      attachTo: document.body
+    })
+
+    await wrapper.find('.bili-select').trigger('click')
+    await flushPromises()
+
+    const items = document.body.querySelectorAll<HTMLElement>('.bili-select__option')
+    items[0].click()
+    await nextTick()
+    expect(wrapper.emitted('update:modelValue')?.[0]?.[0]).toEqual(['apple'])
+    expect(document.body.querySelector('.bili-select__panel')).not.toBeNull()
+
+    await wrapper.setProps({ modelValue: ['apple'] })
+    document.body.querySelectorAll<HTMLElement>('.bili-select__option')[1].click()
+    await nextTick()
+    expect(wrapper.emitted('update:modelValue')?.[1]?.[0]).toEqual(['apple', 'banana'])
+  })
+
+  it('collapses tags beyond maxTagCount', () => {
+    const wrapper = mount(Select, {
+      props: {
+        modelValue: ['apple', 'banana', 'cherry'],
+        options,
+        multiple: true,
+        maxTagCount: 2
+      }
+    })
+
+    const tags = wrapper.findAll('.bili-select__tag')
+    expect(tags).toHaveLength(3)
+    expect(tags[2].classes()).toContain('is-rest')
+    expect(tags[2].text()).toBe('+1')
+  })
+
+  it('selects all enabled options from the panel header', async () => {
+    const wrapper = mount(Select, {
+      props: { modelValue: [], options, multiple: true, selectAll: true },
+      attachTo: document.body
+    })
+
+    await wrapper.find('.bili-select').trigger('click')
+    await flushPromises()
+
+    const checkbox = document.body.querySelector<HTMLInputElement>(
+      '.bili-select__select-all input'
+    )
+    expect(checkbox).not.toBeNull()
+    checkbox!.checked = true
+    checkbox!.dispatchEvent(new Event('change', { bubbles: true }))
+    await nextTick()
+
+    expect(wrapper.emitted('update:modelValue')?.[0]?.[0]).toEqual(['apple', 'banana'])
+  })
+
+  it('renders option groups', async () => {
+    const wrapper = mount(Select, {
+      props: {
+        modelValue: null,
+        options: [
+          {
+            label: '水果',
+            options: [
+              { label: 'Apple', value: 'apple' },
+              { label: 'Banana', value: 'banana' }
+            ]
+          },
+          {
+            label: '蔬菜',
+            options: [{ label: 'Carrot', value: 'carrot' }]
+          }
+        ]
+      },
+      attachTo: document.body
+    })
+
+    await wrapper.find('.bili-select').trigger('click')
+    await flushPromises()
+
+    const labels = Array.from(
+      document.body.querySelectorAll('.bili-select__group-label')
+    ).map(node => node.textContent?.trim())
+    expect(labels).toEqual(['水果', '蔬菜'])
+    expect(document.body.querySelectorAll('.bili-select__option')).toHaveLength(3)
+  })
+
+  it('delegates filtering to a remote method and shows loading', async () => {
+    let resolveRequest: (() => void) | undefined
+    const remoteMethod = vi.fn(
+      () =>
+        new Promise<void>(resolve => {
+          resolveRequest = resolve
+        })
+    )
+
+    const wrapper = mount(Select, {
+      props: {
+        modelValue: null,
+        options: [],
+        filterable: true,
+        remote: true,
+        remoteMethod
+      },
+      attachTo: document.body
+    })
+
+    await wrapper.find('.bili-select').trigger('click')
+    await flushPromises()
+
+    const filter = document.body.querySelector<HTMLInputElement>('.bili-select__filter')
+    filter!.value = 'ap'
+    filter!.dispatchEvent(new Event('input', { bubbles: true }))
+    await nextTick()
+
+    expect(remoteMethod).toHaveBeenCalledWith('ap')
+    expect(document.body.querySelector('.bili-select__loading')).not.toBeNull()
+
+    resolveRequest?.()
+    await flushPromises()
+    expect(document.body.querySelector('.bili-select__loading')).toBeNull()
+  })
+
+  it('virtualizes long option lists and windows them on scroll', async () => {
+    const many = Array.from({ length: 250 }, (_, index) => ({
+      label: `Option ${index}`,
+      value: index
+    }))
+
+    const wrapper = mount(Select, {
+      props: { modelValue: null, options: many },
+      attachTo: document.body
+    })
+
+    await wrapper.find('.bili-select').trigger('click')
+    await flushPromises()
+
+    const list = document.body.querySelector<HTMLElement>('.bili-select__list')
+    expect(list?.classList.contains('is-virtual')).toBe(true)
+
+    const rendered = list!.querySelectorAll('.bili-select__option')
+    expect(rendered.length).toBeGreaterThan(0)
+    expect(rendered.length).toBeLessThan(many.length)
+
+    list!.scrollTop = 1000
+    list!.dispatchEvent(new Event('scroll', { bubbles: true }))
+    await nextTick()
+
+    const first = list!.querySelector<HTMLElement>('.bili-select__option')
+    expect(Number(first?.dataset.index)).toBeGreaterThan(0)
   })
 })

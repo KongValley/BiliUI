@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, provide, toRef } from 'vue'
+import { computed, nextTick, provide, toRef } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
 import { formProps } from './form'
 import {
@@ -36,14 +36,15 @@ provide<FormContext>(formContextKey, {
   labelPosition: toRef(props, 'labelPosition'),
   showMessage: toRef(props, 'showMessage'),
   addField,
-  removeField
+  removeField,
+  notifyFieldChange
 })
 
 type ValidateCallback = (valid: boolean, invalidFields?: Record<string, string>) => void
 
-const validate = async (callback?: ValidateCallback): Promise<boolean> => {
+const runValidation = async (targets: FormItemContext[]) => {
   const results = await Promise.all(
-    fields.map(async field => ({ field, valid: await field.validate() }))
+    targets.map(async field => ({ field, valid: await field.validate() }))
   )
 
   const invalidFields: Record<string, string> = {}
@@ -51,9 +52,27 @@ const validate = async (callback?: ValidateCallback): Promise<boolean> => {
     if (!valid && field.prop) invalidFields[field.prop] = field.getMessage()
   })
 
-  const valid = results.every(item => item.valid)
+  return {
+    valid: results.every(item => item.valid),
+    invalidFields
+  }
+}
+
+const scrollToFirstError = async () => {
+  await nextTick()
+  const field = fields.find(item => !!item.getMessage())
+  const element = field?.getElement()
+  // jsdom and older browsers may not implement scrollIntoView.
+  if (element && typeof element.scrollIntoView === 'function') {
+    element.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }
+}
+
+const validate = async (callback?: ValidateCallback): Promise<boolean> => {
+  const { valid, invalidFields } = await runValidation(fields)
   callback?.(valid, valid ? undefined : invalidFields)
   emit('validate', valid, valid ? undefined : invalidFields)
+  if (!valid && props.scrollToError) void scrollToFirstError()
   return valid
 }
 
@@ -67,9 +86,30 @@ const validateField = async (
     callback?.(true)
     return true
   }
-  const results = await Promise.all(targets.map(field => field.validate()))
-  const valid = results.every(Boolean)
+  const { valid } = await runValidation(targets)
   callback?.(valid)
+  return valid
+}
+
+/**
+ * Validate a subset of fields (or all fields when omitted), reporting the
+ * invalid field messages to the callback.
+ */
+const validateFields = async (
+  propsToValidate?: string | string[],
+  callback?: ValidateCallback
+): Promise<boolean> => {
+  if (propsToValidate === undefined) return validate(callback)
+
+  const keys = Array.isArray(propsToValidate) ? propsToValidate : [propsToValidate]
+  const targets = fields.filter(field => keys.includes(field.prop))
+  if (!targets.length) {
+    callback?.(true)
+    return true
+  }
+
+  const { valid, invalidFields } = await runValidation(targets)
+  callback?.(valid, valid ? undefined : invalidFields)
   return valid
 }
 
@@ -86,7 +126,16 @@ const clearValidate = (propsToClear?: string | string[]) => {
   fields.filter(field => keys.includes(field.prop)).forEach(field => field.clearValidate())
 }
 
-defineExpose({ validate, validateField, resetFields, clearValidate })
+function notifyFieldChange(prop: string) {
+  fields.forEach(field => {
+    if (field.prop === prop) return
+    if (field.getDependencies().includes(prop)) {
+      void field.validate('change', false)
+    }
+  })
+}
+
+defineExpose({ validate, validateField, validateFields, resetFields, clearValidate, scrollToFirstError })
 </script>
 
 <template>

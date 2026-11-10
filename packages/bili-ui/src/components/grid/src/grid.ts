@@ -41,7 +41,16 @@ export const colProps = {
     type: Number,
     default: 0
   },
-  /** `xs` < 576px, `sm` ≥ 576px, `md` ≥ 768px, `lg` ≥ 992px, `xl` ≥ 1200px */
+  /**
+   * Flex layout shorthand. A number sets the flex-grow factor, a string is
+   * applied verbatim, `auto` grows to fill the remaining space and `none`
+   * keeps the content width. When set, `span` no longer fixes the column width.
+   */
+  flex: {
+    type: [Number, String] as PropType<number | string>,
+    default: undefined
+  },
+  /** `xs` < 576px, `sm` ≥ 576px, `md` ≥ 768px, `lg` ≥ 992px, `xl` ≥ 1200px, `xxl` ≥ 1600px */
   xs: {
     type: [Number, Object] as PropType<number | { span?: number; offset?: number }>,
     default: undefined
@@ -59,6 +68,10 @@ export const colProps = {
     default: undefined
   },
   xl: {
+    type: [Number, Object] as PropType<number | { span?: number; offset?: number }>,
+    default: undefined
+  },
+  xxl: {
     type: [Number, Object] as PropType<number | { span?: number; offset?: number }>,
     default: undefined
   }

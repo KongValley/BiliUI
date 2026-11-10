@@ -77,6 +77,25 @@ describe('BiliRow / BiliCol', () => {
     expect(classes).toContain('bili-col--sm-12')
   })
 
+  it('supports the xxl breakpoint', () => {
+    const wrapper = mountCol({ xxl: { span: 6, offset: 2 } })
+    const classes = wrapper.find('.bili-col').classes()
+    expect(classes).toContain('bili-col--xxl-6')
+    expect(classes).toContain('bili-col--xxl-offset-2')
+  })
+
+  it('applies flex styles and drops the fixed span width', () => {
+    const auto = mountCol({ flex: 'auto' })
+    expect(auto.find('.bili-col').attributes('style')).toContain('flex: 1 1 auto')
+    expect(auto.find('.bili-col').classes()).not.toContain('bili-col--24')
+
+    const numeric = mountCol({ flex: 2 })
+    expect(numeric.find('.bili-col').attributes('style')).toContain('flex: 2 2 auto')
+
+    const custom = mountCol({ flex: '0 0 200px' })
+    expect(custom.find('.bili-col').attributes('style')).toContain('flex: 0 0 200px')
+  })
+
   it('toggles the nowrap class', () => {
     const wrapped = mountGrid({ wrap: true })
     expect(wrapped.find('.bili-row').classes()).toContain('is-wrap')

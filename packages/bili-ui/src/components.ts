@@ -26,7 +26,7 @@ import { BiliCheckbox, BiliCheckboxGroup } from './components/checkbox'
 import { BiliRadio, BiliRadioGroup } from './components/radio'
 import { BiliSwitch } from './components/switch'
 import { BiliSelect } from './components/select'
-import { BiliForm, BiliFormItem } from './components/form'
+import { BiliForm, BiliFormItem, BiliFormList } from './components/form'
 import { BiliTooltip } from './components/tooltip'
 import { BiliDialog } from './components/dialog'
 import { BiliDrawer } from './components/drawer'
@@ -133,6 +133,7 @@ export const components = [
   BiliSelect,
   BiliForm,
   BiliFormItem,
+  BiliFormList,
   BiliTooltip,
   BiliDialog,
   BiliDrawer,

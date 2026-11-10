@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { mount } from '@vue/test-utils'
-import { h } from 'vue'
+import { h, nextTick } from 'vue'
 import Table from '../table.vue'
 import type { TableColumn } from '../table'
 
@@ -257,5 +257,143 @@ describe('BiliTable', () => {
     await headers[0].trigger('drop')
 
     expect(wrapper.emitted('column-order-change')).toBeUndefined()
+  })
+
+  it('pins fixed columns and freezes the header with maxHeight', () => {
+    const fixedColumns: TableColumn[] = [
+      { prop: 'name', label: '姓名', fixed: 'left', width: 120 },
+      { prop: 'age', label: '年龄', width: 100 },
+      { prop: 'city', label: '城市', fixed: 'right', width: 110 }
+    ]
+    const wrapper = mount(Table, {
+      props: { columns: fixedColumns, data, maxHeight: 220 }
+    })
+
+    const [nameHeader, , cityHeader] = wrapper.findAll('th')
+    expect(nameHeader.classes()).toContain('is-fixed-left')
+    expect(nameHeader.classes()).toContain('is-fixed-left-last')
+    expect(nameHeader.attributes('style')).toContain('position: sticky')
+    expect(nameHeader.attributes('style')).toContain('left: 0px')
+
+    expect(cityHeader.classes()).toContain('is-fixed-right')
+    expect(cityHeader.classes()).toContain('is-fixed-right-first')
+    expect(cityHeader.attributes('style')).toContain('right: 0px')
+
+    const wrapperStyle = wrapper.find('.bili-table__wrapper').attributes('style')
+    expect(wrapperStyle).toContain('max-height: 220px')
+    expect(wrapperStyle).toContain('overflow-y: auto')
+  })
+
+  it('expands rows through the expand column slot', async () => {
+    const wrapper = mount(Table, {
+      props: { columns, data, rowKey: 'name', expandable: true },
+      slots: {
+        expand: ({ row }: { row: any }) => h('div', { class: 'detail' }, `${row.name} detail`)
+      }
+    })
+
+    expect(wrapper.findAll('.bili-table__expand-toggle')).toHaveLength(2)
+    await wrapper.findAll('.bili-table__expand-toggle')[0].trigger('click')
+
+    expect(wrapper.findAll('.bili-table__expand-row')).toHaveLength(1)
+    expect(wrapper.find('.detail').text()).toBe('Bob detail')
+    expect(wrapper.emitted('update:expandedRowKeys')?.[0]?.[0]).toEqual(['Bob'])
+    expect(wrapper.emitted('expand-row-change')?.[0]?.[1]).toBe(true)
+
+    await wrapper.findAll('.bili-table__expand-toggle')[0].trigger('click')
+    expect(wrapper.findAll('.bili-table__expand-row')).toHaveLength(0)
+  })
+
+  it('flattens tree data and expands child levels', async () => {
+    const treeData = [
+      {
+        id: 1,
+        name: 'A',
+        children: [
+          { id: 11, name: 'A-1' },
+          { id: 12, name: 'A-2', children: [{ id: 121, name: 'A-2-1' }] }
+        ]
+      },
+      { id: 2, name: 'B' }
+    ]
+
+    const wrapper = mount(Table, {
+      props: {
+        columns: [{ prop: 'name', label: '名称' }],
+        data: treeData,
+        rowKey: 'id'
+      }
+    })
+
+    expect(wrapper.findAll('.bili-table__row')).toHaveLength(2)
+    expect(wrapper.text()).not.toContain('A-1')
+
+    await wrapper.find('.bili-table__tree-toggle').trigger('click')
+    expect(wrapper.findAll('.bili-table__row')).toHaveLength(4)
+    expect(wrapper.text()).toContain('A-1')
+    expect(wrapper.emitted('update:expandedKeys')?.[0]?.[0]).toEqual([1])
+
+    // Expanding the nested node adds its only child.
+    const nestedToggle = wrapper.findAll('.bili-table__tree-toggle')[1]
+    await nestedToggle.trigger('click')
+    expect(wrapper.findAll('.bili-table__row')).toHaveLength(5)
+    expect(wrapper.text()).toContain('A-2-1')
+  })
+
+  it('expands every tree node with defaultExpandAll', async () => {
+    const wrapper = mount(Table, {
+      props: {
+        columns: [{ prop: 'name', label: '名称' }],
+        data: [{ id: 1, name: 'A', children: [{ id: 11, name: 'A-1' }] }],
+        rowKey: 'id',
+        defaultExpandAll: true
+      }
+    })
+
+    await nextTick()
+    expect(wrapper.findAll('.bili-table__row')).toHaveLength(2)
+    expect(wrapper.text()).toContain('A-1')
+  })
+
+  it('renders summary rows from summaryMethod or automatically', () => {
+    const custom = mount(Table, {
+      props: {
+        columns: [{ prop: 'name', label: '姓名' }, { prop: 'age', label: '年龄' }],
+        data,
+        showSummary: true,
+        summaryMethod: ({ data: rows }) => [
+          '合计',
+          rows.reduce((total, row) => total + row.age, 0)
+        ]
+      }
+    })
+    expect(custom.find('tfoot').text()).toContain('合计')
+    expect(custom.find('tfoot').text()).toContain('50')
+
+    const automatic = mount(Table, {
+      props: {
+        columns,
+        data,
+        showSummary: true
+      }
+    })
+    expect(automatic.find('tfoot').text()).toContain('合计')
+    expect(automatic.find('tfoot').text()).toContain('50')
+  })
+
+  it('windows large datasets when virtual is enabled', () => {
+    const rows = Array.from({ length: 100 }, (_, index) => ({
+      name: `Row ${index}`,
+      age: index
+    }))
+    const wrapper = mount(Table, {
+      props: { columns, data: rows, virtual: true, maxHeight: 200 }
+    })
+
+    const rendered = wrapper.findAll('.bili-table__row')
+    expect(rendered.length).toBeGreaterThan(0)
+    expect(rendered.length).toBeLessThan(rows.length)
+    expect(wrapper.find('.bili-table__wrapper').attributes('style')).toContain('max-height: 200px')
+    expect(wrapper.findAll('.bili-table__spacer-row').length).toBeGreaterThan(0)
   })
 })

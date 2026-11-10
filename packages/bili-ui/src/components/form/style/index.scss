@@ -69,11 +69,12 @@
 
   @include when(error) {
     .#{$namespace}-form-item__control {
-      .#{$namespace}-input,
-      .#{$namespace}-select {
-        border-color: var(--bili-color-danger);
-        animation: bili-shake var(--bili-transition-duration-slow) var(--bili-transition-function);
-      }
+    .#{$namespace}-input,
+    .#{$namespace}-select,
+    .#{$namespace}-input-number {
+      border-color: var(--bili-color-danger);
+      animation: bili-shake var(--bili-transition-duration-slow) var(--bili-transition-function);
+    }
     }
   }
 }
@@ -86,6 +87,26 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@include b(form-list) {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+
+  @include e(item) {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  @include e(footer) {
+    display: flex;
+    gap: 8px;
+    align-items: center;
   }
 }
 

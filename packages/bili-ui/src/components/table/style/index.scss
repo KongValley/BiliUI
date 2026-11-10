@@ -27,11 +27,30 @@
     transition:
       background-color var(--bili-transition-duration) var(--bili-transition-function),
       color var(--bili-transition-duration) var(--bili-transition-function);
+
+    // Fixed columns share their background with the table surface so the
+    // scrolling cells never show through underneath them.
+    &.is-fixed-left,
+    &.is-fixed-right {
+      position: sticky;
+      z-index: 2;
+      background-color: var(--bili-bg-container);
+    }
+
+    &.is-fixed-left-last {
+      box-shadow: inset -8px 0 8px -8px rgb(0 0 0 / 16%);
+    }
+
+    &.is-fixed-right-first {
+      box-shadow: inset 8px 0 8px -8px rgb(0 0 0 / 16%);
+    }
   }
 
   @include e(head) {
     .#{$namespace}-table__cell {
-      position: relative;
+      position: sticky;
+      top: 0;
+      z-index: 3;
       font-size: var(--bili-font-size-sm);
       font-weight: var(--bili-font-weight-medium);
       color: var(--bili-text-secondary);
@@ -40,6 +59,12 @@
       transition:
         background-color var(--bili-transition-duration) var(--bili-transition-function),
         color var(--bili-transition-duration) var(--bili-transition-function);
+
+      &.is-fixed-left,
+      &.is-fixed-right {
+        z-index: 4;
+        background-color: var(--bili-bg-muted);
+      }
 
       &.is-sortable {
         cursor: pointer;
@@ -191,6 +216,94 @@
 
     .#{$namespace}-checkbox {
       vertical-align: middle;
+    }
+  }
+
+  @include e(expand-cell) {
+    width: 40px;
+    padding: 0 6px;
+    text-align: center;
+    cursor: default;
+  }
+
+  &__expand-toggle,
+  &__tree-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    color: var(--bili-text-secondary);
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    border-radius: var(--bili-radius-sm);
+    transition:
+      color var(--bili-transition-duration) var(--bili-transition-function),
+      background-color var(--bili-transition-duration) var(--bili-transition-function);
+
+    &:hover {
+      color: var(--bili-text-primary);
+      background-color: var(--bili-fill-color);
+    }
+  }
+
+  &__tree-toggle {
+    margin-right: 4px;
+  }
+
+  &__expand-icon,
+  &__tree-icon {
+    font-size: 12px;
+    transition: transform var(--bili-transition-duration) var(--bili-transition-function-spring);
+
+    &.is-expanded {
+      transform: rotate(90deg);
+    }
+  }
+
+  @include e(cell-content) {
+    display: inline-flex;
+    align-items: center;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  @include e(expand-row) {
+    .#{$namespace}-table__cell {
+      padding: 0;
+      background-color: var(--bili-fill-color-lighter);
+    }
+  }
+
+  @include e(expand-content) {
+    padding: 12px 16px;
+    animation: bili-error-in var(--bili-transition-duration) var(--bili-transition-function-out);
+  }
+
+  @include e(spacer-row) {
+    .#{$namespace}-table__cell,
+    td {
+      padding: 0;
+      border: 0;
+    }
+  }
+
+  @include e(summary-row) {
+    .#{$namespace}-table__cell {
+      position: sticky;
+      bottom: 0;
+      z-index: 2;
+      font-weight: var(--bili-font-weight-medium);
+      color: var(--bili-text-primary);
+      background-color: var(--bili-bg-muted);
+      border-top: 1px solid var(--bili-border-color-light);
+    }
+
+    .#{$namespace}-table__cell.is-fixed-left,
+    .#{$namespace}-table__cell.is-fixed-right {
+      z-index: 3;
     }
   }
 

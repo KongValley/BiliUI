@@ -7,6 +7,7 @@ import { formItemProps } from './form-item'
 import {
   formItemContextKey,
   useFormContext,
+  useFormListContext,
   type FormItemContext,
   type FormItemRule
 } from './types'
@@ -22,19 +23,30 @@ const emit = defineEmits<{
 
 const ns = useNamespace('form-item')
 const form = useFormContext()
+const list = useFormListContext()
 
 const validateState = ref<'success' | 'error' | 'validating' | ''>('')
 const validateMessage = ref('')
+const rootRef = ref<HTMLElement | null>(null)
 let initialValue: any = undefined
+
+/** Field path prefixed by any enclosing `FormList` item. */
+const fieldProp = computed(() => {
+  if (!props.prop) return ''
+  const prefix = list?.prefix.value
+  return prefix ? `${prefix}.${props.prop}` : props.prop
+})
 
 const labelPosition = computed(() => form?.labelPosition.value ?? 'right')
 const fieldValue = computed(() =>
-  form && props.prop ? getProp(form.model.value, props.prop) : undefined
+  form && fieldProp.value ? getProp(form.model.value, fieldProp.value) : undefined
 )
 
 const mergedRules = computed<FormItemRule[]>(() => {
   const own = props.rules ? (Array.isArray(props.rules) ? props.rules : [props.rules]) : []
-  const formRules = props.prop ? form?.rules.value?.[props.prop] : undefined
+  const formRules = fieldProp.value
+    ? (form?.rules.value?.[fieldProp.value] ?? form?.rules.value?.[props.prop])
+    : undefined
   const fromForm = formRules ? (Array.isArray(formRules) ? formRules : [formRules]) : []
   const result = [...own, ...fromForm]
   if (props.required && !result.some(rule => rule.required)) {
@@ -68,8 +80,12 @@ const getTriggerRules = (trigger?: 'blur' | 'change'): FormItemRule[] => {
   })
 }
 
-const validate = async (trigger?: 'blur' | 'change'): Promise<boolean> => {
-  if (!props.prop || !form) return true
+const validate = async (trigger?: 'blur' | 'change', propagate = true): Promise<boolean> => {
+  if (!fieldProp.value || !form) return true
+
+  // Notify dependants even when this field has no rules of its own.
+  if (propagate && trigger === 'change') form.notifyFieldChange(fieldProp.value)
+
   const rules = getTriggerRules(trigger)
   if (!rules.length) return true
 
@@ -96,26 +112,42 @@ const clearValidate = () => {
 }
 
 const resetField = () => {
-  if (!props.prop || !form) return
-  setProp(form.model.value, props.prop, cloneDeep(initialValue))
+  if (!fieldProp.value || !form) return
+  setProp(form.model.value, fieldProp.value, cloneDeep(initialValue))
   clearValidate()
+}
+
+const getDependencies = (): string[] => {
+  const prefix = list?.prefix.value
+  const dependencies = mergedRules.value
+    .flatMap(rule => rule.dependencies ?? [])
+    // Inside a FormList a bare dependency name refers to a sibling field.
+    .map(dependency => {
+      if (!prefix || dependency === prefix || dependency.startsWith(`${prefix}.`)) {
+        return dependency
+      }
+      return `${prefix}.${dependency}`
+    })
+  return [...new Set(dependencies)]
 }
 
 const context: FormItemContext = {
   get prop() {
-    return props.prop
+    return fieldProp.value
   },
   validate,
   resetField,
   clearValidate,
-  getMessage: () => validateMessage.value
+  getMessage: () => validateMessage.value,
+  getDependencies,
+  getElement: () => rootRef.value ?? undefined
 }
 
 provide(formItemContextKey, context)
 
 onMounted(() => {
   initialValue = cloneDeep(fieldValue.value)
-  if (props.prop) form?.addField(context)
+  if (fieldProp.value) form?.addField(context)
 })
 
 onBeforeUnmount(() => {
@@ -127,6 +159,7 @@ defineExpose({ validate, resetField, clearValidate, validateMessage })
 
 <template>
   <div
+    ref="rootRef"
     :class="[
       ns.b(),
       ns.m(labelPosition),

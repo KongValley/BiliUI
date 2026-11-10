@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { mount } from '@vue/test-utils'
+import { h } from 'vue'
 import Input from '../input.vue'
 
 describe('BiliInput', () => {
@@ -45,5 +46,29 @@ describe('BiliInput', () => {
       props: { modelValue: 'hello', clearable: true, disabled: true }
     })
     expect(wrapper.find('button[aria-label="清空"]').exists()).toBe(false)
+  })
+
+  it('renders prepend and append addons around the field', () => {
+    const wrapper = mount(Input, {
+      props: { modelValue: '100' },
+      slots: {
+        prepend: () => h('span', { class: 'addon-text' }, 'https://'),
+        append: () => h('span', { class: 'addon-text' }, '.com')
+      }
+    })
+
+    expect(wrapper.classes()).toContain('is-group')
+    expect(wrapper.find('.bili-input__prepend').text()).toBe('https://')
+    expect(wrapper.find('.bili-input__append').text()).toBe('.com')
+    // The actual control stays between the addons.
+    const wrap = wrapper.find('.bili-input__wrap')
+    expect(wrap.find('input').exists()).toBe(true)
+  })
+
+  it('keeps the plain shell without addons', () => {
+    const wrapper = mount(Input, { props: { modelValue: 'abc' } })
+    expect(wrapper.classes()).not.toContain('is-group')
+    expect(wrapper.find('.bili-input__prepend').exists()).toBe(false)
+    expect(wrapper.find('.bili-input__append').exists()).toBe(false)
   })
 })

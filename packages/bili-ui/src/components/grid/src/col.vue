@@ -13,7 +13,7 @@ const row = inject(rowContextKey, null)
 
 type ResponsiveValue = number | { span?: number; offset?: number } | undefined
 
-const breakpoints = ['xs', 'sm', 'md', 'lg', 'xl'] as const
+const breakpoints = ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'] as const
 
 // Screen size classes are generated in SCSS: `bili-col--md-12`, `bili-col--md-offset-4`.
 const responsiveClasses = computed(() => {
@@ -29,9 +29,25 @@ const responsiveClasses = computed(() => {
   return classes
 })
 
+/**
+ * `flex` overrides the fixed 24-column width so columns can share the
+ * remaining space according to their content.
+ */
+const flexStyle = computed<CSSProperties>(() => {
+  const value = props.flex
+  if (value === undefined) return {}
+  if (typeof value === 'number') return { flex: `${value} ${value} auto` }
+  if (value === 'auto') return { flex: '1 1 auto' }
+  if (value === 'none') return { flex: '0 0 auto' }
+  return { flex: value }
+})
+
+const spanClass = computed(() => (props.flex === undefined ? ns.m(`${props.span}`) : undefined))
+
 const style = computed<CSSProperties>(() => {
   const [horizontal] = row ? row.gutter() : [0, 0]
   return {
+    ...flexStyle.value,
     // Each column pads half the gutter; the row pulls the edges back.
     paddingLeft: horizontal ? `${horizontal / 2}px` : undefined,
     paddingRight: horizontal ? `${horizontal / 2}px` : undefined,
@@ -43,7 +59,7 @@ const style = computed<CSSProperties>(() => {
 </script>
 
 <template>
-  <div :class="[ns.b(), ns.m(`${span}`), ...responsiveClasses]" :style="style">
+  <div :class="[ns.b(), spanClass, ...responsiveClasses]" :style="style">
     <slot />
   </div>
 </template>

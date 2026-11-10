@@ -21,5 +21,10 @@ export const formProps = {
   showMessage: {
     type: Boolean,
     default: true
+  },
+  /** Scroll the first invalid field into view after a failed `validate()`. */
+  scrollToError: {
+    type: Boolean,
+    default: false
   }
 } as const

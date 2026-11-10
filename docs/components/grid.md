@@ -11,6 +11,8 @@ import DemoBasic from '../examples/grid/basic.vue'
 import basicCode from '../examples/grid/basic.vue?raw'
 import DemoGutter from '../examples/grid/gutter.vue'
 import gutterCode from '../examples/grid/gutter.vue?raw'
+import DemoFlex from '../examples/grid/flex.vue'
+import flexCode from '../examples/grid/flex.vue?raw'
 import DemoResponsive from '../examples/grid/responsive.vue'
 import responsiveCode from '../examples/grid/responsive.vue?raw'
 </script>
@@ -31,9 +33,17 @@ import responsiveCode from '../examples/grid/responsive.vue?raw'
   <DemoGutter />
 </DemoBlock>
 
+## Flex 布局
+
+给 `Col` 设置 `flex` 后列宽改由 flex 分配，不再受 `span` 的固定宽度约束：数字表示放大比例，字符串按原样写入 `flex`，`auto` 自适应内容，`none` 保持内容宽度。适合「侧栏固定 + 主区自适应」等布局。
+
+<DemoBlock :code="flexCode">
+  <DemoFlex />
+</DemoBlock>
+
 ## 响应式
 
-五个断点对应不同屏幕宽度，可传数字或 `{ span, offset }` 对象。未命中断点时继承上一级设置。
+六个断点对应不同屏幕宽度，可传数字或 `{ span, offset }` 对象。未命中断点时继承上一级设置。
 
 | 断点 | 触发宽度 | 说明 |
 | --- | --- | --- |
@@ -42,6 +52,7 @@ import responsiveCode from '../examples/grid/responsive.vue?raw'
 | `md` | ≥ 768px | 平板 |
 | `lg` | ≥ 992px | 桌面 |
 | `xl` | ≥ 1200px | 宽屏桌面 |
+| `xxl` | ≥ 1600px | 超宽屏 |
 
 <DemoBlock :code="responsiveCode">
   <DemoResponsive />
@@ -68,7 +79,8 @@ import responsiveCode from '../examples/grid/responsive.vue?raw'
 | `offset` | 向右偏移栏数 | `number` | `0` |
 | `push` | 向右位移栏数 | `number` | `0` |
 | `pull` | 向左位移栏数 | `number` | `0` |
-| `xs` / `sm` / `md` / `lg` / `xl` | 响应式栏数与偏移 | `number \| { span?, offset? }` | — |
+| `flex` | flex 布局简写，设置后忽略 `span` 的固定宽度 | `number \| string` | — |
+| `xs` / `sm` / `md` / `lg` / `xl` / `xxl` | 响应式栏数与偏移 | `number \| { span?, offset? }` | — |
 
 ### Slots
 
@@ -82,3 +94,4 @@ import responsiveCode from '../examples/grid/responsive.vue?raw'
 - `gutter` 通过「行负边距 + 列内边距」实现，因此列内容不要额外依赖自身 `padding`。
 - 响应式类名为 `bili-col--<断点>-<栏数>` 与 `bili-col--<断点>-offset-<栏数>`，可直接在业务样式中覆盖。
 - `span` 为 0 时该列不显示，可用于条件隐藏。
+- 设置 `flex` 后不再生成 `bili-col--<span>` 类，列宽完全由 flex 决定；需要固定像素宽度时用 `flex="0 0 200px"`。

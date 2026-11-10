@@ -4,7 +4,7 @@ title: Table 表格
 
 # Table 表格
 
-用于展示结构化数据，支持列配置、排序、斑马纹、边框、加载态与自定义单元格，并支持**表头拖拽换列**、**拖拽调整列宽**与**多列排序**。
+用于展示结构化数据，支持列配置、排序、斑马纹、边框、加载态与自定义单元格，并支持**固定列 / 固定表头**、**展开行**、**树形数据**、**合计行**、**虚拟滚动**、表头拖拽换列、拖拽调整列宽与多列排序。
 
 <script setup>
 import DemoBasic from '../examples/table/basic.vue'
@@ -19,12 +19,30 @@ import DemoSelection from '../examples/table/selection.vue'
 import selectionCode from '../examples/table/selection.vue?raw'
 import DemoSelectionAdvanced from '../examples/table/selection-advanced.vue'
 import selectionAdvancedCode from '../examples/table/selection-advanced.vue?raw'
+import DemoFixed from '../examples/table/fixed.vue'
+import fixedCode from '../examples/table/fixed.vue?raw'
+import DemoExpand from '../examples/table/expand.vue'
+import expandCode from '../examples/table/expand.vue?raw'
+import DemoTree from '../examples/table/tree.vue'
+import treeCode from '../examples/table/tree.vue?raw'
+import DemoSummary from '../examples/table/summary.vue'
+import summaryCode from '../examples/table/summary.vue?raw'
+import DemoVirtual from '../examples/table/virtual.vue'
+import virtualCode from '../examples/table/virtual.vue?raw'
 </script>
 
 ## 基础用法
 
 <DemoBlock :code="basicCode">
   <DemoBasic />
+</DemoBlock>
+
+## 固定列与固定表头
+
+给列配置 `fixed: 'left' | 'right'` 可将列固定在左右两侧，横向滚动时保持可见；配合 `max-height` 开启纵向滚动，表头会自动吸顶。固定列建议显式设置 `width`，未设置时按 120px 参与定位计算。
+
+<DemoBlock :code="fixedCode">
+  <DemoFixed />
 </DemoBlock>
 
 ## 表头拖拽
@@ -71,6 +89,38 @@ import selectionAdvancedCode from '../examples/table/selection-advanced.vue?raw'
   <DemoSelectionAdvanced />
 </DemoBlock>
 
+## 展开行
+
+开启 `expandable` 后每行前会多出展开按钮，通过 `expand` 插槽渲染详情内容。使用 `v-model:expanded-row-keys` 控制展开项，`row-expandable` 可限制哪些行允许展开，`default-expand-all` 在挂载时展开全部。
+
+<DemoBlock :code="expandCode">
+  <DemoExpand />
+</DemoBlock>
+
+## 树形数据
+
+数据项包含子数组（默认字段 `children`）时自动进入树形模式，配合 `row-key` 稳定标识节点。`tree-props` 可改字段名，`indent-size` 控制每级缩进；`v-model:expanded-keys` 控制展开节点，`default-expand-all` 展开全部。若 `tree-props.has-children` 指定的字段为 `true`，即使没有子数组也会显示展开按钮，便于按需加载。
+
+<DemoBlock :code="treeCode">
+  <DemoTree />
+</DemoBlock>
+
+## 合计行
+
+开启 `show-summary` 显示表脚。默认对数值列自动求和并在首列显示 `summary-text`；传入 `summary-method` 可完全自定义，返回数组与 `columns` 顺序一一对应。
+
+<DemoBlock :code="summaryCode">
+  <DemoSummary />
+</DemoBlock>
+
+## 虚拟滚动
+
+大数据量时开启 `virtual` 并配合 `max-height`，只渲染可视区域附近的行。`virtual-row-height` 需与真实行高保持一致，否则滚动位置会出现偏差。虚拟滚动与树形数据、展开行互斥。
+
+<DemoBlock :code="virtualCode">
+  <DemoVirtual />
+</DemoBlock>
+
 ## API
 
 ### Props
@@ -85,6 +135,7 @@ import selectionAdvancedCode from '../examples/table/selection-advanced.vue?raw'
 | `loading` | 是否加载中 | `boolean` | `false` |
 | `empty-text` | 空数据文案 | `string` | `'暂无数据'` |
 | `row-key` | 行唯一键，字段名或取值函数 | `string \| ((row) => string \| number)` | — |
+| `max-height` | 纵向滚动高度，开启后表头吸顶 | `string \| number` | — |
 | `draggable-columns` | 是否允许拖动表头调整列顺序 | `boolean` | `false` |
 | `resizable-columns` | 是否允许拖动表头边界调整列宽 | `boolean` | `true` |
 | `resize-sensitivity` | 每拖动 1px 对应的列宽变化 | `number` | `1` |
@@ -95,6 +146,19 @@ import selectionAdvancedCode from '../examples/table/selection-advanced.vue?raw'
 | `selectable` | 判断某行是否可勾选 | `(row, index) => boolean` | — |
 | `select-on-click-row` | 是否允许点击整行切换选中 | `boolean` | `false` |
 | `selection-width` | 勾选列宽度（px） | `number` | `48` |
+| `expandable` | 是否显示展开列 | `boolean` | `false` |
+| `expanded-row-keys` | 展开的详情行 key，配合 `v-model:expanded-row-keys` | `Array<string \| number>` | — |
+| `expanded-keys` | 展开的树节点 key，配合 `v-model:expanded-keys` | `Array<string \| number>` | — |
+| `default-expand-all` | 挂载时展开全部树节点与详情行 | `boolean` | `false` |
+| `row-expandable` | 判断某行是否可展示详情 | `(row, index) => boolean` | — |
+| `expand-width` | 展开列宽度（px） | `number` | `40` |
+| `tree-props` | 树形字段映射 | `{ children?: string; hasChildren?: string }` | `{ children: 'children' }` |
+| `indent-size` | 树形每级缩进（px） | `number` | `16` |
+| `show-summary` | 是否显示合计行 | `boolean` | `false` |
+| `summary-method` | 自定义合计行内容 | `({ columns, data }) => Array<string \| number>` | — |
+| `summary-text` | 默认合计行首列文案 | `string` | `'合计'` |
+| `virtual` | 是否开启虚拟滚动 | `boolean` | `false` |
+| `virtual-row-height` | 虚拟滚动假定的行高（px） | `number` | `44` |
 
 ### Events
 
@@ -107,6 +171,10 @@ import selectionAdvancedCode from '../examples/table/selection-advanced.vue?raw'
 | `selection-change` | 选中项变化 | `{ keys, rows, row? }` |
 | `select` | 单行选中状态变化 | `{ keys, rows, row }` |
 | `select-all` | 表头全选 / 取消全选 | `{ keys, rows }` |
+| `update:expandedRowKeys` | 详情展开项变化（`v-model:expanded-row-keys`） | `(keys: Array<string \| number>)` |
+| `update:expandedKeys` | 树节点展开项变化（`v-model:expanded-keys`） | `(keys: Array<string \| number>)` |
+| `expand-row-change` | 详情行展开 / 收起 | `(row, expanded)` |
+| `expand-change` | 树节点展开 / 收起 | `(row, expanded)` |
 
 ### Slots
 
@@ -114,7 +182,17 @@ import selectionAdvancedCode from '../examples/table/selection-advanced.vue?raw'
 | --- | --- |
 | `cell-<prop>` | 自定义某一列单元格，作用域参数 `{ row, column, value, index }` |
 | `header-<prop>` | 自定义某一列表头，作用域参数 `{ column }` |
+| `expand` | 展开行内容，作用域参数 `{ row, index }` |
 | `empty` | 空状态内容 |
+
+### Exposes
+
+| 方法 | 说明 |
+| --- | --- |
+| `clearSelection()` | 清空勾选 |
+| `toggleAllSelection(checked?)` | 全选 / 取消全选 |
+| `selectedRows` | 当前选中的行数据 |
+| `toggleRowExpansion(row, expanded?)` | 展开 / 收起指定详情行 |
 
 ### TableColumn
 
@@ -124,6 +202,7 @@ import selectionAdvancedCode from '../examples/table/selection-advanced.vue?raw'
 | `label` | 表头文本 | `string` |
 | `width` | 列宽 | `string \| number` |
 | `minWidth` | 最小列宽 | `string \| number` |
+| `fixed` | 固定列方向 | `'left' \| 'right'` |
 | `align` | 对齐方式 | `'left' \| 'center' \| 'right'` |
 | `sortable` | 是否可排序 | `boolean` |
 | `sortMethod` | 自定义比较函数，返回负数/0/正数 | `(a, b) => number` |
@@ -136,9 +215,10 @@ import selectionAdvancedCode from '../examples/table/selection-advanced.vue?raw'
 
 - **勾选**通过 `row-key` 建立行身份，排序或列拖拽改变位置后选中状态依然保持；未传 `row-key` 时回退到行索引，排序后可能错位，建议始终提供。
 - 全选只会选中当前 `data` 中通过 `selectable` 校验的行；已有但不在当前数据中的 key 会被保留（便于跨页多选）。
-- 组件实例暴露 `clearSelection()`、`toggleAllSelection()` 与 `selectedRows`，可用于工具栏操作。
 - **列拖拽**与**列宽拖拽**互不干扰：拖动表头主体换顺序，拖动表头右边界改宽度；拖拽过程中点击不会触发排序。
 - 列宽调整只影响视觉宽度，不修改 `columns` 配置；如需持久化，请监听 `column-resize` 并在下次渲染时通过 `width` 传回。
 - `column-order-change` 返回的 key 顺序可直接保存，下次渲染时按该顺序排列 `columns` 即可恢复。
 - 多列排序时，先点击的列优先级更高；取消某一列不会改变其他列的优先级顺序。
-- 当前版本提供客户端排序与横向滚动，固定列、虚拟滚动与树形数据在后续版本规划中。
+- 树形数据同样参与排序：先对每一层级排序，再按展开状态拍平渲染。
+- `max-height` 同时启用固定表头与表尾（合计行），表头、合计行在纵向滚动时保持可见。
+- 虚拟滚动只渲染可视窗口附近的行，适合上千条数据；开启后不要同时使用树形数据或展开行。

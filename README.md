@@ -4,12 +4,12 @@ Bili UI 是一套基于 **Vue 3 + TypeScript** 的 PC 端组件库，采用 **SC
 
 ## 特性
 
-- **45 个核心组件**：覆盖基础、布局、表单、反馈、数据展示与图表场景
+- **46 个核心组件**：覆盖基础、布局、表单、反馈、数据展示与图表场景
 - **三层设计令牌**：SCSS 原始值 → 语义 CSS 变量 → 组件变量，支持运行时换肤
 - **亮暗双主题**：通过 `html.dark` 切换，所有组件内置暗色语义适配
 - **TypeScript 友好**：Props、Events、Slots 均有类型推导，构建产物附带 `.d.ts`
 - **ESM + CJS**：支持全量安装与具名引入，ESM 产物可摇树
-- **质量保障**：53 个单元测试覆盖核心交互与表单校验
+- **质量保障**：361 个单元测试覆盖核心交互与表单校验
 
 ## 技术栈
 
@@ -84,13 +84,13 @@ document.documentElement.classList.toggle('dark')
 
 **基础**：Button、Icon（131 个内置图标）、Space、Divider、Tag、CodeBlock（语法高亮/行号/复制）、Avatar（图片/图标/首字母回退）、Badge（数字/圆点/状态点）
 
-**布局**：Layout（Header/Aside/Content/Footer）、Grid（Row/Col 24 栅格）、Menu（横向/竖向/折叠）、Tabs（下划线/卡片/分段）、Breadcrumb、Dropdown
+**布局**：Layout（Header/Aside/Content/Footer）、Grid（Row/Col 24 栅格 + flex + xxl）、Menu（横向/竖向/折叠）、Tabs（下划线/卡片/分段）、Breadcrumb、Dropdown
 
-**表单**：Input、InputNumber、Slider、Upload、Checkbox / CheckboxGroup、Radio / RadioGroup、Switch、Select、Form / FormItem
+**表单**：Input（前后置组合）、InputNumber、Slider、Upload、Checkbox / CheckboxGroup、Radio / RadioGroup、Switch、Select（多选/分组/远程/虚拟滚动）、Form / FormItem / FormList
 
 **反馈**：Tooltip、Popover / Popconfirm、Dialog、Drawer（四向滑出/焦点锁定）、Alert、Message、Notification、Loading（含 `v-loading` 指令）
 
-**数据**：Card、Table、Pagination、Progress、Skeleton、Empty、Steps、Collapse、Descriptions、Result
+**数据**：Card、Table（固定列/树形/展开/合计/虚拟滚动）、Pagination、Progress、Skeleton、Empty、Steps、Collapse、Descriptions、Result
 
 **图表**：LineChart、BarChart、PieChart、GaugeChart（SVG 自绘，零额外依赖）
 
@@ -109,8 +109,7 @@ document.documentElement.classList.toggle('dark')
 
 - [ ] ConfigProvider 全局配置（尺寸、禁用、国际化）
 - [ ] 按组件粒度拆分样式，支持按需样式引入
-- [ ] DatePicker、Dropdown、Menu、Upload、Cascader、Tree
-- [ ] Table 固定列、虚拟滚动与树形数据
+- [ ] DatePicker、TimePicker、Cascader、Tree、TreeSelect
 - [ ] SSR 与 Nuxt 适配验证
 
 ## License

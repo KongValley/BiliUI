@@ -11,6 +11,8 @@ import DemoBasic from '../examples/input/basic.vue'
 import basicCode from '../examples/input/basic.vue?raw'
 import DemoTextarea from '../examples/input/textarea.vue'
 import textareaCode from '../examples/input/textarea.vue?raw'
+import DemoAddon from '../examples/input/addon.vue'
+import addonCode from '../examples/input/addon.vue?raw'
 </script>
 
 ## 基础用法
@@ -25,6 +27,14 @@ import textareaCode from '../examples/input/textarea.vue?raw'
 
 <DemoBlock :code="textareaCode">
   <DemoTextarea />
+</DemoBlock>
+
+## 前后置组合
+
+`prepend` / `append` 插槽在输入框两侧渲染独立区块，适合网址、货币、单位等组合输入。与 `prefix` / `suffix` 不同，前后置块位于输入框边框内部的两端，并与输入区共享同一套边框与圆角。
+
+<DemoBlock :code="addonCode">
+  <DemoAddon />
 </DemoBlock>
 
 ## API
@@ -64,6 +74,8 @@ import textareaCode from '../examples/input/textarea.vue?raw'
 | --- | --- |
 | `prefix` | 输入框头部内容 |
 | `suffix` | 输入框尾部内容 |
+| `prepend` | 输入框左侧前置区块 |
+| `append` | 输入框右侧后置区块 |
 
 ### Exposes
 

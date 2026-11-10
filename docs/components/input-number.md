@@ -51,3 +51,4 @@ import sliderCode from '../examples/slider/basic.vue?raw'
 - 步进按钮在到达 `min` / `max` 时自动禁用。
 - 支持 `↑` / `↓` 方向键调整，`Enter` 提交并失焦。
 - 清空输入会 emit `undefined`，便于与后端「未填写」语义对齐。
+- 放在 `FormItem` 中时会像 `Input` 一样在值变化 / 失焦时触发校验，错误态会显示在表单上。
