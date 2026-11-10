@@ -14,15 +14,22 @@ withDefaults(
   { items: () => [] }
 )
 
+const emit = defineEmits<{
+  'item-enter': [index: number]
+  'item-leave': [index: number]
+}>()
+
 const ns = useNamespace('chart-legend')
 </script>
 
 <template>
   <ul v-if="items.length" :class="ns.b()">
     <li
-      v-for="item in items"
+      v-for="(item, index) in items"
       :key="item.name"
       :class="[ns.e('item'), ns.is('muted', item.muted)]"
+      @mouseenter="emit('item-enter', index)"
+      @mouseleave="emit('item-leave', index)"
     >
       <span :class="ns.e('dot')" :style="{ backgroundColor: item.color }" />
       <span :class="ns.e('text')">{{ item.name }}</span>

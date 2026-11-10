@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
+import { useId } from '../../../hooks/use-id'
 import { barChartProps } from './chart'
 import {
+  barPath,
   buildTicks,
   clamp,
   defaultNumberFormat,
@@ -24,6 +26,7 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('chart')
+const chartId = useId('bili-bar')
 const rootRef = ref<HTMLElement | null>(null)
 const { width } = useChartSize(rootRef)
 
@@ -35,10 +38,10 @@ const formatter = computed(() => props.valueFormatter ?? defaultNumberFormat)
 
 const padding = computed(() =>
   props.horizontal
-    ? { top: 16, right: 24, bottom: 30, left: 84 }
-    : { top: 16, right: 20, bottom: 30, left: 48 }
+    ? { top: 16, right: 26, bottom: 30, left: 84 }
+    : { top: 16, right: 20, bottom: 30, left: 46 }
 )
-const legendHeight = computed(() => (props.showLegend && props.series.length > 1 ? 28 : 0))
+const legendHeight = computed(() => (props.showLegend && props.series.length > 1 ? 30 : 0))
 const plotWidth = computed(() =>
   Math.max(0, width.value - padding.value.left - padding.value.right)
 )
@@ -63,7 +66,6 @@ const groupCount = computed(() => Math.max(1, stackGroups.value.length))
 
 const values = computed(() => {
   if (props.stacked) {
-    // Stack totals decide the axis range; individual values do not.
     return props.categories.map((_, categoryIndex) =>
       stackGroups.value.reduce((total, group) => {
         const sum = group.reduce((acc, seriesIndex) => {
@@ -91,19 +93,19 @@ const valueRatio = (value: number): number => {
   return high === low ? 0 : clamp((value - low) / (high - low), 0, 1)
 }
 
-// Category band, then sub-bands for each stack group.
 const bandSize = computed(() =>
   (props.horizontal ? plotHeight.value : plotWidth.value) / Math.max(1, props.categories.length)
 )
-const groupSize = computed(() => (bandSize.value * 0.68) / groupCount.value)
+const groupSize = computed(() => (bandSize.value * 0.66) / groupCount.value)
 const barThickness = computed(() => Math.max(2, groupSize.value * 0.82))
 
 interface BarRect {
+  path: string
   x: number
   y: number
   width: number
   height: number
-  color: string
+  gradientId: string
   seriesIndex: number
   seriesName: string
   value: number
@@ -116,6 +118,16 @@ const bars = computed<BarRect[]>(() => {
 
   props.categories.forEach((_, categoryIndex) => {
     stackGroups.value.forEach((group, groupIndex) => {
+      // Only the cap of a stack gets rounded; lower segments stay square so
+      // neighbouring segments meet seamlessly.
+      let topSeriesIndex = -1
+      if (props.stacked) {
+        group.forEach(seriesIndex => {
+          const value = props.series[seriesIndex]?.data[categoryIndex]
+          if (Number.isFinite(value) && value !== 0) topSeriesIndex = seriesIndex
+        })
+      }
+
       let stackOffset = 0
       group.forEach(seriesIndex => {
         const series = props.series[seriesIndex]
@@ -123,7 +135,6 @@ const bars = computed<BarRect[]>(() => {
         const value = series.data[categoryIndex]
         if (!Number.isFinite(value)) return
 
-        const color = series.color ?? paletteColor(seriesIndex)
         const start = props.stacked ? stackOffset : baseline
         const end = props.stacked ? stackOffset + valueRatio(value) : valueRatio(value)
         stackOffset = end
@@ -131,33 +142,42 @@ const bars = computed<BarRect[]>(() => {
         const from = Math.min(start, end)
         const to = Math.max(start, end)
         const offsetInBand = (bandSize.value - groupSize.value * groupCount.value) / 2
-        const offset = offsetInBand + groupIndex * groupSize.value + (groupSize.value - barThickness.value) / 2
+        const offset =
+          offsetInBand + groupIndex * groupSize.value + (groupSize.value - barThickness.value) / 2
 
-        if (props.horizontal) {
-          result.push({
-            x: from * plotWidth.value,
-            y: categoryIndex * bandSize.value + offset,
-            width: Math.max(1, (to - from) * plotWidth.value),
-            height: barThickness.value,
-            color,
-            seriesIndex,
-            seriesName: series.name,
-            value,
-            categoryIndex
-          })
-        } else {
-          result.push({
-            x: categoryIndex * bandSize.value + offset,
-            y: plotHeight.value - to * plotHeight.value,
-            width: barThickness.value,
-            height: Math.max(1, (to - from) * plotHeight.value),
-            color,
-            seriesIndex,
-            seriesName: series.name,
-            value,
-            categoryIndex
-          })
-        }
+        const geometry = props.horizontal
+          ? {
+              x: from * plotWidth.value,
+              y: categoryIndex * bandSize.value + offset,
+              width: Math.max(1, (to - from) * plotWidth.value),
+              height: barThickness.value
+            }
+          : {
+              x: categoryIndex * bandSize.value + offset,
+              y: plotHeight.value - to * plotHeight.value,
+              width: barThickness.value,
+              height: Math.max(1, (to - from) * plotHeight.value)
+            }
+
+        const radius =
+          props.stacked && seriesIndex !== topSeriesIndex ? 0 : props.borderRadius
+
+        result.push({
+          path: barPath(
+            geometry.x,
+            geometry.y,
+            geometry.width,
+            geometry.height,
+            radius,
+            props.horizontal
+          ),
+          ...geometry,
+          gradientId: `${chartId}-bar-${seriesIndex}`,
+          seriesIndex,
+          seriesName: series.name,
+          value,
+          categoryIndex
+        })
       })
     })
   })
@@ -177,27 +197,54 @@ const categoryCenter = (index: number): number => index * bandSize.value + bandS
 // ---------------------------------------------------------------- interaction
 
 const hover = ref<{ categoryIndex: number; x: number; y: number } | null>(null)
+const legendHoverIndex = ref(-1)
 
 const handleMove = (event: MouseEvent) => {
   if (!hasData.value) return
   const rect = (event.currentTarget as HTMLElement).getBoundingClientRect()
-  const localX = event.clientX - rect.left - padding.value.left
-  const localY = event.clientY - rect.top - padding.value.top
+  const pointerX = event.clientX - rect.left
+  const pointerY = event.clientY - rect.top
+  const localX = pointerX - padding.value.left
+  const localY = pointerY - padding.value.top
 
   const index = props.horizontal
     ? clamp(Math.floor(localY / Math.max(1, bandSize.value)), 0, props.categories.length - 1)
     : clamp(Math.floor(localX / Math.max(1, bandSize.value)), 0, props.categories.length - 1)
 
-  hover.value = {
-    categoryIndex: index,
-    x: props.horizontal ? plotWidth.value : categoryCenter(index),
-    y: props.horizontal ? categoryCenter(index) : plotHeight.value / 2
-  }
+  hover.value = { categoryIndex: index, x: pointerX, y: pointerY }
 }
 
 const handleLeave = () => {
   hover.value = null
 }
+
+const handleLegendEnter = (index: number) => {
+  legendHoverIndex.value = index
+}
+
+const handleLegendLeave = () => {
+  legendHoverIndex.value = -1
+}
+
+/** Soft highlight band behind the hovered category. */
+const hoverBand = computed(() => {
+  if (!hover.value) return null
+  const index = hover.value.categoryIndex
+  const inset = 3
+  return props.horizontal
+    ? {
+        x: 0,
+        y: index * bandSize.value + inset,
+        width: plotWidth.value,
+        height: Math.max(0, bandSize.value - inset * 2)
+      }
+    : {
+        x: index * bandSize.value + inset,
+        y: 0,
+        width: Math.max(0, bandSize.value - inset * 2),
+        height: plotHeight.value
+      }
+})
 
 const tooltip = computed(() => {
   if (!hover.value) return null
@@ -210,10 +257,14 @@ const tooltip = computed(() => {
       value: Number.isFinite(value) ? formatter.value(value) : '-'
     }
   })
+
+  // Follow the cursor but keep the whole card inside the canvas.
+  const cardHeight = 40 + rows.length * 17
   return {
-    x: hover.value.x + padding.value.left,
-    y: hover.value.y + padding.value.top,
-    align: hover.value.x > width.value - 180 ? ('right' as const) : ('left' as const),
+    x: hover.value.x,
+    y: clamp(hover.value.y, cardHeight / 2 + 6, height.value - cardHeight / 2 - 6),
+    align: hover.value.x > width.value - 170 ? ('right' as const) : ('left' as const),
+    vertical: 'center' as const,
     title: String(props.categories[index] ?? ''),
     rows
   }
@@ -228,27 +279,55 @@ const handleBarClick = (bar: BarRect) => {
   })
 }
 
-const svgStyle = computed(() => ({ height: toCssSize(props.height) }))
+const canvasStyle = computed(() => ({ height: toCssSize(props.height) }))
 </script>
 
 <template>
   <div ref="rootRef" :class="ns.b()">
-    <div
-      :class="ns.e('canvas')"
-      :style="svgStyle"
-      @mousemove="handleMove"
-      @mouseleave="handleLeave"
-    >
+    <div :class="ns.e('canvas')" :style="canvasStyle" @mousemove="handleMove" @mouseleave="handleLeave">
       <svg
         v-if="hasData && width > 0"
         :width="width"
         :height="height"
         :viewBox="`0 0 ${width} ${height}`"
+        :class="ns.is('horizontal', horizontal)"
         role="img"
         :aria-label="`柱状图：${categories.length} 个分类，${series.length} 个系列`"
       >
+        <defs>
+          <linearGradient
+            v-for="(seriesItem, index) in series"
+            :id="`${chartId}-bar-${index}`"
+            :key="`gradient-${index}`"
+            :x1="0"
+            :y1="0"
+            :x2="horizontal ? 1 : 0"
+            :y2="horizontal ? 0 : 1"
+          >
+            <stop
+              offset="0%"
+              :style="{ stopColor: seriesItem.color ?? paletteColor(index), stopOpacity: 1 }"
+            />
+            <stop
+              offset="100%"
+              :style="{ stopColor: seriesItem.color ?? paletteColor(index), stopOpacity: 0.72 }"
+            />
+          </linearGradient>
+        </defs>
+
         <g :transform="`translate(${padding.left}, ${padding.top})`">
-          <g v-if="showGrid">
+          <rect
+            v-if="hoverBand"
+            :key="hover?.categoryIndex"
+            :x="hoverBand.x"
+            :y="hoverBand.y"
+            :width="hoverBand.width"
+            :height="hoverBand.height"
+            rx="6"
+            :class="ns.e('band')"
+          />
+
+          <g v-if="showGrid" :class="ns.e('grid')">
             <template v-if="horizontal">
               <line
                 v-for="tick in ticks"
@@ -273,13 +352,12 @@ const svgStyle = computed(() => ({ height: toCssSize(props.height) }))
             </template>
           </g>
 
-          <!-- value axis labels -->
           <template v-if="horizontal">
             <text
               v-for="tick in ticks"
               :key="`label-${tick}`"
               :x="valueRatio(tick) * plotWidth"
-              :y="plotHeight + 18"
+              :y="plotHeight + 20"
               :class="ns.e('axis-label')"
               text-anchor="middle"
             >
@@ -288,7 +366,7 @@ const svgStyle = computed(() => ({ height: toCssSize(props.height) }))
             <text
               v-for="(category, index) in categories"
               :key="`cat-${index}`"
-              :x="-10"
+              :x="-12"
               :y="categoryCenter(index)"
               :class="ns.e('axis-label')"
               text-anchor="end"
@@ -301,7 +379,7 @@ const svgStyle = computed(() => ({ height: toCssSize(props.height) }))
             <text
               v-for="tick in ticks"
               :key="`label-${tick}`"
-              :x="-10"
+              :x="-12"
               :y="plotHeight - valueRatio(tick) * plotHeight"
               :class="ns.e('axis-label')"
               text-anchor="end"
@@ -313,7 +391,7 @@ const svgStyle = computed(() => ({ height: toCssSize(props.height) }))
               v-for="(category, index) in categories"
               :key="`cat-${index}`"
               :x="categoryCenter(index)"
-              :y="plotHeight + 18"
+              :y="plotHeight + 20"
               :class="ns.e('axis-label')"
               text-anchor="middle"
             >
@@ -321,25 +399,34 @@ const svgStyle = computed(() => ({ height: toCssSize(props.height) }))
             </text>
           </template>
 
-          <g v-for="(bar, index) in bars" :key="index">
-            <rect
-              :x="bar.x"
-              :y="bar.y"
-              :width="bar.width"
-              :height="bar.height"
-              :rx="Math.min(borderRadius, bar.width / 2, bar.height / 2)"
-              :fill="bar.color"
-              :class="[
-                ns.e('bar'),
-                ns.is('dimmed', hover !== null && hover.categoryIndex !== bar.categoryIndex)
-              ]"
-              @click="handleBarClick(bar)"
-            />
-          </g>
+          <path
+            v-for="(bar, index) in bars"
+            :key="index"
+            :d="bar.path"
+            :fill="`url(#${bar.gradientId})`"
+            :data-x="bar.x"
+            :data-y="bar.y"
+            :data-width="bar.width"
+            :data-height="bar.height"
+            :style="{ animationDelay: `${Math.min(index, 20) * 32}ms` }"
+            :class="[
+              ns.e('bar'),
+              ns.is('active', hover?.categoryIndex === bar.categoryIndex),
+              ns.is('dimmed', hover !== null && hover.categoryIndex !== bar.categoryIndex),
+              ns.is(
+                'muted',
+                legendHoverIndex >= 0 && legendHoverIndex !== bar.seriesIndex
+              )
+            ]"
+            @click="handleBarClick(bar)"
+          />
         </g>
       </svg>
 
-      <div v-else :class="ns.e('empty')">{{ emptyText }}</div>
+      <div v-else :class="ns.e('empty')">
+        <span :class="ns.e('empty-mark')" aria-hidden="true" />
+        <span>{{ emptyText }}</span>
+      </div>
 
       <ChartTooltip
         v-if="tooltip"
@@ -348,9 +435,15 @@ const svgStyle = computed(() => ({ height: toCssSize(props.height) }))
         :title="tooltip.title"
         :rows="tooltip.rows"
         :align="tooltip.align"
+        :vertical="tooltip.vertical"
       />
     </div>
 
-    <ChartLegend v-if="showLegend && series.length > 1" :items="legendItems" />
+    <ChartLegend
+      v-if="showLegend && series.length > 1"
+      :items="legendItems"
+      @item-enter="handleLegendEnter"
+      @item-leave="handleLegendLeave"
+    />
   </div>
 </template>

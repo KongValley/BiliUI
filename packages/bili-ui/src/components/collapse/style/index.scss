@@ -1,0 +1,114 @@
+@use '../../../styles/mixins' as *;
+
+@include b(collapse) {
+  overflow: hidden;
+  font-size: var(--bili-font-size-base);
+  color: var(--bili-text-regular);
+
+  @include when(bordered) {
+    border: 1px solid var(--bili-border-color-light);
+    border-radius: var(--bili-radius-md);
+  }
+}
+
+@include b(collapse-item) {
+  @include e(header) {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 44px;
+    padding: 0 16px;
+    font-size: var(--bili-font-size-base);
+    font-weight: var(--bili-font-weight-medium);
+    line-height: 1.5;
+    color: var(--bili-text-primary);
+    cursor: pointer;
+    outline: none;
+    transition: background-color var(--bili-transition-duration-fast)
+      var(--bili-transition-function);
+
+    &:hover {
+      background-color: var(--bili-fill-color-light);
+    }
+
+    &:focus-visible {
+      box-shadow: inset 0 0 0 2px var(--bili-color-primary);
+    }
+
+    &.is-borderless {
+      border-bottom: 0;
+    }
+  }
+
+  @include e(title) {
+    display: flex;
+    flex: 1;
+    gap: 8px;
+    align-items: center;
+    min-width: 0;
+  }
+
+  @include e(icon) {
+    flex: none;
+    font-size: 16px;
+    color: var(--bili-text-secondary);
+  }
+
+  @include e(arrow) {
+    flex: none;
+    font-size: 14px;
+    color: var(--bili-text-secondary);
+    transition: transform var(--bili-transition-duration) var(--bili-transition-function-spring);
+  }
+
+  @include e(wrapper) {
+    overflow: hidden;
+  }
+
+  @include e(body) {
+    padding: 4px 16px 16px;
+    font-size: var(--bili-font-size-sm);
+    line-height: 1.7;
+    color: var(--bili-text-regular);
+  }
+
+  @include when(open) {
+    > .#{$namespace}-collapse-item__header {
+      background-color: var(--bili-fill-color-lighter);
+    }
+
+    > .#{$namespace}-collapse-item__header .#{$namespace}-collapse-item__arrow {
+      transform: rotate(180deg);
+    }
+  }
+
+  @include when(disabled) {
+    > .#{$namespace}-collapse-item__header {
+      cursor: not-allowed;
+      opacity: var(--bili-disabled-opacity);
+    }
+  }
+
+  & + & {
+    border-top: 1px solid var(--bili-border-color-lighter);
+  }
+}
+
+// The wrapper is toggled with v-show, so animate the reveal with a keyframe
+// on the body instead of a height transition (which needs measured heights).
+.bili-collapse-item.is-open > .bili-collapse-item__wrapper {
+  animation: bili-collapse-in var(--bili-transition-duration-slow)
+    var(--bili-transition-function-out);
+}
+
+@keyframes bili-collapse-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

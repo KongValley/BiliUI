@@ -35,6 +35,14 @@ $namespace: 'bili' !default;
   }
 }
 
+// Alias of `when`, matching the runtime `ns.is(state)` helper name so templates
+// and styles read the same way.
+@mixin is($state) {
+  @include when($state) {
+    @content;
+  }
+}
+
 @mixin utils-ellipsis {
   overflow: hidden;
   white-space: nowrap;

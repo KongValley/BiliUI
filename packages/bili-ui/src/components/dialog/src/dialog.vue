@@ -5,10 +5,10 @@ import { useFocusTrap } from '../../../hooks/use-focus-trap'
 import { useScrollLock } from '../../../hooks/use-scroll-lock'
 import { useZIndex } from '../../../hooks/use-z-index'
 import { useEventListener } from '../../../hooks/use-event-listener'
+import { isTopOverlay, pushOverlay, removeOverlay } from '../../../hooks/use-overlay-stack'
 import { addUnit } from '../../../utils/dom'
 import BiliIcon from '../../icon/src/icon.vue'
 import { dialogProps } from './dialog'
-import { isTopDialog, pushDialog, removeDialog } from './stack'
 
 defineOptions({ name: 'BiliDialog' })
 
@@ -36,7 +36,9 @@ const dialogStyle = computed(() => ({
   marginTop: addUnit(props.top)
 }))
 
-useScrollLock(visible)
+const shouldLockScroll = computed(() => props.lockScroll && visible.value)
+
+useScrollLock(shouldLockScroll)
 useFocusTrap(dialogRef, visible)
 
 const requestClose = () => {
@@ -54,7 +56,7 @@ const onAfterEnter = () => {
 }
 
 const onAfterLeave = () => {
-  removeDialog(token)
+  removeOverlay(token)
   if (props.destroyOnClose) mounted.value = false
   emit('closed')
 }
@@ -66,11 +68,11 @@ watch(
       modalZIndex.value = nextZIndex()
       mounted.value = true
       visible.value = true
-      pushDialog(token)
+      pushOverlay(token)
       emit('open')
     } else {
       visible.value = false
-      removeDialog(token)
+      removeOverlay(token)
     }
   },
   { immediate: true }
@@ -81,14 +83,14 @@ useEventListener(
   'keydown',
   (event: KeyboardEvent) => {
     if (event.key !== 'Escape' || !visible.value || !props.closeOnEsc) return
-    if (!isTopDialog(token)) return
+    if (!isTopOverlay(token)) return
     event.stopPropagation()
     requestClose()
   }
 )
 
 onBeforeUnmount(() => {
-  removeDialog(token)
+  removeOverlay(token)
 })
 </script>
 

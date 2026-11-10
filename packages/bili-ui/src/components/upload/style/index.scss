@@ -1,0 +1,206 @@
+@use '../../../styles/mixins' as *;
+
+@include b(upload) {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  font-size: var(--bili-font-size-sm);
+
+  @include e(input) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    clip-path: inset(50%);
+  }
+
+  @include e(dragger) {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+    color: var(--bili-text-secondary);
+    text-align: center;
+    cursor: pointer;
+    background-color: var(--bili-fill-color-lighter);
+    border: 1px dashed var(--bili-border-color);
+    border-radius: var(--bili-radius-md);
+    transition:
+      border-color var(--bili-transition-duration) var(--bili-transition-function),
+      background-color var(--bili-transition-duration) var(--bili-transition-function);
+
+    &:hover {
+      border-color: var(--bili-color-primary);
+    }
+
+    &.is-dragover {
+      background-color: var(--bili-color-primary-light);
+      border-color: var(--bili-color-primary);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--bili-color-primary);
+      outline-offset: 2px;
+    }
+  }
+
+  @include e(upload-icon) {
+    color: var(--bili-color-primary);
+  }
+
+  @include e(drag-text) {
+    margin: 0;
+    font-size: var(--bili-font-size-sm);
+    color: var(--bili-text-regular);
+  }
+
+  @include e(tip) {
+    margin: 0;
+    font-size: var(--bili-font-size-xs);
+    color: var(--bili-text-secondary);
+  }
+
+  @include e(list) {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 0;
+    margin: 0;
+    list-style: none !important;
+
+    li {
+      list-style: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+
+      &::marker {
+        content: '';
+      }
+    }
+  }
+
+  @include e(item) {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 8px 10px;
+    background-color: var(--bili-fill-color-lighter);
+    border: 1px solid var(--bili-border-color-light);
+    border-radius: var(--bili-radius-base);
+    animation: bili-upload-item-in var(--bili-transition-duration)
+      var(--bili-transition-function-out);
+  }
+
+  @include e(thumb) {
+    flex: none;
+    width: 40px;
+    height: 40px;
+    overflow: hidden;
+    border-radius: var(--bili-radius-sm);
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  @include e(file-icon) {
+    flex: none;
+    color: var(--bili-text-secondary);
+  }
+
+  @include e(info) {
+    flex: 1;
+    min-width: 0;
+  }
+
+  @include e(name) {
+    overflow: hidden;
+    font-size: var(--bili-font-size-sm);
+    color: var(--bili-text-primary);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  @include e(meta) {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-top: 2px;
+    font-size: 11px;
+    color: var(--bili-text-secondary);
+  }
+
+  @include e(error) {
+    color: var(--bili-color-danger);
+  }
+
+  @include e(progress) {
+    margin-top: 6px;
+  }
+
+  @include e(actions) {
+    display: flex;
+    flex: none;
+    gap: 2px;
+    align-items: center;
+  }
+
+  @include e(action) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    color: var(--bili-text-secondary);
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    border-radius: var(--bili-radius-sm);
+    transition:
+      color var(--bili-transition-duration-fast) var(--bili-transition-function),
+      background-color var(--bili-transition-duration-fast) var(--bili-transition-function);
+
+    &:hover:not(:disabled) {
+      color: var(--bili-color-primary);
+      background-color: var(--bili-fill-color);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: var(--bili-disabled-opacity);
+    }
+  }
+
+  @include is(disabled) {
+    .#{$namespace}-upload__dragger {
+      cursor: not-allowed;
+      opacity: var(--bili-disabled-opacity);
+    }
+  }
+
+  @include m(list-picture) {
+    .#{$namespace}-upload__item {
+      padding: 6px 10px;
+    }
+  }
+}
+
+@keyframes bili-upload-item-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

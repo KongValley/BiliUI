@@ -1,0 +1,174 @@
+@use '../../../styles/mixins' as *;
+
+@include b(progress) {
+  --bili-progress-bar-color: var(--bili-color-primary);
+  --bili-progress-track-color: var(--bili-fill-color);
+
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  font-size: var(--bili-font-size-xs);
+  line-height: 1;
+
+  @include m(success) {
+    --bili-progress-bar-color: var(--bili-color-success);
+  }
+
+  @include m(warning) {
+    --bili-progress-bar-color: var(--bili-color-warning);
+  }
+
+  @include m(error) {
+    --bili-progress-bar-color: var(--bili-color-danger);
+  }
+
+  // --------------------------------------------------------------- line mode
+  @include e(bar) {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    background-color: var(--bili-progress-track-color);
+  }
+
+  @include e(inner) {
+    position: relative;
+    height: 100%;
+    background-color: var(--bili-progress-bar-color);
+    transition:
+      width var(--bili-transition-duration-slow) var(--bili-transition-function-out),
+      background-color var(--bili-transition-duration) var(--bili-transition-function);
+
+    &.is-second {
+      background-color: var(--bili-progress-bar-color);
+    }
+
+    &.is-striped {
+      background-image: linear-gradient(
+        -45deg,
+        rgba(255, 255, 255, 0.22) 25%,
+        transparent 25%,
+        transparent 50%,
+        rgba(255, 255, 255, 0.22) 50%,
+        rgba(255, 255, 255, 0.22) 75%,
+        transparent 75%,
+        transparent
+      );
+      background-size: 16px 16px;
+      animation: bili-progress-stripes 0.9s linear infinite;
+    }
+  }
+
+  @include e(second) {
+    position: absolute;
+    inset: 0 auto 0 0;
+    background-color: var(--bili-color-success);
+    border-radius: inherit;
+  }
+
+  @include when(striped) {
+    background-image: linear-gradient(
+      -45deg,
+      rgba(255, 255, 255, 0.22) 25%,
+      transparent 25%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.22) 50%,
+      rgba(255, 255, 255, 0.22) 75%,
+      transparent 75%,
+      transparent
+    );
+    background-size: 16px 16px;
+  }
+
+  @include e(text) {
+    flex: none;
+    min-width: 36px;
+    font-variant-numeric: tabular-nums;
+    color: var(--bili-text-secondary);
+    text-align: right;
+
+    .#{$namespace}-progress--success & {
+      color: var(--bili-color-success);
+    }
+
+    .#{$namespace}-progress--warning & {
+      color: var(--bili-color-warning);
+    }
+
+    .#{$namespace}-progress--error & {
+      color: var(--bili-color-danger);
+    }
+  }
+
+  // ------------------------------------------------------------- circle mode
+  @include e(circle) {
+    position: relative;
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      display: block;
+    }
+  }
+
+  @include e(circle-track) {
+    stroke: var(--bili-progress-track-color);
+  }
+
+  @include e(circle-inner) {
+    stroke: var(--bili-progress-bar-color);
+    transition:
+      stroke-dasharray var(--bili-transition-duration-slow) var(--bili-transition-function-out),
+      stroke var(--bili-transition-duration) var(--bili-transition-function);
+  }
+
+  @include e(circle-second) {
+    stroke: var(--bili-color-success);
+    transition: stroke-dasharray var(--bili-transition-duration-slow)
+      var(--bili-transition-function-out);
+  }
+
+  @include e(circle-text) {
+    position: absolute;
+    font-size: var(--bili-font-size-md);
+    font-weight: var(--bili-font-weight-semibold);
+    font-variant-numeric: tabular-nums;
+    color: var(--bili-text-primary);
+  }
+
+  @include m(circle) {
+    width: auto;
+    align-items: center;
+  }
+
+  @include m(dashboard) {
+    width: auto;
+    align-items: center;
+  }
+
+  @include when(custom-color) {
+    .#{$namespace}-progress__inner {
+      background-color: var(--bili-color-primary);
+    }
+
+    .#{$namespace}-progress__circle-inner {
+      stroke: var(--bili-color-primary);
+    }
+
+    .#{$namespace}-progress__text {
+      color: var(--bili-text-secondary);
+    }
+  }
+}
+
+@keyframes bili-progress-stripes {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 16px 0;
+  }
+}

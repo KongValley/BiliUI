@@ -1,0 +1,108 @@
+@use '../../../styles/mixins' as *;
+
+@include b(popover) {
+  display: inline-flex;
+
+  @include e(content) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 12px 14px;
+    font-size: var(--bili-font-size-sm);
+    line-height: 1.6;
+    color: var(--bili-text-regular);
+    background-color: var(--bili-bg-elevated);
+    border: 1px solid var(--bili-border-color-light);
+    border-radius: var(--bili-radius-lg);
+    box-shadow: var(--bili-shadow-md);
+  }
+
+  @include e(title) {
+    margin-bottom: 6px;
+    font-size: var(--bili-font-size-base);
+    font-weight: var(--bili-font-weight-semibold);
+    line-height: 1.4;
+    color: var(--bili-text-primary);
+  }
+
+  @include e(body) {
+    color: var(--bili-text-regular);
+  }
+
+  @include e(footer) {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid var(--bili-border-color-lighter);
+  }
+
+  @include e(arrow) {
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    background-color: var(--bili-bg-elevated);
+    border: 1px solid var(--bili-border-color-light);
+    transform: rotate(45deg);
+
+    &[data-placement='bottom'] {
+      top: -5px;
+      border-right: 0;
+      border-bottom: 0;
+    }
+
+    &[data-placement='top'] {
+      bottom: -5px;
+      border-top: 0;
+      border-left: 0;
+    }
+
+    &[data-placement='left'] {
+      right: -5px;
+      border-bottom: 0;
+      border-left: 0;
+    }
+
+    &[data-placement='right'] {
+      left: -5px;
+      border-top: 0;
+      border-right: 0;
+    }
+  }
+}
+
+@include b(popconfirm) {
+  @include e(body) {
+    max-width: 240px;
+    font-size: var(--bili-font-size-sm);
+    line-height: 1.6;
+    color: var(--bili-text-regular);
+  }
+
+  @include e(actions) {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-top: 12px;
+  }
+}
+
+.bili-popover-enter-active {
+  transition:
+    opacity var(--bili-transition-duration-fast) var(--bili-transition-function),
+    transform var(--bili-transition-duration) var(--bili-transition-function-out);
+}
+
+.bili-popover-leave-active {
+  transition:
+    opacity var(--bili-transition-duration-fast) var(--bili-transition-function),
+    transform var(--bili-transition-duration-fast) var(--bili-transition-function-in);
+}
+
+.bili-popover-enter-from,
+.bili-popover-leave-to {
+  opacity: 0;
+  transform: scale(0.96);
+}

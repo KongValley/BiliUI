@@ -1,0 +1,124 @@
+@use '../../../styles/mixins' as *;
+
+@include b(badge) {
+  --bili-badge-color: var(--bili-color-danger);
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+
+  @include e(content) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    font-size: 11px;
+    font-weight: var(--bili-font-weight-semibold);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    color: var(--bili-color-white);
+    white-space: nowrap;
+    background-color: var(--bili-badge-color);
+    border-radius: var(--bili-radius-round);
+    box-shadow: 0 0 0 1.5px var(--bili-bg-container);
+    transition:
+      transform var(--bili-transition-duration) var(--bili-transition-function-spring),
+      opacity var(--bili-transition-duration-fast) var(--bili-transition-function);
+
+    // Wrapped content: sit on the top-right corner of the child.
+    .#{$namespace}-badge:not(.is-fixed) > & {
+      position: absolute;
+      top: 0;
+      right: 0;
+      transform: translate(50%, -50%);
+      transform-origin: 100% 0;
+    }
+  }
+
+  @include when(dot) {
+    .#{$namespace}-badge__content {
+      width: 8px;
+      min-width: 8px;
+      height: 8px;
+      padding: 0;
+    }
+  }
+
+  @include when(hidden) {
+    .#{$namespace}-badge__content {
+      opacity: 0;
+      transform: scale(0.6);
+    }
+
+    &.#{$namespace}-badge:not(.is-fixed) > .#{$namespace}-badge__content {
+      transform: translate(50%, -50%) scale(0.6);
+    }
+  }
+
+  @each $type in primary, success, warning, danger, info {
+    @include m($type) {
+      --bili-badge-color: var(--bili-color-#{$type});
+    }
+  }
+
+  // ------------------------------------------------------------------ status
+  @include m(status) {
+    gap: 8px;
+    font-size: var(--bili-font-size-sm);
+    color: var(--bili-text-regular);
+  }
+
+  @include e(status-dot) {
+    flex: none;
+    width: 6px;
+    height: 6px;
+    background-color: var(--bili-badge-color);
+    border-radius: 50%;
+  }
+
+  @include e(status-text) {
+    line-height: 1.4;
+  }
+
+  @include m(processing) {
+    .#{$namespace}-badge__status-dot {
+      position: relative;
+
+      &::after {
+        position: absolute;
+        inset: -3px;
+        content: '';
+        background-color: var(--bili-color-primary);
+        border-radius: 50%;
+        opacity: 0.35;
+        animation: bili-badge-pulse 1.6s var(--bili-transition-function) infinite;
+      }
+    }
+  }
+
+  @include m(default) {
+    --bili-badge-color: var(--bili-text-placeholder);
+  }
+
+  @include m(error) {
+    --bili-badge-color: var(--bili-color-danger);
+  }
+}
+
+@keyframes bili-badge-pulse {
+  0% {
+    opacity: 0.35;
+    transform: scale(0.8);
+  }
+  70% {
+    opacity: 0;
+    transform: scale(1.8);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.8);
+  }
+}

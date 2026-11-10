@@ -133,6 +133,20 @@ describe('BiliLineChart', () => {
     expect(wrapper.find('.bili-chart-legend').text()).toContain('下单量')
   })
 
+  it('dims other series while a legend entry is hovered', async () => {
+    const wrapper = mountChart(LineChart, {
+      props: { categories, series: lineSeries }
+    })
+    await nextTick()
+
+    const legendItems = wrapper.findAll('.bili-chart-legend__item')
+    await legendItems[0].trigger('mouseenter')
+    expect(wrapper.findAll('.bili-chart__series.is-muted')).toHaveLength(1)
+
+    await legendItems[0].trigger('mouseleave')
+    expect(wrapper.findAll('.bili-chart__series.is-muted')).toHaveLength(0)
+  })
+
   it('breaks the line around null values', async () => {
     const wrapper = mountChart(LineChart, {
       props: {
@@ -181,7 +195,7 @@ describe('BiliLineChart', () => {
 })
 
 describe('BiliBarChart', () => {
-  it('renders one rect per data point when grouped', async () => {
+  it('renders one bar path per data point when grouped', async () => {
     const wrapper = mountChart(BarChart, {
       props: { categories, series: barSeries }
     })
@@ -195,10 +209,10 @@ describe('BiliBarChart', () => {
     })
     await nextTick()
 
-    const rects = wrapper.findAll('.bili-chart__bar')
-    expect(rects).toHaveLength(4)
+    const bars = wrapper.findAll('.bili-chart__bar')
+    expect(bars).toHaveLength(4)
     // Stacked bars share an x position within each category.
-    const xs = rects.map(rect => rect.attributes('x'))
+    const xs = bars.map(bar => bar.attributes('data-x'))
     expect(xs[0]).toBe(xs[1])
   })
 
@@ -208,9 +222,24 @@ describe('BiliBarChart', () => {
     })
     await nextTick()
 
-    const rect = wrapper.find('.bili-chart__bar')
+    const bar = wrapper.find('.bili-chart__bar')
     // Horizontal bars are wider than they are tall.
-    expect(Number(rect.attributes('width'))).toBeGreaterThan(Number(rect.attributes('height')))
+    expect(Number(bar.attributes('data-width'))).toBeGreaterThan(
+      Number(bar.attributes('data-height'))
+    )
+  })
+
+  it('highlights the hovered category with a band', async () => {
+    const wrapper = mountChart(BarChart, {
+      props: { categories, series: barSeries }
+    })
+    await nextTick()
+
+    await wrapper.find('.bili-chart__canvas').trigger('mousemove', {
+      clientX: 120,
+      clientY: 80
+    })
+    expect(wrapper.find('.bili-chart__band').exists()).toBe(true)
   })
 
   it('emits bar-click with the category', async () => {
@@ -233,6 +262,20 @@ describe('BiliPieChart', () => {
 
     expect(wrapper.findAll('.bili-chart__slice')).toHaveLength(3)
     expect(wrapper.find('.bili-chart-legend').text()).toContain('直接访问')
+  })
+
+  it('previews a slice when its legend entry is hovered', async () => {
+    const wrapper = mountChart(PieChart, { props: { data: pieData } })
+    await nextTick()
+
+    const legendItems = wrapper.findAll('.bili-chart-legend__item')
+    await legendItems[1].trigger('mouseenter')
+    const active = wrapper.findAll('.bili-chart__slice.is-active')
+    expect(active).toHaveLength(1)
+    expect(active[0].attributes('style')).toContain('translate')
+
+    await legendItems[1].trigger('mouseleave')
+    expect(wrapper.findAll('.bili-chart__slice.is-active')).toHaveLength(0)
   })
 
   it('renders percentage labels for large slices', async () => {

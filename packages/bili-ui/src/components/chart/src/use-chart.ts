@@ -213,5 +213,75 @@ export function arcPath(
   ].join(' ')
 }
 
+/**
+ * Open arc along the centreline, meant to be stroked with a thick
+ * `stroke-linecap: round`. Unlike `arcPath` (a closed ring segment) it has
+ * real endpoints, so the stroke ends get round caps instead of radial cuts.
+ */
+export function arcStrokePath(
+  cx: number,
+  cy: number,
+  radius: number,
+  startAngle: number,
+  endAngle: number
+): string {
+  const sweep = endAngle - startAngle
+  if (sweep <= 0) return ''
+
+  // A full circle cannot be expressed by a single arc command.
+  if (sweep >= 359.999) {
+    const top = polarPoint(cx, cy, radius, 0)
+    const bottom = polarPoint(cx, cy, radius, 180)
+    return [
+      `M${top.x} ${top.y}`,
+      `A${radius} ${radius} 0 1 1 ${bottom.x} ${bottom.y}`,
+      `A${radius} ${radius} 0 1 1 ${top.x} ${top.y}`
+    ].join(' ')
+  }
+
+  const start = polarPoint(cx, cy, radius, startAngle)
+  const end = polarPoint(cx, cy, radius, endAngle)
+  const largeArc = sweep > 180 ? 1 : 0
+  return `M${start.x} ${start.y} A${radius} ${radius} 0 ${largeArc} 1 ${end.x} ${end.y}`
+}
+
 export const clamp = (value: number, min: number, max: number): number =>
   Math.min(max, Math.max(min, value))
+
+/**
+ * Rounded bar with only the growing end rounded — a full-radius rect looks
+ * wrong where the bar meets the baseline.
+ */
+export function barPath(
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  radius = 0,
+  horizontal = false
+): string {
+  if (width <= 0 || height <= 0) return ''
+  const r = Math.max(0, Math.min(radius, width / 2, height / 2))
+
+  if (horizontal) {
+    return [
+      `M${x} ${y}`,
+      `H${x + width - r}`,
+      `Q${x + width} ${y} ${x + width} ${y + r}`,
+      `V${y + height - r}`,
+      `Q${x + width} ${y + height} ${x + width - r} ${y + height}`,
+      `H${x}`,
+      'Z'
+    ].join(' ')
+  }
+
+  return [
+    `M${x} ${y + height}`,
+    `V${y + r}`,
+    `Q${x} ${y} ${x + r} ${y}`,
+    `H${x + width - r}`,
+    `Q${x + width} ${y} ${x + width} ${y + r}`,
+    `V${y + height}`,
+    'Z'
+  ].join(' ')
+}

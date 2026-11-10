@@ -1,0 +1,63 @@
+@use '../../../styles/mixins' as *;
+
+@include b(breadcrumb) {
+  font-size: var(--bili-font-size-sm);
+  color: var(--bili-text-secondary);
+
+  @include e(list) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    list-style: none !important;
+
+    li {
+      display: inline-flex;
+      align-items: center;
+      padding: 0 !important;
+      margin: 0 !important;
+      list-style: none !important;
+
+      &::marker {
+        content: '';
+      }
+    }
+  }
+}
+
+@include b(breadcrumb-item) {
+  @include e(separator) {
+    padding: 0 8px;
+    color: var(--bili-text-placeholder);
+    user-select: none;
+  }
+
+  @include e(link) {
+    font-size: inherit;
+    color: var(--bili-text-secondary);
+    text-decoration: none;
+    transition: color var(--bili-transition-duration-fast) var(--bili-transition-function);
+
+    &[href] {
+      cursor: pointer;
+
+      &:hover {
+        color: var(--bili-color-primary);
+      }
+    }
+
+    &.is-current {
+      font-weight: var(--bili-font-weight-medium);
+      color: var(--bili-text-primary);
+      cursor: default;
+    }
+  }
+
+  @include e(ellipsis) {
+    padding-right: 8px;
+    color: var(--bili-text-placeholder);
+    user-select: none;
+  }
+}

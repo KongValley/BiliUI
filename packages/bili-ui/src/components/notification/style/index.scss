@@ -1,0 +1,176 @@
+@use '../../../styles/mixins' as *;
+
+@include b(notification) {
+  --bili-notification-color: var(--bili-color-primary);
+
+  position: relative;
+  display: flex;
+  gap: 10px;
+  width: 340px;
+  padding: 14px 14px 14px 12px;
+  overflow: hidden;
+  background-color: var(--bili-bg-elevated);
+  border: 1px solid var(--bili-border-color-light);
+  border-radius: var(--bili-radius-lg);
+  box-shadow: var(--bili-shadow-md);
+  animation: bili-notification-in var(--bili-transition-duration-slow)
+    var(--bili-transition-function-out);
+  transition:
+    opacity var(--bili-transition-duration-fast) var(--bili-transition-function),
+    transform var(--bili-transition-duration-fast) var(--bili-transition-function-in);
+
+  @include m(info) {
+    --bili-notification-color: var(--bili-color-info);
+  }
+
+  @include m(success) {
+    --bili-notification-color: var(--bili-color-success);
+  }
+
+  @include m(warning) {
+    --bili-notification-color: var(--bili-color-warning);
+  }
+
+  @include m(error) {
+    --bili-notification-color: var(--bili-color-danger);
+  }
+
+  @include e(icon) {
+    display: flex;
+    flex: none;
+    align-items: flex-start;
+    padding-top: 1px;
+    color: var(--bili-notification-color);
+  }
+
+  @include e(content) {
+    flex: 1;
+    min-width: 0;
+  }
+
+  @include e(title) {
+    margin-bottom: 3px;
+    font-size: var(--bili-font-size-base);
+    font-weight: var(--bili-font-weight-semibold);
+    line-height: 1.4;
+    color: var(--bili-text-primary);
+  }
+
+  @include e(message) {
+    font-size: var(--bili-font-size-sm);
+    line-height: 1.6;
+    color: var(--bili-text-regular);
+    word-break: break-word;
+  }
+
+  @include e(close) {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    color: var(--bili-text-secondary);
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    border-radius: var(--bili-radius-sm);
+    transition:
+      color var(--bili-transition-duration-fast) var(--bili-transition-function),
+      background-color var(--bili-transition-duration-fast) var(--bili-transition-function);
+
+    &:hover {
+      color: var(--bili-text-primary);
+      background-color: var(--bili-fill-color);
+    }
+  }
+
+  @include e(progress) {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background-color: var(--bili-fill-color-light);
+  }
+
+  @include e(progress-bar) {
+    width: 100%;
+    height: 100%;
+    background-color: var(--bili-notification-color);
+    transform-origin: left center;
+    animation-name: bili-notification-progress;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+
+    &.is-paused {
+      animation-play-state: paused;
+    }
+  }
+
+  @include is(leaving) {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Imperative containers
+// ---------------------------------------------------------------------------
+
+.bili-notification-container {
+  position: fixed;
+  z-index: var(--bili-z-index-message, 5000);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0;
+  pointer-events: none;
+
+  .bili-notification-wrapper {
+    pointer-events: auto;
+  }
+
+  &--top-right {
+    top: 20px;
+    right: 20px;
+  }
+
+  &--top-left {
+    top: 20px;
+    left: 20px;
+  }
+
+  &--bottom-right {
+    right: 20px;
+    bottom: 20px;
+    flex-direction: column-reverse;
+  }
+
+  &--bottom-left {
+    bottom: 20px;
+    left: 20px;
+    flex-direction: column-reverse;
+  }
+}
+
+@keyframes bili-notification-in {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes bili-notification-progress {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}

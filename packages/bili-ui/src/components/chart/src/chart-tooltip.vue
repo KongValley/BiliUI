@@ -16,17 +16,25 @@ const props = withDefaults(
     rows: TooltipRow[]
     /** Which edge the card grows from; keeps it inside the plot area. */
     align?: 'left' | 'right'
+    /** `above`/`below` pin the card to the anchor point instead of centering it. */
+    vertical?: 'center' | 'above' | 'below'
   }>(),
-  { title: '', align: 'left' }
+  { title: '', align: 'left', vertical: 'center' }
 )
 
 const ns = useNamespace('chart-tooltip')
 
-const style = computed<CSSProperties>(() => ({
-  left: `${props.x}px`,
-  top: `${props.y}px`,
-  transform: props.align === 'right' ? 'translate(-100%, -50%)' : 'translate(12px, -50%)'
-}))
+const style = computed<CSSProperties>(() => {
+  const translateX = props.align === 'right' ? 'calc(-100% - 12px)' : '12px'
+  const translateY =
+    props.vertical === 'above' ? 'calc(-100% - 10px)' : props.vertical === 'below' ? '10px' : '-50%'
+
+  return {
+    left: `${props.x}px`,
+    top: `${props.y}px`,
+    transform: `translate(${translateX}, ${translateY})`
+  }
+})
 </script>
 
 <template>

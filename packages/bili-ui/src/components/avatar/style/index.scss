@@ -1,0 +1,54 @@
+@use '../../../styles/mixins' as *;
+
+@include b(avatar) {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  font-size: var(--bili-font-size-sm);
+  font-weight: var(--bili-font-weight-semibold);
+  line-height: 1;
+  color: var(--bili-text-secondary);
+  user-select: none;
+  vertical-align: middle;
+  background-color: var(--bili-fill-color);
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  @include e(icon) {
+    font-size: 1.15em;
+  }
+
+  @include e(text) {
+    letter-spacing: 0.01em;
+  }
+
+  @include m(circle) {
+    border-radius: 50%;
+  }
+
+  @include m(square) {
+    border-radius: var(--bili-radius-md);
+  }
+
+  // Deterministic pastel surface derived from the name / alt.
+  &.is-text {
+    color: hsl(var(--bili-avatar-hue), 62%, 33%);
+    background-color: hsl(var(--bili-avatar-hue), 72%, 93%);
+  }
+
+  &.is-bordered {
+    box-shadow: 0 0 0 2px var(--bili-bg-container);
+  }
+}
+
+html.dark .bili-avatar.is-text {
+  color: hsl(var(--bili-avatar-hue), 78%, 80%);
+  background-color: hsl(var(--bili-avatar-hue), 32%, 24%);
+}

@@ -1,5 +1,32 @@
 @use '../../../styles/mixins' as *;
 
+// Shared surface for every floating menu layer (sub menu popup / overflow panel).
+@mixin menu-surface {
+  padding: 6px;
+  background-color: var(--bili-bg-elevated);
+  border: 1px solid var(--bili-border-color-light);
+  border-radius: var(--bili-radius-lg);
+  box-shadow: var(--bili-shadow-md);
+}
+
+@mixin menu-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--bili-border-color) transparent;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--bili-border-color);
+    border-radius: var(--bili-radius-round);
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
 @include b(menu) {
   --bili-menu-item-height: 36px;
   --bili-menu-item-padding: 10px;
@@ -94,12 +121,12 @@
     position: absolute;
     top: 0;
     left: 0;
-    min-width: 168px;
-    padding: 4px;
-    background-color: var(--bili-bg-elevated);
-    border: 1px solid var(--bili-border-color-light);
-    border-radius: var(--bili-radius-md);
-    box-shadow: var(--bili-shadow-base);
+    min-width: 180px;
+    max-height: min(360px, 70vh);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    @include menu-surface;
+    @include menu-scrollbar;
   }
 }
 
@@ -132,12 +159,20 @@
     &:hover:not(:disabled) {
       color: var(--bili-color-primary);
       background-color: var(--bili-fill-color-light);
+
+      .#{$namespace}-menu-item__icon {
+        opacity: 1;
+      }
     }
 
     &.is-active {
       font-weight: var(--bili-font-weight-medium);
       color: var(--bili-color-primary);
       background-color: var(--bili-color-primary-light);
+
+      .#{$namespace}-menu-item__icon {
+        opacity: 1;
+      }
     }
 
     &.is-disabled,
@@ -155,6 +190,8 @@
   @include e(icon) {
     flex-shrink: 0;
     font-size: 16px;
+    opacity: 0.72;
+    transition: opacity var(--bili-transition-duration-fast) var(--bili-transition-function);
   }
 
   @include e(label) {
@@ -190,10 +227,26 @@
       color var(--bili-transition-duration) var(--bili-transition-function),
       background-color var(--bili-transition-duration) var(--bili-transition-function);
 
-    &:hover:not(:disabled),
-    .#{$namespace}-sub-menu.is-open > & {
+    &:hover:not(:disabled) {
       color: var(--bili-color-primary);
       background-color: var(--bili-fill-color-light);
+
+      .#{$namespace}-sub-menu__icon,
+      .#{$namespace}-sub-menu__arrow {
+        opacity: 1;
+        color: var(--bili-color-primary);
+      }
+    }
+
+    .#{$namespace}-sub-menu.is-open > & {
+      color: var(--bili-color-primary);
+      background-color: var(--bili-color-primary-light);
+
+      .#{$namespace}-sub-menu__icon,
+      .#{$namespace}-sub-menu__arrow {
+        opacity: 1;
+        color: var(--bili-color-primary);
+      }
     }
 
     &:disabled {
@@ -205,6 +258,10 @@
   @include e(icon) {
     flex-shrink: 0;
     font-size: 16px;
+    opacity: 0.72;
+    transition:
+      opacity var(--bili-transition-duration-fast) var(--bili-transition-function),
+      color var(--bili-transition-duration) var(--bili-transition-function);
   }
 
   @include e(label) {
@@ -217,24 +274,41 @@
   @include e(arrow) {
     flex-shrink: 0;
     font-size: 12px;
-    transition: transform var(--bili-transition-duration) var(--bili-transition-function-spring);
-
-    &.is-inline {
-      transform: rotate(0deg);
-    }
+    color: var(--bili-text-placeholder);
+    transition:
+      transform var(--bili-transition-duration) var(--bili-transition-function-spring),
+      color var(--bili-transition-duration) var(--bili-transition-function),
+      opacity var(--bili-transition-duration-fast) var(--bili-transition-function);
   }
 
   @include when(open) {
-    > .#{$namespace}-sub-menu__title .#{$namespace}-sub-menu__arrow.is-inline {
+    > .#{$namespace}-sub-menu__title .#{$namespace}-sub-menu__arrow.is-rotatable {
       transform: rotate(180deg);
     }
   }
 
   @include e(inline) {
+    position: relative;
     flex-direction: column;
+    gap: 2px;
     align-items: stretch;
-    padding: 0 0 0 26px;
-    animation: bili-fade-in var(--bili-transition-duration) var(--bili-transition-function);
+    padding: 2px 0 2px 30px;
+    animation: bili-menu-inline-in var(--bili-transition-duration) var(--bili-transition-function-out);
+
+    &::before {
+      position: absolute;
+      top: 4px;
+      bottom: 4px;
+      left: 20px;
+      width: 1px;
+      content: '';
+      background-color: var(--bili-border-color-light);
+    }
+
+    .#{$namespace}-menu-item__inner {
+      height: 32px;
+      font-size: var(--bili-font-size-sm);
+    }
   }
 
   @include e(popup) {
@@ -243,12 +317,17 @@
     left: 0;
     flex-direction: column;
     align-items: stretch;
-    min-width: 160px;
-    padding: 4px;
-    background-color: var(--bili-bg-elevated);
-    border: 1px solid var(--bili-border-color-light);
-    border-radius: var(--bili-radius-md);
-    box-shadow: var(--bili-shadow-base);
+    min-width: 180px;
+    max-height: min(360px, 70vh);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    transform-origin: top left;
+    @include menu-surface;
+    @include menu-scrollbar;
+
+    &[data-placement='right'] {
+      transform-origin: left center;
+    }
   }
 
   // The trigger of a collapsed rail has no label, so centre its icon.
@@ -270,17 +349,47 @@
 .bili-sub-menu__popup .bili-menu-item__inner,
 .bili-menu__panel .bili-menu-item__inner {
   width: 100%;
+  height: 34px;
+  font-size: var(--bili-font-size-sm);
+  border-radius: var(--bili-radius-base);
 }
 
-.bili-menu-popup-enter-active,
-.bili-menu-popup-leave-active {
+.bili-sub-menu__popup .bili-sub-menu__title,
+.bili-menu__panel .bili-sub-menu__title {
+  height: 34px;
+  font-size: var(--bili-font-size-sm);
+}
+
+.bili-menu-popup-enter-active {
   transition:
     opacity var(--bili-transition-duration-fast) var(--bili-transition-function),
     transform var(--bili-transition-duration) var(--bili-transition-function-out);
 }
 
+.bili-menu-popup-leave-active {
+  transition:
+    opacity var(--bili-transition-duration-fast) var(--bili-transition-function),
+    transform var(--bili-transition-duration-fast) var(--bili-transition-function-in);
+}
+
 .bili-menu-popup-enter-from,
 .bili-menu-popup-leave-to {
   opacity: 0;
-  transform: translateY(-4px) scale(0.97);
+  transform: translateY(-6px) scale(0.97);
+}
+
+.bili-sub-menu__popup[data-placement='right'].bili-menu-popup-enter-from,
+.bili-sub-menu__popup[data-placement='right'].bili-menu-popup-leave-to {
+  transform: translateX(-6px) scale(0.97);
+}
+
+@keyframes bili-menu-inline-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

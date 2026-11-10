@@ -34,15 +34,19 @@ const total = computed(() =>
 )
 const hasData = computed(() => props.data.length > 0 && total.value > 0)
 
-const legendHeight = computed(() => (props.showLegend && props.data.length > 1 ? 48 : 0))
+const legendHeight = computed(() => (props.showLegend && props.data.length > 1 ? 52 : 0))
 
 const radius = computed(() =>
-  Math.max(0, Math.min(width.value, height.value - legendHeight.value) / 2 - 8)
+  Math.max(0, Math.min(width.value, height.value - legendHeight.value) / 2 - 12)
 )
 const center = computed(() => ({
   x: width.value / 2,
   y: (height.value - legendHeight.value) / 2
 }))
+
+const innerRatio = computed(() => Math.max(0, Math.min(props.innerRadius, 0.95)))
+const innerRadius = computed(() => innerRatio.value * radius.value)
+const showTotal = computed(() => innerRatio.value >= 0.45 && hasData.value)
 
 interface Slice {
   name: string
@@ -53,11 +57,12 @@ interface Slice {
   labelX: number
   labelY: number
   midAngle: number
+  offsetX: number
+  offsetY: number
 }
 
 const slices = computed<Slice[]>(() => {
   if (!hasData.value) return []
-  const inner = Math.max(0, Math.min(props.innerRadius, 0.95)) * radius.value
   let angle = 0
 
   return props.data.map((item, index) => {
@@ -68,17 +73,21 @@ const slices = computed<Slice[]>(() => {
     angle = end
 
     const midAngle = start + sweep / 2
-    const labelRadius = (radius.value + inner) / 2
+    const labelRadius = (radius.value + innerRadius.value) / 2
+    const midRad = ((midAngle - 90) * Math.PI) / 180
 
     return {
       name: item.name,
       value,
       percent: total.value ? (value / total.value) * 100 : 0,
       color: item.color ?? paletteColor(index),
-      path: arcPath(center.value.x, center.value.y, radius.value, inner, start, end),
+      path: arcPath(center.value.x, center.value.y, radius.value, innerRadius.value, start, end),
       midAngle,
       labelX: polarPoint(center.value.x, center.value.y, labelRadius, midAngle).x,
-      labelY: polarPoint(center.value.x, center.value.y, labelRadius, midAngle).y
+      labelY: polarPoint(center.value.x, center.value.y, labelRadius, midAngle).y,
+      // Unit vector used to nudge the active slice outward.
+      offsetX: Math.cos(midRad) * 8,
+      offsetY: Math.sin(midRad) * 8
     }
   })
 })
@@ -100,14 +109,12 @@ const handleMove = (event: MouseEvent) => {
   const x = event.clientX - rect.left - center.value.x
   const y = event.clientY - rect.top - center.value.y
   const distance = Math.hypot(x, y)
-  const inner = Math.max(0, Math.min(props.innerRadius, 0.95)) * radius.value
 
-  if (distance > radius.value + 6 || distance < inner - 6) {
+  if (distance > radius.value + 6 || distance < innerRadius.value - 6) {
     hoverIndex.value = -1
     return
   }
 
-  // atan2 gives -180..180 with 0 pointing right; rotate so 0 points up.
   let angle = (Math.atan2(y, x) * 180) / Math.PI + 90
   if (angle < 0) angle += 360
 
@@ -124,6 +131,15 @@ const handleMove = (event: MouseEvent) => {
 }
 
 const handleLeave = () => {
+  hoverIndex.value = -1
+}
+
+// Hovering a legend entry previews the matching slice.
+const handleLegendEnter = (index: number) => {
+  hoverIndex.value = index
+}
+
+const handleLegendLeave = () => {
   hoverIndex.value = -1
 }
 
@@ -152,17 +168,12 @@ const handleClick = (slice: Slice, index: number) => {
   })
 }
 
-const svgStyle = computed(() => ({ height: toCssSize(props.height) }))
+const canvasStyle = computed(() => ({ height: toCssSize(props.height) }))
 </script>
 
 <template>
   <div ref="rootRef" :class="ns.b()">
-    <div
-      :class="ns.e('canvas')"
-      :style="svgStyle"
-      @mousemove="handleMove"
-      @mouseleave="handleLeave"
-    >
+    <div :class="ns.e('canvas')" :style="canvasStyle" @mousemove="handleMove" @mouseleave="handleLeave">
       <svg
         v-if="hasData && width > 0"
         :width="width"
@@ -171,10 +182,21 @@ const svgStyle = computed(() => ({ height: toCssSize(props.height) }))
         role="img"
         :aria-label="`饼图：${data.length} 个分类`"
       >
-        <g v-for="(slice, index) in slices" :key="slice.name">
+        <g
+          :class="ns.e('pie')"
+          :style="{ transformOrigin: `${center.x}px ${center.y}px` }"
+        >
           <path
+            v-for="(slice, index) in slices"
+            :key="slice.name"
             :d="slice.path"
             :fill="slice.color"
+            :style="{
+              transform:
+                hoverIndex === index
+                  ? `translate(${slice.offsetX}px, ${slice.offsetY}px)`
+                  : undefined
+            }"
             :class="[
               ns.e('slice'),
               ns.is('active', hoverIndex === index),
@@ -184,12 +206,34 @@ const svgStyle = computed(() => ({ height: toCssSize(props.height) }))
           />
         </g>
 
+        <text
+          v-if="showTotal"
+          :x="center.x"
+          :y="center.y - 2"
+          :class="ns.e('pie-total')"
+          text-anchor="middle"
+          dominant-baseline="middle"
+        >
+          {{ formatter(total) }}
+        </text>
+        <text
+          v-if="showTotal"
+          :x="center.x"
+          :y="center.y + 22"
+          :class="ns.e('pie-total-label')"
+          text-anchor="middle"
+          dominant-baseline="middle"
+        >
+          总计
+        </text>
+
         <template v-if="showLabels">
           <text
-            v-for="slice in slices"
+            v-for="(slice, index) in slices"
             :key="`label-${slice.name}`"
             :x="slice.labelX"
             :y="slice.labelY"
+            :style="{ animationDelay: `${180 + index * 45}ms` }"
             :class="ns.e('slice-label')"
             text-anchor="middle"
             dominant-baseline="middle"
@@ -199,7 +243,10 @@ const svgStyle = computed(() => ({ height: toCssSize(props.height) }))
         </template>
       </svg>
 
-      <div v-else :class="ns.e('empty')">{{ emptyText }}</div>
+      <div v-else :class="ns.e('empty')">
+        <span :class="ns.e('empty-mark')" aria-hidden="true" />
+        <span>{{ emptyText }}</span>
+      </div>
 
       <ChartTooltip
         v-if="tooltip"
@@ -211,6 +258,11 @@ const svgStyle = computed(() => ({ height: toCssSize(props.height) }))
       />
     </div>
 
-    <ChartLegend v-if="showLegend && data.length > 1" :items="legendItems" />
+    <ChartLegend
+      v-if="showLegend && data.length > 1"
+      :items="legendItems"
+      @item-enter="handleLegendEnter"
+      @item-leave="handleLegendLeave"
+    />
   </div>
 </template>

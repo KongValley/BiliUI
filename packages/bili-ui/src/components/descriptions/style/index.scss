@@ -1,0 +1,119 @@
+@use '../../../styles/mixins' as *;
+
+@include b(descriptions) {
+  --bili-descriptions-label-color: var(--bili-text-secondary);
+
+  font-size: var(--bili-font-size-sm);
+  color: var(--bili-text-regular);
+
+  @include e(header) {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  @include e(title) {
+    font-size: var(--bili-font-size-base);
+    font-weight: var(--bili-font-weight-semibold);
+    color: var(--bili-text-primary);
+  }
+
+  @include e(extra) {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  @include e(body) {
+    display: grid;
+    grid-template-columns: repeat(var(--bili-descriptions-columns, 3), minmax(0, 1fr));
+    gap: 12px 24px;
+  }
+
+  @include m(size-sm) {
+    .#{$namespace}-descriptions-item__label,
+    .#{$namespace}-descriptions-item__content {
+      padding-top: 4px;
+      padding-bottom: 4px;
+    }
+  }
+
+  @include m(size-lg) {
+    .#{$namespace}-descriptions-item__label,
+    .#{$namespace}-descriptions-item__content {
+      padding-top: 12px;
+      padding-bottom: 12px;
+    }
+  }
+
+  // Bordered mode: turn the grid into a table-like block where each cell has
+  // its own frame and labels sit in a tinted column.
+  @include is(bordered) {
+    .#{$namespace}-descriptions__body {
+      gap: 0;
+      overflow: hidden;
+      border: 1px solid var(--bili-border-color-light);
+      border-radius: var(--bili-radius-md);
+    }
+
+    .#{$namespace}-descriptions-item {
+      border-right: 1px solid var(--bili-border-color-light);
+      border-bottom: 1px solid var(--bili-border-color-light);
+    }
+
+    .#{$namespace}-descriptions-item__label {
+      padding: 8px 12px;
+      background-color: var(--bili-fill-color-lighter);
+      border-right: 1px solid var(--bili-border-color-light);
+    }
+
+    .#{$namespace}-descriptions-item__content {
+      padding: 8px 12px;
+    }
+  }
+}
+
+@include b(descriptions-item) {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  min-width: 0;
+
+  @include e(label) {
+    flex: none;
+    color: var(--bili-descriptions-label-color);
+
+    &::after {
+      content: '';
+    }
+  }
+
+  @include e(content) {
+    flex: 1;
+    min-width: 0;
+    color: var(--bili-text-regular);
+    word-break: break-word;
+  }
+
+  @include is(vertical) {
+    flex-direction: column;
+    gap: 2px;
+    align-items: flex-start;
+  }
+
+  @include is(bordered) {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0;
+    align-items: stretch;
+  }
+}
+
+// Horizontal labels show a colon separator, mirroring common admin layouts.
+.bili-descriptions:not(.is-bordered) .bili-descriptions-item:not(.is-vertical) {
+  .bili-descriptions-item__label::after {
+    content: '：';
+  }
+}

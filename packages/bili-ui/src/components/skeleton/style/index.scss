@@ -1,0 +1,108 @@
+@use '../../../styles/mixins' as *;
+
+@include b(skeleton) {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+
+  @include e(header) {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+  }
+
+  @include e(header-lines) {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  @include e(content) {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  @include e(title) {
+    margin-bottom: 2px;
+  }
+
+  // Sweeping highlight shared by every item in the tree.
+  @include when(animated) {
+    .#{$namespace}-skeleton-item {
+      position: relative;
+      overflow: hidden;
+
+      &::after {
+        position: absolute;
+        inset: 0;
+        content: '';
+        background-image: linear-gradient(
+          90deg,
+          transparent 0,
+          rgba(255, 255, 255, 0.55) 50%,
+          transparent 100%
+        );
+        transform: translateX(-100%);
+        animation: bili-skeleton-shimmer 1.6s var(--bili-transition-function) infinite;
+      }
+    }
+  }
+}
+
+html.dark .bili-skeleton.is-animated .bili-skeleton-item::after {
+  background-image: linear-gradient(
+    90deg,
+    transparent 0,
+    rgba(255, 255, 255, 0.08) 50%,
+    transparent 100%
+  );
+}
+
+@include b(skeleton-item) {
+  display: block;
+  background-color: var(--bili-fill-color);
+
+  @include m(text) {
+    width: 100%;
+    height: 14px;
+    border-radius: var(--bili-radius-sm);
+  }
+
+  @include m(circle) {
+    flex: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+
+  @include m(image) {
+    width: 100%;
+    height: 120px;
+    border-radius: var(--bili-radius-md);
+  }
+
+  @include m(rect) {
+    width: 100%;
+    height: 16px;
+    border-radius: var(--bili-radius-sm);
+  }
+
+  @include m(button) {
+    width: 80px;
+    height: 32px;
+    border-radius: var(--bili-radius-base);
+  }
+}
+
+@keyframes bili-skeleton-shimmer {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}

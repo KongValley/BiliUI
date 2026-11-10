@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, type CSSProperties } from 'vue'
+import type { Placement } from '@floating-ui/dom'
 import { useNamespace } from '../../../hooks/use-namespace'
 import { useFloating } from '../../../hooks/use-floating'
 import { useClickOutside } from '../../../hooks/use-click-outside'
@@ -30,15 +31,21 @@ const opened = computed(() => menu.isOpen(props.subKey))
 const expanded = computed(() => (isInline.value ? opened.value : popupVisible.value))
 const showLabel = computed(() => !menu.collapsed.value || menu.inPanel)
 
-const placement = computed(() => {
-  if (menu.mode.value === 'horizontal') return 'bottom-start' as const
-  return menu.collapsed.value && !menu.inPanel ? ('right-start' as const) : ('right-start' as const)
-})
+// Nested panels always open to the side; horizontal top-level items open below.
+const opensToSide = computed(
+  () => menu.inPanel || (menu.mode.value === 'vertical' && menu.collapsed.value)
+)
+
+const arrowName = computed(() => (opensToSide.value ? 'chevron-right' : 'chevron-down'))
+
+const placement = computed<Placement>(() =>
+  opensToSide.value ? 'right-start' : 'bottom-start'
+)
 
 const { floatingStyles, isPositioned, placement: resolvedPlacement } = useFloating(
   triggerRef,
   popupRef,
-  { placement: placement.value, offset: 4 }
+  { placement, offset: 4 }
 )
 
 const popupStyles = computed<CSSProperties>(() => ({
@@ -125,8 +132,8 @@ useClickOutside([triggerRef, popupRef], () => {
       </span>
       <BiliIcon
         v-if="showLabel"
-        :class="[ns.e('arrow'), ns.is('inline', isInline)]"
-        :name="isInline ? 'chevron-down' : 'chevron-right'"
+        :class="[ns.e('arrow'), ns.is('rotatable', !opensToSide)]"
+        :name="arrowName"
       />
     </button>
 

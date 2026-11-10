@@ -1,0 +1,73 @@
+@use '../../../styles/mixins' as *;
+
+@include b(empty) {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 32px 16px;
+  text-align: center;
+
+  @include e(image) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--bili-text-placeholder);
+  }
+
+  @include e(svg) {
+    width: 120px;
+    height: 90px;
+    stroke-width: 2;
+    opacity: 0.85;
+
+    path,
+    rect,
+    circle,
+    ellipse {
+      vector-effect: non-scaling-stroke;
+    }
+  }
+
+  @include e(description) {
+    font-size: var(--bili-font-size-sm);
+    line-height: 1.5;
+    color: var(--bili-text-secondary);
+  }
+
+  @include e(footer) {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+  }
+
+  @include when(small) {
+    gap: 8px;
+    padding: 16px 12px;
+
+    .#{$namespace}-empty__svg {
+      width: 72px;
+      height: 54px;
+    }
+
+    .#{$namespace}-empty__description {
+      font-size: var(--bili-font-size-xs);
+    }
+  }
+
+  @include m(search) {
+    .#{$namespace}-empty__image {
+      color: var(--bili-chart-color-2);
+    }
+  }
+
+  @include m(data) {
+    .#{$namespace}-empty__image {
+      color: var(--bili-chart-color-3);
+    }
+  }
+}

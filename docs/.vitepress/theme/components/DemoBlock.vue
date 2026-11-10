@@ -1,28 +1,19 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
-const props = defineProps<{
-  code?: string
-  title?: string
-}>()
+const props = withDefaults(
+  defineProps<{
+    code?: string
+    title?: string
+    /** Language hint forwarded to the code block's highlighter. */
+    language?: string
+  }>(),
+  { language: 'vue' }
+)
 
 const expanded = ref(false)
-const copied = ref(false)
-let copyTimer: ReturnType<typeof setTimeout> | null = null
 
-const copy = async () => {
-  if (!props.code) return
-  try {
-    await navigator.clipboard.writeText(props.code)
-    copied.value = true
-    if (copyTimer) clearTimeout(copyTimer)
-    copyTimer = setTimeout(() => {
-      copied.value = false
-    }, 1600)
-  } catch {
-    copied.value = false
-  }
-}
+const lines = computed(() => (props.code ? props.code.trimEnd().split('\n').length : 0))
 </script>
 
 <template>
@@ -32,14 +23,20 @@ const copy = async () => {
       <slot />
     </div>
     <div class="demo-block__toolbar">
+      <span v-if="code" class="demo-block__meta">{{ lines }} 行</span>
       <button class="demo-block__button" type="button" @click="expanded = !expanded">
         {{ expanded ? '收起代码' : '查看代码' }}
       </button>
-      <button class="demo-block__button" type="button" @click="copy">
-        {{ copied ? '已复制' : '复制代码' }}
-      </button>
     </div>
-    <pre v-show="expanded" class="demo-block__code"><code>{{ code }}</code></pre>
+    <div v-show="expanded" class="demo-block__code">
+      <BiliCodeBlock
+        :code="code ?? ''"
+        :language="language"
+        :max-height="440"
+        show-line-numbers
+        wrap
+      />
+    </div>
   </div>
 </template>
 
@@ -64,17 +61,23 @@ const copy = async () => {
   flex-wrap: wrap;
   gap: 12px;
   align-items: center;
-  padding: 24px;
   min-height: 80px;
+  padding: 24px;
 }
 
 .demo-block__toolbar {
   display: flex;
-  gap: 16px;
+  flex-shrink: 0;
+  gap: 14px;
+  align-items: center;
   justify-content: flex-end;
   padding: 8px 14px;
-  background: var(--vp-c-bg-alt);
-  border-top: 1px solid var(--vp-c-divider);
+}
+
+.demo-block__meta {
+  margin-right: auto;
+  font-size: 12px;
+  color: var(--vp-c-text-3);
 }
 
 .demo-block__button {
@@ -95,18 +98,22 @@ const copy = async () => {
 }
 
 .demo-block__code {
-  max-height: 440px;
-  padding: 16px 20px;
-  margin: 0;
-  overflow: auto;
-  font-family: var(--bili-font-family-mono);
-  font-size: 12.5px;
-  line-height: 1.65;
-  color: var(--vp-code-block-color, var(--vp-c-text-1));
+  padding: 0 12px 12px;
+}
+
+/* The host docs styles target `pre`/`ul` broadly; reset what leaks in. */
+.demo-block__code :deep(.bili-code-block) {
   background: var(--vp-code-block-bg);
 }
 
-.demo-block__code code {
-  font-family: inherit;
+.demo-block__code :deep(.bili-code-block__pre) {
+  margin: 0;
+  background: transparent;
+  border-radius: 0;
+}
+
+.demo-block__code :deep(.bili-code-block__code) {
+  padding: 10px 0;
+  font-size: 12.5px;
 }
 </style>

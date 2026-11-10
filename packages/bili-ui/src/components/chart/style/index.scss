@@ -4,6 +4,7 @@
   position: relative;
   width: 100%;
   font-family: var(--bili-font-family);
+  color: var(--bili-text-regular);
 
   @include e(canvas) {
     position: relative;
@@ -15,38 +16,73 @@
     overflow: visible;
   }
 
+  // -------------------------------------------------------------- axes & grid
   @include e(grid-line) {
     stroke: var(--bili-chart-grid-color);
     stroke-width: 1;
-    stroke-dasharray: 3 4;
+    shape-rendering: crispEdges;
   }
 
   @include e(axis-label) {
     font-size: 11px;
     fill: var(--bili-chart-label-color);
     font-variant-numeric: tabular-nums;
+    letter-spacing: 0.01em;
+  }
+
+  // ------------------------------------------------------------------- lines
+  @include e(series) {
+    transition: opacity var(--bili-transition-duration) var(--bili-transition-function);
+
+    &.is-muted {
+      opacity: 0.24;
+    }
   }
 
   @include e(line) {
-    stroke-width: 2;
+    stroke-width: 2.5;
     stroke-linecap: round;
     stroke-linejoin: round;
+    filter: drop-shadow(0 2px 4px rgba(31, 35, 41, 0.1));
+    // `pathLength="100"` normalises every line so one keyframe draws them all.
+    stroke-dasharray: 100;
+    animation: bili-chart-line-draw 0.9s linear both;
   }
 
+  // The gradient itself carries the opacity, so no extra fill alpha here.
   @include e(area) {
-    opacity: 0.12;
     stroke: none;
+    animation: bili-chart-fade-in 0.4s var(--bili-transition-function-out) 0.7s both;
+  }
+
+  @include e(dot) {
+    stroke: var(--bili-bg-container);
+    stroke-width: 1.6;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: bili-chart-dot-in 0.45s var(--bili-transition-function-spring) both;
   }
 
   @include e(guide) {
     stroke: var(--bili-border-color);
     stroke-width: 1;
-    stroke-dasharray: 4 3;
+    stroke-dasharray: 4 4;
+    animation: bili-chart-fade-in 0.18s var(--bili-transition-function-out) both;
+  }
+
+  @include e(active-halo) {
+    opacity: 0.16;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: bili-chart-halo-in 0.28s var(--bili-transition-function-spring) both;
   }
 
   @include e(active-dot) {
     stroke: var(--bili-bg-container);
     stroke-width: 2;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: bili-chart-dot-pop 0.24s var(--bili-transition-function-spring) both;
   }
 
   @include e(hit-area) {
@@ -54,94 +90,220 @@
     cursor: pointer;
   }
 
+  // -------------------------------------------------------------------- bars
+  @include e(band) {
+    fill: var(--bili-fill-color-light);
+    opacity: 0.9;
+    animation: bili-chart-fade-in 0.18s var(--bili-transition-function-out) both;
+  }
+
   @include e(bar) {
     cursor: pointer;
-    transition: opacity var(--bili-transition-duration-fast) var(--bili-transition-function);
+    transform-box: fill-box;
+    transform-origin: center bottom;
+    animation: bili-chart-bar-grow 0.6s var(--bili-transition-function) both;
+    transition:
+      opacity var(--bili-transition-duration-fast) var(--bili-transition-function),
+      filter var(--bili-transition-duration-fast) var(--bili-transition-function);
 
-    &.is-dimmed {
-      opacity: 0.35;
+    &.is-active {
+      filter: brightness(1.06);
     }
+
+    &:active {
+      filter: brightness(0.94);
+    }
+
+    &.is-dimmed,
+    &.is-muted {
+      opacity: 0.32;
+    }
+
+    &.is-muted {
+      opacity: 0.2;
+    }
+  }
+
+  @include when(horizontal) {
+    .#{$namespace}-chart__bar {
+      transform-origin: left center;
+      animation-name: bili-chart-bar-grow-x;
+    }
+  }
+
+  // ------------------------------------------------------------- pie / donut
+  @include e(pie) {
+    transform-box: view-box;
+    animation: bili-chart-pie-in 0.55s var(--bili-transition-function-out) both;
   }
 
   @include e(slice) {
     cursor: pointer;
+    stroke: var(--bili-bg-container);
+    stroke-width: 2;
     transition:
+      transform 0.26s var(--bili-transition-function-spring),
       opacity var(--bili-transition-duration-fast) var(--bili-transition-function),
-      transform var(--bili-transition-duration-fast) var(--bili-transition-function-out);
+      filter var(--bili-transition-duration-fast) var(--bili-transition-function);
 
     &.is-dimmed {
-      opacity: 0.45;
+      opacity: 0.4;
     }
 
     &.is-active {
-      opacity: 1;
+      filter: brightness(1.06) drop-shadow(0 2px 4px rgba(8, 10, 14, 0.18));
+    }
+
+    &:active {
+      filter: brightness(0.94);
     }
   }
 
   @include e(slice-label) {
     font-size: 11px;
-    font-weight: var(--bili-font-weight-medium);
+    font-weight: var(--bili-font-weight-semibold);
     fill: var(--bili-color-white);
     pointer-events: none;
+    animation: bili-chart-fade-in 0.35s var(--bili-transition-function-out) both;
   }
 
-  @include e(gauge-track) {
-    fill: var(--bili-fill-color);
-  }
-
-  @include e(gauge-value) {
-    transition: opacity var(--bili-transition-duration) var(--bili-transition-function);
-  }
-
-  @include e(gauge-number) {
-    font-size: 30px;
+  @include e(pie-total) {
+    font-size: 24px;
     font-weight: var(--bili-font-weight-semibold);
     fill: var(--bili-text-primary);
     font-variant-numeric: tabular-nums;
+    animation: bili-chart-fade-in 0.45s var(--bili-transition-function-out) 0.1s both;
+  }
+
+  @include e(pie-total-label) {
+    font-size: 12px;
+    fill: var(--bili-text-secondary);
+    animation: bili-chart-fade-in 0.45s var(--bili-transition-function-out) 0.18s both;
+  }
+
+  // ------------------------------------------------------------------- gauge
+  @include e(gauge-track) {
+    stroke: var(--bili-border-color-light);
+    stroke-linecap: round;
+    // `backwards` (not `both`) keeps the entrance effect only until it ends:
+    // a permanently filling transform/opacity animation pins these elements
+    // to their own compositor layers, which makes the knob and the arc repaint
+    // at different times during fast drags (visible tearing).
+    animation: bili-chart-fade-in 0.5s var(--bili-transition-function-out) backwards;
+  }
+
+  @include e(gauge-value) {
+    stroke-linecap: round;
+    animation: bili-chart-fade-in 0.5s var(--bili-transition-function-out) 0.08s backwards;
+  }
+
+  @include e(gauge-knob) {
+    stroke: var(--bili-bg-container);
+    stroke-width: 2.5;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: bili-chart-dot-in 0.5s var(--bili-transition-function-spring) 0.12s backwards;
+  }
+
+  @include e(gauge-number) {
+    font-size: 34px;
+    font-weight: var(--bili-font-weight-semibold);
+    fill: var(--bili-text-primary);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: bili-chart-number-in 0.55s var(--bili-transition-function-out) 0.06s backwards;
   }
 
   @include e(gauge-unit) {
     font-size: 14px;
     font-weight: var(--bili-font-weight-regular);
     fill: var(--bili-text-secondary);
+    letter-spacing: 0;
   }
 
   @include e(gauge-label) {
     font-size: 13px;
     fill: var(--bili-text-secondary);
+    animation: bili-chart-fade-in 0.45s var(--bili-transition-function-out) 0.16s backwards;
   }
 
   @include e(gauge-scale) {
     font-size: 11px;
     fill: var(--bili-text-placeholder);
+    font-variant-numeric: tabular-nums;
+    animation: bili-chart-fade-in 0.4s var(--bili-transition-function-out) 0.24s backwards;
   }
 
+  // ------------------------------------------------------------------- empty
   @include e(empty) {
     display: flex;
+    flex-direction: column;
+    gap: 10px;
     align-items: center;
     justify-content: center;
     height: 100%;
     font-size: var(--bili-font-size-sm);
     color: var(--bili-text-secondary);
   }
+
+  // A tiny placeholder chart glyph instead of a bare line of text.
+  @include e(empty-mark) {
+    position: relative;
+    width: 34px;
+    height: 24px;
+    overflow: hidden;
+    border: 1.5px solid var(--bili-border-color);
+    border-radius: 4px;
+
+    &::after {
+      position: absolute;
+      right: 4px;
+      bottom: 4px;
+      left: 4px;
+      height: 10px;
+      content: '';
+      background: linear-gradient(
+        135deg,
+        transparent 0 40%,
+        var(--bili-border-color) 40% 55%,
+        transparent 55%
+      );
+      border-radius: 1px;
+      opacity: 0.9;
+    }
+  }
 }
 
 @include b(chart-legend) {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 16px;
+  gap: 6px 18px;
   justify-content: center;
-  padding: 4px 0 0;
-  margin: 0;
+  // Host docs styles (`.vp-doc ul`, `.vp-doc li + li`) would otherwise add
+  // margins/padding and lift the first legend item off the shared baseline.
+  padding: 12px 0 0 !important;
+  margin: 0 !important;
   list-style: none !important;
 
   @include e(item) {
     display: inline-flex;
     gap: 6px;
     align-items: center;
+    margin: 0 !important;
     font-size: var(--bili-font-size-xs);
     color: var(--bili-text-secondary);
     list-style: none !important;
+    transition: color var(--bili-transition-duration) var(--bili-transition-function);
+
+    &:hover {
+      color: var(--bili-text-primary);
+
+      .#{$namespace}-chart-legend__dot {
+        transform: scale(1.3);
+      }
+    }
 
     &.is-muted {
       opacity: 0.5;
@@ -151,7 +313,9 @@
   @include e(dot) {
     width: 8px;
     height: 8px;
-    border-radius: 2px;
+    border-radius: 3px;
+    box-shadow: 0 0 0 1px rgba(31, 35, 41, 0.04);
+    transition: transform 0.2s var(--bili-transition-function-spring);
   }
 
   @include e(text) {
@@ -162,19 +326,21 @@
 @include b(chart-tooltip) {
   position: absolute;
   z-index: 3;
-  min-width: 108px;
-  padding: 8px 10px;
+  min-width: 118px;
+  padding: 9px 12px;
   font-size: var(--bili-font-size-xs);
   line-height: 1.6;
   color: var(--bili-text-primary);
   pointer-events: none;
   background-color: var(--bili-bg-elevated);
   border: 1px solid var(--bili-border-color-light);
-  border-radius: var(--bili-radius-base);
-  box-shadow: var(--bili-shadow-base);
+  border-radius: var(--bili-radius-md);
+  box-shadow: var(--bili-shadow-md);
+  animation: bili-chart-tooltip-in 0.16s var(--bili-transition-function-out) both;
 
   @include e(title) {
-    margin-bottom: 4px;
+    margin-bottom: 5px;
+    font-size: 11px;
     font-weight: var(--bili-font-weight-medium);
     color: var(--bili-text-secondary);
   }
@@ -184,22 +350,139 @@
     gap: 8px;
     align-items: center;
     white-space: nowrap;
+
+    & + & {
+      margin-top: 2px;
+    }
   }
 
   @include e(dot) {
-    width: 6px;
-    height: 6px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
+    box-shadow: 0 0 0 1px rgba(31, 35, 41, 0.04);
   }
 
   @include e(name) {
     flex: 1;
+    margin-right: 12px;
     color: var(--bili-text-secondary);
   }
 
   @include e(value) {
-    font-weight: var(--bili-font-weight-medium);
+    font-weight: var(--bili-font-weight-semibold);
     font-variant-numeric: tabular-nums;
     color: var(--bili-text-primary);
+  }
+}
+
+@keyframes bili-chart-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bili-chart-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes bili-chart-line-draw {
+  from {
+    stroke-dashoffset: 100;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes bili-chart-dot-in {
+  from {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes bili-chart-dot-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.35);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes bili-chart-halo-in {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 0.16;
+    transform: scale(1);
+  }
+}
+
+@keyframes bili-chart-pie-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes bili-chart-number-in {
+  from {
+    opacity: 0;
+    transform: translateY(5px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes bili-chart-bar-grow {
+  from {
+    transform: scaleY(0.05);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes bili-chart-bar-grow-x {
+  from {
+    transform: scaleX(0.05);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes bili-chart-tooltip-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }

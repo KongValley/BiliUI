@@ -1,0 +1,117 @@
+@use '../../../styles/mixins' as *;
+
+@include b(alert) {
+  --bili-alert-color: var(--bili-color-primary);
+  --bili-alert-bg: var(--bili-color-primary-light);
+  --bili-alert-border: var(--bili-color-primary);
+
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 10px 14px;
+  font-size: var(--bili-font-size-sm);
+  line-height: 1.6;
+  color: var(--bili-text-regular);
+  background-color: var(--bili-alert-bg);
+  border-radius: var(--bili-radius-md);
+
+  @include m(info) {
+    --bili-alert-color: var(--bili-color-info);
+    --bili-alert-bg: var(--bili-color-info-light);
+    --bili-alert-border: var(--bili-color-info);
+  }
+
+  @include m(success) {
+    --bili-alert-color: var(--bili-color-success);
+    --bili-alert-bg: var(--bili-color-success-light);
+    --bili-alert-border: var(--bili-color-success);
+  }
+
+  @include m(warning) {
+    --bili-alert-color: var(--bili-color-warning);
+    --bili-alert-bg: var(--bili-color-warning-light);
+    --bili-alert-border: var(--bili-color-warning);
+  }
+
+  @include m(error) {
+    --bili-alert-color: var(--bili-color-danger);
+    --bili-alert-bg: var(--bili-color-danger-light);
+    --bili-alert-border: var(--bili-color-danger);
+  }
+
+  @include when(bordered) {
+    border: 1px solid var(--bili-alert-border);
+  }
+
+  @include e(icon) {
+    flex: none;
+    margin-top: 3px;
+    font-size: 16px;
+    color: var(--bili-alert-color);
+  }
+
+  @include e(content) {
+    flex: 1;
+    min-width: 0;
+  }
+
+  @include e(title) {
+    font-weight: var(--bili-font-weight-medium);
+    color: var(--bili-text-primary);
+
+    & + .#{$namespace}-alert__description {
+      margin-top: 2px;
+    }
+  }
+
+  @include e(description) {
+    color: var(--bili-text-secondary);
+  }
+
+  @include e(close) {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    font-size: 14px;
+    color: var(--bili-text-secondary);
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    border-radius: var(--bili-radius-sm);
+    transition:
+      color var(--bili-transition-duration-fast) var(--bili-transition-function),
+      background-color var(--bili-transition-duration-fast) var(--bili-transition-function),
+      transform var(--bili-transition-duration-fast) var(--bili-transition-function-spring);
+
+    &:hover {
+      color: var(--bili-text-primary);
+      background-color: rgba(255, 255, 255, 0.5);
+      transform: rotate(90deg);
+    }
+
+    &:active {
+      transform: rotate(90deg) scale(0.9);
+    }
+  }
+}
+
+html.dark .bili-alert__close:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.bili-alert-enter-active,
+.bili-alert-leave-active {
+  transition:
+    opacity var(--bili-transition-duration) var(--bili-transition-function),
+    transform var(--bili-transition-duration) var(--bili-transition-function-out);
+}
+
+.bili-alert-enter-from,
+.bili-alert-leave-to {
+  opacity: 0;
+  transform: translateY(-4px);
+}

@@ -1,0 +1,211 @@
+@use '../../../styles/mixins' as *;
+
+@include b(steps) {
+  display: flex;
+  width: 100%;
+
+  @include m(horizontal) {
+    flex-direction: row;
+    gap: 0;
+  }
+
+  @include m(vertical) {
+    flex-direction: column;
+
+    .#{$namespace}-step {
+      flex-direction: row;
+      padding-bottom: 20px;
+    }
+
+    .#{$namespace}-step__head {
+      flex-direction: column;
+    }
+
+    .#{$namespace}-step__line {
+      width: 2px;
+      height: auto;
+      min-height: 24px;
+      margin: 6px 0;
+    }
+
+    .#{$namespace}-step__main {
+      padding: 0 0 0 12px;
+    }
+  }
+
+  @include is(clickable) {
+    .#{$namespace}-step.is-clickable:not(.bili-step--wait) {
+      cursor: pointer;
+    }
+  }
+}
+
+@include b(step) {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  font-size: var(--bili-font-size-sm);
+
+  // ------------------------------------------------------------------ head
+  @include e(head) {
+    display: flex;
+    flex: 1;
+    align-items: center;
+  }
+
+  @include e(icon) {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+    font-weight: var(--bili-font-weight-semibold);
+    font-variant-numeric: tabular-nums;
+    color: var(--bili-text-secondary);
+    background-color: var(--bili-bg-container);
+    border: 2px solid var(--bili-border-color);
+    border-radius: 50%;
+    transition:
+      color var(--bili-transition-duration) var(--bili-transition-function),
+      border-color var(--bili-transition-duration) var(--bili-transition-function),
+      background-color var(--bili-transition-duration) var(--bili-transition-function);
+  }
+
+  @include e(number) {
+    line-height: 1;
+  }
+
+  @include e(line) {
+    flex: 1;
+    height: 2px;
+    margin: 0 8px;
+    background-color: var(--bili-border-color-light);
+    transition: background-color var(--bili-transition-duration) var(--bili-transition-function);
+  }
+
+  // ------------------------------------------------------------------ main
+  @include e(main) {
+    flex: none;
+    max-width: 180px;
+    padding: 8px 12px 0 0;
+    text-align: left;
+  }
+
+  @include e(title) {
+    font-weight: var(--bili-font-weight-medium);
+    line-height: 1.4;
+    color: var(--bili-text-primary);
+  }
+
+  @include e(description) {
+    margin-top: 2px;
+    font-size: var(--bili-font-size-xs);
+    line-height: 1.5;
+    color: var(--bili-text-secondary);
+  }
+
+  @include m(process) {
+    .#{$namespace}-step__icon {
+      color: var(--bili-color-on-primary);
+      background-color: var(--bili-color-primary);
+      border-color: var(--bili-color-primary);
+      box-shadow: 0 0 0 3px var(--bili-color-primary-light);
+    }
+
+    .#{$namespace}-step__title {
+      color: var(--bili-color-primary);
+    }
+  }
+
+  @include m(finish) {
+    .#{$namespace}-step__icon {
+      color: var(--bili-color-white);
+      background-color: var(--bili-color-primary);
+      border-color: var(--bili-color-primary);
+    }
+
+    .#{$namespace}-step__line {
+      background-color: var(--bili-color-primary);
+    }
+  }
+
+  @include m(error) {
+    .#{$namespace}-step__icon {
+      color: var(--bili-color-white);
+      background-color: var(--bili-color-danger);
+      border-color: var(--bili-color-danger);
+    }
+
+    .#{$namespace}-step__title {
+      color: var(--bili-color-danger);
+    }
+
+    .#{$namespace}-step__line {
+      background-color: var(--bili-color-danger-light);
+    }
+  }
+
+  @include m(wait) {
+    .#{$namespace}-step__title {
+      color: var(--bili-text-secondary);
+    }
+  }
+
+  @include when(clickable) {
+    &:not(.bili-step--wait):hover {
+      .#{$namespace}-step__title {
+        color: var(--bili-color-primary-hover);
+      }
+
+      .#{$namespace}-step__icon {
+        border-color: var(--bili-color-primary);
+      }
+    }
+  }
+
+  @include when(last) {
+    .#{$namespace}-step__line {
+      display: none;
+    }
+  }
+}
+
+// Simple mode: inline titles separated by a chevron, no descriptions.
+.bili-steps.is-simple {
+  .bili-step {
+    flex: none;
+    align-items: center;
+  }
+
+  .bili-step__main {
+    max-width: none;
+    padding: 0 0 0 8px;
+  }
+
+  .bili-step__icon {
+    width: 20px;
+    height: 20px;
+    border-width: 1.5px;
+  }
+
+  .bili-step__title {
+    white-space: nowrap;
+  }
+
+  .bili-step__line {
+    display: none;
+  }
+
+  .bili-step::after {
+    padding: 0 10px;
+    color: var(--bili-text-placeholder);
+    content: '›';
+  }
+
+  .bili-step:last-child::after {
+    content: '';
+    padding: 0;
+  }
+}

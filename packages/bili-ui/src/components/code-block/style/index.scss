@@ -1,0 +1,211 @@
+@use '../../../styles/mixins' as *;
+
+@include b(code-block) {
+  overflow: hidden;
+  font-family: var(--bili-font-family-mono);
+  background: var(--bili-code-bg);
+  border: 1px solid var(--bili-border-color-light);
+  border-radius: var(--bili-radius-lg);
+
+  // ---------------------------------------------------------------- header
+  @include e(header) {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 38px;
+    padding: 0 8px 0 14px;
+    background: var(--bili-code-header-bg);
+    border-bottom: 1px solid var(--bili-border-color-lighter);
+  }
+
+  @include e(heading) {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    min-width: 0;
+  }
+
+  @include e(title) {
+    overflow: hidden;
+    font-family: var(--bili-font-family);
+    font-size: var(--bili-font-size-xs);
+    font-weight: var(--bili-font-weight-medium);
+    color: var(--bili-text-primary);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  @include e(language) {
+    flex: none;
+    padding: 1px 6px;
+    font-family: var(--bili-font-family-mono);
+    font-size: 11px;
+    line-height: 16px;
+    color: var(--bili-text-secondary);
+    background: var(--bili-fill-color-light);
+    border-radius: var(--bili-radius-sm);
+  }
+
+  @include e(actions) {
+    display: flex;
+    flex: none;
+    gap: 4px;
+    align-items: center;
+  }
+
+  @include e(copy) {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+    height: 26px;
+    padding: 0 8px;
+    font-family: var(--bili-font-family);
+    font-size: var(--bili-font-size-xs);
+    color: var(--bili-text-secondary);
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    border-radius: var(--bili-radius-sm);
+    transition:
+      color var(--bili-transition-duration-fast) var(--bili-transition-function),
+      background-color var(--bili-transition-duration-fast) var(--bili-transition-function),
+      transform var(--bili-transition-duration-fast) var(--bili-transition-function);
+
+    &:hover {
+      color: var(--bili-text-primary);
+      background: var(--bili-fill-color-light);
+    }
+
+    &:active {
+      transform: scale(0.96);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--bili-color-primary);
+      outline-offset: 1px;
+    }
+
+    &.is-copied {
+      color: var(--bili-color-success);
+      background: var(--bili-color-success-light);
+    }
+  }
+
+  // ------------------------------------------------------------------ body
+  @include e(pre) {
+    margin: 0;
+    overflow: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--bili-border-color) transparent;
+
+    &.is-wrap {
+      .#{$namespace}-code-block__line-content {
+        flex: 1;
+        min-width: 0;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+    }
+
+    &::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: var(--bili-border-color);
+      border-radius: var(--bili-radius-round);
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+  }
+
+  @include e(code) {
+    display: block;
+    padding: 12px 0;
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--bili-code-text);
+    tab-size: 2;
+  }
+
+  // Descendant form (specificity 0,2,0) so host page rules such as
+  // `.vp-doc code { font-family: var(--vp-font-family-base) }` cannot win.
+  .#{$namespace}-code-block__code {
+    font-family: var(--bili-font-family-mono);
+  }
+
+  @include e(line) {
+    display: flex;
+    min-height: 1.65em;
+  }
+
+  @include e(line-number) {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    flex: none;
+    width: var(--bili-code-gutter, 3ch);
+    padding: 0 10px 0 8px;
+    font-size: 12px;
+    color: var(--bili-code-line-number);
+    text-align: right;
+    user-select: none;
+    background: var(--bili-code-bg);
+    border-right: 1px solid var(--bili-border-color-lighter);
+  }
+
+  @include e(line-content) {
+    flex: 0 0 auto;
+    padding: 0 16px 0 14px;
+    white-space: pre;
+  }
+
+  // ----------------------------------------------------------------- tokens
+  @include e(token) {
+    &--keyword {
+      color: var(--bili-code-keyword-color);
+    }
+
+    &--string {
+      color: var(--bili-code-string-color);
+    }
+
+    &--comment {
+      color: var(--bili-code-comment-color);
+      font-style: italic;
+    }
+
+    &--number {
+      color: var(--bili-code-number-color);
+    }
+
+    &--function {
+      color: var(--bili-code-function-color);
+    }
+
+    &--tag {
+      color: var(--bili-code-tag-color);
+    }
+
+    &--attr {
+      color: var(--bili-code-attr-color);
+    }
+
+    &--property {
+      color: var(--bili-code-property-color);
+    }
+
+    &--operator {
+      color: var(--bili-code-operator-color);
+    }
+
+    &--punctuation {
+      color: var(--bili-code-punctuation-color);
+    }
+  }
+}

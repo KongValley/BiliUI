@@ -1,0 +1,246 @@
+@use '../../../styles/mixins' as *;
+
+@include b(tabs) {
+  --bili-tabs-height: 40px;
+  --bili-tabs-gap: 28px;
+
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  font-size: var(--bili-font-size-base);
+  color: var(--bili-text-regular);
+
+  @include e(nav) {
+    position: relative;
+    display: flex;
+    flex: none;
+    gap: var(--bili-tabs-gap);
+    align-items: center;
+    border-bottom: 1px solid var(--bili-border-color-light);
+  }
+
+  @include e(tab) {
+    position: relative;
+    display: inline-flex;
+    flex: none;
+    gap: 6px;
+    align-items: center;
+    height: var(--bili-tabs-height);
+    padding: 0 2px;
+    font: inherit;
+    color: var(--bili-text-regular);
+    white-space: nowrap;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    transition: color var(--bili-transition-duration) var(--bili-transition-function);
+
+    &:hover:not(:disabled) {
+      color: var(--bili-color-primary);
+    }
+
+    &.is-active {
+      font-weight: var(--bili-font-weight-medium);
+      color: var(--bili-color-primary);
+    }
+
+    &.is-disabled {
+      cursor: not-allowed;
+      opacity: var(--bili-disabled-opacity);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--bili-color-primary);
+      outline-offset: -2px;
+      border-radius: var(--bili-radius-sm);
+    }
+  }
+
+  @include e(icon) {
+    font-size: 15px;
+  }
+
+  @include e(close) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    margin-left: 2px;
+    font-size: 12px;
+    color: var(--bili-text-secondary);
+    border-radius: 50%;
+    transition:
+      color var(--bili-transition-duration-fast) var(--bili-transition-function),
+      background-color var(--bili-transition-duration-fast) var(--bili-transition-function);
+
+    &:hover {
+      color: var(--bili-text-primary);
+      background-color: var(--bili-fill-color);
+    }
+  }
+
+  @include e(indicator) {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    height: 2px;
+    background-color: var(--bili-color-primary);
+    border-radius: var(--bili-radius-round);
+
+    &.is-animated {
+      transition:
+        transform var(--bili-transition-duration-slow) var(--bili-transition-function-out),
+        width var(--bili-transition-duration-slow) var(--bili-transition-function-out),
+        opacity var(--bili-transition-duration-fast) var(--bili-transition-function);
+    }
+  }
+
+  @include e(indicator-vertical) {
+    top: 0;
+    bottom: auto;
+    left: 0;
+    width: 2px;
+    height: 100%;
+  }
+
+  @include e(extra) {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    padding-left: 12px;
+  }
+
+  @include e(content) {
+    flex: 1;
+    min-height: 0;
+    padding-top: 16px;
+  }
+
+  @include when(stretch) {
+    .#{$namespace}-tabs__nav {
+      gap: 0;
+    }
+
+    .#{$namespace}-tabs__tab {
+      flex: 1;
+      justify-content: center;
+    }
+  }
+
+  // ------------------------------------------------------------------- card
+  @include m(card) {
+    .#{$namespace}-tabs__nav {
+      gap: 4px;
+      border-bottom: 0;
+    }
+
+    .#{$namespace}-tabs__tab {
+      height: 34px;
+      padding: 0 16px;
+      margin-bottom: 0;
+      background-color: var(--bili-fill-color-light);
+      border: 1px solid var(--bili-border-color-light);
+      border-radius: var(--bili-radius-base) var(--bili-radius-base) 0 0;
+
+      &.is-active {
+        background-color: var(--bili-bg-container);
+        border-bottom-color: transparent;
+      }
+    }
+
+    .#{$namespace}-tabs__content {
+      padding: 16px;
+      margin-top: -1px;
+      border: 1px solid var(--bili-border-color-light);
+      border-radius: 0 var(--bili-radius-base) var(--bili-radius-base)
+        var(--bili-radius-base);
+    }
+  }
+
+  // ---------------------------------------------------------------- segment
+  @include m(segment) {
+    .#{$namespace}-tabs__nav {
+      display: inline-flex;
+      gap: 2px;
+      align-self: flex-start;
+      padding: 3px;
+      background-color: var(--bili-fill-color);
+      border: 0;
+      border-radius: var(--bili-radius-md);
+    }
+
+    .#{$namespace}-tabs__tab {
+      height: 28px;
+      padding: 0 14px;
+      color: var(--bili-text-secondary);
+      border-radius: var(--bili-radius-base);
+
+      &:hover:not(:disabled):not(.is-active) {
+        color: var(--bili-text-primary);
+      }
+
+      &.is-active {
+        color: var(--bili-text-primary);
+        background-color: var(--bili-bg-container);
+        box-shadow: var(--bili-shadow-sm);
+      }
+    }
+  }
+
+  // ----------------------------------------------------------------- vertical
+  @include m(vertical) {
+    flex-direction: row;
+    gap: 16px;
+
+    .#{$namespace}-tabs__nav {
+      flex-direction: column;
+      gap: 2px;
+      align-items: stretch;
+      min-width: 120px;
+      border-bottom: 0;
+      border-right: 1px solid var(--bili-border-color-light);
+    }
+
+    .#{$namespace}-tabs__tab {
+      justify-content: flex-start;
+      width: 100%;
+      padding: 0 12px;
+      border-radius: var(--bili-radius-base);
+    }
+
+    .#{$namespace}-tabs__indicator {
+      top: 0;
+      right: -1px;
+      bottom: auto;
+      left: auto;
+      width: 2px;
+    }
+
+    .#{$namespace}-tabs__content {
+      flex: 1;
+      min-width: 0;
+      padding-top: 0;
+    }
+
+    .#{$namespace}-tabs__extra {
+      margin-left: 0;
+      padding: 8px 0 0;
+    }
+  }
+}
+
+@include b(tab-pane) {
+  animation: bili-tabs-pane-in var(--bili-transition-duration) var(--bili-transition-function-out);
+}
+
+@keyframes bili-tabs-pane-in {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

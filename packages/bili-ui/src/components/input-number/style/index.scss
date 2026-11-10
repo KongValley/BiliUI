@@ -1,0 +1,119 @@
+@use '../../../styles/mixins' as *;
+
+@include b(input-number) {
+  --bili-input-number-height: var(--bili-control-height-md);
+
+  display: inline-flex;
+  align-items: stretch;
+  width: 140px;
+  height: var(--bili-input-number-height);
+  overflow: hidden;
+  background-color: var(--bili-bg-container);
+  border: 1px solid var(--bili-border-color);
+  border-radius: var(--bili-radius-base);
+  transition:
+    border-color var(--bili-transition-duration) var(--bili-transition-function),
+    box-shadow var(--bili-transition-duration) var(--bili-transition-function);
+
+  &:hover {
+    border-color: var(--bili-color-primary-hover);
+  }
+
+  @include e(input) {
+    flex: 1;
+    min-width: 0;
+    padding: 0 10px;
+    font: inherit;
+    font-size: var(--bili-font-size-base);
+    font-variant-numeric: tabular-nums;
+    color: var(--bili-text-primary);
+    background: transparent;
+    border: 0;
+    outline: none;
+
+    &::placeholder {
+      color: var(--bili-text-placeholder);
+    }
+  }
+
+  @include e(controls) {
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    border-left: 1px solid var(--bili-border-color-light);
+  }
+
+  @include e(button) {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    padding: 0;
+    color: var(--bili-text-secondary);
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    transition:
+      color var(--bili-transition-duration-fast) var(--bili-transition-function),
+      background-color var(--bili-transition-duration-fast) var(--bili-transition-function);
+
+    &:first-child {
+      border-bottom: 1px solid var(--bili-border-color-light);
+    }
+
+    &:hover:not(:disabled) {
+      color: var(--bili-color-primary);
+      background-color: var(--bili-fill-color-light);
+    }
+
+    &:active:not(:disabled) {
+      background-color: var(--bili-fill-color);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      color: var(--bili-text-placeholder);
+      opacity: 0.5;
+    }
+  }
+
+  @include is(focused) {
+    border-color: var(--bili-color-primary);
+    box-shadow: 0 0 0 2px var(--bili-color-primary-light);
+  }
+
+  @include is(disabled) {
+    cursor: not-allowed;
+    background-color: var(--bili-bg-disabled);
+
+    .#{$namespace}-input-number__input {
+      color: var(--bili-text-placeholder);
+      cursor: not-allowed;
+    }
+  }
+
+  @include m(sm) {
+    --bili-input-number-height: var(--bili-control-height-sm);
+
+    .#{$namespace}-input-number__input {
+      font-size: var(--bili-font-size-sm);
+    }
+
+    .#{$namespace}-input-number__button {
+      width: 18px;
+    }
+  }
+
+  @include m(lg) {
+    --bili-input-number-height: var(--bili-control-height-lg);
+
+    .#{$namespace}-input-number__input {
+      font-size: var(--bili-font-size-md);
+    }
+
+    .#{$namespace}-input-number__button {
+      width: 26px;
+    }
+  }
+}
