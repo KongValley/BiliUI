@@ -8,10 +8,11 @@ defineOptions({ name: 'BiliTimelineItem' })
 
 const props = defineProps(timelineItemProps)
 const ns = useNamespace('timeline-item')
+const nsTimeline = useNamespace('timeline')
 
 const dotStyle = computed<CSSProperties | undefined>(() =>
   props.color
-    ? ({ '--bili-timeline-dot-color': props.color } as CSSProperties)
+    ? ({ [nsTimeline.cssVar('dot-color')]: props.color } as CSSProperties)
     : undefined
 )
 </script>

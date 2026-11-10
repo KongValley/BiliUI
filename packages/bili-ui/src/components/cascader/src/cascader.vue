@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch, type CSSProperties } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
+import { useLocale } from '../../../hooks/use-config'
 import { useFloating } from '../../../hooks/use-floating'
 import { useClickOutside } from '../../../hooks/use-click-outside'
 import { useId } from '../../../hooks/use-id'
@@ -31,6 +32,9 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('cascader')
+const locale = useLocale()
+const displayPlaceholder = computed(() => props.placeholder || locale.value.selectPlaceholder)
+const displayEmpty = computed(() => props.emptyText || locale.value.empty)
 const { nextZIndex, currentZIndex } = useZIndex()
 const panelId = useId('bili-cascader-panel')
 
@@ -182,7 +186,7 @@ defineExpose({ focus, blur, open, close })
       :class="[ns.e('value'), ns.is('placeholder', !hasValue)]"
       :title="hasValue ? displayLabel : undefined"
     >
-      {{ hasValue ? displayLabel : placeholder }}
+      {{ hasValue ? displayLabel : displayPlaceholder }}
     </span>
 
     <span :class="ns.e('suffix')">
@@ -191,7 +195,7 @@ defineExpose({ focus, blur, open, close })
         :class="ns.e('clear')"
         type="button"
         tabindex="-1"
-        aria-label="清空"
+        :aria-label="locale.clear"
         @click.stop="clear"
       >
         <BiliIcon name="close-circle" />
@@ -201,7 +205,7 @@ defineExpose({ focus, blur, open, close })
   </div>
 
   <Teleport to="body">
-    <Transition name="bili-cascader-dropdown">
+    <Transition :name="ns.transition('cascader-dropdown')">
       <div
         v-if="isOpen"
         :id="panelId"
@@ -210,7 +214,7 @@ defineExpose({ focus, blur, open, close })
         :style="panelStyles"
         role="tree"
       >
-        <div v-if="!options.length" :class="ns.e('empty')">{{ emptyText }}</div>
+        <div v-if="!options.length" :class="ns.e('empty')">{{ displayEmpty }}</div>
 
         <div v-else :class="ns.e('columns')">
           <div

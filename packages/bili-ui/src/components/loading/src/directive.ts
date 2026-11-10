@@ -1,4 +1,5 @@
 import { createVNode, render, type Directive, type VNode } from 'vue'
+import { getGlobalNamespace } from '../../../hooks/use-namespace'
 import LoadingOverlay from './loading-overlay.vue'
 import type { LoadingBinding, LoadingOptions } from './loading'
 
@@ -18,7 +19,12 @@ const normalize = (value: LoadingBinding | undefined): LoadingOptions | null => 
 }
 
 const renderOverlay = (options: LoadingOptions, show: boolean, onClosed: () => void) =>
-  createVNode(LoadingOverlay, { ...options, show, onClosed })
+  createVNode(LoadingOverlay, {
+    ...options,
+    show,
+    onClosed,
+    namespace: getGlobalNamespace()
+  })
 
 const createLoading = (el: HTMLElement, options: LoadingOptions) => {
   if (instances.has(el)) return
@@ -31,7 +37,7 @@ const createLoading = (el: HTMLElement, options: LoadingOptions) => {
   }
 
   const container = document.createElement('div')
-  container.className = 'bili-loading-wrapper'
+  container.className = `${getGlobalNamespace()}-loading-wrapper`
 
   const vnode = renderOverlay(options, true, () => container.remove())
   render(vnode, container)

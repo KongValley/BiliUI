@@ -50,7 +50,7 @@ export const menuProps = {
   },
   ellipsisText: {
     type: String,
-    default: '更多'
+    default: ''
   },
   /** Extra class on every teleported menu popup, useful for per-instance theming. */
   popperClass: {

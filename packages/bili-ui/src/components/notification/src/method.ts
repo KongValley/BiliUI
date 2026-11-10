@@ -1,4 +1,6 @@
 import { createVNode, render, type VNode } from 'vue'
+import { getGlobalNamespace } from '../../../hooks/use-namespace'
+import { getGlobalLocale } from '../../../hooks/use-config'
 import NotificationComponent from './notification.vue'
 import type {
   NotificationOptions,
@@ -27,9 +29,10 @@ const getContainer = (position: NotificationPosition): HTMLElement => {
   if (existing && existing.isConnected) return existing
 
   const container = document.createElement('div')
-  container.className = `bili-notification-container bili-notification-container--${position}`
+  const namespace = getGlobalNamespace()
+  container.className = `${namespace}-notification-container ${namespace}-notification-container--${position}`
   container.setAttribute('role', 'region')
-  container.setAttribute('aria-label', '通知')
+  container.setAttribute('aria-label', getGlobalLocale().notification)
   document.body.appendChild(container)
   containers.set(position, container)
   return container
@@ -57,7 +60,7 @@ const createNotification = (options: NotificationOptions): NotificationInstance 
   const position = options.position ?? 'top-right'
   const id = seed++
   const wrapper = document.createElement('div')
-  wrapper.className = 'bili-notification-wrapper'
+  wrapper.className = `${getGlobalNamespace()}-notification-wrapper`
 
   const vnode: VNode = createVNode(NotificationComponent, {
     title: options.title ?? '',
@@ -66,6 +69,7 @@ const createNotification = (options: NotificationOptions): NotificationInstance 
     duration: options.duration ?? 4500,
     showClose: options.showClose ?? true,
     showProgress: options.showProgress ?? true,
+    namespace: getGlobalNamespace(),
     onClose: () => options.onClose?.(),
     onDestroy: () => destroy(id)
   })

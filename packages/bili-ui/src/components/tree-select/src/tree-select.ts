@@ -20,7 +20,7 @@ export const treeSelectProps = {
   },
   placeholder: {
     type: String,
-    default: '请选择'
+    default: ''
   },
   size: {
     type: String as PropType<ComponentSize>,
@@ -49,10 +49,10 @@ export const treeSelectProps = {
   },
   filterPlaceholder: {
     type: String,
-    default: '搜索节点'
+    default: ''
   },
   emptyText: {
     type: String,
-    default: '暂无数据'
+    default: ''
   }
 } as const

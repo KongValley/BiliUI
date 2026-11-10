@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
+import { useLocale } from '../../../hooks/use-config'
 import BiliIcon from '../../icon/src/icon.vue'
 import { cardProps } from './card'
 
@@ -13,6 +14,7 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('card')
+const locale = useLocale()
 const rootRef = ref<HTMLElement | null>(null)
 
 const rootClasses = computed(() => [
@@ -61,7 +63,7 @@ defineExpose({ rootRef })
     <div v-if="loading" :class="ns.e('loading')" role="status" aria-live="polite">
       <BiliIcon :class="ns.e('spinner')" name="loading" spin />
       <span :class="ns.e('loading-text')">
-        <slot name="loading">加载中...</slot>
+        <slot name="loading">{{ locale.loading }}</slot>
       </span>
     </div>
   </div>

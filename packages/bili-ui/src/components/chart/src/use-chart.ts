@@ -35,8 +35,8 @@ export const toPxNumber = (value: string | number, fallback = 0): number => {
 export const toCssSize = (value: string | number): string =>
   typeof value === 'number' ? addUnit(value) : value
 
-export const paletteColor = (index: number): string =>
-  `var(--bili-chart-color-${(index % 8) + 1})`
+export const paletteColor = (index: number, namespace = 'bili'): string =>
+  `var(--${namespace}-chart-color-${(index % 8) + 1})`
 
 /**
  * Expands [min, max] to "nice" round bounds so axis ticks read naturally.

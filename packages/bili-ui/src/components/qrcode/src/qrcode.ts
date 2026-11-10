@@ -46,6 +46,6 @@ export const qrcodeProps = {
   /** Accessible label. */
   ariaLabel: {
     type: String,
-    default: '二维码'
+    default: ''
   }
 } as const

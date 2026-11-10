@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, type CSSProperties } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
+import { useLocale, formatLocale } from '../../../hooks/use-config'
 import { useId } from '../../../hooks/use-id'
 import { progressProps } from './progress'
 
@@ -9,6 +10,7 @@ defineOptions({ name: 'BiliProgress' })
 const props = defineProps(progressProps)
 
 const ns = useNamespace('progress')
+const locale = useLocale()
 const gradientId = useId('bili-progress')
 
 const clampPercent = (value: number): number => Math.min(100, Math.max(0, value))
@@ -117,7 +119,7 @@ const customColor = computed(() => props.color || '')
           :height="geometry.size"
           :viewBox="`0 0 ${geometry.size} ${geometry.size}`"
           role="img"
-          :aria-label="`进度 ${percent}%`"
+          :aria-label="formatLocale(locale.progress, { percent })"
         >
           <defs>
             <linearGradient v-if="customColor" :id="gradientId" x1="0" y1="0" x2="1" y2="1">

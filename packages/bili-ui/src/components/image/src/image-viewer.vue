@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
+import { useLocale } from '../../../hooks/use-config'
 import { useScrollLock } from '../../../hooks/use-scroll-lock'
 import { useFocusTrap } from '../../../hooks/use-focus-trap'
 import { useZIndex } from '../../../hooks/use-z-index'
@@ -20,6 +21,7 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('image-viewer')
+const locale = useLocale()
 const overlayRef = ref<HTMLElement | null>(null)
 const token = Symbol('bili-image-viewer')
 const { nextZIndex } = useZIndex()
@@ -217,7 +219,7 @@ defineExpose({
 
 <template>
   <Teleport to="body" :disabled="!teleported">
-    <Transition name="bili-image-viewer">
+    <Transition :name="ns.transition('image-viewer')">
       <div
         v-if="visible"
         ref="overlayRef"
@@ -225,7 +227,7 @@ defineExpose({
         :style="{ zIndex }"
         role="dialog"
         aria-modal="true"
-        aria-label="图片预览"
+        :aria-label="locale.imagePreview"
         tabindex="-1"
         @click.self="handleMaskClick"
       >
@@ -244,7 +246,7 @@ defineExpose({
           />
         </div>
 
-        <button type="button" :class="ns.e('close')" aria-label="关闭预览" @click="close">
+        <button type="button" :class="ns.e('close')" :aria-label="locale.closePreview" @click="close">
           <BiliIcon name="close" />
         </button>
 
@@ -254,7 +256,7 @@ defineExpose({
           <button
             type="button"
             :class="[ns.e('arrow'), ns.e('arrow--prev')]"
-            aria-label="上一张"
+            :aria-label="locale.prevImage"
             @click="prev"
           >
             <BiliIcon name="chevron-left" />
@@ -262,7 +264,7 @@ defineExpose({
           <button
             type="button"
             :class="[ns.e('arrow'), ns.e('arrow--next')]"
-            aria-label="下一张"
+            :aria-label="locale.nextImage"
             @click="next"
           >
             <BiliIcon name="chevron-right" />
@@ -270,21 +272,21 @@ defineExpose({
         </template>
 
         <div :class="ns.e('actions')">
-          <button type="button" :class="ns.e('action')" title="缩小" @click="zoomOut">
+          <button type="button" :class="ns.e('action')" :title="locale.zoomOut" @click="zoomOut">
             <BiliIcon name="zoom-out" />
           </button>
           <span :class="ns.e('scale')">{{ displayScale }}</span>
-          <button type="button" :class="ns.e('action')" title="放大" @click="zoomIn">
+          <button type="button" :class="ns.e('action')" :title="locale.zoomIn" @click="zoomIn">
             <BiliIcon name="zoom-in" />
           </button>
           <span :class="ns.e('divider')" />
-          <button type="button" :class="ns.e('action')" title="实际大小" @click="resetTransform">
+          <button type="button" :class="ns.e('action')" :title="locale.actualSize" @click="resetTransform">
             <BiliIcon name="maximize" />
           </button>
-          <button type="button" :class="ns.e('action')" title="向左旋转" @click="rotateLeft">
+          <button type="button" :class="ns.e('action')" :title="locale.rotateLeft" @click="rotateLeft">
             <BiliIcon name="undo" />
           </button>
-          <button type="button" :class="ns.e('action')" title="向右旋转" @click="rotateRight">
+          <button type="button" :class="ns.e('action')" :title="locale.rotateRight" @click="rotateRight">
             <BiliIcon name="redo" />
           </button>
         </div>

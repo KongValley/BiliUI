@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
+import { useLocale } from '../../../hooks/use-config'
 import { useFocusTrap } from '../../../hooks/use-focus-trap'
 import { useScrollLock } from '../../../hooks/use-scroll-lock'
 import { useZIndex } from '../../../hooks/use-z-index'
@@ -23,6 +24,7 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('drawer')
+const locale = useLocale()
 const drawerRef = ref<HTMLElement | null>(null)
 const mounted = ref(props.modelValue)
 const visible = ref(props.modelValue)
@@ -97,7 +99,7 @@ onBeforeUnmount(() => {
 
 <template>
   <Teleport to="body">
-    <Transition name="bili-drawer" appear @after-enter="onAfterEnter" @after-leave="onAfterLeave">
+    <Transition :name="ns.transition('drawer')" appear @after-enter="onAfterEnter" @after-leave="onAfterLeave">
       <div
         v-if="mounted"
         v-show="visible"
@@ -111,7 +113,7 @@ onBeforeUnmount(() => {
           :style="panelStyle"
           role="dialog"
           aria-modal="true"
-          :aria-label="title || '抽屉'"
+          :aria-label="title || locale.drawer"
           tabindex="-1"
         >
           <div v-if="title || $slots.header || showClose" :class="ns.e('header')">
@@ -122,7 +124,7 @@ onBeforeUnmount(() => {
               v-if="showClose"
               :class="ns.e('close')"
               type="button"
-              aria-label="关闭"
+              :aria-label="locale.close"
               @click="requestClose"
             >
               <BiliIcon name="close" />

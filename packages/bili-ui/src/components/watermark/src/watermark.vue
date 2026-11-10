@@ -77,10 +77,10 @@ watch(
 const overlayStyle = computed<CSSProperties>(() => {
   if (!backgroundImage.value) return {}
   return {
-    '--bili-watermark-image': backgroundImage.value,
-    '--bili-watermark-size': `${props.width + gap.value[0]}px ${props.height + gap.value[1]}px`,
-    '--bili-watermark-position': `${offset.value[0]}px ${offset.value[1]}px`,
-    '--bili-watermark-z-index': String(props.zIndex)
+    [ns.cssVar('image')]: backgroundImage.value,
+    [ns.cssVar('size')]: `${props.width + gap.value[0]}px ${props.height + gap.value[1]}px`,
+    [ns.cssVar('position')]: `${offset.value[0]}px ${offset.value[1]}px`,
+    [ns.cssVar('z-index')]: String(props.zIndex)
   }
 })
 

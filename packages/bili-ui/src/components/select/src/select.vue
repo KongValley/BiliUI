@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, ref, watch, type CSSProperties } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
-import { useConfig } from '../../../hooks/use-config'
+import { useConfig, useLocale, formatLocale } from '../../../hooks/use-config'
 import { useFloating } from '../../../hooks/use-floating'
 import { useClickOutside } from '../../../hooks/use-click-outside'
 import { useId } from '../../../hooks/use-id'
@@ -31,8 +31,11 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('select')
+const locale = useLocale()
 const config = useConfig()
 const mergedSize = computed(() => props.size ?? config.value.size)
+const displayPlaceholder = computed(() => props.placeholder || locale.value.selectPlaceholder)
+const displayEmpty = computed(() => props.emptyText || locale.value.empty)
 const formItem = useFormItem()
 const { nextZIndex, currentZIndex } = useZIndex()
 const panelId = useId('bili-select-panel')
@@ -451,7 +454,7 @@ defineExpose({ focus, blur, open, close })
               :class="ns.e('tag-close')"
               type="button"
               tabindex="-1"
-              :aria-label="`移除 ${option.label}`"
+              :aria-label="formatLocale(locale.removeItem, { label: option.label })"
               @mousedown.stop.prevent
               @click.stop="removeValue(option.value)"
             >
@@ -466,7 +469,7 @@ defineExpose({ focus, blur, open, close })
             ref="filterRef"
             :class="ns.e('filter')"
             :value="query"
-            :placeholder="selectedOptions.length ? '' : placeholder"
+            :placeholder="selectedOptions.length ? '' : displayPlaceholder"
             @input="handleFilterInput"
             @click.stop
           />
@@ -474,7 +477,7 @@ defineExpose({ focus, blur, open, close })
             v-else-if="!selectedOptions.length"
             :class="[ns.e('value'), ns.is('placeholder', true)]"
           >
-            {{ placeholder }}
+            {{ displayPlaceholder }}
           </span>
         </div>
       </template>
@@ -485,12 +488,12 @@ defineExpose({ focus, blur, open, close })
           ref="filterRef"
           :class="ns.e('filter')"
           :value="query"
-          :placeholder="selectedOption ? selectedOption.label : placeholder"
+          :placeholder="selectedOption ? selectedOption.label : displayPlaceholder"
           @input="handleFilterInput"
           @click.stop
         />
         <span v-else :class="[ns.e('value'), ns.is('placeholder', !selectedOption)]">
-          {{ selectedOption ? selectedOption.label : placeholder }}
+          {{ selectedOption ? selectedOption.label : displayPlaceholder }}
         </span>
       </template>
     </div>
@@ -501,7 +504,7 @@ defineExpose({ focus, blur, open, close })
         :class="ns.e('clear')"
         type="button"
         tabindex="-1"
-        aria-label="清空"
+        :aria-label="locale.clear"
         @click.stop="clear"
       >
         <BiliIcon name="close-circle" />
@@ -511,7 +514,7 @@ defineExpose({ focus, blur, open, close })
   </div>
 
   <Teleport to="body">
-    <Transition name="bili-select-dropdown">
+    <Transition :name="ns.transition('select-dropdown')">
       <div
         v-if="isOpen"
         :id="panelId"
@@ -528,7 +531,7 @@ defineExpose({ focus, blur, open, close })
             :disabled="!selectableVisibleOptions.length"
             @change="toggleSelectAll"
           >
-            全选
+            {{ locale.selectAll }}
           </BiliCheckbox>
           <span :class="ns.e('select-all-count')">
             {{ selectedValues.length }}/{{ selectableVisibleOptions.length }}
@@ -603,9 +606,9 @@ defineExpose({ focus, blur, open, close })
             </template>
           </template>
 
-          <div v-if="isLoading" :class="ns.e('loading')">加载中…</div>
+          <div v-if="isLoading" :class="ns.e('loading')">{{ locale.loading }}</div>
           <div v-else-if="!flatVisibleOptions.length" :class="ns.e('empty')">
-            {{ emptyText }}
+            {{ displayEmpty }}
           </div>
         </div>
       </div>

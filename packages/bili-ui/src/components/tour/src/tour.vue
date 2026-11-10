@@ -2,7 +2,7 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch, type CSSProperties } from 'vue'
 import type { Placement } from '@floating-ui/dom'
 import { useNamespace } from '../../../hooks/use-namespace'
-import { useLocale } from '../../../hooks/use-config'
+import { useLocale, formatLocale } from '../../../hooks/use-config'
 import { useFloating } from '../../../hooks/use-floating'
 import { useZIndex } from '../../../hooks/use-z-index'
 import { useEventListener } from '../../../hooks/use-event-listener'
@@ -301,7 +301,7 @@ defineExpose({ next, prev, close, goTo, currentIndex, visible })
         @click.stop="handleMaskClick"
       />
 
-      <Transition name="bili-tour-fade" appear>
+      <Transition :name="ns.transition('tour-fade')" appear>
         <div
           ref="popoverRef"
           :class="ns.e('popover')"
@@ -348,7 +348,7 @@ defineExpose({ next, prev, close, goTo, currentIndex, visible })
                   :key="index"
                   type="button"
                   :class="[ns.e('dot'), ns.is('active', index === currentIndex)]"
-                  :aria-label="`第 ${index + 1} 步`"
+                  :aria-label="formatLocale(locale.tourStep, { index: index + 1 })"
                   @click="goTo(index)"
                 />
               </slot>

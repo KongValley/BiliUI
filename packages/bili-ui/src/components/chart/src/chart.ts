@@ -78,7 +78,7 @@ export const lineChartProps = {
   valueFormatter: formatterProp,
   emptyText: {
     type: String,
-    default: '暂无数据'
+    default: ''
   }
 } as const
 
@@ -122,7 +122,7 @@ export const barChartProps = {
   valueFormatter: formatterProp,
   emptyText: {
     type: String,
-    default: '暂无数据'
+    default: ''
   }
 } as const
 
@@ -149,7 +149,7 @@ export const pieChartProps = {
   valueFormatter: formatterProp,
   emptyText: {
     type: String,
-    default: '暂无数据'
+    default: ''
   }
 } as const
 

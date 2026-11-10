@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
+import { formatLocale, useLocale } from '../../../hooks/use-config'
 import { useId } from '../../../hooks/use-id'
 import { gaugeChartProps } from './chart'
 import {
@@ -18,6 +19,7 @@ defineOptions({ name: 'BiliGaugeChart' })
 const props = defineProps(gaugeChartProps)
 
 const ns = useNamespace('chart')
+const locale = useLocale()
 const chartId = useId('bili-gauge')
 const rootRef = ref<HTMLElement | null>(null)
 const { width } = useChartSize(rootRef)
@@ -194,7 +196,7 @@ const endPoint = computed(() =>
   polarPoint(center.value.x, center.value.y, midRadius.value, START_ANGLE + SWEEP)
 )
 
-const accentColor = computed(() => props.color || 'var(--bili-chart-color-1)')
+const accentColor = computed(() => props.color || `var(${ns.cssVarBlock('chart-color-1')})`)
 const gradientId = computed(() => `${chartId}-gradient`)
 const canvasStyle = computed(() => ({ height: toCssSize(props.height) }))
 </script>
@@ -208,7 +210,13 @@ const canvasStyle = computed(() => ({ height: toCssSize(props.height) }))
         :height="height"
         :viewBox="`0 0 ${width} ${height}`"
         role="img"
-        :aria-label="`仪表盘：${props.value}${unit} / ${props.max}${unit}`"
+        :aria-label="
+          formatLocale(locale.gaugeChart, {
+            value: props.value,
+            unit,
+            max: props.max
+          })
+        "
       >
         <defs>
           <linearGradient :id="gradientId" x1="0" y1="1" x2="1" y2="0">

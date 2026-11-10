@@ -1,4 +1,6 @@
 import { createVNode, render, type VNode } from 'vue'
+import { getGlobalNamespace } from '../../../hooks/use-namespace'
+import { getGlobalLocale } from '../../../hooks/use-config'
 import MessageComponent from './message.vue'
 import type {
   MessageInstance,
@@ -24,9 +26,11 @@ const getContainer = (position: MessagePosition): HTMLElement => {
   if (existing && existing.isConnected) return existing
 
   const container = document.createElement('div')
-  container.className = `bili-message-container bili-message-container--${position}`
+  const namespace = getGlobalNamespace()
+  container.className = `${namespace}-message-container ${namespace}-message-container--${position}`
   // Screen readers announce new alerts in a live region.
   container.setAttribute('role', 'region')
+  container.setAttribute('aria-label', getGlobalLocale().message)
   document.body.appendChild(container)
   containers.set(position, container)
   return container
@@ -57,7 +61,7 @@ const createMessage = (params: MessageParams, type?: MessageType): MessageInstan
   const position = options.position ?? 'top'
   const id = seed++
   const wrapper = document.createElement('div')
-  wrapper.className = 'bili-message-wrapper'
+  wrapper.className = `${getGlobalNamespace()}-message-wrapper`
 
   const vnode: VNode = createVNode(MessageComponent, {
     message: options.message,
@@ -67,6 +71,7 @@ const createMessage = (params: MessageParams, type?: MessageType): MessageInstan
     showProgress: options.showProgress ?? true,
     pauseOnHover: options.pauseOnHover ?? true,
     position,
+    namespace: getGlobalNamespace(),
     onClose: () => options.onClose?.(),
     onDestroy: () => destroy(id)
   })

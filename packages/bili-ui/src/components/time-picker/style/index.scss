@@ -1,0 +1,234 @@
+@use '../../../styles/mixins' as *;
+
+@include b(time-picker) {
+  --bili-time-picker-height: var(--bili-control-height-md);
+  --bili-time-picker-padding: var(--bili-control-padding-md);
+  --bili-time-picker-font-size: var(--bili-font-size-base);
+  --bili-time-picker-bg: var(--bili-bg-container);
+  --bili-time-picker-color: var(--bili-text-primary);
+  --bili-time-picker-border-color: var(--bili-border-color);
+  --bili-time-picker-radius: var(--bili-radius-base);
+  --bili-time-picker-hover-border-color: var(--bili-color-primary-hover);
+  --bili-time-picker-focus-border-color: var(--bili-color-primary);
+  --bili-time-picker-focus-shadow: var(--bili-color-primary-light);
+  --bili-time-picker-placeholder-color: var(--bili-text-placeholder);
+  --bili-time-picker-panel-bg: var(--bili-bg-elevated);
+  --bili-time-picker-panel-border-color: var(--bili-border-color-light);
+  --bili-time-picker-panel-radius: var(--bili-radius-md);
+  --bili-time-picker-panel-shadow: var(--bili-shadow-md);
+  --bili-time-picker-item-selected-bg: var(--bili-color-primary-light);
+  --bili-time-picker-item-selected-color: var(--bili-color-primary);
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  min-width: 140px;
+  height: var(--bili-time-picker-height);
+  padding: 0 var(--bili-time-picker-padding);
+  font-size: var(--bili-time-picker-font-size);
+  color: var(--bili-time-picker-color);
+  cursor: pointer;
+  background-color: var(--bili-time-picker-bg);
+  border: 1px solid var(--bili-time-picker-border-color);
+  border-radius: var(--bili-time-picker-radius);
+  outline: none;
+  transition:
+    border-color var(--bili-transition-duration) var(--bili-transition-function),
+    box-shadow var(--bili-transition-duration) var(--bili-transition-function);
+
+  &:hover:not(.is-disabled) {
+    border-color: var(--bili-time-picker-hover-border-color);
+  }
+
+  &:focus-visible,
+  &.is-open {
+    border-color: var(--bili-time-picker-focus-border-color);
+    box-shadow: 0 0 0 3px var(--bili-time-picker-focus-shadow);
+  }
+
+  @include when(disabled) {
+    cursor: not-allowed;
+    background-color: var(--bili-bg-disabled);
+    border-color: var(--bili-border-color-light);
+
+    .#{$namespace}-time-picker__icon,
+    .#{$namespace}-time-picker__value {
+      color: var(--bili-time-picker-placeholder-color);
+    }
+  }
+
+  @include e(icon) {
+    flex: none;
+    font-size: 14px;
+    color: var(--bili-text-secondary);
+  }
+
+  @include e(value) {
+    flex: 1;
+    min-width: 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  @include e(placeholder) {
+    @include utils-ellipsis;
+
+    flex: 1;
+    min-width: 0;
+    color: var(--bili-time-picker-placeholder-color);
+  }
+
+  @include e(clear) {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    font-size: 14px;
+    color: var(--bili-text-secondary);
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    border-radius: 50%;
+
+    &:hover {
+      color: var(--bili-text-primary);
+      background-color: var(--bili-fill-color);
+    }
+  }
+
+  @include m(sm) {
+    --bili-time-picker-height: var(--bili-control-height-sm);
+    --bili-time-picker-padding: var(--bili-control-padding-sm);
+    --bili-time-picker-font-size: var(--bili-font-size-sm);
+  }
+
+  @include m(lg) {
+    --bili-time-picker-height: var(--bili-control-height-lg);
+    --bili-time-picker-padding: var(--bili-control-padding-lg);
+  }
+
+  @include e(panel) {
+    display: flex;
+    flex-direction: column;
+    width: 180px;
+    padding: 8px;
+    font-size: var(--bili-font-size-sm);
+    background-color: var(--bili-time-picker-panel-bg);
+    border: 1px solid var(--bili-time-picker-panel-border-color);
+    border-radius: var(--bili-time-picker-panel-radius);
+    box-shadow: var(--bili-time-picker-panel-shadow);
+  }
+
+  @include e(columns) {
+    display: flex;
+    gap: 4px;
+  }
+
+  @include e(column) {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  @include e(column-label) {
+    padding: 2px 0 4px;
+    font-size: var(--bili-font-size-xs);
+    color: var(--bili-text-secondary);
+    text-align: center;
+    border-bottom: 1px solid var(--bili-border-color-lighter);
+  }
+
+  @include e(list) {
+    height: 168px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    @include utils-scrollbar;
+  }
+
+  @include e(item) {
+    display: block;
+    width: 100%;
+    height: 28px;
+    padding: 0;
+    font: inherit;
+    font-size: var(--bili-font-size-sm);
+    font-variant-numeric: tabular-nums;
+    color: var(--bili-text-regular);
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    border-radius: var(--bili-radius-sm);
+
+    &:hover {
+      background-color: var(--bili-fill-color-light);
+    }
+
+    @include when(selected) {
+      font-weight: var(--bili-font-weight-medium);
+      color: var(--bili-time-picker-item-selected-color);
+      background-color: var(--bili-time-picker-item-selected-bg);
+    }
+  }
+
+  @include e(footer) {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: flex-end;
+    padding-top: 8px;
+    margin-top: 8px;
+    border-top: 1px solid var(--bili-border-color-lighter);
+  }
+
+  @include e(now) {
+    padding: 4px 8px;
+    font: inherit;
+    font-size: var(--bili-font-size-xs);
+    color: var(--bili-text-secondary);
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    border-radius: var(--bili-radius-sm);
+
+    &:hover {
+      color: var(--bili-text-primary);
+      background-color: var(--bili-fill-color);
+    }
+  }
+
+  @include e(confirm) {
+    padding: 4px 12px;
+    font: inherit;
+    font-size: var(--bili-font-size-xs);
+    color: var(--bili-color-on-primary);
+    cursor: pointer;
+    background-color: var(--bili-color-primary);
+    border: 0;
+    border-radius: var(--bili-radius-sm);
+
+    &:hover:not(:disabled) {
+      background-color: var(--bili-color-primary-hover);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.45;
+    }
+  }
+}
+
+.bili-time-picker-fade-enter-active,
+.bili-time-picker-fade-leave-active {
+  transition: opacity var(--bili-transition-duration-fast) var(--bili-transition-function);
+}
+
+.bili-time-picker-fade-enter-from,
+.bili-time-picker-fade-leave-to {
+  opacity: 0;
+}

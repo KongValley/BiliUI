@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, provide, reactive, ref, watch } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
+import { useLocale, formatLocale } from '../../../hooks/use-config'
 import BiliIcon from '../../icon/src/icon.vue'
 import {
   carouselContextKey,
@@ -18,6 +19,7 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('carousel')
+const locale = useLocale()
 
 const items = reactive<number[]>([])
 const activeIndex = ref(0)
@@ -208,7 +210,7 @@ defineExpose({ activeIndex, setActiveItem, prev, next })
           ns.is('always', arrow === 'always'),
           ns.is('hover', arrow === 'hover')
         ]"
-        aria-label="上一张"
+        :aria-label="locale.prevSlide"
         @click.stop="prev"
       >
         <BiliIcon :name="direction === 'vertical' ? 'chevron-up' : 'chevron-left'" />
@@ -221,7 +223,7 @@ defineExpose({ activeIndex, setActiveItem, prev, next })
           ns.is('always', arrow === 'always'),
           ns.is('hover', arrow === 'hover')
         ]"
-        aria-label="下一张"
+        :aria-label="locale.nextSlide"
         @click.stop="next"
       >
         <BiliIcon :name="direction === 'vertical' ? 'chevron-down' : 'chevron-right'" />
@@ -240,7 +242,7 @@ defineExpose({ activeIndex, setActiveItem, prev, next })
         <button
           type="button"
           :class="[ns.e('indicator'), ns.is('active', index === activeIndex)]"
-          :aria-label="`切换到第 ${index + 1} 张`"
+          :aria-label="formatLocale(locale.goToSlide, { index: index + 1 })"
           :aria-current="index === activeIndex ? 'true' : undefined"
           @click="setActiveItem(index)"
           @mouseenter="handleIndicatorEnter(index)"

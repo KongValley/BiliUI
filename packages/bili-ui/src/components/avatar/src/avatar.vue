@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, useSlots, watch, type CSSProperties } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
+import { useLocale } from '../../../hooks/use-config'
 import { addUnit } from '../../../utils/dom'
 import BiliIcon from '../../icon/src/icon.vue'
 import { avatarProps } from './avatar'
@@ -14,6 +15,7 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('avatar')
+const locale = useLocale()
 const slots = useSlots()
 
 const SIZE_MAP = { sm: 24, md: 32, lg: 40 } as const
@@ -67,7 +69,7 @@ const sizePx = computed(() => {
 })
 
 const rootStyle = computed(() => {
-  const style: Record<string, string> = { '--bili-avatar-hue': String(hue.value) }
+  const style: Record<string, string> = { [ns.cssVar('hue')]: String(hue.value) }
 
   if (sizePx.value !== undefined) {
     style.width = `${sizePx.value}px`
@@ -101,7 +103,7 @@ const handleError = (event: Event) => {
     :style="rootStyle"
     :title="name || alt || undefined"
     role="img"
-    :aria-label="alt || name || '头像'"
+    :aria-label="alt || name || locale.avatar"
   >
     <img
       v-if="showImage"

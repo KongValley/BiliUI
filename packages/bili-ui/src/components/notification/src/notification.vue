@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
+import { useLocale } from '../../../hooks/use-config'
 import BiliIcon from '../../icon/src/icon.vue'
 import { notificationProps } from './notification'
 
@@ -13,7 +14,8 @@ const emit = defineEmits<{
   destroy: []
 }>()
 
-const ns = useNamespace('notification')
+const ns = useNamespace('notification', props.namespace)
+const locale = useLocale()
 
 const ICONS = {
   info: 'info',
@@ -96,7 +98,7 @@ defineExpose({ close })
       v-if="showClose"
       :class="ns.e('close')"
       type="button"
-      aria-label="关闭通知"
+      :aria-label="locale.notificationClose"
       @click="close"
     >
       <BiliIcon name="close" :size="14" />

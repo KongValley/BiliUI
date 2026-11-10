@@ -98,7 +98,7 @@ onBeforeUnmount(() => {
 
 <template>
   <Teleport to="body">
-    <Transition name="bili-dialog" appear @after-enter="onAfterEnter" @after-leave="onAfterLeave">
+    <Transition :name="ns.transition('dialog')" appear @after-enter="onAfterEnter" @after-leave="onAfterLeave">
       <div
         v-if="mounted"
         v-show="visible"
@@ -112,7 +112,7 @@ onBeforeUnmount(() => {
           :style="dialogStyle"
           role="dialog"
           aria-modal="true"
-          :aria-label="title || undefined"
+          :aria-label="title || locale.dialog"
           tabindex="-1"
         >
           <div v-if="title || $slots.header || showClose" :class="ns.e('header')">

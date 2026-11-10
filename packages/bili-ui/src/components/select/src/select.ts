@@ -33,7 +33,7 @@ export const selectProps = {
   },
   placeholder: {
     type: String,
-    default: '请选择'
+    default: ''
   },
   size: {
     type: String as PropType<ComponentSize>,
@@ -89,6 +89,6 @@ export const selectProps = {
   },
   emptyText: {
     type: String,
-    default: '暂无数据'
+    default: ''
   }
 } as const

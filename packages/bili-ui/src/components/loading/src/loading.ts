@@ -18,5 +18,10 @@ export const loadingProps = {
     default: 'md'
   },
   fullscreen: Boolean,
-  overlay: Boolean
+  overlay: Boolean,
+  /** Internal: namespace used by the imperative `v-loading` overlay. */
+  namespace: {
+    type: String,
+    default: undefined
+  }
 } as const

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
-import { useConfig } from '../../../hooks/use-config'
+import { useConfig, useLocale } from '../../../hooks/use-config'
 import BiliIcon from '../../icon/src/icon.vue'
 import { useFormItem } from '../../form/src/types'
 import { inputNumberProps } from './input-number'
@@ -18,6 +18,7 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('input-number')
+const locale = useLocale()
 const config = useConfig()
 const mergedSize = computed(() => props.size ?? config.value.size)
 const formItem = useFormItem()
@@ -156,7 +157,7 @@ watch(
         :class="ns.e('button')"
         type="button"
         tabindex="-1"
-        aria-label="减少"
+        :aria-label="locale.decrease"
         :disabled="!canDecrease"
         @click="stepBy(-1)"
       >
@@ -166,7 +167,7 @@ watch(
         :class="ns.e('button')"
         type="button"
         tabindex="-1"
-        aria-label="增加"
+        :aria-label="locale.increase"
         :disabled="!canIncrease"
         @click="stepBy(1)"
       >

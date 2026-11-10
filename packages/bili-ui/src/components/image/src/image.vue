@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
+import { useLocale } from '../../../hooks/use-config'
 import { addUnit } from '../../../utils/dom'
 import BiliIcon from '../../icon/src/icon.vue'
 import ImageViewer from './image-viewer.vue'
@@ -19,6 +20,7 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('image')
+const locale = useLocale()
 
 const loaded = ref(false)
 const hasError = ref(false)
@@ -104,18 +106,18 @@ defineExpose({ showPreview, closePreview })
     </div>
 
     <div v-if="hasError" :class="ns.e('error')">
-      <slot name="error">图片加载失败</slot>
+      <slot name="error">{{ locale.loadFailed }}</slot>
     </div>
 
     <button
       v-if="hasPreview"
       type="button"
       :class="ns.e('preview-mask')"
-      aria-label="预览图片"
+      :aria-label="locale.previewImage"
       @click="showPreview()"
     >
       <BiliIcon name="eye" />
-      <span>预览</span>
+      <span>{{ locale.preview }}</span>
     </button>
 
     <ImageViewer

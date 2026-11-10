@@ -119,7 +119,7 @@ defineExpose({ open, close, toggle })
     </slot>
 
     <Teleport to="body">
-      <Transition name="bili-popover">
+      <Transition :name="ns.transition('popover')">
         <div
           v-if="visible"
           ref="contentRef"

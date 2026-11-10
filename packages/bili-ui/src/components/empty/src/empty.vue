@@ -1,12 +1,16 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
+import { useLocale } from '../../../hooks/use-config'
 import { emptyProps } from './empty'
 
 defineOptions({ name: 'BiliEmpty' })
 
-defineProps(emptyProps)
+const props = defineProps(emptyProps)
 
 const ns = useNamespace('empty')
+const locale = useLocale()
+const displayDescription = computed(() => props.description || locale.value.empty)
 </script>
 
 <template>
@@ -15,7 +19,7 @@ const ns = useNamespace('empty')
       <slot name="image">
         <svg
           v-if="preset === 'search'"
-          class="bili-empty__svg"
+          :class="ns.e('svg')"
           viewBox="0 0 120 90"
           aria-hidden="true"
         >
@@ -29,7 +33,7 @@ const ns = useNamespace('empty')
 
         <svg
           v-else-if="preset === 'data'"
-          class="bili-empty__svg"
+          :class="ns.e('svg')"
           viewBox="0 0 120 90"
           aria-hidden="true"
         >
@@ -45,7 +49,7 @@ const ns = useNamespace('empty')
 
         <svg
           v-else-if="preset === 'simple'"
-          class="bili-empty__svg"
+          :class="ns.e('svg')"
           viewBox="0 0 120 90"
           aria-hidden="true"
         >
@@ -53,7 +57,7 @@ const ns = useNamespace('empty')
           <path d="M40 38h40M40 50h28" stroke="currentColor" stroke-linecap="round" />
         </svg>
 
-        <svg v-else class="bili-empty__svg" viewBox="0 0 120 90" aria-hidden="true">
+        <svg v-else :class="ns.e('svg')" viewBox="0 0 120 90" aria-hidden="true">
           <path
             d="M25 60 38 26h44l13 34Z"
             fill="none"
@@ -67,8 +71,8 @@ const ns = useNamespace('empty')
       </slot>
     </div>
 
-    <div v-if="description || $slots.description" :class="ns.e('description')">
-      <slot name="description">{{ description }}</slot>
+    <div v-if="displayDescription || $slots.description" :class="ns.e('description')">
+      <slot name="description">{{ displayDescription }}</slot>
     </div>
 
     <div v-if="$slots.default" :class="ns.e('footer')">

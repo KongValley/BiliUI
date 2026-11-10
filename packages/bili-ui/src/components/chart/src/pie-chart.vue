@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
+import { formatLocale, useLocale } from '../../../hooks/use-config'
 import { pieChartProps } from './chart'
 import {
   arcPath,
@@ -23,6 +24,8 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('chart')
+const locale = useLocale()
+const displayEmpty = computed(() => props.emptyText || locale.value.empty)
 const rootRef = ref<HTMLElement | null>(null)
 const { width } = useChartSize(rootRef)
 
@@ -80,7 +83,7 @@ const slices = computed<Slice[]>(() => {
       name: item.name,
       value,
       percent: total.value ? (value / total.value) * 100 : 0,
-      color: item.color ?? paletteColor(index),
+      color: item.color ?? paletteColor(index, ns.namespace),
       path: arcPath(center.value.x, center.value.y, radius.value, innerRadius.value, start, end),
       midAngle,
       labelX: polarPoint(center.value.x, center.value.y, labelRadius, midAngle).x,
@@ -95,7 +98,7 @@ const slices = computed<Slice[]>(() => {
 const legendItems = computed(() =>
   props.data.map((item, index) => ({
     name: item.name,
-    color: item.color ?? paletteColor(index)
+    color: item.color ?? paletteColor(index, ns.namespace)
   }))
 )
 
@@ -153,8 +156,8 @@ const tooltip = computed(() => {
     align: 'left' as const,
     title: slice.name,
     rows: [
-      { name: '数值', value: formatter.value(slice.value), color: slice.color },
-      { name: '占比', value: `${slice.percent.toFixed(1)}%` }
+      { name: locale.value.chartValue, value: formatter.value(slice.value), color: slice.color },
+      { name: locale.value.chartPercent, value: `${slice.percent.toFixed(1)}%` }
     ]
   }
 })
@@ -180,7 +183,7 @@ const canvasStyle = computed(() => ({ height: toCssSize(props.height) }))
         :height="height"
         :viewBox="`0 0 ${width} ${height}`"
         role="img"
-        :aria-label="`饼图：${data.length} 个分类`"
+        :aria-label="formatLocale(locale.pieChart, { count: data.length })"
       >
         <g
           :class="ns.e('pie')"
@@ -224,7 +227,7 @@ const canvasStyle = computed(() => ({ height: toCssSize(props.height) }))
           text-anchor="middle"
           dominant-baseline="middle"
         >
-          总计
+          {{ locale.chartTotal }}
         </text>
 
         <template v-if="showLabels">
@@ -245,7 +248,7 @@ const canvasStyle = computed(() => ({ height: toCssSize(props.height) }))
 
       <div v-else :class="ns.e('empty')">
         <span :class="ns.e('empty-mark')" aria-hidden="true" />
-        <span>{{ emptyText }}</span>
+        <span>{{ displayEmpty }}</span>
       </div>
 
       <ChartTooltip

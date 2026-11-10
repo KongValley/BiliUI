@@ -8,7 +8,7 @@ export const colorPickerProps = {
   },
   placeholder: {
     type: String,
-    default: '请选择颜色'
+    default: ''
   },
   size: {
     type: String as PropType<ComponentSize>,

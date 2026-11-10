@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useNamespace } from '../../../hooks/use-namespace'
+import { useLocale } from '../../../hooks/use-config'
 import BiliIcon from '../../icon/src/icon.vue'
 import { tagProps } from './tag'
 
@@ -12,6 +13,7 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('tag')
+const locale = useLocale()
 </script>
 
 <template>
@@ -32,7 +34,7 @@ const ns = useNamespace('tag')
       v-if="closable"
       :class="ns.e('close')"
       type="button"
-      aria-label="关闭"
+      :aria-label="locale.close"
       @click.stop="emit('close', $event)"
     >
       <BiliIcon name="close" />

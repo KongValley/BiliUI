@@ -137,7 +137,7 @@ defineExpose({ open, close, toggle })
     </slot>
 
     <Teleport to="body">
-      <Transition name="bili-dropdown">
+      <Transition :name="ns.transition('dropdown')">
         <div
           v-if="visible"
           ref="popupRef"

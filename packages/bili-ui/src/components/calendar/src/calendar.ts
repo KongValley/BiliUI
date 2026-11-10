@@ -17,7 +17,7 @@ export const calendarProps = {
   },
   todayText: {
     type: String,
-    default: '今天'
+    default: ''
   },
   /** Return true to disable a date. */
   disabledDate: {

@@ -142,7 +142,7 @@ useClickOutside([triggerRef, popupRef], () => {
     </ul>
 
     <Teleport v-else to="body">
-      <Transition name="bili-menu-popup">
+      <Transition :name="ns.transition('menu-popup')">
         <ul
           v-if="popupVisible"
           ref="popupRef"

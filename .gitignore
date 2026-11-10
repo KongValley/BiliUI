@@ -6,6 +6,7 @@ coverage/
 
 docs/.vitepress/cache/
 docs/.vitepress/dist/
+docs/.vitepress/data/api.json
 
 .vscode/
 .idea/

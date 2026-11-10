@@ -21,6 +21,9 @@
       "require": "./dist/index.cjs"
     },
     "./style.css": "./dist/index.css",
+    "./components/*/style.css": "./dist/components/*/style.css",
+    "./components/*/style": "./dist/components/*/style.css",
+    "./es/components/*/style.css": "./dist/components/*/style.css",
     "./package.json": "./package.json"
   },
   "files": [
@@ -31,8 +34,9 @@
     "**/*.scss"
   ],
   "scripts": {
-    "build": "vite build && pnpm build:style",
+    "build": "vite build && pnpm build:style && pnpm build:component-styles",
     "build:style": "sass --no-source-map --style=compressed src/styles/index.scss dist/index.css",
+    "build:component-styles": "node scripts/build-component-styles.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "vue-tsc --noEmit -p tsconfig.json"

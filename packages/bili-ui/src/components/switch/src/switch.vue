@@ -23,7 +23,7 @@ const isDisabled = computed(() => props.disabled || props.loading)
 
 const style = computed<CSSProperties>(() => {
   if (props.width === undefined) return {}
-  return { '--bili-switch-width': addUnit(props.width) } as CSSProperties
+  return { [ns.cssVar('width')]: addUnit(props.width) } as CSSProperties
 })
 
 const toggle = () => {

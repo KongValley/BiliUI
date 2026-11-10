@@ -169,22 +169,22 @@ onBeforeUnmount(() => {
 const rootStyle = computed<CSSProperties>(() =>
   fixed.value
     ? {
-        '--bili-affix-width': `${size.width}px`,
-        '--bili-affix-height': `${size.height}px`
+        [ns.cssVar('width')]: `${size.width}px`,
+        [ns.cssVar('height')]: `${size.height}px`
       }
     : {}
 )
 
 const contentStyle = computed<CSSProperties>(() => {
   if (!fixed.value) return {}
-  const style: CSSProperties = {
-    '--bili-affix-left': `${fixedLeft.value}px`,
-    '--bili-affix-width': `${size.width}px`,
-    '--bili-affix-z-index': String(props.zIndex)
+  const style: Record<string, string> = {
+    [ns.cssVar('left')]: `${fixedLeft.value}px`,
+    [ns.cssVar('width')]: `${size.width}px`,
+    [ns.cssVar('z-index')]: String(props.zIndex)
   }
-  if (props.position === 'top') style['--bili-affix-top'] = `${fixedTop.value}px`
-  else style['--bili-affix-bottom'] = `${fixedBottom.value}px`
-  return style
+  if (props.position === 'top') style[ns.cssVar('top')] = `${fixedTop.value}px`
+  else style[ns.cssVar('bottom')] = `${fixedBottom.value}px`
+  return style as CSSProperties
 })
 
 defineExpose({ update, fixed })

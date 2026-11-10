@@ -28,6 +28,11 @@ export const notificationProps = {
     type: String,
     default: ''
   },
+  /** Internal: namespace used by the imperative notification API. */
+  namespace: {
+    type: String,
+    default: undefined
+  },
   type: {
     type: String as PropType<NotificationType>,
     default: 'info'

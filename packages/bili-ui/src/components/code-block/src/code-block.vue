@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref, type CSSProperties } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
+import { useLocale } from '../../../hooks/use-config'
 import { addUnit } from '../../../utils/dom'
 import BiliIcon from '../../icon/src/icon.vue'
 import { codeBlockProps } from './code-block'
@@ -15,6 +16,7 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('code-block')
+const locale = useLocale()
 
 const lines = computed<CodeToken[][]>(() => {
   if (props.highlight) return tokenize(props.code, props.language)
@@ -26,7 +28,7 @@ const label = computed(() => languageLabel(props.language))
 const gutter = computed(() => `${Math.max(2, String(lines.value.length).length) + 1}ch`)
 
 const rootStyle = computed(
-  () => ({ '--bili-code-gutter': gutter.value }) as CSSProperties
+  () => ({ [ns.cssVar('gutter')]: gutter.value }) as CSSProperties
 )
 
 const bodyStyle = computed<CSSProperties | undefined>(() =>
@@ -114,11 +116,11 @@ defineExpose({ copy })
           v-if="copyable"
           type="button"
           :class="[ns.e('copy'), ns.is('copied', copied)]"
-          :aria-label="copied ? '已复制' : '复制代码'"
+          :aria-label="copied ? locale.copied : locale.copyCode"
           @click="copy"
         >
           <BiliIcon :name="copied ? 'check' : 'copy'" :size="14" />
-          <span>{{ copied ? '已复制' : '复制' }}</span>
+          <span>{{ copied ? locale.copied : locale.copy }}</span>
         </button>
       </div>
     </div>

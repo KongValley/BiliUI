@@ -11,6 +11,7 @@ import {
   type CSSProperties
 } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
+import { useLocale } from '../../../hooks/use-config'
 import { useFloating } from '../../../hooks/use-floating'
 import { useClickOutside } from '../../../hooks/use-click-outside'
 import { useZIndex } from '../../../hooks/use-z-index'
@@ -25,6 +26,9 @@ import MenuPanelProvider from './panel-provider.vue'
 defineOptions({ name: 'BiliMenu' })
 
 const props = defineProps(menuProps)
+
+const locale = useLocale()
+const displayEllipsisText = computed(() => props.ellipsisText || locale.value.more)
 
 const emit = defineEmits<{
   'update:modelValue': [key: string]
@@ -298,12 +302,12 @@ defineExpose({ measureOverflow, toggleOpen, openedKeys, overflowCount })
       :aria-expanded="moreVisible"
       @click="toggleMore"
     >
-      <span>{{ ellipsisText }}</span>
+      <span>{{ displayEllipsisText }}</span>
       <BiliIcon :class="ns.e('more-arrow')" name="chevron-down" />
     </button>
 
     <Teleport to="body">
-      <Transition name="bili-menu-popup">
+      <Transition :name="ns.transition('menu-popup')">
         <ul
           v-if="moreVisible"
           ref="morePanelRef"

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch, type CSSProperties } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
+import { formatLocale, useLocale } from '../../../hooks/use-config'
 import { addUnit } from '../../../utils/dom'
 import { getProp } from '../../../utils/object'
 import BiliIcon from '../../icon/src/icon.vue'
@@ -30,6 +31,9 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('table')
+const locale = useLocale()
+const displayEmpty = computed(() => props.emptyText || locale.value.empty)
+const displaySummaryText = computed(() => props.summaryText || locale.value.sumText)
 
 const headerRef = ref<HTMLElement | null>(null)
 const wrapperRef = ref<HTMLElement | null>(null)
@@ -486,7 +490,7 @@ const summaryValues = computed<Array<string | number | null | undefined>>(() => 
     return props.summaryMethod({ columns: orderedColumns.value, data: props.data })
   }
   return orderedColumns.value.map((column, index) => {
-    if (index === 0) return props.summaryText
+    if (index === 0) return displaySummaryText.value
     if (!column.prop) return ''
     const numbers = props.data
       .map(row => getProp(row, column.prop as string))
@@ -553,7 +557,7 @@ const summaryValues = computed<Array<string | number | null | undefined>>(() => 
                 :model-value="selectionState.allSelected.value"
                 :indeterminate="selectionState.partiallySelected.value"
                 :disabled="!selectionState.selectableRows.value.length"
-                aria-label="全选"
+                :aria-label="locale.selectAll"
                 @change="checked => handleSelectAll(checked)"
               />
             </th>
@@ -611,7 +615,11 @@ const summaryValues = computed<Array<string | number | null | undefined>>(() => 
                 <span
                   v-if="multiSort && getSortPriority(column.prop) > 0 && sorts.length > 1"
                   :class="ns.e('sort-index')"
-                  :aria-label="`排序优先级 ${getSortPriority(column.prop)}`"
+                  :aria-label="
+                    formatLocale(locale.sortPriority, {
+                      priority: getSortPriority(column.prop)
+                    })
+                  "
                 >
                   {{ getSortPriority(column.prop) }}
                 </span>
@@ -622,7 +630,9 @@ const summaryValues = computed<Array<string | number | null | undefined>>(() => 
                 :class="[ns.e('resize-handle'), ns.is('active', resizing)]"
                 role="separator"
                 aria-orientation="vertical"
-                :aria-label="`调整${column.label ?? ''}列宽`"
+                  :aria-label="
+                    formatLocale(locale.resizeColumn, { column: column.label ?? '' })
+                  "
                 @pointerdown="startResize($event, columnKeyAt(column, index))"
                 @click.stop
               />
@@ -658,7 +668,7 @@ const summaryValues = computed<Array<string | number | null | undefined>>(() => 
                   v-if="item.isDetailExpandable"
                   :class="ns.e('expand-toggle')"
                   type="button"
-                  :aria-label="expandedRowSet.has(item.key) ? '收起' : '展开'"
+                  :aria-label="expandedRowSet.has(item.key) ? locale.collapse : locale.expand"
                   :aria-expanded="expandedRowSet.has(item.key)"
                   @click.stop="toggleExpandRow(item)"
                 >
@@ -682,7 +692,9 @@ const summaryValues = computed<Array<string | number | null | undefined>>(() => 
                 <BiliCheckbox
                   :model-value="selectionState.isSelected(item.row, rowIndexAt(rowIndex))"
                   :disabled="!selectionState.isSelectable(item.row, rowIndexAt(rowIndex))"
-                  :aria-label="`选择第 ${rowIndexAt(rowIndex) + 1} 行`"
+                  :aria-label="
+                    formatLocale(locale.selectRow, { index: rowIndexAt(rowIndex) + 1 })
+                  "
                   @click.stop
                   @change="checked => handleRowToggle(item.row, rowIndexAt(rowIndex), checked)"
                 />
@@ -703,7 +715,9 @@ const summaryValues = computed<Array<string | number | null | undefined>>(() => 
                     v-if="columnIndex === 0 && item.isTreeParent"
                     :class="ns.e('tree-toggle')"
                     type="button"
-                    :aria-label="treeExpandedSet.has(item.key) ? '收起子节点' : '展开子节点'"
+                    :aria-label="
+                      treeExpandedSet.has(item.key) ? locale.collapse : locale.expand
+                    "
                     :aria-expanded="treeExpandedSet.has(item.key)"
                     @click.stop="toggleTree(item)"
                   >
@@ -740,7 +754,7 @@ const summaryValues = computed<Array<string | number | null | undefined>>(() => 
 
           <tr v-if="!displayRows.length">
             <td :colspan="Math.max(colspan, 1)" :class="ns.e('empty')">
-              <slot name="empty">{{ emptyText }}</slot>
+              <slot name="empty">{{ displayEmpty }}</slot>
             </td>
           </tr>
 

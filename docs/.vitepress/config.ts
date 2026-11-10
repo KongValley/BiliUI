@@ -21,11 +21,13 @@ export default defineConfig({
           text: '指南',
           items: [
             { text: '快速开始', link: '/guide/quickstart' },
+            { text: '按需样式', link: '/guide/on-demand' },
             { text: '主题定制', link: '/guide/theme' },
             { text: '样式覆写', link: '/guide/style-overrides' },
             { text: '动效规范', link: '/guide/motion' },
             { text: '设计规范', link: '/guide/design' },
-            { text: '组件开发计划', link: '/guide/roadmap' }
+            { text: '组件开发计划', link: '/guide/roadmap' },
+            { text: 'API 参考', link: '/guide/api' }
           ]
         }
       ],
@@ -69,6 +71,8 @@ export default defineConfig({
             { text: 'Cascader 级联选择', link: '/components/cascader' },
             { text: 'TreeSelect 树选择', link: '/components/tree-select' },
             { text: 'ColorPicker 取色器', link: '/components/color-picker' },
+            { text: 'DatePicker 日期选择', link: '/components/date-picker' },
+            { text: 'TimePicker 时间选择', link: '/components/time-picker' },
             { text: 'InputNumber 数字输入', link: '/components/input-number' },
             { text: 'Slider 滑块', link: '/components/slider' },
             { text: 'Upload 上传', link: '/components/upload' },

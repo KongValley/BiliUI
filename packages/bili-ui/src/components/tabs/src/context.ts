@@ -11,6 +11,8 @@ export interface TabPaneState {
 }
 
 export interface TabsContext {
+  /** Unique DOM id used to wire tab / panel ARIA relationships. */
+  id: Ref<string>
   activeName: Ref<string | number | undefined>
   type: Ref<TabsType>
   direction: Ref<TabsDirection>

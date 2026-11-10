@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch, type CSSProperties } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
+import { formatLocale, useLocale } from '../../../hooks/use-config'
 import { useFloating } from '../../../hooks/use-floating'
 import { useClickOutside } from '../../../hooks/use-click-outside'
 import { useId } from '../../../hooks/use-id'
@@ -30,6 +31,12 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('tree-select')
+const locale = useLocale()
+const displayPlaceholder = computed(() => props.placeholder || locale.value.selectPlaceholder)
+const displayFilterPlaceholder = computed(
+  () => props.filterPlaceholder || locale.value.searchPlaceholder
+)
+const displayEmpty = computed(() => props.emptyText || locale.value.empty)
 const { nextZIndex, currentZIndex } = useZIndex()
 const panelId = useId('bili-tree-select-panel')
 
@@ -199,7 +206,7 @@ defineExpose({ focus, blur, open, close })
               :class="ns.e('tag-close')"
               type="button"
               tabindex="-1"
-              :aria-label="`移除 ${nodeLabel(node, fields)}`"
+              :aria-label="formatLocale(locale.remove, { label: nodeLabel(node, fields) })"
               @mousedown.stop.prevent
               @click.stop="removeTag(nodeKey(node))"
             >
@@ -210,7 +217,7 @@ defineExpose({ focus, blur, open, close })
             +{{ restTagCount }}
           </span>
           <span v-if="!selectedNodes.length" :class="[ns.e('value'), ns.is('placeholder', true)]">
-            {{ placeholder }}
+            {{ displayPlaceholder }}
           </span>
         </div>
       </template>
@@ -220,7 +227,7 @@ defineExpose({ focus, blur, open, close })
         :class="[ns.e('value'), ns.is('placeholder', !hasValue)]"
         :title="hasValue ? selectedLabel : undefined"
       >
-        {{ hasValue ? selectedLabel : placeholder }}
+        {{ hasValue ? selectedLabel : displayPlaceholder }}
       </span>
     </div>
 
@@ -230,7 +237,7 @@ defineExpose({ focus, blur, open, close })
         :class="ns.e('clear')"
         type="button"
         tabindex="-1"
-        aria-label="清空"
+        :aria-label="locale.clear"
         @click.stop="clear"
       >
         <BiliIcon name="close-circle" />
@@ -240,7 +247,7 @@ defineExpose({ focus, blur, open, close })
   </div>
 
   <Teleport to="body">
-    <Transition name="bili-tree-select-dropdown">
+    <Transition :name="ns.transition('tree-select-dropdown')">
       <div
         v-if="isOpen"
         :id="panelId"
@@ -258,8 +265,8 @@ defineExpose({ focus, blur, open, close })
           :check-strictly="checkStrictly"
           :default-expand-all="defaultExpandAll"
           :filterable="filterable"
-          :filter-placeholder="filterPlaceholder"
-          :empty-text="emptyText"
+          :filter-placeholder="displayFilterPlaceholder"
+          :empty-text="displayEmpty"
           @update:model-value="handleSelect"
           @update:checked-keys="handleCheck"
         />

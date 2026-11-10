@@ -23,12 +23,12 @@ export const transferProps = {
   },
   titles: {
     type: Array as PropType<string[]>,
-    default: () => ['列表 1', '列表 2']
+    default: () => []
   },
   filterable: Boolean,
   filterPlaceholder: {
     type: String,
-    default: '请输入关键字'
+    default: ''
   },
   disabled: Boolean,
   /** Show a select-all checkbox in each panel header. */

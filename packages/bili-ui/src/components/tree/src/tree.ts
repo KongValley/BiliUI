@@ -48,11 +48,11 @@ export const treeProps = {
   filterable: Boolean,
   filterPlaceholder: {
     type: String,
-    default: '请输入关键字'
+    default: ''
   },
   emptyText: {
     type: String,
-    default: '暂无数据'
+    default: ''
   },
   /** Indent per level, in px. */
   indent: {

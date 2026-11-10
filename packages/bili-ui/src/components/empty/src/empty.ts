@@ -10,7 +10,7 @@ export const emptyProps = {
   },
   description: {
     type: String,
-    default: '暂无数据'
+    default: ''
   },
   /** Renders a smaller, denser empty state. */
   small: Boolean

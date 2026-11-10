@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
+import { useLocale, formatLocale } from '../../../hooks/use-config'
 import { sliderProps } from './slider'
 
 defineOptions({ name: 'BiliSlider' })
@@ -16,6 +17,7 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('slider')
+const locale = useLocale()
 
 const trackRef = ref<HTMLElement | null>(null)
 const dragging = ref(false)
@@ -166,7 +168,7 @@ const markEntries = computed(() => {
         type="button"
         :style="{ left: `${percent[index]}%` }"
         :disabled="disabled"
-        :aria-label="`滑块 ${index + 1}`"
+        :aria-label="formatLocale(locale.slider, { index: index + 1 })"
         @keydown.stop="handleKeydown($event, index)"
       >
         <span v-if="showTooltip" :class="ns.e('tooltip')">{{ formatValue(value) }}</span>

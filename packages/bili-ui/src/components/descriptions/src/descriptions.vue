@@ -45,7 +45,7 @@ const columnCount = computed(() =>
 )
 
 const rootStyle = computed(() => ({
-  '--bili-descriptions-columns': String(columnCount.value)
+  [ns.cssVar('columns')]: String(columnCount.value)
 }))
 
 defineExpose({ context, descriptionsContextKey })

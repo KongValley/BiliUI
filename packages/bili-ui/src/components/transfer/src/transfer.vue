@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
+import { formatLocale, useLocale } from '../../../hooks/use-config'
 import BiliIcon from '../../icon/src/icon.vue'
 import BiliCheckbox from '../../checkbox/src/checkbox.vue'
 import { transferProps, type TransferDirection, type TransferItem, type TransferKey } from './transfer'
@@ -15,6 +16,14 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('transfer')
+const locale = useLocale()
+const displayTitles = computed<[string, string]>(() => [
+  props.titles?.[0] || locale.value.transferTitles[0],
+  props.titles?.[1] || locale.value.transferTitles[1]
+])
+const displayFilterPlaceholder = computed(
+  () => props.filterPlaceholder || locale.value.searchPlaceholder
+)
 
 const leftQuery = ref('')
 const rightQuery = ref('')
@@ -112,12 +121,12 @@ const canMoveLeft = computed(() => !props.disabled && rightSelected.value.length
           :model-value="allChecked(leftVisible, leftSelected)"
           :indeterminate="partiallyChecked(leftVisible, leftSelected)"
           :disabled="disabled || !selectable(leftVisible).length"
-          :aria-label="`全选${titles[0]}`"
+          :aria-label="formatLocale(locale.transferSelectAll, { title: displayTitles[0] })"
           @change="checked => toggleAll('left', checked)"
         />
         <span :class="ns.e('title')">
-          <slot name="title" :title="titles[0]" :side="'left'">
-            {{ titles[0] }}
+          <slot name="title" :title="displayTitles[0]" :side="'left'">
+            {{ displayTitles[0] }}
           </slot>
         </span>
         <span :class="ns.e('count')">
@@ -130,7 +139,7 @@ const canMoveLeft = computed(() => !props.disabled && rightSelected.value.length
           v-model="leftQuery"
           :class="ns.e('filter-input')"
           type="text"
-          :placeholder="filterPlaceholder"
+          :placeholder="displayFilterPlaceholder"
           :disabled="disabled"
         />
       </div>
@@ -158,7 +167,7 @@ const canMoveLeft = computed(() => !props.disabled && rightSelected.value.length
             <slot name="item" :item="item" :side="'left'">{{ item.label }}</slot>
           </span>
         </div>
-        <div v-if="!leftVisible.length" :class="ns.e('empty')">暂无数据</div>
+        <div v-if="!leftVisible.length" :class="ns.e('empty')">{{ locale.empty }}</div>
       </div>
     </section>
 
@@ -166,7 +175,7 @@ const canMoveLeft = computed(() => !props.disabled && rightSelected.value.length
       <button
         :class="ns.e('action')"
         type="button"
-        aria-label="移到右侧"
+        :aria-label="locale.moveToRight"
         :disabled="!canMoveRight"
         @click="move('right')"
       >
@@ -175,7 +184,7 @@ const canMoveLeft = computed(() => !props.disabled && rightSelected.value.length
       <button
         :class="ns.e('action')"
         type="button"
-        aria-label="移到左侧"
+        :aria-label="locale.moveToLeft"
         :disabled="!canMoveLeft"
         @click="move('left')"
       >
@@ -190,12 +199,12 @@ const canMoveLeft = computed(() => !props.disabled && rightSelected.value.length
           :model-value="allChecked(rightVisible, rightSelected)"
           :indeterminate="partiallyChecked(rightVisible, rightSelected)"
           :disabled="disabled || !selectable(rightVisible).length"
-          :aria-label="`全选${titles[1]}`"
+          :aria-label="formatLocale(locale.transferSelectAll, { title: displayTitles[1] })"
           @change="checked => toggleAll('right', checked)"
         />
         <span :class="ns.e('title')">
-          <slot name="title" :title="titles[1]" :side="'right'">
-            {{ titles[1] }}
+          <slot name="title" :title="displayTitles[1]" :side="'right'">
+            {{ displayTitles[1] }}
           </slot>
         </span>
         <span :class="ns.e('count')">
@@ -208,7 +217,7 @@ const canMoveLeft = computed(() => !props.disabled && rightSelected.value.length
           v-model="rightQuery"
           :class="ns.e('filter-input')"
           type="text"
-          :placeholder="filterPlaceholder"
+          :placeholder="displayFilterPlaceholder"
           :disabled="disabled"
         />
       </div>
@@ -236,7 +245,7 @@ const canMoveLeft = computed(() => !props.disabled && rightSelected.value.length
             <slot name="item" :item="item" :side="'right'">{{ item.label }}</slot>
           </span>
         </div>
-        <div v-if="!rightVisible.length" :class="ns.e('empty')">暂无数据</div>
+        <div v-if="!rightVisible.length" :class="ns.e('empty')">{{ locale.empty }}</div>
       </div>
     </section>
   </div>

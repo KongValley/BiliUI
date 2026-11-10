@@ -62,7 +62,7 @@ export const tableProps = {
   loading: Boolean,
   emptyText: {
     type: String,
-    default: '暂无数据'
+    default: ''
   },
   rowKey: {
     type: [String, Function] as PropType<TableRowKeyResolver>,
@@ -158,7 +158,7 @@ export const tableProps = {
   /** Label placed in the first summary cell. */
   summaryText: {
     type: String,
-    default: '合计'
+    default: ''
   },
   /** Window the body rows for large datasets. Requires `max-height`. */
   virtual: Boolean,

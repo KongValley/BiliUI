@@ -3,7 +3,8 @@ import { describe, expect, it } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { defineComponent, h, nextTick, ref } from 'vue'
 import ConfigProvider from '../config-provider.vue'
-import { useConfig, useLocale, formatLocale } from '../../../../hooks/use-config'
+import { useConfig, useLocale, formatLocale, enUSLocale } from '../../../../hooks/use-config'
+import { useNamespace } from '../../../../hooks/use-namespace'
 import { useZIndex } from '../../../../hooks/use-z-index'
 import BiliButton from '../../../button/src/button.vue'
 import BiliInput from '../../../input/src/input.vue'
@@ -12,6 +13,20 @@ import BiliInputNumber from '../../../input-number/src/input-number.vue'
 import BiliPopconfirm from '../../../popover/src/popconfirm.vue'
 import BiliPagination from '../../../pagination/src/pagination.vue'
 import BiliDialog from '../../../dialog/src/dialog.vue'
+import BiliCalendar from '../../../calendar/src/calendar.vue'
+import BiliTable from '../../../table/src/table.vue'
+import BiliEmpty from '../../../empty/src/empty.vue'
+import BiliMessage, { __resetMessages } from '../../../message/src/method'
+import BiliDatePicker from '../../../date-picker/src/date-picker.vue'
+import BiliTimePicker from '../../../time-picker/src/time-picker.vue'
+
+const NamespaceProbe = defineComponent({
+  setup() {
+    const ns = useNamespace('probe')
+    return () =>
+      h('div', { class: [ns.b(), ns.e('item'), ns.is('active', true)] }, ns.cssVar('color'))
+  }
+})
 
 const ConfigProbe = defineComponent({
   setup() {
@@ -175,5 +190,90 @@ describe('BiliConfigProvider', () => {
   it('formats locale placeholders', () => {
     expect(formatLocale('共 {total} 条', { total: 20 })).toBe('共 20 条')
     expect(formatLocale('Hello {name}', {})).toBe('Hello {name}')
+  })
+
+  it('applies a custom namespace to classes, elements and CSS variables', () => {
+    const wrapper = mount(ConfigProvider, {
+      props: { namespace: 'acme' },
+      slots: {
+        default: () =>
+          h('div', [h(NamespaceProbe), h(BiliButton, null, () => '按钮'), h(BiliInput)])
+      }
+    })
+
+    const probe = wrapper.find('.acme-probe')
+    expect(probe.exists()).toBe(true)
+    expect(probe.classes()).toContain('acme-probe__item')
+    expect(probe.classes()).toContain('is-active')
+    expect(probe.text()).toBe('--acme-probe-color')
+    expect(wrapper.find('.bili-probe').exists()).toBe(false)
+    expect(wrapper.find('.acme-button').exists()).toBe(true)
+    expect(wrapper.find('.acme-input').exists()).toBe(true)
+    expect(wrapper.find('.bili-button').exists()).toBe(false)
+  })
+
+  it('clones same-origin styles for a custom namespace', async () => {
+    const source = document.createElement('style')
+    source.textContent = '.bili-clone-probe { color: var(--bili-clone-color, red); }'
+    document.head.appendChild(source)
+
+    mount(ConfigProvider, {
+      props: { namespace: 'acme-clone' },
+      slots: { default: () => h('div') }
+    })
+    await new Promise(resolve => setTimeout(resolve, 50))
+
+    const cloned = document.querySelector<HTMLStyleElement>(
+      'style[data-bili-namespace="acme-clone"]'
+    )
+    expect(cloned?.textContent).toContain('.acme-clone-clone-probe')
+    expect(cloned?.textContent).toContain('--acme-clone-clone-color')
+
+    source.remove()
+    cloned?.remove()
+  })
+
+  it('applies namespace and locale to imperative messages', async () => {
+    mount(ConfigProvider, {
+      props: { namespace: 'acme-msg', locale: { close: 'Dismiss', message: 'Notifications' } },
+      slots: { default: () => h('div') }
+    })
+
+    BiliMessage({ message: 'Saved', showClose: true, duration: 0 })
+    await nextTick()
+
+    const container = document.querySelector('.acme-msg-message-container')
+    expect(container?.getAttribute('aria-label')).toBe('Notifications')
+    expect(
+      document.querySelector('.acme-msg-message__close')?.getAttribute('aria-label')
+    ).toBe('Dismiss')
+
+    __resetMessages()
+  })
+
+  it('localises built-in defaults with the English locale', () => {
+    const wrapper = mount(ConfigProvider, {
+      props: { locale: enUSLocale },
+      slots: {
+        default: () =>
+          h('div', [
+            h(BiliCalendar, { modelValue: '2026-11-10' }),
+            h(BiliTable, { columns: [{ label: 'Name', prop: 'name' }], data: [] }),
+            h(BiliEmpty),
+            h(BiliDatePicker),
+            h(BiliTimePicker)
+          ])
+      }
+    })
+
+    expect(wrapper.find('.bili-calendar__label').text()).toBe('11/2026')
+    expect(wrapper.find('.bili-calendar__today').text()).toBe('Today')
+    expect(wrapper.find('.bili-calendar__nav-button').attributes('aria-label')).toBe(
+      'Previous month'
+    )
+    expect(wrapper.find('.bili-table__empty').text()).toBe('No data')
+    expect(wrapper.find('.bili-empty__description').text()).toBe('No data')
+    expect(wrapper.find('.bili-date-picker__placeholder').text()).toBe('Select date')
+    expect(wrapper.find('.bili-time-picker__placeholder').text()).toBe('Select time')
   })
 })

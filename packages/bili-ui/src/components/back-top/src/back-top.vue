@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
+import { useLocale } from '../../../hooks/use-config'
 import { addUnit } from '../../../utils/dom'
 import BiliIcon from '../../icon/src/icon.vue'
 import { backTopProps } from './back-top'
@@ -14,6 +15,7 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('back-top')
+const locale = useLocale()
 
 const targetEl = ref<HTMLElement | null>(null)
 const visible = ref(false)
@@ -143,9 +145,9 @@ const handleClick = (event: MouseEvent) => {
 }
 
 const style = computed(() => ({
-  '--bili-back-top-right': addUnit(props.right),
-  '--bili-back-top-bottom': addUnit(props.bottom),
-  '--bili-back-top-z-index': String(props.zIndex)
+  [ns.cssVar('right')]: addUnit(props.right),
+  [ns.cssVar('bottom')]: addUnit(props.bottom),
+  [ns.cssVar('z-index')]: String(props.zIndex)
 }))
 
 watch(
@@ -172,13 +174,13 @@ defineExpose({ visible, scrollToTop })
 </script>
 
 <template>
-  <Transition name="bili-back-top">
+  <Transition :name="ns.transition('back-top')">
     <button
       v-if="visible"
       type="button"
       :class="ns.b()"
       :style="style"
-      aria-label="回到顶部"
+      :aria-label="locale.backTop"
       @click="handleClick"
     >
       <slot>

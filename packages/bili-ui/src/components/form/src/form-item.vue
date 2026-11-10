@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, provide, ref } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
+import { useLocale } from '../../../hooks/use-config'
 import { addUnit } from '../../../utils/dom'
 import { cloneDeep, getProp, setProp } from '../../../utils/object'
 import { formItemProps } from './form-item'
@@ -22,6 +23,7 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('form-item')
+const locale = useLocale()
 const form = useFormContext()
 const list = useFormListContext()
 
@@ -92,7 +94,7 @@ const validate = async (trigger?: 'blur' | 'change', propagate = true): Promise<
   validateState.value = 'validating'
   try {
     for (const rule of rules) {
-      await validateRule(rule, fieldValue.value, form.model.value)
+      await validateRule(rule, fieldValue.value, form.model.value, locale.value)
     }
     validateState.value = 'success'
     validateMessage.value = ''
@@ -100,7 +102,7 @@ const validate = async (trigger?: 'blur' | 'change', propagate = true): Promise<
     return true
   } catch (error: any) {
     validateState.value = 'error'
-    validateMessage.value = error?.message || '校验未通过'
+    validateMessage.value = error?.message || locale.value.validationFailed
     emit('validate', false, validateMessage.value)
     return false
   }
@@ -180,7 +182,7 @@ defineExpose({ validate, resetField, clearValidate, validateMessage })
       <div :class="ns.e('control')">
         <slot />
       </div>
-      <Transition name="bili-form-item-fade">
+      <Transition :name="ns.transition('form-item-fade')">
         <div
           v-if="showMessage && hasError && message"
           :class="ns.e('error')"

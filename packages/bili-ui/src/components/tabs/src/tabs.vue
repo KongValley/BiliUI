@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
+import { useLocale } from '../../../hooks/use-config'
 import { useId } from '../../../hooks/use-id'
 import BiliIcon from '../../icon/src/icon.vue'
 import { tabsProps } from './tabs'
@@ -18,6 +19,7 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('tabs')
+const locale = useLocale()
 const id = useId('bili-tabs')
 
 const panes = ref<TabPaneState[]>([])
@@ -62,6 +64,7 @@ const requestClose = (name: string | number) => {
 }
 
 provideTabsContext({
+  id: computed(() => id),
   activeName,
   type: computed(() => props.type),
   direction: computed(() => props.direction),
@@ -83,7 +86,7 @@ const indicator = ref({ x: 0, y: 0, width: 0, height: 0, visible: false })
 const updateIndicator = () => {
   const nav = navRef.value
   if (!nav) return
-  const active = nav.querySelector<HTMLElement>('.bili-tabs__tab.is-active')
+  const active = nav.querySelector<HTMLElement>(`.${ns.e('tab')}.is-active`)
   if (!active) {
     indicator.value.visible = false
     return
@@ -198,7 +201,7 @@ const showIndicator = computed(() => props.type === 'line' && indicator.value.vi
           v-if="closable && pane.closable"
           :class="ns.e('close')"
           role="button"
-          aria-label="关闭标签"
+          :aria-label="locale.tabClose"
           @click.stop="requestClose(pane.name)"
         >
           <BiliIcon name="close" :size="12" />

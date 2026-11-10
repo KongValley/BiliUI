@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
+import { formatLocale, useLocale } from '../../../hooks/use-config'
 import { useId } from '../../../hooks/use-id'
 import { barChartProps } from './chart'
 import {
@@ -26,6 +27,8 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('chart')
+const locale = useLocale()
+const displayEmpty = computed(() => props.emptyText || locale.value.empty)
 const chartId = useId('bili-bar')
 const rootRef = ref<HTMLElement | null>(null)
 const { width } = useChartSize(rootRef)
@@ -188,7 +191,7 @@ const bars = computed<BarRect[]>(() => {
 const legendItems = computed(() =>
   props.series.map((series, index) => ({
     name: series.name,
-    color: series.color ?? paletteColor(index)
+    color: series.color ?? paletteColor(index, ns.namespace)
   }))
 )
 
@@ -253,7 +256,7 @@ const tooltip = computed(() => {
     const value = series.data[index]
     return {
       name: series.name,
-      color: series.color ?? paletteColor(seriesIndex),
+      color: series.color ?? paletteColor(seriesIndex, ns.namespace),
       value: Number.isFinite(value) ? formatter.value(value) : '-'
     }
   })
@@ -292,7 +295,12 @@ const canvasStyle = computed(() => ({ height: toCssSize(props.height) }))
         :viewBox="`0 0 ${width} ${height}`"
         :class="ns.is('horizontal', horizontal)"
         role="img"
-        :aria-label="`柱状图：${categories.length} 个分类，${series.length} 个系列`"
+        :aria-label="
+          formatLocale(locale.barChart, {
+            categories: categories.length,
+            series: series.length
+          })
+        "
       >
         <defs>
           <linearGradient
@@ -306,11 +314,11 @@ const canvasStyle = computed(() => ({ height: toCssSize(props.height) }))
           >
             <stop
               offset="0%"
-              :style="{ stopColor: seriesItem.color ?? paletteColor(index), stopOpacity: 1 }"
+              :style="{ stopColor: seriesItem.color ?? paletteColor(index, ns.namespace), stopOpacity: 1 }"
             />
             <stop
               offset="100%"
-              :style="{ stopColor: seriesItem.color ?? paletteColor(index), stopOpacity: 0.72 }"
+              :style="{ stopColor: seriesItem.color ?? paletteColor(index, ns.namespace), stopOpacity: 0.72 }"
             />
           </linearGradient>
         </defs>
@@ -425,7 +433,7 @@ const canvasStyle = computed(() => ({ height: toCssSize(props.height) }))
 
       <div v-else :class="ns.e('empty')">
         <span :class="ns.e('empty-mark')" aria-hidden="true" />
-        <span>{{ emptyText }}</span>
+        <span>{{ displayEmpty }}</span>
       </div>
 
       <ChartTooltip

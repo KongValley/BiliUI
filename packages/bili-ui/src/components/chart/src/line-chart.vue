@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
+import { formatLocale, useLocale } from '../../../hooks/use-config'
 import { useId } from '../../../hooks/use-id'
 import { lineChartProps, type LineSeries } from './chart'
 import {
@@ -28,6 +29,8 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('chart')
+const locale = useLocale()
+const displayEmpty = computed(() => props.emptyText || locale.value.empty)
 const chartId = useId('bili-line')
 const rootRef = ref<HTMLElement | null>(null)
 const { width } = useChartSize(rootRef)
@@ -85,7 +88,7 @@ interface ResolvedSeries extends LineSeries {
 
 const resolvedSeries = computed<ResolvedSeries[]>(() =>
   props.series.map((series, seriesIndex) => {
-    const color = series.color ?? paletteColor(seriesIndex)
+    const color = series.color ?? paletteColor(seriesIndex, ns.namespace)
     const segments: Point[][] = []
     const points: Point[] = []
     let current: Point[] = []
@@ -120,7 +123,7 @@ const resolvedSeries = computed<ResolvedSeries[]>(() =>
 const legendItems = computed(() =>
   props.series.map((series, index) => ({
     name: series.name,
-    color: series.color ?? paletteColor(index)
+    color: series.color ?? paletteColor(index, ns.namespace)
   }))
 )
 
@@ -176,7 +179,7 @@ const tooltip = computed(() => {
     const value = series.data[index]
     return {
       name: series.name,
-      color: series.color ?? paletteColor(seriesIndex),
+      color: series.color ?? paletteColor(seriesIndex, ns.namespace),
       value: typeof value === 'number' ? formatter.value(value) : '-'
     }
   })
@@ -233,7 +236,12 @@ const canvasStyle = computed(() => ({ height: toCssSize(props.height) }))
         :height="height"
         :viewBox="`0 0 ${width} ${height}`"
         role="img"
-        :aria-label="`折线图：${categories.length} 个分类，${series.length} 个系列`"
+        :aria-label="
+          formatLocale(locale.lineChart, {
+            categories: categories.length,
+            series: series.length
+          })
+        "
       >
         <defs>
           <linearGradient
@@ -372,7 +380,7 @@ const canvasStyle = computed(() => ({ height: toCssSize(props.height) }))
 
       <div v-else :class="ns.e('empty')">
         <span :class="ns.e('empty-mark')" aria-hidden="true" />
-        <span>{{ emptyText }}</span>
+        <span>{{ displayEmpty }}</span>
       </div>
 
       <ChartTooltip

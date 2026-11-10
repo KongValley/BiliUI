@@ -51,7 +51,7 @@ onBeforeUnmount(() => tabs.unregister(props.name))
   <div
     v-if="shouldRender"
     v-show="isActive"
-    :id="`bili-tab-pane-${name}`"
+    :id="`${tabs.id.value}-panel-${name}`"
     ref="el"
     :class="ns.b()"
     role="tabpanel"

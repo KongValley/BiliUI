@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref, watch, type CSSProperties } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
+import { useLocale } from '../../../hooks/use-config'
 import { useFloating } from '../../../hooks/use-floating'
 import { useClickOutside } from '../../../hooks/use-click-outside'
 import { useId } from '../../../hooks/use-id'
@@ -23,6 +24,10 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('color-picker')
+const locale = useLocale()
+const displayPlaceholder = computed(
+  () => props.placeholder || locale.value.colorPickerPlaceholder
+)
 const { nextZIndex, currentZIndex } = useZIndex()
 const panelId = useId('bili-color-picker-panel')
 
@@ -224,7 +229,7 @@ defineExpose({ open, close, focus: () => triggerRef.value?.focus() })
   >
     <span v-if="hasValue" :class="ns.e('swatch')" :style="{ backgroundColor: displayHex }" />
     <span :class="[ns.e('value'), ns.is('placeholder', !hasValue)]">
-      {{ hasValue ? displayHex.toUpperCase() : placeholder }}
+      {{ hasValue ? displayHex.toUpperCase() : displayPlaceholder }}
     </span>
 
     <span :class="ns.e('suffix')">
@@ -233,7 +238,7 @@ defineExpose({ open, close, focus: () => triggerRef.value?.focus() })
         :class="ns.e('clear')"
         type="button"
         tabindex="-1"
-        aria-label="清空"
+        :aria-label="locale.clear"
         @click.stop="clear"
       >
         <BiliIcon name="close-circle" />
@@ -243,7 +248,7 @@ defineExpose({ open, close, focus: () => triggerRef.value?.focus() })
   </div>
 
   <Teleport to="body">
-    <Transition name="bili-color-picker-dropdown">
+    <Transition :name="ns.transition('color-picker-dropdown')">
       <div
         v-if="isOpen"
         :id="panelId"
@@ -251,7 +256,7 @@ defineExpose({ open, close, focus: () => triggerRef.value?.focus() })
         :class="[ns.e('panel'), popperClass]"
         :style="panelStyles"
         role="dialog"
-        :aria-label="placeholder"
+        :aria-label="displayPlaceholder"
       >
         <div
           ref="svRef"
@@ -274,7 +279,7 @@ defineExpose({ open, close, focus: () => triggerRef.value?.focus() })
             :class="ns.e('hex')"
             :value="hexInput"
             type="text"
-            aria-label="颜色值"
+            :aria-label="locale.colorValue"
             spellcheck="false"
             @input="handleHexInput"
             @blur="commitHexInput"

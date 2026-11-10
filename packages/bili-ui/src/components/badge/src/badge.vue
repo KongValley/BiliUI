@@ -42,7 +42,7 @@ const isStatus = computed(() => !!props.status)
 
 const style = computed<CSSProperties | undefined>(() => {
   if (props.color) {
-    return { '--bili-badge-color': props.color } as CSSProperties
+    return { [ns.cssVar('color')]: props.color } as CSSProperties
   }
   return undefined
 })

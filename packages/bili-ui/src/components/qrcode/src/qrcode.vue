@@ -73,10 +73,11 @@ const iconBox = computed(() => {
 const iconPosition = computed(() => (totalModules.value - iconBox.value) / 2)
 
 const wrapperStyle = computed<CSSProperties>(() => ({
-  '--bili-qrcode-size': `${props.size}px`
+  [ns.cssVar('size')]: `${props.size}px`
 }))
 
 const emptyText = computed(() => (invalid.value ? locale.value.invalid : locale.value.empty))
+const displayAriaLabel = computed(() => props.ariaLabel || locale.value.qrcode)
 </script>
 
 <template>
@@ -88,7 +89,7 @@ const emptyText = computed(() => (invalid.value ? locale.value.invalid : locale.
       :width="size"
       :height="size"
       role="img"
-      :aria-label="ariaLabel"
+      :aria-label="displayAriaLabel"
       xmlns="http://www.w3.org/2000/svg"
     >
       <rect :width="totalModules" :height="totalModules" :fill="background" />

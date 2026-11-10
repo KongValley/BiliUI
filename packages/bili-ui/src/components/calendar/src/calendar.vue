@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
+import { formatLocale, useLocale } from '../../../hooks/use-config'
 import BiliIcon from '../../icon/src/icon.vue'
 import { calendarProps } from './calendar'
-import { buildMonthCells, formatDate, parseDate, type CalendarCell } from './date'
+import { buildMonthCells, formatDate, parseDate, type CalendarCell } from '../../../utils/date'
 
 defineOptions({ name: 'BiliCalendar' })
 
@@ -16,6 +17,7 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('calendar')
+const locale = useLocale()
 
 const initial = parseDate(props.modelValue) ?? new Date()
 const viewYear = ref(initial.getFullYear())
@@ -24,10 +26,14 @@ const viewMonth = ref(initial.getMonth())
 const todayKey = computed(() => formatDate(new Date()))
 const selectedKey = computed(() => (parseDate(props.modelValue) ? props.modelValue : ''))
 
-const label = computed(() => `${viewYear.value} 年 ${viewMonth.value + 1} 月`)
+const label = computed(() =>
+  formatLocale(locale.value.yearMonth, { year: viewYear.value, month: viewMonth.value + 1 })
+)
+
+const displayToday = computed(() => props.todayText || locale.value.today)
 
 const weekdays = computed(() => {
-  const labels = ['日', '一', '二', '三', '四', '五', '六']
+  const labels = locale.value.weekdays
   const start = ((props.firstDayOfWeek % 7) + 7) % 7
   return [...labels.slice(start), ...labels.slice(0, start)]
 })
@@ -97,7 +103,7 @@ defineExpose({ prevMonth, nextMonth, selectToday })
         <button
           :class="ns.e('nav-button')"
           type="button"
-          aria-label="上个月"
+          :aria-label="locale.prevMonth"
           @click="prevMonth"
         >
           <BiliIcon name="chevron-left" />
@@ -105,7 +111,7 @@ defineExpose({ prevMonth, nextMonth, selectToday })
         <button
           :class="ns.e('nav-button')"
           type="button"
-          aria-label="下个月"
+          :aria-label="locale.nextMonth"
           @click="nextMonth"
         >
           <BiliIcon name="chevron-right" />
@@ -120,7 +126,7 @@ defineExpose({ prevMonth, nextMonth, selectToday })
         type="button"
         @click="selectToday"
       >
-        {{ todayText }}
+        {{ displayToday }}
       </button>
     </header>
 

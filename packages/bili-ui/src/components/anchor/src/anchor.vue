@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, provide, reactive, ref, watch } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
+import { useLocale } from '../../../hooks/use-config'
 import { anchorContextKey, anchorProps, type AnchorContext, type AnchorLinkState } from './anchor'
 
 defineOptions({ name: 'BiliAnchor' })
@@ -13,6 +14,7 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('anchor')
+const locale = useLocale()
 
 const links = reactive<AnchorLinkState[]>([])
 const activeHref = ref('')
@@ -300,7 +302,7 @@ defineExpose({ activeHref, scrollTo })
 </script>
 
 <template>
-  <nav :class="[ns.b(), ns.m(direction)]" aria-label="锚点导航">
+  <nav :class="[ns.b(), ns.m(direction)]" :aria-label="locale.anchor">
     <div :class="ns.e('list')" role="list">
       <slot />
     </div>

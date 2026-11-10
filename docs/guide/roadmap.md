@@ -1,17 +1,17 @@
 # Bili UI 组件开发计划
 
-> 现状：60 个组件目录 / 83 个对外组件，511 个单测。
-> 进度：P0 已完成；P1 除 DatePicker / TimePicker 外已完成；P2 已完成；P3 的 17 项全部完成（含 ConfigProvider）。
+> 现状：62 个组件目录 / 85 个对外组件，531 个单测。
+> 进度：P0、P1、P2、P3 已全部完成。
 > 每个组件的完成标准一致：`index.ts` + `src` + `style` + `__tests__` + 文档页 + 示例 + 注册导出 + 全量校验通过。
 
 ## 批次划分
 
-| 批次 | 目标               | 组件数 | 状态                                   | 说明                             |
-| ---- | ------------------ | ------ | -------------------------------------- | -------------------------------- |
-| P0   | 补齐页面级高频刚需 | 8      | ✅ 已完成                              | 缺了它们几乎做不了完整业务页面   |
-| P1   | 中后台进阶场景     | 10     | ⏳ 除 DatePicker / TimePicker 外已完成 | 分步流程、上传、日期、气泡卡片等 |
-| P2   | 现有组件能力补强   | 4 项   | ✅ 已完成                              | 提升既有组件的深度而非广度       |
-| P3   | 长尾组件池         | 17     | ✅ 已完成                              | 长尾能力已全部落地               |
+| 批次 | 目标               | 组件数 | 状态      | 说明                             |
+| ---- | ------------------ | ------ | --------- | -------------------------------- |
+| P0   | 补齐页面级高频刚需 | 8      | ✅ 已完成 | 缺了它们几乎做不了完整业务页面   |
+| P1   | 中后台进阶场景     | 10     | ✅ 已完成 | 分步流程、上传、日期、气泡卡片等 |
+| P2   | 现有组件能力补强   | 4 项   | ✅ 已完成 | 提升既有组件的深度而非广度       |
+| P3   | 长尾组件池         | 17     | ✅ 已完成 | 长尾能力已全部落地               |
 
 ---
 
@@ -100,10 +100,11 @@ Popover 承载富内容（标题 + 正文 + 操作）；Popconfirm 提供确认/
 
 点击选择 / 拖拽上传、多文件、文件列表（进度/失败/重试/删除）、图片卡片与预览、`before-upload` 与自定义 `http-request`、`accept` / `limit`。
 
-### 15. DatePicker / TimePicker ⏳ 待做
+### 15. DatePicker / TimePicker ✅
 
 - DatePicker：日/月/年三种视图、单日与范围选择、快捷选项（今天/近 7 天/本月）、禁用日期、清空
-- TimePicker：小时/分钟/秒列选择、步长、禁用时间
+- TimePicker：小时/分钟/秒列选择、步长、禁用时间、当前时间快捷填充
+- 两者均支持 Teleport 浮层、`popper-class`、ConfigProvider 尺寸、键盘 `Esc` 关闭与清空
 
 ### 16. Result 结果页 ✅
 
@@ -113,9 +114,9 @@ success / warning / info / error / 403 / 404 / 500 预设插画、标题 + 副�
 
 右上角通知卡片、四类型、标题 + 描述、自动关闭进度条、手动关闭、堆叠与最大数量。
 
-### P1 收口 ⏳（除 DatePicker / TimePicker 外已完成）
+### P1 收口 ✅
 
-与 P0 相同的收口清单，另加：Popup 公共逻辑抽离后回归 Tooltip / Select / Menu / Dropdown 四个组件。
+与 P0 相同的收口清单，另加：Popup 公共逻辑抽离后回归 Tooltip / Select / Menu / Dropdown 四个组件。P1 已全部完成。
 
 ---
 
@@ -157,17 +158,21 @@ P3 组件池已全部完成，后续按业务反馈补充新组件。
 
 ## 下一批建议
 
-1. DatePicker / TimePicker：补齐 P1 最后一项。
-2. 按需样式与发布流程：拆分样式入口，接入 `changeset`、npm 发布与 CI 全量校验。
-3. 工程侧收口：SSR / Nuxt 适配、示例可编辑与 API 表自动生成。
-4. P3 已全部完成，后续按业务反馈补充组件。
+1. 发布流程：接入 `changeset`、npm 发布与 CI 全量校验。
+2. SSR / Nuxt 适配：Teleport、ResizeObserver 与 `document` 访问点冒烟测试。
+3. 文档站增强：示例在线编辑已支持，可继续增加分享链接与 API 表按组件内嵌。
+4. 按业务反馈补充新组件，并在新增文案时同步扩充 `BiliLocale` 字段。
 
 ---
 
 ## 工程侧待办（与组件并行）
 
-- ✅ ConfigProvider：全局尺寸、`zIndex` 起点与 locale 文案已接入；⏳ `namespace` 前缀与更完整的国际化仍待推进
-- ⏳ 按需样式：把 `styles/index.scss` 拆成按组件入口，支持 `import 'bili-ui/es/components/button/style.css'`
+- ✅ ConfigProvider：全局尺寸、`zIndex` 起点、`namespace` 前缀与 `zhCNLocale` / `enUSLocale` 完整国际化均已接入
+- ✅ 样式覆写：50+ 组件提供组件级 CSS 变量，BackTop / Affix / Watermark / QRCode 的动态尺寸与位置改为 CSS 变量消费；浮层支持 `popper-class` / `overlay-class` / `panel-class` / `preview-class`，多实例主题可隔离
+- ✅ 文档站新增《样式覆写》指南，主题文档与组件 API 表同步更新
+- ✅ 按需样式：`styles/index.scss` 保持全量入口，同时生成 `dist/components/<component>/style.css`，支持 `import 'bili-ui/components/button/style.css'`（含依赖样式与设计令牌）
+- ✅ 示例可编辑：DemoBlock 支持在线编辑、运行、重置与取消，编译结果使用独立 scoped 样式
+- ✅ API 表自动生成：`vue-component-meta` 扫描 85 个组件生成 `/guide/api` 参考页
 - ⏳ SSR / Nuxt：现有 `Teleport`、`ResizeObserver`、`document` 访问点做一轮 SSR 冒烟测试
-- ✅ 文档站组件搜索（VitePress local search 已接入）；⏳ 示例可编辑、API 表由类型自动生成
+- ✅ 文档站组件搜索（VitePress local search 已接入）
 - ⏳ 发布：`changeset` 版本管理 + npm 发布流程 + CI 跑全量校验

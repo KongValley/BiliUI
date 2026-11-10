@@ -118,7 +118,7 @@ const contentStyles = computed<CSSProperties>(() => ({
   maxWidth: props.maxWidth !== undefined ? addUnit(props.maxWidth) : undefined,
   visibility: isPositioned.value ? 'visible' : 'hidden',
   // Grow from the side nearest the trigger so the entrance reads as connected.
-  '--bili-zoom-origin': originMap[placement.value.split('-')[0]] ?? 'center'
+  [ns.cssVarBlock('zoom-origin')]: originMap[placement.value.split('-')[0]] ?? 'center'
 }))
 
 useClickOutside([triggerRef, contentRef], () => {
@@ -146,7 +146,7 @@ defineExpose({ show, hide, visible })
   </span>
 
   <Teleport to="body">
-    <Transition name="bili-tooltip-fade">
+    <Transition :name="ns.transition('tooltip-fade')">
       <div
         v-if="visible"
         :id="tooltipId"

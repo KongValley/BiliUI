@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
+import { useLocale } from '../../../hooks/use-config'
 import {
   collectBranchKeys,
   collectSubtreeKeys,
@@ -30,6 +31,11 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('tree')
+const locale = useLocale()
+const displayFilterPlaceholder = computed(
+  () => props.filterPlaceholder || locale.value.searchPlaceholder
+)
+const displayEmpty = computed(() => props.emptyText || locale.value.empty)
 
 const fields = computed(() => resolveTreeFields(props.fieldNames))
 const query = ref('')
@@ -259,7 +265,7 @@ defineExpose({ expandAll, collapseAll, clearChecked })
         v-model="query"
         :class="ns.e('filter-input')"
         type="text"
-        :placeholder="filterPlaceholder"
+        :placeholder="displayFilterPlaceholder"
         @keydown.esc="query = ''"
       />
     </div>
@@ -290,7 +296,7 @@ defineExpose({ expandAll, collapseAll, clearChecked })
           :class="ns.e('toggle')"
           type="button"
           tabindex="-1"
-          :aria-label="expandedSet.has(item.key) ? '收起' : '展开'"
+          :aria-label="expandedSet.has(item.key) ? locale.collapse : locale.expand"
           @click.stop="toggleExpand(item.node, item.key)"
         >
           <BiliIcon
@@ -316,6 +322,6 @@ defineExpose({ expandAll, collapseAll, clearChecked })
       </div>
     </div>
 
-    <div v-else :class="ns.e('empty')">{{ emptyText }}</div>
+    <div v-else :class="ns.e('empty')">{{ displayEmpty }}</div>
   </div>
 </template>

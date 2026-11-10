@@ -13,6 +13,11 @@ export const configProviderProps = {
     type: Number,
     default: undefined
   },
+  /** Class prefix for descendants, default `bili`. */
+  namespace: {
+    type: String,
+    default: undefined
+  },
   /** Partial locale overrides, merged with the parent/global locale. */
   locale: {
     type: Object as PropType<Partial<BiliLocale>>,

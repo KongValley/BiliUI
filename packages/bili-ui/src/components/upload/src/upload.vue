@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
+import { useLocale } from '../../../hooks/use-config'
 import { useId } from '../../../hooks/use-id'
 import BiliIcon from '../../icon/src/icon.vue'
 import BiliProgress from '../../progress/src/progress.vue'
@@ -20,6 +21,7 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('upload')
+const locale = useLocale()
 const inputId = useId('bili-upload')
 const inputRef = ref<HTMLInputElement | null>(null)
 const innerFiles = ref<UploadFile[]>([])
@@ -66,7 +68,7 @@ const uploadFile = async (file: UploadFile) => {
     patchFile(file.uid, { status: 'success', percent: 100, url: url || undefined })
     emit('success', { ...file, status: 'success', percent: 100 })
   } catch (error) {
-    const message = error instanceof Error ? error.message : '上传失败'
+    const message = error instanceof Error ? error.message : locale.value.uploadFailed
     patchFile(file.uid, { status: 'error', error: message })
     emit('error', { ...file, status: 'error', error: message }, message)
   }
@@ -182,12 +184,12 @@ const formatSize = (size: number): string => {
       @drop.prevent="handleDrop"
     >
       <BiliIcon :class="ns.e('upload-icon')" name="upload" :size="28" />
-      <p :class="ns.e('drag-text')">点击或拖拽文件到此区域上传</p>
+      <p :class="ns.e('drag-text')">{{ locale.uploadDrag }}</p>
       <p v-if="tip" :class="ns.e('tip')">{{ tip }}</p>
     </div>
 
     <BiliButton v-else :disabled="disabled" icon="upload" @click="openPicker">
-      <slot>选择文件</slot>
+      <slot>{{ locale.selectFile }}</slot>
     </BiliButton>
 
     <p v-if="tip && !drag" :class="ns.e('tip')">{{ tip }}</p>
@@ -222,7 +224,7 @@ const formatSize = (size: number): string => {
             v-if="file.status === 'error'"
             :class="ns.e('action')"
             type="button"
-            aria-label="重试"
+            :aria-label="locale.retry"
             @click="retry(file)"
           >
             <BiliIcon name="refresh" :size="14" />
@@ -230,7 +232,7 @@ const formatSize = (size: number): string => {
           <button
             :class="ns.e('action')"
             type="button"
-            aria-label="移除"
+            :aria-label="locale.remove"
             :disabled="disabled"
             @click="removeFile(file)"
           >

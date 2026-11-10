@@ -8,5 +8,12 @@ export { useFloating } from './use-floating'
 export type { UseFloatingOptions } from './use-floating'
 export { useFocusTrap } from './use-focus-trap'
 export { useScrollLock } from './use-scroll-lock'
-export { useConfig, useLocale, formatLocale, defaultConfig, zhCNLocale } from './use-config'
+export {
+  useConfig,
+  useLocale,
+  formatLocale,
+  defaultConfig,
+  zhCNLocale,
+  enUSLocale
+} from './use-config'
 export type { BiliConfig, BiliLocale } from './use-config'

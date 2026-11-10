@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
+import { useLocale } from '../../../hooks/use-config'
 import BiliIcon from '../../icon/src/icon.vue'
 import { alertProps } from './alert'
 
@@ -14,6 +15,7 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('alert')
+const locale = useLocale()
 
 const innerVisible = ref(props.visible ?? true)
 
@@ -41,7 +43,7 @@ const handleClose = (event: MouseEvent) => {
 </script>
 
 <template>
-  <Transition name="bili-alert">
+  <Transition :name="ns.transition('alert')">
     <div
       v-if="innerVisible"
       :class="[ns.b(), ns.m(type), ns.is('bordered', bordered)]"
@@ -64,7 +66,7 @@ const handleClose = (event: MouseEvent) => {
         v-if="closable"
         :class="ns.e('close')"
         type="button"
-        aria-label="关闭"
+        :aria-label="locale.close"
         @click="handleClose"
       >
         <BiliIcon name="close" :size="14" />

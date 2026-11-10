@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
+import { useLocale } from '../../../hooks/use-config'
 import BiliIcon from '../../icon/src/icon.vue'
 import type { MessagePosition, MessageType } from './message'
 
@@ -15,6 +16,7 @@ const props = withDefaults(
     showProgress?: boolean
     pauseOnHover?: boolean
     position?: MessagePosition
+    namespace?: string
   }>(),
   {
     message: '',
@@ -23,7 +25,8 @@ const props = withDefaults(
     showClose: false,
     showProgress: true,
     pauseOnHover: true,
-    position: 'top'
+    position: 'top',
+    namespace: undefined
   }
 )
 
@@ -32,7 +35,8 @@ const emit = defineEmits<{
   destroy: []
 }>()
 
-const ns = useNamespace('message')
+const ns = useNamespace('message', props.namespace)
+const locale = useLocale()
 const visible = ref(true)
 const paused = ref(false)
 
@@ -106,7 +110,7 @@ defineExpose({ close })
 </script>
 
 <template>
-  <Transition name="bili-message" appear @after-leave="emit('destroy')">
+  <Transition :name="ns.transition('message')" appear @after-leave="emit('destroy')">
     <div
       v-if="visible"
       :class="[ns.b(), ns.m(type), ns.is('paused', paused), ns.m(`at-${position}`)]"
@@ -120,7 +124,7 @@ defineExpose({ close })
         v-if="showClose"
         :class="ns.e('close')"
         type="button"
-        aria-label="关闭"
+        :aria-label="locale.close"
         @click="close"
       >
         <BiliIcon name="close" />

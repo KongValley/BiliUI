@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, ref } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
-import { useConfig } from '../../../hooks/use-config'
+import { useConfig, useLocale } from '../../../hooks/use-config'
 import BiliIcon from '../../icon/src/icon.vue'
 import { useFormItem } from '../../form/src/types'
 import { inputProps } from './input'
@@ -21,6 +21,7 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('input')
+const locale = useLocale()
 const config = useConfig()
 const mergedSize = computed(() => props.size ?? config.value.size)
 const formItem = useFormItem()
@@ -176,7 +177,7 @@ defineExpose({ inputRef, textareaRef, focus, blur, select })
           :class="ns.e('action')"
           type="button"
           tabindex="-1"
-          aria-label="清空"
+          :aria-label="locale.clearInput"
           @mousedown.prevent
           @click="clear"
         >
@@ -188,7 +189,7 @@ defineExpose({ inputRef, textareaRef, focus, blur, select })
           :class="ns.e('action')"
           type="button"
           tabindex="-1"
-          :aria-label="passwordVisible ? '隐藏密码' : '显示密码'"
+          :aria-label="passwordVisible ? locale.hidePassword : locale.showPassword"
           @mousedown.prevent
           @click="togglePassword"
         >
