@@ -49,13 +49,7 @@ const { floatingStyles, isPositioned } = useFloating(triggerRef, panelRef, {
 
 const selectedPath = computed<TreeOption[]>(() => {
   if (props.modelValue === null || props.modelValue === undefined) return []
-  return (
-    findNodePath(
-      props.options,
-      value => value === props.modelValue,
-      fields.value
-    ) ?? []
-  )
+  return findNodePath(props.options, value => value === props.modelValue, fields.value) ?? []
 })
 
 const displayLabel = computed(() =>
@@ -153,8 +147,7 @@ const isActive = (node: TreeOption, level: number): boolean => {
   return !!active && nodeValue(active, fields.value) === nodeValue(node, fields.value)
 }
 
-const isSelected = (node: TreeOption): boolean =>
-  nodeValue(node, fields.value) === props.modelValue
+const isSelected = (node: TreeOption): boolean => nodeValue(node, fields.value) === props.modelValue
 
 const focus = () => triggerRef.value?.focus()
 const blur = () => triggerRef.value?.blur()
@@ -174,12 +167,7 @@ defineExpose({ focus, blur, open, close })
 <template>
   <div
     ref="triggerRef"
-    :class="[
-      ns.b(),
-      ns.m(size),
-      ns.is('open', isOpen),
-      ns.is('disabled', disabled)
-    ]"
+    :class="[ns.b(), ns.m(size), ns.is('open', isOpen), ns.is('disabled', disabled)]"
     role="combobox"
     aria-haspopup="tree"
     :aria-expanded="isOpen"
@@ -218,7 +206,7 @@ defineExpose({ focus, blur, open, close })
         v-if="isOpen"
         :id="panelId"
         ref="panelRef"
-        :class="ns.e('panel')"
+        :class="[ns.e('panel'), popperClass]"
         :style="panelStyles"
         role="tree"
       >
@@ -244,9 +232,7 @@ defineExpose({ focus, blur, open, close })
               role="treeitem"
               :aria-selected="isSelected(node)"
               :aria-expanded="
-                nodeChildren(node, fields)?.length
-                  ? isActive(node, columnIndex)
-                  : undefined
+                nodeChildren(node, fields)?.length ? isActive(node, columnIndex) : undefined
               "
               :disabled="isNodeDisabled(node, fields)"
               @click="handleNodeClick(node, columnIndex)"
@@ -257,11 +243,7 @@ defineExpose({ focus, blur, open, close })
                 :class="ns.e('option-arrow')"
                 name="chevron-right"
               />
-              <BiliIcon
-                v-else-if="isSelected(node)"
-                :class="ns.e('option-check')"
-                name="check"
-              />
+              <BiliIcon v-else-if="isSelected(node)" :class="ns.e('option-check')" name="check" />
             </button>
           </div>
         </div>

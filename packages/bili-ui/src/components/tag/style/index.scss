@@ -3,6 +3,10 @@
 $tag-types: primary, success, warning, danger, info;
 
 @include b(tag) {
+  --bili-tag-gap: 4px;
+  --bili-tag-padding: 0 8px;
+  --bili-tag-font-size: var(--bili-font-size-xs);
+  --bili-tag-radius: var(--bili-radius-sm);
   --bili-tag-color: var(--bili-text-regular);
   --bili-tag-bg: var(--bili-fill-color-light);
   --bili-tag-border: var(--bili-border-color-light);
@@ -10,16 +14,16 @@ $tag-types: primary, success, warning, danger, info;
 
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: var(--bili-tag-gap);
   height: 24px;
-  padding: 0 8px;
-  font-size: var(--bili-font-size-xs);
+  padding: var(--bili-tag-padding);
+  font-size: var(--bili-tag-font-size);
   line-height: 1;
   color: var(--bili-tag-color);
   white-space: nowrap;
   background-color: var(--bili-tag-bg);
   border: 1px solid var(--bili-tag-border);
-  border-radius: var(--bili-radius-sm);
+  border-radius: var(--bili-tag-radius);
   transition:
     background-color var(--bili-transition-duration) var(--bili-transition-function),
     border-color var(--bili-transition-duration) var(--bili-transition-function),

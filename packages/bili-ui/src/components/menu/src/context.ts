@@ -7,6 +7,8 @@ export interface MenuContext {
   /** Icon-only rail: labels are hidden and sub menus become floating popups. */
   collapsed: Ref<boolean>
   selectedKey: Ref<string | undefined>
+  /** Extra class applied to teleported submenu / overflow panels. */
+  popperClass: Ref<string>
   isOpen: (key: string) => boolean
   toggleOpen: (key: string, open?: boolean) => void
   select: (key: string, label: string) => void

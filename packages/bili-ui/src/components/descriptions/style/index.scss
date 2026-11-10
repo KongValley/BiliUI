@@ -1,10 +1,12 @@
 @use '../../../styles/mixins' as *;
 
 @include b(descriptions) {
+  --bili-descriptions-font-size: var(--bili-font-size-sm);
+  --bili-descriptions-color: var(--bili-text-regular);
   --bili-descriptions-label-color: var(--bili-text-secondary);
 
-  font-size: var(--bili-font-size-sm);
-  color: var(--bili-text-regular);
+  font-size: var(--bili-descriptions-font-size);
+  color: var(--bili-descriptions-color);
 
   @include e(header) {
     display: flex;
@@ -76,8 +78,9 @@
 }
 
 @include b(descriptions-item) {
+  --bili-descriptions-item-gap: 8px;
   display: flex;
-  gap: 8px;
+  gap: var(--bili-descriptions-item-gap);
   align-items: baseline;
   min-width: 0;
 

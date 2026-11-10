@@ -1,18 +1,24 @@
 @use '../../../styles/mixins' as *;
 
 @include b(notification) {
+  --bili-notification-gap: 10px;
+  --bili-notification-padding: 14px 14px 14px 12px;
+  --bili-notification-bg: var(--bili-bg-elevated);
+  --bili-notification-border-color: var(--bili-border-color-light);
+  --bili-notification-radius: var(--bili-radius-lg);
+  --bili-notification-shadow: var(--bili-shadow-md);
   --bili-notification-color: var(--bili-color-primary);
 
   position: relative;
   display: flex;
-  gap: 10px;
+  gap: var(--bili-notification-gap);
   width: 340px;
-  padding: 14px 14px 14px 12px;
+  padding: var(--bili-notification-padding);
   overflow: hidden;
-  background-color: var(--bili-bg-elevated);
-  border: 1px solid var(--bili-border-color-light);
-  border-radius: var(--bili-radius-lg);
-  box-shadow: var(--bili-shadow-md);
+  background-color: var(--bili-notification-bg);
+  border: 1px solid var(--bili-notification-border-color);
+  border-radius: var(--bili-notification-radius);
+  box-shadow: var(--bili-notification-shadow);
   animation: bili-notification-in var(--bili-transition-duration-slow)
     var(--bili-transition-function-out);
   transition:

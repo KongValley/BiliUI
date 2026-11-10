@@ -3,6 +3,7 @@
 $button-types: primary, success, warning, danger, info;
 
 @include b(button) {
+  --bili-button-gap: 6px;
   --bili-button-height: var(--bili-control-height-md);
   --bili-button-padding: var(--bili-control-padding-md);
   --bili-button-font-size: var(--bili-font-size-base);
@@ -22,7 +23,7 @@ $button-types: primary, success, warning, danger, info;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: var(--bili-button-gap);
   height: var(--bili-button-height);
   padding: 0 var(--bili-button-padding);
   margin: 0;

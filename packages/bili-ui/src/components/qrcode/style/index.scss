@@ -1,0 +1,37 @@
+@use '../../../styles/mixins' as *;
+
+@include b(qrcode) {
+  --bili-qrcode-radius: var(--bili-radius-base);
+  --bili-qrcode-empty-color: var(--bili-text-secondary);
+  --bili-qrcode-empty-bg: var(--bili-fill-color-light);
+  --bili-qrcode-empty-border-color: var(--bili-border-color);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--bili-qrcode-size, 160px);
+  height: var(--bili-qrcode-size, 160px);
+  overflow: hidden;
+  border-radius: var(--bili-qrcode-radius);
+
+  @include e(svg) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  @include e(empty) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    font-size: var(--bili-font-size-xs);
+    line-height: 1.5;
+    color: var(--bili-qrcode-empty-color);
+    text-align: center;
+    background-color: var(--bili-qrcode-empty-bg);
+    border: 1px dashed var(--bili-qrcode-empty-border-color);
+    border-radius: var(--bili-qrcode-radius);
+  }
+}

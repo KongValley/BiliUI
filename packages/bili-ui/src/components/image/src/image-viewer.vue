@@ -221,7 +221,7 @@ defineExpose({
       <div
         v-if="visible"
         ref="overlayRef"
-        :class="ns.b()"
+        :class="[ns.b(), previewClass]"
         :style="{ zIndex }"
         role="dialog"
         aria-modal="true"

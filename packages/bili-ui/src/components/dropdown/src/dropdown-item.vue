@@ -18,11 +18,7 @@ const handleClick = () => {
 
 <template>
   <button
-    :class="[
-      ns.b(),
-      ns.is('disabled', disabled),
-      ns.is('divided', divided)
-    ]"
+    :class="[ns.b(), ns.is('disabled', disabled), ns.is('divided', divided)]"
     type="button"
     role="menuitem"
     :disabled="disabled"

@@ -1,14 +1,26 @@
 @use '../../../styles/mixins' as *;
 
 @include b(tabs) {
+  --bili-tabs-font-size: var(--bili-font-size-base);
+  --bili-tabs-color: var(--bili-text-regular);
   --bili-tabs-height: 40px;
   --bili-tabs-gap: 28px;
+  --bili-tabs-tab-color: var(--bili-text-regular);
+  --bili-tabs-hover-color: var(--bili-color-primary);
+  --bili-tabs-active-color: var(--bili-color-primary);
+  --bili-tabs-nav-border-color: var(--bili-border-color-light);
+  --bili-tabs-indicator-color: var(--bili-color-primary);
+  --bili-tabs-card-bg: var(--bili-fill-color-light);
+  --bili-tabs-card-active-bg: var(--bili-bg-container);
+  --bili-tabs-card-border-color: var(--bili-border-color-light);
+  --bili-tabs-content-padding: 16px;
+  --bili-tabs-segment-bg: var(--bili-fill-color);
 
   display: flex;
   flex-direction: column;
   width: 100%;
-  font-size: var(--bili-font-size-base);
-  color: var(--bili-text-regular);
+  font-size: var(--bili-tabs-font-size);
+  color: var(--bili-tabs-color);
 
   @include e(nav) {
     position: relative;
@@ -16,7 +28,7 @@
     flex: none;
     gap: var(--bili-tabs-gap);
     align-items: center;
-    border-bottom: 1px solid var(--bili-border-color-light);
+    border-bottom: 1px solid var(--bili-tabs-nav-border-color);
   }
 
   @include e(tab) {
@@ -28,7 +40,7 @@
     height: var(--bili-tabs-height);
     padding: 0 2px;
     font: inherit;
-    color: var(--bili-text-regular);
+    color: var(--bili-tabs-tab-color);
     white-space: nowrap;
     cursor: pointer;
     background: transparent;
@@ -36,12 +48,12 @@
     transition: color var(--bili-transition-duration) var(--bili-transition-function);
 
     &:hover:not(:disabled) {
-      color: var(--bili-color-primary);
+      color: var(--bili-tabs-hover-color);
     }
 
     &.is-active {
       font-weight: var(--bili-font-weight-medium);
-      color: var(--bili-color-primary);
+      color: var(--bili-tabs-active-color);
     }
 
     &.is-disabled {
@@ -85,7 +97,7 @@
     bottom: -1px;
     left: 0;
     height: 2px;
-    background-color: var(--bili-color-primary);
+    background-color: var(--bili-tabs-indicator-color);
     border-radius: var(--bili-radius-round);
 
     &.is-animated {
@@ -114,7 +126,7 @@
   @include e(content) {
     flex: 1;
     min-height: 0;
-    padding-top: 16px;
+    padding-top: var(--bili-tabs-content-padding);
   }
 
   @include when(stretch) {
@@ -139,22 +151,21 @@
       height: 34px;
       padding: 0 16px;
       margin-bottom: 0;
-      background-color: var(--bili-fill-color-light);
-      border: 1px solid var(--bili-border-color-light);
+      background-color: var(--bili-tabs-card-bg);
+      border: 1px solid var(--bili-tabs-card-border-color);
       border-radius: var(--bili-radius-base) var(--bili-radius-base) 0 0;
 
       &.is-active {
-        background-color: var(--bili-bg-container);
+        background-color: var(--bili-tabs-card-active-bg);
         border-bottom-color: transparent;
       }
     }
 
     .#{$namespace}-tabs__content {
-      padding: 16px;
+      padding: var(--bili-tabs-content-padding);
       margin-top: -1px;
-      border: 1px solid var(--bili-border-color-light);
-      border-radius: 0 var(--bili-radius-base) var(--bili-radius-base)
-        var(--bili-radius-base);
+      border: 1px solid var(--bili-tabs-card-border-color);
+      border-radius: 0 var(--bili-radius-base) var(--bili-radius-base) var(--bili-radius-base);
     }
   }
 
@@ -165,7 +176,7 @@
       gap: 2px;
       align-self: flex-start;
       padding: 3px;
-      background-color: var(--bili-fill-color);
+      background-color: var(--bili-tabs-segment-bg);
       border: 0;
       border-radius: var(--bili-radius-md);
     }

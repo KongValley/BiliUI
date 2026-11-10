@@ -1,19 +1,22 @@
 @use '../../../styles/mixins' as *;
 
 @include b(avatar) {
+  --bili-avatar-font-size: var(--bili-font-size-sm);
+  --bili-avatar-color: var(--bili-text-secondary);
+  --bili-avatar-bg: var(--bili-fill-color);
   position: relative;
   display: inline-flex;
   flex: none;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  font-size: var(--bili-font-size-sm);
+  font-size: var(--bili-avatar-font-size);
   font-weight: var(--bili-font-weight-semibold);
   line-height: 1;
-  color: var(--bili-text-secondary);
+  color: var(--bili-avatar-color);
   user-select: none;
   vertical-align: middle;
-  background-color: var(--bili-fill-color);
+  background-color: var(--bili-avatar-bg);
 
   img {
     display: block;

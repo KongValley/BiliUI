@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, ref, watch, type CSSProperties } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
+import { useConfig } from '../../../hooks/use-config'
 import { useFloating } from '../../../hooks/use-floating'
 import { useClickOutside } from '../../../hooks/use-click-outside'
 import { useId } from '../../../hooks/use-id'
@@ -30,6 +31,8 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('select')
+const config = useConfig()
+const mergedSize = computed(() => props.size ?? config.value.size)
 const formItem = useFormItem()
 const { nextZIndex, currentZIndex } = useZIndex()
 const panelId = useId('bili-select-panel')
@@ -423,7 +426,7 @@ defineExpose({ focus, blur, open, close })
     ref="triggerRef"
     :class="[
       ns.b(),
-      ns.m(size),
+      ns.m(mergedSize),
       ns.is('multiple', multiple),
       ns.is('open', isOpen),
       ns.is('disabled', disabled)
@@ -442,11 +445,7 @@ defineExpose({ focus, blur, open, close })
     <div :class="ns.e('content')">
       <template v-if="multiple">
         <div :class="ns.e('tags')">
-          <span
-            v-for="option in visibleTags"
-            :key="option.value"
-            :class="ns.e('tag')"
-          >
+          <span v-for="option in visibleTags" :key="option.value" :class="ns.e('tag')">
             <span :class="ns.e('tag-label')">{{ option.label }}</span>
             <button
               :class="ns.e('tag-close')"
@@ -490,10 +489,7 @@ defineExpose({ focus, blur, open, close })
           @input="handleFilterInput"
           @click.stop
         />
-        <span
-          v-else
-          :class="[ns.e('value'), ns.is('placeholder', !selectedOption)]"
-        >
+        <span v-else :class="[ns.e('value'), ns.is('placeholder', !selectedOption)]">
           {{ selectedOption ? selectedOption.label : placeholder }}
         </span>
       </template>
@@ -520,7 +516,7 @@ defineExpose({ focus, blur, open, close })
         v-if="isOpen"
         :id="panelId"
         ref="panelRef"
-        :class="ns.e('panel')"
+        :class="[ns.e('panel'), popperClass]"
         :style="panelStyles"
         role="listbox"
         :aria-multiselectable="multiple || undefined"

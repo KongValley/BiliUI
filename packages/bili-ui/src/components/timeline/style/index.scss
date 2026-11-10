@@ -10,8 +10,17 @@
 }
 
 @include b(timeline-item) {
+  --bili-timeline-item-gap: 12px;
+  --bili-timeline-dot-size: 10px;
+  --bili-timeline-dot-border-width: 2px;
+  --bili-timeline-icon-size: 20px;
+  --bili-timeline-line-width: 2px;
+  --bili-timeline-line-color: var(--bili-border-color-lighter);
+  --bili-timeline-timestamp-color: var(--bili-text-secondary);
+  --bili-timeline-content-color: var(--bili-text-regular);
+  --bili-timeline-hollow-bg: var(--bili-bg-container);
   display: flex;
-  gap: 12px;
+  gap: var(--bili-timeline-item-gap);
   align-items: stretch;
   padding-bottom: 18px;
 
@@ -36,22 +45,23 @@
     flex-shrink: 0;
     align-items: center;
     justify-content: center;
-    width: 10px;
-    height: 10px;
+    width: var(--bili-timeline-dot-size);
+    height: var(--bili-timeline-dot-size);
     margin-top: 4px;
     font-size: 12px;
     color: var(--bili-color-on-primary);
     background-color: var(--bili-timeline-dot-color, var(--bili-color-primary));
-    border: 2px solid var(--bili-timeline-dot-color, var(--bili-color-primary));
+    border: var(--bili-timeline-dot-border-width) solid
+      var(--bili-timeline-dot-color, var(--bili-color-primary));
     border-radius: 50%;
     z-index: 1;
   }
 
   @include e(line) {
     flex: 1;
-    width: 2px;
+    width: var(--bili-timeline-line-width);
     margin-top: 4px;
-    background-color: var(--bili-border-color-lighter);
+    background-color: var(--bili-timeline-line-color);
   }
 
   @include e(content) {
@@ -64,13 +74,13 @@
     margin-bottom: 4px;
     font-size: var(--bili-font-size-xs);
     line-height: 1.4;
-    color: var(--bili-text-secondary);
+    color: var(--bili-timeline-timestamp-color);
   }
 
   @include e(body) {
     font-size: var(--bili-font-size-base);
     line-height: 1.6;
-    color: var(--bili-text-regular);
+    color: var(--bili-timeline-content-color);
   }
 
   @include e(icon) {
@@ -80,16 +90,16 @@
 
   @include when(hollow) {
     .#{$namespace}-timeline-item__dot {
-      background-color: var(--bili-bg-container);
+      background-color: var(--bili-timeline-hollow-bg);
     }
   }
 
   @include when(icon) {
     .#{$namespace}-timeline-item__dot {
-      width: 20px;
-      height: 20px;
+      width: var(--bili-timeline-icon-size);
+      height: var(--bili-timeline-icon-size);
       color: var(--bili-timeline-dot-color, var(--bili-color-primary));
-      background-color: var(--bili-bg-container);
+      background-color: var(--bili-timeline-hollow-bg);
     }
   }
 

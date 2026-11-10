@@ -1,12 +1,15 @@
 @use '../../../styles/mixins' as *;
 
 @include b(transfer) {
+  --bili-transfer-gap: 12px;
+  --bili-transfer-font-size: var(--bili-font-size-base);
+  --bili-transfer-color: var(--bili-text-regular);
   display: flex;
-  gap: 12px;
+  gap: var(--bili-transfer-gap);
   align-items: stretch;
   width: 100%;
-  font-size: var(--bili-font-size-base);
-  color: var(--bili-text-regular);
+  font-size: var(--bili-transfer-font-size);
+  color: var(--bili-transfer-color);
 
   @include e(panel) {
     display: flex;
@@ -88,7 +91,8 @@
     padding: 6px 8px;
     cursor: pointer;
     border-radius: var(--bili-radius-sm);
-    transition: background-color var(--bili-transition-duration-fast) var(--bili-transition-function);
+    transition: background-color var(--bili-transition-duration-fast)
+      var(--bili-transition-function);
 
     &:hover {
       background-color: var(--bili-fill-color-light);

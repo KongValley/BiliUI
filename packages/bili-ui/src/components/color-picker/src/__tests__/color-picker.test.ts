@@ -22,6 +22,20 @@ describe('BiliColorPicker', () => {
     expect(document.body.querySelectorAll('.bili-color-picker__preset').length).toBeGreaterThan(0)
   })
 
+  it('applies popper-class to the teleported panel', async () => {
+    const wrapper = mount(ColorPicker, {
+      props: { modelValue: '#e0356b', popperClass: 'custom-color-panel' },
+      attachTo: document.body
+    })
+
+    await wrapper.find('.bili-color-picker').trigger('click')
+    await flushPromises()
+
+    expect(
+      document.body.querySelector('.bili-color-picker__panel.custom-color-panel')
+    ).not.toBeNull()
+  })
+
   it('shows the value and colour swatch in the trigger', () => {
     const wrapper = mount(ColorPicker, { props: { modelValue: '#13c2c2' } })
     expect(wrapper.find('.bili-color-picker__value').text()).toBe('#13C2C2')

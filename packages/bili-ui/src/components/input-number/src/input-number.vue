@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
+import { useConfig } from '../../../hooks/use-config'
 import BiliIcon from '../../icon/src/icon.vue'
 import { useFormItem } from '../../form/src/types'
 import { inputNumberProps } from './input-number'
@@ -17,6 +18,8 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('input-number')
+const config = useConfig()
+const mergedSize = computed(() => props.size ?? config.value.size)
 const formItem = useFormItem()
 
 const inputRef = ref<HTMLInputElement | null>(null)
@@ -127,7 +130,7 @@ watch(
   <div
     :class="[
       ns.b(),
-      ns.m(size),
+      ns.m(mergedSize),
       ns.is('disabled', disabled),
       ns.is('focused', focused)
     ]"

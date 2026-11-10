@@ -1,11 +1,13 @@
 @use '../../../styles/mixins' as *;
 
 @include b(upload) {
+  --bili-upload-gap: 8px;
+  --bili-upload-font-size: var(--bili-font-size-sm);
   display: inline-flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--bili-upload-gap);
   width: 100%;
-  font-size: var(--bili-font-size-sm);
+  font-size: var(--bili-upload-font-size);
 
   @include e(input) {
     position: absolute;

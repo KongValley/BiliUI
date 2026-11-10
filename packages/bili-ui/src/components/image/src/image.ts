@@ -67,6 +67,11 @@ export const imageProps = {
   zIndex: {
     type: Number,
     default: undefined
+  },
+  /** Extra class on the teleported preview layer. */
+  previewClass: {
+    type: String,
+    default: ''
   }
 } as const
 
@@ -96,6 +101,11 @@ export const imageViewerProps = {
   zIndex: {
     type: Number,
     default: undefined
+  },
+  /** Extra class on the teleported preview layer. */
+  previewClass: {
+    type: String,
+    default: ''
   },
   minScale: {
     type: Number,

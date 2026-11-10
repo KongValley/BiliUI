@@ -22,6 +22,7 @@ export default defineConfig({
           items: [
             { text: '快速开始', link: '/guide/quickstart' },
             { text: '主题定制', link: '/guide/theme' },
+            { text: '样式覆写', link: '/guide/style-overrides' },
             { text: '动效规范', link: '/guide/motion' },
             { text: '设计规范', link: '/guide/design' },
             { text: '组件开发计划', link: '/guide/roadmap' }
@@ -39,7 +40,8 @@ export default defineConfig({
             { text: 'Tag 标签', link: '/components/tag' },
             { text: 'Avatar 头像', link: '/components/avatar' },
             { text: 'Badge 徽标', link: '/components/badge' },
-            { text: 'CodeBlock 代码块', link: '/components/code-block' }
+            { text: 'CodeBlock 代码块', link: '/components/code-block' },
+            { text: 'ConfigProvider 全局配置', link: '/components/config-provider' }
           ]
         },
         {
@@ -51,7 +53,9 @@ export default defineConfig({
             { text: 'Tabs 标签页', link: '/components/tabs' },
             { text: 'Breadcrumb 面包屑', link: '/components/breadcrumb' },
             { text: 'Dropdown 下拉菜单', link: '/components/dropdown' },
-            { text: 'Anchor 锚点', link: '/components/anchor' }
+            { text: 'Anchor 锚点', link: '/components/anchor' },
+            { text: 'Affix 固钉', link: '/components/affix' },
+            { text: 'BackTop 回到顶部', link: '/components/back-top' }
           ]
         },
         {
@@ -83,6 +87,7 @@ export default defineConfig({
             { text: 'Message 消息提示', link: '/components/message' },
             { text: 'Notification 通知', link: '/components/notification' },
             { text: 'Popover 气泡卡片', link: '/components/popover' },
+            { text: 'Tour 引导', link: '/components/tour' },
             { text: 'Loading 加载', link: '/components/loading' }
           ]
         },
@@ -98,6 +103,8 @@ export default defineConfig({
             { text: 'Timeline 时间线', link: '/components/timeline' },
             { text: 'Calendar 日历', link: '/components/calendar' },
             { text: 'Statistic 数值统计', link: '/components/statistic' },
+            { text: 'Watermark 水印', link: '/components/watermark' },
+            { text: 'QRCode 二维码', link: '/components/qrcode' },
             { text: 'Pagination 分页', link: '/components/pagination' },
             { text: 'Progress 进度条', link: '/components/progress' },
             { text: 'Skeleton 骨架屏', link: '/components/skeleton' },

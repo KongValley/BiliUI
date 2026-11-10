@@ -1,6 +1,7 @@
 @use '../../../styles/mixins' as *;
 
 @include b(card) {
+  --bili-card-bg: var(--bili-bg-container);
   --bili-card-padding: 16px;
   --bili-card-radius: var(--bili-radius-md);
   --bili-card-shadow: none;
@@ -11,7 +12,7 @@
   flex-direction: column;
   min-width: 0;
   overflow: hidden;
-  background-color: var(--bili-bg-container);
+  background-color: var(--bili-card-bg);
   border-radius: var(--bili-card-radius);
   box-shadow: var(--bili-card-shadow);
   transition:

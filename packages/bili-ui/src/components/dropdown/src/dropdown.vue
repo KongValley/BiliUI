@@ -25,11 +25,11 @@ const triggerRef = ref<HTMLElement | null>(null)
 const popupRef = ref<HTMLElement | null>(null)
 const visible = ref(false)
 
-const { floatingStyles, isPositioned, placement: resolvedPlacement } = useFloating(
-  triggerRef,
-  popupRef,
-  { placement: props.placement as Placement, offset: 6 }
-)
+const {
+  floatingStyles,
+  isPositioned,
+  placement: resolvedPlacement
+} = useFloating(triggerRef, popupRef, { placement: props.placement as Placement, offset: 6 })
 
 const popupStyles = computed<CSSProperties>(() => ({
   ...floatingStyles.value,
@@ -141,7 +141,7 @@ defineExpose({ open, close, toggle })
         <div
           v-if="visible"
           ref="popupRef"
-          :class="ns.e('popup')"
+          :class="[ns.e('popup'), popperClass]"
           :style="popupStyles"
           :data-placement="resolvedPlacement.split('-')[0]"
           role="menu"

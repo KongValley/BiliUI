@@ -1,14 +1,16 @@
 @use '../../../styles/mixins' as *;
 
 @include b(progress) {
+  --bili-progress-gap: 10px;
+  --bili-progress-font-size: var(--bili-font-size-xs);
   --bili-progress-bar-color: var(--bili-color-primary);
   --bili-progress-track-color: var(--bili-fill-color);
 
   display: flex;
-  gap: 10px;
+  gap: var(--bili-progress-gap);
   align-items: center;
   width: 100%;
-  font-size: var(--bili-font-size-xs);
+  font-size: var(--bili-progress-font-size);
   line-height: 1;
 
   @include m(success) {

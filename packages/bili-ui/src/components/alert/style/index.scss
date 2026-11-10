@@ -1,19 +1,24 @@
 @use '../../../styles/mixins' as *;
 
 @include b(alert) {
+  --bili-alert-gap: 10px;
+  --bili-alert-padding: 10px 14px;
+  --bili-alert-font-size: var(--bili-font-size-sm);
+  --bili-alert-radius: var(--bili-radius-md);
   --bili-alert-color: var(--bili-color-primary);
+  --bili-alert-text-color: var(--bili-text-regular);
   --bili-alert-bg: var(--bili-color-primary-light);
   --bili-alert-border: var(--bili-color-primary);
 
   display: flex;
-  gap: 10px;
+  gap: var(--bili-alert-gap);
   align-items: flex-start;
-  padding: 10px 14px;
-  font-size: var(--bili-font-size-sm);
+  padding: var(--bili-alert-padding);
+  font-size: var(--bili-alert-font-size);
   line-height: 1.6;
-  color: var(--bili-text-regular);
+  color: var(--bili-alert-text-color);
   background-color: var(--bili-alert-bg);
-  border-radius: var(--bili-radius-md);
+  border-radius: var(--bili-alert-radius);
 
   @include m(info) {
     --bili-alert-color: var(--bili-color-info);

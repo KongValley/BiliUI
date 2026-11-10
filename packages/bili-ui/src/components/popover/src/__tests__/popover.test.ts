@@ -33,6 +33,18 @@ describe('BiliPopover', () => {
     wrapper.unmount()
   })
 
+  it('applies popper-class to the teleported content', async () => {
+    const wrapper = mountPopover({ popperClass: 'custom-popover-theme' })
+    await wrapper.trigger('click')
+    await nextTick()
+
+    expect(
+      document.body.querySelector('.bili-popover__content.custom-popover-theme')
+    ).not.toBeNull()
+
+    wrapper.unmount()
+  })
+
   it('toggles closed on a second click', async () => {
     const wrapper = mountPopover()
     await wrapper.trigger('click')
@@ -102,12 +114,25 @@ describe('BiliPopconfirm', () => {
       attachTo: document.body
     })
 
+  it('forwards popper-class to the teleported popover', async () => {
+    const wrapper = mountConfirm({ popperClass: 'custom-confirm-popover' })
+    await wrapper.trigger('click')
+    await nextTick()
+
+    expect(
+      document.body.querySelector('.bili-popover__content.custom-confirm-popover')
+    ).not.toBeNull()
+    wrapper.unmount()
+  })
+
   it('emits confirm and closes', async () => {
     const wrapper = mountConfirm()
     await wrapper.trigger('click')
     await nextTick()
 
-    const buttons = document.body.querySelectorAll<HTMLButtonElement>('.bili-popconfirm__actions button')
+    const buttons = document.body.querySelectorAll<HTMLButtonElement>(
+      '.bili-popconfirm__actions button'
+    )
     expect(buttons).toHaveLength(2)
     buttons[1].click()
     await nextTick()
@@ -121,7 +146,9 @@ describe('BiliPopconfirm', () => {
     await wrapper.trigger('click')
     await nextTick()
 
-    const buttons = document.body.querySelectorAll<HTMLButtonElement>('.bili-popconfirm__actions button')
+    const buttons = document.body.querySelectorAll<HTMLButtonElement>(
+      '.bili-popconfirm__actions button'
+    )
     buttons[0].click()
     await nextTick()
 
@@ -133,13 +160,18 @@ describe('BiliPopconfirm', () => {
   it('waits for an async onConfirm before closing', async () => {
     let resolve: (() => void) | undefined
     const wrapper = mountConfirm({
-      onConfirm: () => new Promise<void>(done => { resolve = done })
+      onConfirm: () =>
+        new Promise<void>(done => {
+          resolve = done
+        })
     })
 
     await wrapper.trigger('click')
     await nextTick()
 
-    const buttons = document.body.querySelectorAll<HTMLButtonElement>('.bili-popconfirm__actions button')
+    const buttons = document.body.querySelectorAll<HTMLButtonElement>(
+      '.bili-popconfirm__actions button'
+    )
     buttons[1].click()
     await nextTick()
 
@@ -159,7 +191,9 @@ describe('BiliPopconfirm', () => {
     await wrapper.trigger('click')
     await nextTick()
 
-    const buttons = document.body.querySelectorAll<HTMLButtonElement>('.bili-popconfirm__actions button')
+    const buttons = document.body.querySelectorAll<HTMLButtonElement>(
+      '.bili-popconfirm__actions button'
+    )
     expect(buttons[0].textContent?.trim()).toBe('再想想')
     expect(buttons[1].textContent?.trim()).toBe('删除')
     wrapper.unmount()

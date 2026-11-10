@@ -1,15 +1,18 @@
-import { ref, type Ref } from 'vue'
+import { inject, ref, type Ref } from 'vue'
+import { configContextKey, defaultConfig } from './use-config'
 
-let globalZIndex = 2000
+let globalZIndex = defaultConfig.zIndex
 
 export function useZIndex(): {
   currentZIndex: Ref<number>
   nextZIndex: () => number
 } {
-  const currentZIndex = ref(globalZIndex)
+  const config = inject(configContextKey, null)
+  const currentZIndex = ref(config?.value.zIndex ?? globalZIndex)
 
   const nextZIndex = () => {
-    globalZIndex += 1
+    // ConfigProvider can raise the floor so app dialogs sit above host UI.
+    globalZIndex = Math.max(globalZIndex, config?.value.zIndex ?? defaultConfig.zIndex) + 1
     currentZIndex.value = globalZIndex
     return globalZIndex
   }

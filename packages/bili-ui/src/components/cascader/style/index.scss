@@ -1,23 +1,29 @@
 @use '../../../styles/mixins' as *;
 
 @include b(cascader) {
+  --bili-cascader-gap: 6px;
+  --bili-cascader-font-size: var(--bili-font-size-base);
+  --bili-cascader-color: var(--bili-text-primary);
+  --bili-cascader-bg: var(--bili-bg-container);
+  --bili-cascader-border-color: var(--bili-border-color);
+  --bili-cascader-radius: var(--bili-radius-base);
   --bili-cascader-height: var(--bili-control-height-md);
   --bili-cascader-padding: var(--bili-control-padding-md);
 
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--bili-cascader-gap);
   width: 100%;
   min-width: 0;
   height: var(--bili-cascader-height);
   padding: 0 var(--bili-cascader-padding);
-  font-size: var(--bili-font-size-base);
-  color: var(--bili-text-primary);
+  font-size: var(--bili-cascader-font-size);
+  color: var(--bili-cascader-color);
   cursor: pointer;
-  background-color: var(--bili-bg-container);
-  border: 1px solid var(--bili-border-color);
-  border-radius: var(--bili-radius-base);
+  background-color: var(--bili-cascader-bg);
+  border: 1px solid var(--bili-cascader-border-color);
+  border-radius: var(--bili-cascader-radius);
   outline: none;
   transition:
     border-color var(--bili-transition-duration) var(--bili-transition-function),
@@ -114,14 +120,23 @@
 
 @include b(cascader) {
   @include e(panel) {
+    --bili-cascader-panel-bg: var(--bili-bg-elevated);
+    --bili-cascader-panel-border-color: var(--bili-border-color-light);
+    --bili-cascader-panel-radius: var(--bili-radius-md);
+    --bili-cascader-panel-shadow: var(--bili-shadow-base);
+    --bili-cascader-option-color: var(--bili-text-regular);
+    --bili-cascader-option-hover-bg: var(--bili-fill-color-light);
+    --bili-cascader-option-selected-color: var(--bili-color-primary);
+    --bili-cascader-option-selected-bg: var(--bili-color-primary-light);
+    --bili-cascader-option-disabled-color: var(--bili-text-placeholder);
     position: absolute;
     top: 0;
     left: 0;
     padding: 4px;
-    background-color: var(--bili-bg-elevated);
-    border: 1px solid var(--bili-border-color-light);
-    border-radius: var(--bili-radius-md);
-    box-shadow: var(--bili-shadow-base);
+    background-color: var(--bili-cascader-panel-bg);
+    border: 1px solid var(--bili-cascader-panel-border-color);
+    border-radius: var(--bili-cascader-panel-radius);
+    box-shadow: var(--bili-cascader-panel-shadow);
     will-change: transform;
   }
 
@@ -155,7 +170,7 @@
     padding: 7px 10px;
     font-size: var(--bili-font-size-base);
     line-height: 1.4;
-    color: var(--bili-text-regular);
+    color: var(--bili-cascader-option-color);
     text-align: left;
     cursor: pointer;
     background: transparent;
@@ -167,17 +182,17 @@
 
     &:hover,
     &.is-active {
-      background-color: var(--bili-fill-color-light);
+      background-color: var(--bili-cascader-option-hover-bg);
     }
 
     &.is-selected {
       font-weight: var(--bili-font-weight-medium);
-      color: var(--bili-color-primary);
-      background-color: var(--bili-color-primary-light);
+      color: var(--bili-cascader-option-selected-color);
+      background-color: var(--bili-cascader-option-selected-bg);
     }
 
     &.is-disabled {
-      color: var(--bili-text-placeholder);
+      color: var(--bili-cascader-option-disabled-color);
       cursor: not-allowed;
       background-color: transparent;
     }

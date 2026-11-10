@@ -1,13 +1,19 @@
 @use '../../../styles/mixins' as *;
 
 @include b(calendar) {
+  --bili-calendar-padding: 12px;
+  --bili-calendar-font-size: var(--bili-font-size-base);
+  --bili-calendar-color: var(--bili-text-regular);
+  --bili-calendar-bg: var(--bili-bg-container);
+  --bili-calendar-border-color: var(--bili-border-color-light);
+  --bili-calendar-radius: var(--bili-radius-md);
   width: 300px;
-  padding: 12px;
-  font-size: var(--bili-font-size-base);
-  color: var(--bili-text-regular);
-  background-color: var(--bili-bg-container);
-  border: 1px solid var(--bili-border-color-light);
-  border-radius: var(--bili-radius-md);
+  padding: var(--bili-calendar-padding);
+  font-size: var(--bili-calendar-font-size);
+  color: var(--bili-calendar-color);
+  background-color: var(--bili-calendar-bg);
+  border: 1px solid var(--bili-calendar-border-color);
+  border-radius: var(--bili-calendar-radius);
 
   @include e(header) {
     display: flex;

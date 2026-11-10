@@ -1,9 +1,18 @@
 @use '../../../styles/mixins' as *;
 
 @include b(input) {
+  --bili-input-color: var(--bili-text-primary);
+  --bili-input-bg: var(--bili-bg-container);
+  --bili-input-border-color: var(--bili-border-color);
+  --bili-input-radius: var(--bili-radius-base);
   --bili-input-height: var(--bili-control-height-md);
   --bili-input-padding: var(--bili-control-padding-md);
   --bili-input-font-size: var(--bili-font-size-base);
+  --bili-input-placeholder-color: var(--bili-text-placeholder);
+  --bili-input-hover-border-color: var(--bili-color-primary-hover);
+  --bili-input-focus-border-color: var(--bili-color-primary);
+  --bili-input-focus-shadow: var(--bili-color-primary-light);
+  --bili-input-disabled-bg: var(--bili-bg-disabled);
 
   display: inline-flex;
   align-items: stretch;
@@ -12,10 +21,10 @@
   height: var(--bili-input-height);
   padding: 0;
   font-size: var(--bili-input-font-size);
-  color: var(--bili-text-primary);
-  background-color: var(--bili-bg-container);
-  border: 1px solid var(--bili-border-color);
-  border-radius: var(--bili-radius-base);
+  color: var(--bili-input-color);
+  background-color: var(--bili-input-bg);
+  border: 1px solid var(--bili-input-border-color);
+  border-radius: var(--bili-input-radius);
   overflow: hidden;
   transition:
     border-color var(--bili-transition-duration) var(--bili-transition-function),
@@ -23,25 +32,25 @@
     background-color var(--bili-transition-duration) var(--bili-transition-function);
 
   &:hover {
-    border-color: var(--bili-color-primary-hover);
+    border-color: var(--bili-input-hover-border-color);
   }
 
   @include when(focus) {
-    border-color: var(--bili-color-primary);
-    box-shadow: 0 0 0 3px var(--bili-color-primary-light);
+    border-color: var(--bili-input-focus-border-color);
+    box-shadow: 0 0 0 3px var(--bili-input-focus-shadow);
   }
   @include when(disabled) {
     cursor: not-allowed;
-    background-color: var(--bili-bg-disabled);
+    background-color: var(--bili-input-disabled-bg);
 
     .#{$namespace}-input__inner {
       cursor: not-allowed;
-      color: var(--bili-text-placeholder);
+      color: var(--bili-input-placeholder-color);
     }
 
     .#{$namespace}-input__prepend,
     .#{$namespace}-input__append {
-      color: var(--bili-text-placeholder);
+      color: var(--bili-input-placeholder-color);
       cursor: not-allowed;
     }
   }
@@ -95,7 +104,7 @@
     outline: none;
 
     &::placeholder {
-      color: var(--bili-text-placeholder);
+      color: var(--bili-input-placeholder-color);
     }
   }
 

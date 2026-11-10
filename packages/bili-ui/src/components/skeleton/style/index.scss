@@ -1,9 +1,10 @@
 @use '../../../styles/mixins' as *;
 
 @include b(skeleton) {
+  --bili-skeleton-gap: 12px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--bili-skeleton-gap);
   width: 100%;
 
   @include e(header) {
@@ -63,8 +64,9 @@ html.dark .bili-skeleton.is-animated .bili-skeleton-item::after {
 }
 
 @include b(skeleton-item) {
+  --bili-skeleton-item-bg: var(--bili-fill-color);
   display: block;
-  background-color: var(--bili-fill-color);
+  background-color: var(--bili-skeleton-item-bg);
 
   @include m(text) {
     width: 100%;

@@ -59,21 +59,29 @@
 }
 
 @include b(message) {
+  --bili-message-gap: 8px;
+  --bili-message-padding: 10px 14px;
+  --bili-message-font-size: var(--bili-font-size-base);
+  --bili-message-color: var(--bili-text-primary);
+  --bili-message-bg: var(--bili-bg-elevated);
+  --bili-message-border-color: var(--bili-border-color-light);
+  --bili-message-radius: var(--bili-radius-md);
+  --bili-message-shadow: var(--bili-shadow-md);
   position: relative;
   display: inline-flex;
-  gap: 8px;
+  gap: var(--bili-message-gap);
   align-items: center;
   max-width: 480px;
-  padding: 10px 14px;
+  padding: var(--bili-message-padding);
   overflow: hidden;
-  font-size: var(--bili-font-size-base);
+  font-size: var(--bili-message-font-size);
   line-height: 1.5;
-  color: var(--bili-text-primary);
+  color: var(--bili-message-color);
   pointer-events: auto;
-  background-color: var(--bili-bg-elevated);
-  border: 1px solid var(--bili-border-color-light);
-  border-radius: var(--bili-radius-md);
-  box-shadow: var(--bili-shadow-md);
+  background-color: var(--bili-message-bg);
+  border: 1px solid var(--bili-message-border-color);
+  border-radius: var(--bili-message-radius);
+  box-shadow: var(--bili-message-shadow);
 
   @include e(icon) {
     flex-shrink: 0;

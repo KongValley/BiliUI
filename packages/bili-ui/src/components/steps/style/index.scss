@@ -41,10 +41,22 @@
 }
 
 @include b(step) {
+  --bili-step-font-size: var(--bili-font-size-sm);
+  --bili-step-icon-size: 24px;
+  --bili-step-icon-color: var(--bili-text-secondary);
+  --bili-step-icon-bg: var(--bili-bg-container);
+  --bili-step-icon-border-color: var(--bili-border-color);
+  --bili-step-line-color: var(--bili-border-color-light);
+  --bili-step-title-color: var(--bili-text-primary);
+  --bili-step-description-color: var(--bili-text-secondary);
+  --bili-step-active-color: var(--bili-color-primary);
+  --bili-step-error-color: var(--bili-color-danger);
+  --bili-step-wait-color: var(--bili-text-secondary);
+  --bili-step-separator-color: var(--bili-text-placeholder);
   display: flex;
   flex: 1;
   min-width: 0;
-  font-size: var(--bili-font-size-sm);
+  font-size: var(--bili-step-font-size);
 
   // ------------------------------------------------------------------ head
   @include e(head) {
@@ -58,14 +70,14 @@
     flex: none;
     align-items: center;
     justify-content: center;
-    width: 24px;
-    height: 24px;
+    width: var(--bili-step-icon-size);
+    height: var(--bili-step-icon-size);
     font-size: 12px;
     font-weight: var(--bili-font-weight-semibold);
     font-variant-numeric: tabular-nums;
-    color: var(--bili-text-secondary);
-    background-color: var(--bili-bg-container);
-    border: 2px solid var(--bili-border-color);
+    color: var(--bili-step-icon-color);
+    background-color: var(--bili-step-icon-bg);
+    border: 2px solid var(--bili-step-icon-border-color);
     border-radius: 50%;
     transition:
       color var(--bili-transition-duration) var(--bili-transition-function),
@@ -81,7 +93,7 @@
     flex: 1;
     height: 2px;
     margin: 0 8px;
-    background-color: var(--bili-border-color-light);
+    background-color: var(--bili-step-line-color);
     transition: background-color var(--bili-transition-duration) var(--bili-transition-function);
   }
 
@@ -96,50 +108,50 @@
   @include e(title) {
     font-weight: var(--bili-font-weight-medium);
     line-height: 1.4;
-    color: var(--bili-text-primary);
+    color: var(--bili-step-title-color);
   }
 
   @include e(description) {
     margin-top: 2px;
     font-size: var(--bili-font-size-xs);
     line-height: 1.5;
-    color: var(--bili-text-secondary);
+    color: var(--bili-step-description-color);
   }
 
   @include m(process) {
     .#{$namespace}-step__icon {
       color: var(--bili-color-on-primary);
-      background-color: var(--bili-color-primary);
-      border-color: var(--bili-color-primary);
+      background-color: var(--bili-step-active-color);
+      border-color: var(--bili-step-active-color);
       box-shadow: 0 0 0 3px var(--bili-color-primary-light);
     }
 
     .#{$namespace}-step__title {
-      color: var(--bili-color-primary);
+      color: var(--bili-step-active-color);
     }
   }
 
   @include m(finish) {
     .#{$namespace}-step__icon {
       color: var(--bili-color-white);
-      background-color: var(--bili-color-primary);
-      border-color: var(--bili-color-primary);
+      background-color: var(--bili-step-active-color);
+      border-color: var(--bili-step-active-color);
     }
 
     .#{$namespace}-step__line {
-      background-color: var(--bili-color-primary);
+      background-color: var(--bili-step-active-color);
     }
   }
 
   @include m(error) {
     .#{$namespace}-step__icon {
       color: var(--bili-color-white);
-      background-color: var(--bili-color-danger);
-      border-color: var(--bili-color-danger);
+      background-color: var(--bili-step-error-color);
+      border-color: var(--bili-step-error-color);
     }
 
     .#{$namespace}-step__title {
-      color: var(--bili-color-danger);
+      color: var(--bili-step-error-color);
     }
 
     .#{$namespace}-step__line {
@@ -149,7 +161,7 @@
 
   @include m(wait) {
     .#{$namespace}-step__title {
-      color: var(--bili-text-secondary);
+      color: var(--bili-step-wait-color);
     }
   }
 
@@ -200,7 +212,7 @@
 
   .bili-step::after {
     padding: 0 10px;
-    color: var(--bili-text-placeholder);
+    color: var(--bili-step-separator-color);
     content: '›';
   }
 

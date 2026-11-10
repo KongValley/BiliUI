@@ -1,13 +1,15 @@
 @use '../../../styles/mixins' as *;
 
 @include b(result) {
+  --bili-result-gap: 6px;
+  --bili-result-padding: 40px 24px;
   --bili-result-color: var(--bili-color-primary);
 
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--bili-result-gap);
   align-items: center;
-  padding: 40px 24px;
+  padding: var(--bili-result-padding);
   text-align: center;
 
   @include e(icon) {

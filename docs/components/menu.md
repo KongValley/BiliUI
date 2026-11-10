@@ -76,33 +76,34 @@ const active = ref('home')
 
 ### Props
 
-| 属性 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| `mode` | 布局方向 | `'horizontal' \| 'vertical'` | `'horizontal'` |
-| `items` | 数据驱动菜单项 | `MenuItem[]` | `[]` |
-| `v-model` | 当前选中项的 key | `string` | — |
-| `default-opened-keys` | 初始展开的二级菜单 key | `string[]` | `[]` |
-| `collapsed` | 是否折叠为图标窄栏（仅竖向生效） | `boolean` | `false` |
-| `collapsed-width` | 折叠后的宽度 | `string \| number` | `64` |
-| `overflow` | 横向是否启用溢出收纳 | `boolean` | `true` |
-| `trigger` | 二级菜单展开方式 | `'hover' \| 'click'` | `'hover'` |
-| `ellipsis-text` | 「更多」按钮文案 | `string` | `'更多'` |
+| 属性                  | 说明                             | 类型                         | 默认值         |
+| --------------------- | -------------------------------- | ---------------------------- | -------------- |
+| `mode`                | 布局方向                         | `'horizontal' \| 'vertical'` | `'horizontal'` |
+| `items`               | 数据驱动菜单项                   | `MenuItem[]`                 | `[]`           |
+| `v-model`             | 当前选中项的 key                 | `string`                     | —              |
+| `default-opened-keys` | 初始展开的二级菜单 key           | `string[]`                   | `[]`           |
+| `collapsed`           | 是否折叠为图标窄栏（仅竖向生效） | `boolean`                    | `false`        |
+| `collapsed-width`     | 折叠后的宽度                     | `string \| number`           | `64`           |
+| `overflow`            | 横向是否启用溢出收纳             | `boolean`                    | `true`         |
+| `trigger`             | 二级菜单展开方式                 | `'hover' \| 'click'`         | `'hover'`      |
+| `ellipsis-text`       | 「更多」按钮文案                 | `string`                     | `'更多'`       |
+| `popper-class`        | 浮层额外类名，用于多实例主题隔离 | `string`                     | `''`           |
 
 ### Events
 
-| 事件名 | 说明 | 回调参数 |
-| --- | --- | --- |
-| `update:modelValue` | 选中项变化 | `(key: string)` |
-| `select` | 点击菜单项 | `(key: string, item: MenuItem)` |
-| `open-change` | 二级菜单展开状态变化 | `(keys: string[])` |
+| 事件名              | 说明                 | 回调参数                        |
+| ------------------- | -------------------- | ------------------------------- |
+| `update:modelValue` | 选中项变化           | `(key: string)`                 |
+| `select`            | 点击菜单项           | `(key: string, item: MenuItem)` |
+| `open-change`       | 二级菜单展开状态变化 | `(keys: string[])`              |
 
 ### MenuItem
 
 ```ts
 interface MenuItem {
-  key: string          // 唯一标识，选中时作为 modelValue
-  label: string        // 显示文本
-  icon?: string        // 图标名，见 Icon 组件
+  key: string // 唯一标识，选中时作为 modelValue
+  label: string // 显示文本
+  icon?: string // 图标名，见 Icon 组件
   disabled?: boolean
   children?: MenuItem[] // 有值时渲染为二级菜单
 }
@@ -110,36 +111,36 @@ interface MenuItem {
 
 ## MenuItem API
 
-| 属性 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| `item-key` | 唯一标识 | `string` | 必填 |
-| `label` | 显示文本 | `string` | `''` |
-| `icon` | 图标名 | `string` | `''` |
+| 属性       | 说明     | 类型      | 默认值  |
+| ---------- | -------- | --------- | ------- |
+| `item-key` | 唯一标识 | `string`  | 必填    |
+| `label`    | 显示文本 | `string`  | `''`    |
+| `icon`     | 图标名   | `string`  | `''`    |
 | `disabled` | 是否禁用 | `boolean` | `false` |
 
 ## SubMenu API
 
-| 属性 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| `sub-key` | 唯一标识 | `string` | 必填 |
-| `title` | 父项文本 | `string` | `''` |
-| `icon` | 父项图标 | `string` | `''` |
+| 属性       | 说明     | 类型      | 默认值  |
+| ---------- | -------- | --------- | ------- |
+| `sub-key`  | 唯一标识 | `string`  | 必填    |
+| `title`    | 父项文本 | `string`  | `''`    |
+| `icon`     | 父项图标 | `string`  | `''`    |
 | `disabled` | 是否禁用 | `boolean` | `false` |
 
 ### Slots
 
-| 插槽名 | 说明 |
-| --- | --- |
+| 插槽名             | 说明           |
+| ------------------ | -------------- |
 | `title`（SubMenu） | 自定义父项内容 |
-| `default` | 子菜单项 |
+| `default`          | 子菜单项       |
 
 ## 样式变量
 
-| 变量 | 说明 |
-| --- | --- |
-| `--bili-menu-item-height` | 菜单项高度，默认 36px |
-| `--bili-menu-item-padding` | 菜单项水平内边距 |
-| `--bili-menu-radius` | 菜单项圆角 |
+| 变量                       | 说明                  |
+| -------------------------- | --------------------- |
+| `--bili-menu-item-height`  | 菜单项高度，默认 36px |
+| `--bili-menu-item-padding` | 菜单项水平内边距      |
+| `--bili-menu-radius`       | 菜单项圆角            |
 
 ## 说明
 

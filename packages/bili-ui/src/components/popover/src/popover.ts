@@ -40,6 +40,11 @@ export const popoverProps = {
   closeOnClickOutside: {
     type: Boolean,
     default: true
+  },
+  /** Extra class on the teleported content, useful for per-instance theming. */
+  popperClass: {
+    type: String,
+    default: ''
   }
 } as const
 
@@ -51,11 +56,11 @@ export const popconfirmProps = {
   },
   confirmText: {
     type: String,
-    default: '确定'
+    default: ''
   },
   cancelText: {
     type: String,
-    default: '取消'
+    default: ''
   },
   confirmType: {
     type: String as PropType<'primary' | 'danger'>,

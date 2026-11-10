@@ -32,6 +32,13 @@
   }
 
   @include e(popup) {
+    --bili-dropdown-bg: var(--bili-bg-elevated);
+    --bili-dropdown-border-color: var(--bili-border-color-light);
+    --bili-dropdown-radius: var(--bili-radius-md);
+    --bili-dropdown-shadow: var(--bili-shadow-md);
+    --bili-dropdown-padding: 6px;
+    --bili-dropdown-item-hover-color: var(--bili-color-primary);
+    --bili-dropdown-item-hover-bg: var(--bili-fill-color-light);
     position: absolute;
     top: 0;
     left: 0;
@@ -39,13 +46,13 @@
     min-width: 160px;
     max-width: 280px;
     max-height: min(360px, 70vh);
-    padding: 6px;
+    padding: var(--bili-dropdown-padding);
     overflow-y: auto;
     overscroll-behavior: contain;
-    background-color: var(--bili-bg-elevated);
-    border: 1px solid var(--bili-border-color-light);
-    border-radius: var(--bili-radius-md);
-    box-shadow: var(--bili-shadow-md);
+    background-color: var(--bili-dropdown-bg);
+    border: 1px solid var(--bili-dropdown-border-color);
+    border-radius: var(--bili-dropdown-radius);
+    box-shadow: var(--bili-dropdown-shadow);
     scrollbar-width: thin;
     scrollbar-color: var(--bili-border-color) transparent;
 
@@ -79,8 +86,8 @@
       background-color var(--bili-transition-duration-fast) var(--bili-transition-function);
 
     &:hover:not(:disabled) {
-      color: var(--bili-color-primary);
-      background-color: var(--bili-fill-color-light);
+      color: var(--bili-dropdown-item-hover-color, var(--bili-color-primary));
+      background-color: var(--bili-dropdown-item-hover-bg, var(--bili-fill-color-light));
     }
 
     &:disabled,
@@ -131,27 +138,32 @@
 }
 
 @include b(dropdown-item) {
+  --bili-dropdown-item-gap: 8px;
+  --bili-dropdown-item-padding: 0 10px;
+  --bili-dropdown-item-font-size: var(--bili-font-size-sm);
+  --bili-dropdown-item-color: var(--bili-text-regular);
+  --bili-dropdown-item-radius: var(--bili-radius-sm);
   display: flex;
-  gap: 8px;
+  gap: var(--bili-dropdown-item-gap);
   align-items: center;
   width: 100%;
   height: 32px;
-  padding: 0 10px;
+  padding: var(--bili-dropdown-item-padding);
   font: inherit;
-  font-size: var(--bili-font-size-sm);
-  color: var(--bili-text-regular);
+  font-size: var(--bili-dropdown-item-font-size);
+  color: var(--bili-dropdown-item-color);
   white-space: nowrap;
   cursor: pointer;
   background: transparent;
   border: 0;
-  border-radius: var(--bili-radius-sm);
+  border-radius: var(--bili-dropdown-item-radius);
   transition:
     color var(--bili-transition-duration-fast) var(--bili-transition-function),
     background-color var(--bili-transition-duration-fast) var(--bili-transition-function);
 
   &:hover:not(:disabled) {
-    color: var(--bili-color-primary);
-    background-color: var(--bili-fill-color-light);
+    color: var(--bili-dropdown-item-hover-color, var(--bili-color-primary));
+    background-color: var(--bili-dropdown-item-hover-bg, var(--bili-fill-color-light));
   }
 
   &:disabled,

@@ -34,6 +34,11 @@ export const tooltipProps = {
     type: Boolean,
     default: true
   },
+  /** Extra class on the teleported content, useful for per-instance theming. */
+  popperClass: {
+    type: String,
+    default: ''
+  },
   maxWidth: {
     type: [String, Number] as PropType<string | number>,
     default: undefined

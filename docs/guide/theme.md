@@ -18,22 +18,22 @@ Bili UI 的样式分为三层令牌：**SCSS 原始值** → **语义 CSS 变量
 
 ## 语义令牌
 
-| 变量 | 用途 | 亮色默认值 |
-| --- | --- | --- |
-| `--bili-color-primary` | 品牌主色 | `#e0356b` |
-| `--bili-color-success` | 成功 | `#22a06b` |
-| `--bili-color-warning` | 警告 | `#e6a23c` |
-| `--bili-color-danger` | 危险 | `#e5484d` |
-| `--bili-color-info` | 信息 | `#8a919f` |
-| `--bili-text-primary` | 主要文字 | `#1f2329` |
-| `--bili-text-regular` | 常规文字 | `#4e5969` |
-| `--bili-text-secondary` | 次要文字 | `#86909c` |
-| `--bili-text-placeholder` | 占位文字 | `#b4bac3` |
-| `--bili-bg-page` | 页面背景 | `#f5f6f8` |
-| `--bili-bg-container` | 容器背景 | `#ffffff` |
-| `--bili-bg-elevated` | 浮层背景 | `#ffffff` |
-| `--bili-border-color` | 边框 | `#d7dbe0` |
-| `--bili-fill-color` | 填充 | `#f2f3f5` |
+| 变量                      | 用途     | 亮色默认值 |
+| ------------------------- | -------- | ---------- |
+| `--bili-color-primary`    | 品牌主色 | `#e0356b`  |
+| `--bili-color-success`    | 成功     | `#22a06b`  |
+| `--bili-color-warning`    | 警告     | `#e6a23c`  |
+| `--bili-color-danger`     | 危险     | `#e5484d`  |
+| `--bili-color-info`       | 信息     | `#8a919f`  |
+| `--bili-text-primary`     | 主要文字 | `#1f2329`  |
+| `--bili-text-regular`     | 常规文字 | `#4e5969`  |
+| `--bili-text-secondary`   | 次要文字 | `#86909c`  |
+| `--bili-text-placeholder` | 占位文字 | `#b4bac3`  |
+| `--bili-bg-page`          | 页面背景 | `#f5f6f8`  |
+| `--bili-bg-container`     | 容器背景 | `#ffffff`  |
+| `--bili-bg-elevated`      | 浮层背景 | `#ffffff`  |
+| `--bili-border-color`     | 边框     | `#d7dbe0`  |
+| `--bili-fill-color`       | 填充     | `#f2f3f5`  |
 
 完整令牌定义位于 `src/styles/var.scss`，也可在文档站的设计规范页查看排版、圆角、阴影与间距令牌。
 
@@ -67,7 +67,7 @@ document.documentElement.classList.toggle('dark', media.matches)
 
 ## 组件级变量
 
-每个组件都暴露以 `--bili-<component>-` 开头的变量，可以只改某个组件的局部样式：
+大多数组件在根节点暴露以 `--bili-<component>-` 开头的变量，可以只改某个组件的局部样式：
 
 ```css
 /* 只放大大号按钮，不影响其他尺寸 */
@@ -75,21 +75,25 @@ document.documentElement.classList.toggle('dark', media.matches)
   --bili-button-padding: 22px;
 }
 
-/* 调整输入框圆角 */
+/* 调整输入框高度与圆角 */
 .bili-input {
   --bili-input-height: 36px;
-  border-radius: 10px;
+  --bili-input-radius: 10px;
 }
 ```
 
 常用组件变量：
 
-| 组件 | 变量示例 |
-| --- | --- |
-| Button | `--bili-button-height`、`--bili-button-padding`、`--bili-button-bg` |
-| Input | `--bili-input-height`、`--bili-input-padding` |
-| Select | `--bili-select-height`、`--bili-select-padding` |
-| Switch | `--bili-switch-width`、`--bili-switch-height` |
+| 组件   | 变量示例                                                                  |
+| ------ | ------------------------------------------------------------------------- |
+| Button | `--bili-button-height`、`--bili-button-padding`、`--bili-button-bg`       |
+| Input  | `--bili-input-height`、`--bili-input-padding`、`--bili-input-radius`      |
+| Select | `--bili-select-height`、`--bili-select-padding`、`--bili-select-panel-bg` |
+| Switch | `--bili-switch-width`、`--bili-switch-height`、`--bili-switch-on-bg`      |
+
+完整的组件变量、浮层选择器与内联样式说明见 [样式覆写](/guide/style-overrides)。
+
+> Tooltip、Popover、Select 面板等浮层会 Teleport 到 `body`，变量需要直接写在浮层元素上，例如 `.bili-tooltip__content`、`.bili-select__panel`；多实例主题可用 `popper-class` / `panel-class` 隔离。
 
 ## 设计约束
 

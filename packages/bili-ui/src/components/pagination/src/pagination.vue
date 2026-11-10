@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
+import { formatLocale, useLocale } from '../../../hooks/use-config'
 import BiliIcon from '../../icon/src/icon.vue'
 import { paginationProps } from './pagination'
 
@@ -17,7 +18,23 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('pagination')
+const locale = useLocale()
 const jumpValue = ref('')
+
+const texts = computed(() => {
+  const l = locale.value
+  return {
+    total: formatLocale(l.total, { total: props.total }),
+    pageSizeLabel: l.pageSizeLabel,
+    prevPage: l.prevPage,
+    nextPage: l.nextPage,
+    jumpTo: l.jumpTo,
+    jumpToPage: l.jumpToPage,
+    page: l.page
+  }
+})
+
+const formatPageSize = (size: number) => formatLocale(locale.value.pageSize, { size })
 
 const pageCount = computed(() => Math.max(1, Math.ceil(props.total / Math.max(1, props.pageSize))))
 
@@ -111,18 +128,18 @@ const handleJump = () => {
     ]"
   >
     <template v-for="item in layoutItems" :key="item">
-      <span v-if="item === 'total'" :class="ns.e('total')">共 {{ total }} 条</span>
+      <span v-if="item === 'total'" :class="ns.e('total')">{{ texts.total }}</span>
 
       <span v-else-if="item === 'sizes'" :class="ns.e('sizes')">
         <select
           :class="ns.e('select')"
           :value="pageSize"
           :disabled="disabled"
-          aria-label="每页条数"
+          :aria-label="texts.pageSizeLabel"
           @change="handlePageSizeChange"
         >
           <option v-for="size in pageSizes" :key="size" :value="size">
-            {{ size }} 条/页
+            {{ formatPageSize(size) }}
           </option>
         </select>
       </span>
@@ -132,7 +149,7 @@ const handleJump = () => {
         :class="[ns.e('button'), ns.e('prev')]"
         type="button"
         :disabled="disabled || currentPageValue <= 1"
-        aria-label="上一页"
+        :aria-label="texts.prevPage"
         @click="goTo(currentPageValue - 1)"
       >
         <BiliIcon name="arrow-left" />
@@ -166,14 +183,14 @@ const handleJump = () => {
         :class="[ns.e('button'), ns.e('next')]"
         type="button"
         :disabled="disabled || currentPageValue >= pageCount"
-        aria-label="下一页"
+        :aria-label="texts.nextPage"
         @click="goTo(currentPageValue + 1)"
       >
         <BiliIcon name="arrow-right" />
       </button>
 
       <span v-else-if="item === 'jumper'" :class="ns.e('jumper')">
-        前往
+        {{ texts.jumpTo }}
         <input
           v-model="jumpValue"
           :class="ns.e('jump-input')"
@@ -181,11 +198,11 @@ const handleJump = () => {
           min="1"
           :max="pageCount"
           :disabled="disabled"
-          aria-label="跳转到页码"
+          :aria-label="texts.jumpToPage"
           @keydown.enter="handleJump"
           @blur="handleJump"
         />
-        页
+        {{ texts.page }}
       </span>
     </template>
   </div>

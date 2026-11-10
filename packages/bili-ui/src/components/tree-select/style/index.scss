@@ -1,23 +1,29 @@
 @use '../../../styles/mixins' as *;
 
 @include b(tree-select) {
+  --bili-tree-select-gap: 6px;
+  --bili-tree-select-font-size: var(--bili-font-size-base);
+  --bili-tree-select-color: var(--bili-text-primary);
+  --bili-tree-select-bg: var(--bili-bg-container);
+  --bili-tree-select-border-color: var(--bili-border-color);
+  --bili-tree-select-radius: var(--bili-radius-base);
   --bili-tree-select-height: var(--bili-control-height-md);
   --bili-tree-select-padding: var(--bili-control-padding-md);
 
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--bili-tree-select-gap);
   width: 100%;
   min-width: 0;
   height: var(--bili-tree-select-height);
   padding: 0 var(--bili-tree-select-padding);
-  font-size: var(--bili-font-size-base);
-  color: var(--bili-text-primary);
+  font-size: var(--bili-tree-select-font-size);
+  color: var(--bili-tree-select-color);
   cursor: pointer;
-  background-color: var(--bili-bg-container);
-  border: 1px solid var(--bili-border-color);
-  border-radius: var(--bili-radius-base);
+  background-color: var(--bili-tree-select-bg);
+  border: 1px solid var(--bili-tree-select-border-color);
+  border-radius: var(--bili-tree-select-radius);
   outline: none;
   transition:
     border-color var(--bili-transition-duration) var(--bili-transition-function),
@@ -177,15 +183,19 @@
 
 @include b(tree-select) {
   @include e(panel) {
+    --bili-tree-select-panel-bg: var(--bili-bg-elevated);
+    --bili-tree-select-panel-border-color: var(--bili-border-color-light);
+    --bili-tree-select-panel-radius: var(--bili-radius-md);
+    --bili-tree-select-panel-shadow: var(--bili-shadow-base);
     position: absolute;
     top: 0;
     left: 0;
     padding: 4px;
     overflow: hidden;
-    background-color: var(--bili-bg-elevated);
-    border: 1px solid var(--bili-border-color-light);
-    border-radius: var(--bili-radius-md);
-    box-shadow: var(--bili-shadow-base);
+    background-color: var(--bili-tree-select-panel-bg);
+    border: 1px solid var(--bili-tree-select-panel-border-color);
+    border-radius: var(--bili-tree-select-panel-radius);
+    box-shadow: var(--bili-tree-select-panel-shadow);
     will-change: transform;
 
     .#{$namespace}-tree {

@@ -1,0 +1,191 @@
+@use '../../../styles/mixins' as *;
+
+@include b(tour) {
+  --bili-tour-mask-bg: rgba(17, 19, 23, 0.55);
+  --bili-tour-width: 320px;
+  --bili-tour-bg: var(--bili-bg-elevated);
+  --bili-tour-border-color: var(--bili-border-color-light);
+  --bili-tour-radius: var(--bili-radius-md);
+  --bili-tour-shadow: var(--bili-shadow-lg);
+  --bili-tour-padding: 18px 20px 16px;
+  --bili-tour-color: var(--bili-text-regular);
+  --bili-tour-title-color: var(--bili-text-primary);
+  --bili-tour-dot-bg: var(--bili-border-color);
+  --bili-tour-dot-active-bg: var(--bili-color-primary);
+  --bili-tour-next-bg: var(--bili-color-primary);
+  --bili-tour-next-hover-bg: var(--bili-color-primary-hover);
+
+  @include e(mask) {
+    position: fixed;
+    background-color: var(--bili-tour-mask-bg);
+    transition: opacity var(--bili-transition-duration) var(--bili-transition-function);
+  }
+
+  @include e(popover) {
+    position: fixed;
+    width: var(--bili-tour-width);
+    max-width: calc(100vw - 32px);
+    padding: var(--bili-tour-padding);
+    color: var(--bili-tour-color);
+    background-color: var(--bili-tour-bg);
+    border: 1px solid var(--bili-tour-border-color);
+    border-radius: var(--bili-tour-radius);
+    box-shadow: var(--bili-tour-shadow);
+    outline: none;
+  }
+
+  @include e(arrow) {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: var(--bili-tour-bg);
+    border: 1px solid var(--bili-tour-border-color);
+    transform: rotate(45deg);
+  }
+
+  @include e(close) {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    font-size: 14px;
+    color: var(--bili-text-secondary);
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    border-radius: var(--bili-radius-sm);
+    transition:
+      color var(--bili-transition-duration) var(--bili-transition-function),
+      background-color var(--bili-transition-duration) var(--bili-transition-function);
+
+    &:hover {
+      color: var(--bili-text-primary);
+      background-color: var(--bili-fill-color-light);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--bili-color-primary);
+      outline-offset: 1px;
+    }
+  }
+
+  @include e(header) {
+    padding-right: 20px;
+    margin-bottom: 8px;
+    font-size: var(--bili-font-size-md);
+    font-weight: var(--bili-font-weight-semibold);
+    line-height: 1.4;
+    color: var(--bili-tour-title-color);
+  }
+
+  @include e(body) {
+    font-size: var(--bili-font-size-sm);
+    line-height: 1.7;
+    color: var(--bili-tour-color);
+  }
+
+  @include e(footer) {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 16px;
+  }
+
+  @include e(indicators) {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+
+  @include e(dot) {
+    width: 6px;
+    height: 6px;
+    padding: 0;
+    cursor: pointer;
+    background-color: var(--bili-tour-dot-bg);
+    border: 0;
+    border-radius: var(--bili-radius-round);
+    transition:
+      width var(--bili-transition-duration) var(--bili-transition-function),
+      background-color var(--bili-transition-duration) var(--bili-transition-function);
+
+    &:hover {
+      background-color: var(--bili-text-secondary);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--bili-color-primary);
+      outline-offset: 2px;
+    }
+
+    @include when(active) {
+      width: 16px;
+      background-color: var(--bili-tour-dot-active-bg);
+    }
+  }
+
+  @include e(actions) {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-left: auto;
+  }
+
+  @include e(button) {
+    padding: 4px 12px;
+    font-size: var(--bili-font-size-sm);
+    line-height: 1.5;
+    cursor: pointer;
+    border: 1px solid var(--bili-border-color);
+    border-radius: var(--bili-radius-sm);
+    transition:
+      color var(--bili-transition-duration) var(--bili-transition-function),
+      background-color var(--bili-transition-duration) var(--bili-transition-function),
+      border-color var(--bili-transition-duration) var(--bili-transition-function);
+
+    &:focus-visible {
+      outline: 2px solid var(--bili-color-primary);
+      outline-offset: 1px;
+    }
+  }
+
+  @include e(button--prev) {
+    color: var(--bili-text-regular);
+    background-color: transparent;
+
+    &:hover {
+      color: var(--bili-text-primary);
+      background-color: var(--bili-fill-color-light);
+    }
+  }
+
+  @include e(button--next) {
+    color: var(--bili-color-on-primary);
+    background-color: var(--bili-tour-next-bg);
+    border-color: var(--bili-tour-next-bg);
+
+    &:hover {
+      background-color: var(--bili-tour-next-hover-bg);
+      border-color: var(--bili-tour-next-hover-bg);
+    }
+  }
+}
+
+.bili-tour-fade-enter-active,
+.bili-tour-fade-leave-active {
+  transition:
+    opacity var(--bili-transition-duration) var(--bili-transition-function),
+    transform var(--bili-transition-duration) var(--bili-transition-function);
+}
+
+.bili-tour-fade-enter-from,
+.bili-tour-fade-leave-to {
+  opacity: 0;
+  transform: scale(0.96);
+}

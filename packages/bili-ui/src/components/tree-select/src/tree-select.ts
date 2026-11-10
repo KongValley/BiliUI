@@ -27,6 +27,11 @@ export const treeSelectProps = {
     default: 'md'
   },
   disabled: Boolean,
+  /** Extra class on the teleported panel, useful for per-instance theming. */
+  popperClass: {
+    type: String,
+    default: ''
+  },
   clearable: Boolean,
   /** Checkbox mode; the bound value becomes an array. */
   multiple: Boolean,

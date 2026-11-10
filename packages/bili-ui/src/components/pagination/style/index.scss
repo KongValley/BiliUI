@@ -1,12 +1,24 @@
 @use '../../../styles/mixins' as *;
 
 @include b(pagination) {
+  --bili-pagination-gap: 8px;
+  --bili-pagination-font-size: var(--bili-font-size-sm);
+  --bili-pagination-color: var(--bili-text-regular);
+  --bili-pagination-item-size: 30px;
+  --bili-pagination-item-radius: var(--bili-radius-base);
+  --bili-pagination-item-hover-color: var(--bili-color-primary);
+  --bili-pagination-item-hover-bg: var(--bili-fill-color-light);
+  --bili-pagination-item-active-color: var(--bili-color-primary);
+  --bili-pagination-item-active-bg: var(--bili-color-primary-light);
+  --bili-pagination-item-active-border-color: var(--bili-color-primary-hover);
+  --bili-pagination-item-solid-color: var(--bili-color-on-primary);
+  --bili-pagination-item-solid-bg: var(--bili-color-primary);
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: var(--bili-pagination-gap);
   align-items: center;
-  font-size: var(--bili-font-size-sm);
-  color: var(--bili-text-regular);
+  font-size: var(--bili-pagination-font-size);
+  color: var(--bili-pagination-color);
 
   @include e(total) {
     margin-right: 4px;
@@ -39,15 +51,15 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 30px;
-    height: 30px;
+    min-width: var(--bili-pagination-item-size);
+    height: var(--bili-pagination-item-size);
     padding: 0 6px;
     font-size: var(--bili-font-size-sm);
-    color: var(--bili-text-regular);
+    color: var(--bili-pagination-color);
     cursor: pointer;
     background: transparent;
     border: 1px solid transparent;
-    border-radius: var(--bili-radius-base);
+    border-radius: var(--bili-pagination-item-radius);
     transition:
       color var(--bili-transition-duration) var(--bili-transition-function),
       background-color var(--bili-transition-duration) var(--bili-transition-function),
@@ -55,8 +67,8 @@
       transform var(--bili-transition-duration-fast) var(--bili-transition-function-spring);
 
     &:hover:not(:disabled) {
-      color: var(--bili-color-primary);
-      background-color: var(--bili-fill-color-light);
+      color: var(--bili-pagination-item-hover-color);
+      background-color: var(--bili-pagination-item-hover-bg);
     }
 
     &:active:not(:disabled) {
@@ -65,9 +77,9 @@
 
     &.is-active {
       font-weight: var(--bili-font-weight-medium);
-      color: var(--bili-color-primary);
-      background-color: var(--bili-color-primary-light);
-      border-color: var(--bili-color-primary-hover);
+      color: var(--bili-pagination-item-active-color);
+      background-color: var(--bili-pagination-item-active-bg);
+      border-color: var(--bili-pagination-item-active-border-color);
     }
 
     &:disabled {
@@ -78,12 +90,12 @@
 
   @include when(background) {
     .#{$namespace}-pagination__button {
-      background-color: var(--bili-fill-color-light);
+      background-color: var(--bili-pagination-item-hover-bg);
 
       &.is-active {
-        color: var(--bili-color-on-primary);
-        background-color: var(--bili-color-primary);
-        border-color: var(--bili-color-primary);
+        color: var(--bili-pagination-item-solid-color);
+        background-color: var(--bili-pagination-item-solid-bg);
+        border-color: var(--bili-pagination-item-solid-bg);
       }
     }
   }

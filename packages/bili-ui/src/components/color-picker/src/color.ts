@@ -33,7 +33,9 @@ export function hexToRgb(hex: string): RGB {
 
 export function rgbToHex(r: number, g: number, b: number): string {
   const toHex = (value: number) =>
-    Math.round(clamp(value, 0, 255)).toString(16).padStart(2, '0')
+    Math.round(clamp(value, 0, 255))
+      .toString(16)
+      .padStart(2, '0')
   return `#${toHex(r)}${toHex(g)}${toHex(b)}`
 }
 

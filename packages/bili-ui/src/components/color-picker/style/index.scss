@@ -1,23 +1,29 @@
 @use '../../../styles/mixins' as *;
 
 @include b(color-picker) {
+  --bili-color-picker-gap: 8px;
+  --bili-color-picker-font-size: var(--bili-font-size-base);
+  --bili-color-picker-color: var(--bili-text-primary);
+  --bili-color-picker-bg: var(--bili-bg-container);
+  --bili-color-picker-border-color: var(--bili-border-color);
+  --bili-color-picker-radius: var(--bili-radius-base);
   --bili-color-picker-height: var(--bili-control-height-md);
   --bili-color-picker-padding: var(--bili-control-padding-md);
 
   position: relative;
   display: inline-flex;
-  gap: 8px;
+  gap: var(--bili-color-picker-gap);
   align-items: center;
   width: 100%;
   min-width: 0;
   height: var(--bili-color-picker-height);
   padding: 0 var(--bili-color-picker-padding);
-  font-size: var(--bili-font-size-base);
-  color: var(--bili-text-primary);
+  font-size: var(--bili-color-picker-font-size);
+  color: var(--bili-color-picker-color);
   cursor: pointer;
-  background-color: var(--bili-bg-container);
-  border: 1px solid var(--bili-border-color);
-  border-radius: var(--bili-radius-base);
+  background-color: var(--bili-color-picker-bg);
+  border: 1px solid var(--bili-color-picker-border-color);
+  border-radius: var(--bili-color-picker-radius);
   outline: none;
   transition:
     border-color var(--bili-transition-duration) var(--bili-transition-function),
@@ -123,15 +129,19 @@
 
 @include b(color-picker) {
   @include e(panel) {
+    --bili-color-picker-panel-bg: var(--bili-bg-elevated);
+    --bili-color-picker-panel-border-color: var(--bili-border-color-light);
+    --bili-color-picker-panel-radius: var(--bili-radius-md);
+    --bili-color-picker-panel-shadow: var(--bili-shadow-base);
     position: absolute;
     top: 0;
     left: 0;
     width: 248px;
     padding: 10px;
-    background-color: var(--bili-bg-elevated);
-    border: 1px solid var(--bili-border-color-light);
-    border-radius: var(--bili-radius-md);
-    box-shadow: var(--bili-shadow-base);
+    background-color: var(--bili-color-picker-panel-bg);
+    border: 1px solid var(--bili-color-picker-panel-border-color);
+    border-radius: var(--bili-color-picker-panel-radius);
+    box-shadow: var(--bili-color-picker-panel-shadow);
     will-change: transform;
   }
 
@@ -249,7 +259,8 @@
     cursor: pointer;
     border: 1px solid var(--bili-border-color-lighter);
     border-radius: var(--bili-radius-sm);
-    transition: transform var(--bili-transition-duration-fast) var(--bili-transition-function-spring);
+    transition: transform var(--bili-transition-duration-fast)
+      var(--bili-transition-function-spring);
 
     &:hover {
       transform: scale(1.08);

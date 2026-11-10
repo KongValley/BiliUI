@@ -28,6 +28,11 @@ export const cascaderProps = {
     default: 'md'
   },
   disabled: Boolean,
+  /** Extra class on the teleported panel, useful for per-instance theming. */
+  popperClass: {
+    type: String,
+    default: ''
+  },
   clearable: Boolean,
   /** Commit a value when a parent node is clicked, not only on leaves. */
   changeOnSelect: Boolean,

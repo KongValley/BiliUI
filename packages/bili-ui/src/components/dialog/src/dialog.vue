@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
+import { useLocale } from '../../../hooks/use-config'
 import { useFocusTrap } from '../../../hooks/use-focus-trap'
 import { useScrollLock } from '../../../hooks/use-scroll-lock'
 import { useZIndex } from '../../../hooks/use-z-index'
@@ -23,6 +24,7 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('dialog')
+const locale = useLocale()
 const dialogRef = ref<HTMLElement | null>(null)
 const mounted = ref(props.modelValue)
 const visible = ref(props.modelValue)
@@ -100,13 +102,13 @@ onBeforeUnmount(() => {
       <div
         v-if="mounted"
         v-show="visible"
-        :class="ns.e('overlay')"
+        :class="[ns.e('overlay'), overlayClass]"
         :style="{ zIndex: modalZIndex }"
         @click.self="handleOverlayClick"
       >
         <div
           ref="dialogRef"
-          :class="ns.b()"
+          :class="[ns.b(), panelClass]"
           :style="dialogStyle"
           role="dialog"
           aria-modal="true"
@@ -121,7 +123,7 @@ onBeforeUnmount(() => {
               v-if="showClose"
               :class="ns.e('close')"
               type="button"
-              aria-label="关闭"
+              :aria-label="locale.close"
               @click="requestClose"
             >
               <BiliIcon name="close" />

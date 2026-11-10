@@ -127,6 +127,7 @@ defineExpose({ showPreview, closePreview })
       :hide-on-click-modal="hideOnClickModal"
       :close-on-press-escape="closeOnPressEscape"
       :z-index="zIndex"
+      :preview-class="previewClass"
       :min-scale="minScale"
       :max-scale="maxScale"
       :zoom-rate="zoomRate"

@@ -8,6 +8,24 @@ afterEach(() => {
 })
 
 describe('BiliDialog', () => {
+  it('applies overlay-class and panel-class to the teleported layers', async () => {
+    mount(Dialog, {
+      props: {
+        modelValue: true,
+        title: '提示',
+        overlayClass: 'custom-dialog-overlay',
+        panelClass: 'custom-dialog-panel'
+      },
+      attachTo: document.body
+    })
+    await nextTick()
+
+    expect(document.body.querySelector('.bili-dialog.custom-dialog-panel')).not.toBeNull()
+    expect(
+      document.body.querySelector('.bili-dialog__overlay.custom-dialog-overlay')
+    ).not.toBeNull()
+  })
+
   it('renders into body when visible', async () => {
     const wrapper = mount(Dialog, {
       props: { modelValue: false, title: '提示' },

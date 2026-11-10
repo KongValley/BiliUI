@@ -15,7 +15,7 @@ import changeOnSelectCode from '../examples/cascader/change-on-select.vue?raw'
 
 ## 基础用法
 
-点击节点逐列展开，选择叶子节点后写回 `v-model` 并关闭面板。触发器展示从根到叶子的完整路径，默认使用 ` / ` 分隔。
+点击节点逐列展开，选择叶子节点后写回 `v-model` 并关闭面板。触发器展示从根到叶子的完整路径，默认使用 `/` 分隔。
 
 <DemoBlock :code="basicCode">
   <DemoBasic />
@@ -45,18 +45,19 @@ import changeOnSelectCode from '../examples/cascader/change-on-select.vue?raw'
 
 ### Props
 
-| 属性 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| `model-value` | 选中节点的值 | `string \| number \| null` | — |
-| `options` | 级联数据 | `CascaderOption[]` | `[]` |
-| `field-names` | 字段映射 | `{ label?, value?, children?, disabled? }` | — |
-| `placeholder` | 占位文本 | `string` | `'请选择'` |
-| `size` | 尺寸 | `'sm' \| 'md' \| 'lg'` | `'md'` |
-| `disabled` | 是否禁用 | `boolean` | `false` |
-| `clearable` | 是否可清空 | `boolean` | `false` |
-| `change-on-select` | 父节点是否可选中 | `boolean` | `false` |
-| `separator` | 路径分隔符 | `string` | `' / '` |
-| `empty-text` | 无数据文案 | `string` | `'暂无数据'` |
+| 属性               | 说明                             | 类型                                       | 默认值       |
+| ------------------ | -------------------------------- | ------------------------------------------ | ------------ |
+| `model-value`      | 选中节点的值                     | `string \| number \| null`                 | —            |
+| `options`          | 级联数据                         | `CascaderOption[]`                         | `[]`         |
+| `field-names`      | 字段映射                         | `{ label?, value?, children?, disabled? }` | —            |
+| `placeholder`      | 占位文本                         | `string`                                   | `'请选择'`   |
+| `size`             | 尺寸                             | `'sm' \| 'md' \| 'lg'`                     | `'md'`       |
+| `disabled`         | 是否禁用                         | `boolean`                                  | `false`      |
+| `clearable`        | 是否可清空                       | `boolean`                                  | `false`      |
+| `change-on-select` | 父节点是否可选中                 | `boolean`                                  | `false`      |
+| `separator`        | 路径分隔符                       | `string`                                   | `' / '`      |
+| `empty-text`       | 无数据文案                       | `string`                                   | `'暂无数据'` |
+| `popper-class`     | 浮层额外类名，用于多实例主题隔离 | `string`                                   | `''`         |
 
 `CascaderOption` 结构：
 
@@ -71,20 +72,20 @@ interface CascaderOption {
 
 ### Events
 
-| 事件名 | 说明 | 回调参数 |
-| --- | --- | --- |
-| `update:modelValue` | 选中或清空 | `(value)` |
-| `change` | 选中或清空 | `(value, path)`，`path` 为从根到当前节点的节点数组 |
-| `visible-change` | 面板显隐变化 | `(visible: boolean)` |
-| `clear` | 点击清空 | — |
-| `focus` / `blur` | 焦点变化 | `(event: FocusEvent)` |
+| 事件名              | 说明         | 回调参数                                           |
+| ------------------- | ------------ | -------------------------------------------------- |
+| `update:modelValue` | 选中或清空   | `(value)`                                          |
+| `change`            | 选中或清空   | `(value, path)`，`path` 为从根到当前节点的节点数组 |
+| `visible-change`    | 面板显隐变化 | `(visible: boolean)`                               |
+| `clear`             | 点击清空     | —                                                  |
+| `focus` / `blur`    | 焦点变化     | `(event: FocusEvent)`                              |
 
 ### Exposes
 
-| 方法 | 说明 |
-| --- | --- |
+| 方法                 | 说明              |
+| -------------------- | ----------------- |
 | `focus()` / `blur()` | 聚焦 / 失焦触发器 |
-| `open()` / `close()` | 打开 / 关闭面板 |
+| `open()` / `close()` | 打开 / 关闭面板   |
 
 ## 说明
 

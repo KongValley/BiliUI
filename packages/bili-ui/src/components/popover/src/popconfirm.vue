@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
+import { useLocale } from '../../../hooks/use-config'
 import BiliButton from '../../button/src/button.vue'
 import BiliPopover from './popover.vue'
 import { popconfirmProps } from './popover'
@@ -15,6 +16,9 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('popconfirm')
+const locale = useLocale()
+const confirmLabel = computed(() => props.confirmText || locale.value.confirm)
+const cancelLabel = computed(() => props.cancelText || locale.value.cancel)
 
 const popoverRef = ref<InstanceType<typeof BiliPopover> | null>(null)
 const loading = ref(false)
@@ -56,6 +60,7 @@ defineExpose({ close })
     :offset="offset"
     :show-arrow="showArrow"
     :close-on-click-outside="closeOnClickOutside"
+    :popper-class="popperClass"
   >
     <template #reference>
       <slot />
@@ -69,14 +74,11 @@ defineExpose({ close })
 
         <div :class="ns.e('actions')">
           <slot name="actions">
-            <BiliButton size="sm" :loading="loading" @click="handleCancel"> {{ cancelText }} </BiliButton>
-            <BiliButton
-              size="sm"
-              :type="confirmType"
-              :loading="loading"
-              @click="handleConfirm"
-            >
-              {{ confirmText }}
+            <BiliButton size="sm" :loading="loading" @click="handleCancel">
+              {{ cancelLabel }}
+            </BiliButton>
+            <BiliButton size="sm" :type="confirmType" :loading="loading" @click="handleConfirm">
+              {{ confirmLabel }}
             </BiliButton>
           </slot>
         </div>

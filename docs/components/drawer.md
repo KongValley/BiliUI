@@ -23,35 +23,37 @@ import basicCode from '../examples/drawer/basic.vue?raw'
 
 ### Props
 
-| 属性 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| `modelValue` | 是否显示，支持 `v-model` | `boolean` | `false` |
-| `title` | 标题 | `string` | `''` |
-| `placement` | 滑出方向 | `'left' \| 'right' \| 'top' \| 'bottom'` | `'right'` |
-| `size` | 左右方向的宽度 / 上下方向的高度 | `string \| number` | `360` |
-| `showClose` | 是否显示关闭按钮 | `boolean` | `true` |
-| `closeOnClickModal` | 点击遮罩是否关闭 | `boolean` | `true` |
-| `closeOnEsc` | 按 ESC 是否关闭 | `boolean` | `true` |
-| `lockScroll` | 打开时是否锁定页面滚动 | `boolean` | `true` |
-| `destroyOnClose` | 关闭后是否销毁内容 | `boolean` | `false` |
+| 属性                | 说明                             | 类型                                     | 默认值    |
+| ------------------- | -------------------------------- | ---------------------------------------- | --------- |
+| `modelValue`        | 是否显示，支持 `v-model`         | `boolean`                                | `false`   |
+| `title`             | 标题                             | `string`                                 | `''`      |
+| `placement`         | 滑出方向                         | `'left' \| 'right' \| 'top' \| 'bottom'` | `'right'` |
+| `size`              | 左右方向的宽度 / 上下方向的高度  | `string \| number`                       | `360`     |
+| `showClose`         | 是否显示关闭按钮                 | `boolean`                                | `true`    |
+| `closeOnClickModal` | 点击遮罩是否关闭                 | `boolean`                                | `true`    |
+| `closeOnEsc`        | 按 ESC 是否关闭                  | `boolean`                                | `true`    |
+| `lockScroll`        | 打开时是否锁定页面滚动           | `boolean`                                | `true`    |
+| `destroyOnClose`    | 关闭后是否销毁内容               | `boolean`                                | `false`   |
+| `overlayClass`      | 遮罩层额外类名                   | `string`                                 | `''`      |
+| `panelClass`        | 面板额外类名，用于多实例主题隔离 | `string`                                 | `''`      |
 
 ### Events
 
-| 事件名 | 说明 | 回调参数 |
-| --- | --- | --- |
-| `update:modelValue` | 显隐状态变化 | `(value: boolean)` |
-| `open` | 开始打开时触发 | — |
-| `opened` | 打开动画结束后触发 | — |
-| `close` | 开始关闭时触发 | — |
-| `closed` | 关闭动画结束后触发 | — |
+| 事件名              | 说明               | 回调参数           |
+| ------------------- | ------------------ | ------------------ |
+| `update:modelValue` | 显隐状态变化       | `(value: boolean)` |
+| `open`              | 开始打开时触发     | —                  |
+| `opened`            | 打开动画结束后触发 | —                  |
+| `close`             | 开始关闭时触发     | —                  |
+| `closed`            | 关闭动画结束后触发 | —                  |
 
 ### Slots
 
-| 插槽名 | 说明 |
-| --- | --- |
-| `default` | 抽屉内容 |
-| `header` | 自定义头部 |
-| `footer` | 底部操作区 |
+| 插槽名    | 说明       |
+| --------- | ---------- |
+| `default` | 抽屉内容   |
+| `header`  | 自定义头部 |
+| `footer`  | 底部操作区 |
 
 ## 说明
 

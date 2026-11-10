@@ -31,9 +31,7 @@ const token = Symbol('bili-drawer')
 
 const { nextZIndex } = useZIndex()
 
-const isHorizontal = computed(
-  () => props.placement === 'left' || props.placement === 'right'
-)
+const isHorizontal = computed(() => props.placement === 'left' || props.placement === 'right')
 
 const panelStyle = computed(() =>
   isHorizontal.value ? { width: addUnit(props.size) } : { height: addUnit(props.size) }
@@ -103,13 +101,13 @@ onBeforeUnmount(() => {
       <div
         v-if="mounted"
         v-show="visible"
-        :class="ns.e('overlay')"
+        :class="[ns.e('overlay'), overlayClass]"
         :style="{ zIndex: overlayZIndex }"
         @click.self="handleOverlayClick"
       >
         <div
           ref="drawerRef"
-          :class="[ns.b(), ns.m(placement)]"
+          :class="[ns.b(), ns.m(placement), panelClass]"
           :style="panelStyle"
           role="dialog"
           aria-modal="true"

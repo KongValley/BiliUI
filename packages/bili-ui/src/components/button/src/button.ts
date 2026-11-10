@@ -11,7 +11,7 @@ export const buttonProps = {
   },
   size: {
     type: String as PropType<ComponentSize>,
-    default: 'md'
+    default: undefined
   },
   plain: Boolean,
   round: Boolean,

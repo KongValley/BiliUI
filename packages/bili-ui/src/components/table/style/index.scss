@@ -1,11 +1,21 @@
 @use '../../../styles/mixins' as *;
 
 @include b(table) {
+  --bili-table-font-size: var(--bili-font-size-base);
+  --bili-table-color: var(--bili-text-regular);
+  --bili-table-bg: var(--bili-bg-container);
+  --bili-table-border-color: var(--bili-border-color-lighter);
+  --bili-table-cell-padding: 11px 12px;
+  --bili-table-head-bg: var(--bili-bg-muted);
+  --bili-table-head-color: var(--bili-text-secondary);
+  --bili-table-row-hover-bg: var(--bili-fill-color-lighter);
+  --bili-table-striped-bg: var(--bili-bg-muted);
+  --bili-table-selected-bg: var(--bili-color-primary-light);
   position: relative;
   width: 100%;
-  font-size: var(--bili-font-size-base);
-  color: var(--bili-text-regular);
-  background-color: var(--bili-bg-container);
+  font-size: var(--bili-table-font-size);
+  color: var(--bili-table-color);
+  background-color: var(--bili-table-bg);
 
   @include e(wrapper) {
     width: 100%;
@@ -21,9 +31,9 @@
   }
 
   @include e(cell) {
-    padding: 11px 12px;
+    padding: var(--bili-table-cell-padding);
     text-align: left;
-    border-bottom: 1px solid var(--bili-border-color-lighter);
+    border-bottom: 1px solid var(--bili-table-border-color);
     transition:
       background-color var(--bili-transition-duration) var(--bili-transition-function),
       color var(--bili-transition-duration) var(--bili-transition-function);
@@ -34,7 +44,7 @@
     &.is-fixed-right {
       position: sticky;
       z-index: 2;
-      background-color: var(--bili-bg-container);
+      background-color: var(--bili-table-bg);
     }
 
     &.is-fixed-left-last {
@@ -53,9 +63,9 @@
       z-index: 3;
       font-size: var(--bili-font-size-sm);
       font-weight: var(--bili-font-weight-medium);
-      color: var(--bili-text-secondary);
+      color: var(--bili-table-head-color);
       white-space: nowrap;
-      background-color: var(--bili-bg-muted);
+      background-color: var(--bili-table-head-bg);
       transition:
         background-color var(--bili-transition-duration) var(--bili-transition-function),
         color var(--bili-transition-duration) var(--bili-transition-function);
@@ -63,7 +73,7 @@
       &.is-fixed-left,
       &.is-fixed-right {
         z-index: 4;
-        background-color: var(--bili-bg-muted);
+        background-color: var(--bili-table-head-bg);
       }
 
       &.is-sortable {
@@ -137,7 +147,9 @@
     }
   }
 
-  .#{$namespace}-table__head .#{$namespace}-table__cell:hover .#{$namespace}-table__resize-handle::after {
+  .#{$namespace}-table__head
+    .#{$namespace}-table__cell:hover
+    .#{$namespace}-table__resize-handle::after {
     opacity: 1;
   }
 
@@ -193,7 +205,7 @@
 
   @include e(row) {
     &:hover .#{$namespace}-table__cell {
-      background-color: var(--bili-fill-color-lighter);
+      background-color: var(--bili-table-row-hover-bg);
     }
 
     &.is-selectable {
@@ -204,7 +216,7 @@
   // Selection tint must beat both hover and stripe backgrounds.
   tbody tr.is-selected .#{$namespace}-table__cell,
   tbody tr.is-selected:hover .#{$namespace}-table__cell {
-    background-color: var(--bili-color-primary-light);
+    background-color: var(--bili-table-selected-bg);
   }
 
   @include e(selection-cell) {
@@ -349,11 +361,11 @@
 
   @include when(stripe) {
     tbody tr:nth-child(even) .#{$namespace}-table__cell {
-      background-color: var(--bili-bg-muted);
+      background-color: var(--bili-table-striped-bg);
     }
 
     tbody tr:hover .#{$namespace}-table__cell {
-      background-color: var(--bili-fill-color-lighter);
+      background-color: var(--bili-table-row-hover-bg);
     }
   }
 }

@@ -37,6 +37,21 @@ describe('BiliTooltip', () => {
 
     expect(document.body.querySelector('.bili-tooltip__content')).toBeNull()
   })
+
+  it('applies popper-class to the teleported content', async () => {
+    const wrapper = mount(Tooltip, {
+      props: { content: '提示内容', delay: 0, popperClass: 'custom-tooltip-theme' },
+      slots: { default: '<button>hover</button>' },
+      attachTo: document.body
+    })
+
+    await wrapper.find('.bili-tooltip__trigger').trigger('mouseenter')
+    await flushPromises()
+
+    expect(
+      document.body.querySelector('.bili-tooltip__content.custom-tooltip-theme')
+    ).not.toBeNull()
+  })
 })
 
 describe('BiliLoading', () => {

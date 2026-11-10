@@ -1,12 +1,13 @@
 @use '../../../styles/mixins' as *;
 
 @include b(layout) {
+  --bili-layout-bg: var(--bili-bg-page);
   display: flex;
   flex: 1;
   flex-direction: column;
   min-width: 0;
   min-height: 0;
-  background-color: var(--bili-bg-page);
+  background-color: var(--bili-layout-bg);
 
   @include m(horizontal) {
     flex-direction: row;
@@ -18,11 +19,13 @@
 }
 
 @include b(layout-header) {
+  --bili-layout-header-padding: 0 20px;
+  --bili-layout-header-bg: var(--bili-bg-container);
   display: flex;
   flex-shrink: 0;
   align-items: center;
-  padding: 0 20px;
-  background-color: var(--bili-bg-container);
+  padding: var(--bili-layout-header-padding);
+  background-color: var(--bili-layout-header-bg);
   border-bottom: 1px solid var(--bili-border-color-light);
 
   @include when(sticky) {
@@ -33,10 +36,11 @@
 }
 
 @include b(layout-aside) {
+  --bili-layout-aside-bg: var(--bili-bg-container);
   flex-shrink: 0;
   overflow-x: hidden;
   overflow-y: auto;
-  background-color: var(--bili-bg-container);
+  background-color: var(--bili-layout-aside-bg);
   border-right: 1px solid var(--bili-border-color-light);
   transition: width var(--bili-transition-duration) var(--bili-transition-function-out);
   @include utils-scrollbar;
@@ -60,13 +64,17 @@
 }
 
 @include b(layout-footer) {
+  --bili-layout-footer-padding: 12px 20px;
+  --bili-layout-footer-font-size: var(--bili-font-size-sm);
+  --bili-layout-footer-color: var(--bili-text-secondary);
+  --bili-layout-footer-bg: var(--bili-bg-container);
   flex-shrink: 0;
   display: flex;
   align-items: center;
-  padding: 12px 20px;
-  font-size: var(--bili-font-size-sm);
-  color: var(--bili-text-secondary);
-  background-color: var(--bili-bg-container);
+  padding: var(--bili-layout-footer-padding);
+  font-size: var(--bili-layout-footer-font-size);
+  color: var(--bili-layout-footer-color);
+  background-color: var(--bili-layout-footer-bg);
   border-top: 1px solid var(--bili-border-color-light);
 }
 

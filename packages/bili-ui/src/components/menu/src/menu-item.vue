@@ -41,7 +41,7 @@ const handleClick = (event: MouseEvent) => {
       @click="handleClick"
     >
       <BiliIcon v-if="icon" :class="ns.e('icon')" :name="icon" />
-      <span v-if="$slots.default || (!menu.collapsed.value || menu.inPanel)" :class="ns.e('label')">
+      <span v-if="$slots.default || !menu.collapsed.value || menu.inPanel" :class="ns.e('label')">
         <slot>{{ label }}</slot>
       </span>
     </button>

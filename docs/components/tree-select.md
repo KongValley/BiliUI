@@ -33,39 +33,40 @@ import multipleCode from '../examples/tree-select/multiple.vue?raw'
 
 ### Props
 
-| 属性 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| `model-value` | 绑定值，多选时为数组 | `string \| number \| Array<string \| number> \| null` | — |
-| `data` | 树形数据 | `TreeOption[]` | `[]` |
-| `field-names` | 字段映射 | `{ label?, value?, children?, disabled? }` | — |
-| `placeholder` | 占位文本 | `string` | `'请选择'` |
-| `size` | 尺寸 | `'sm' \| 'md' \| 'lg'` | `'md'` |
-| `disabled` | 是否禁用 | `boolean` | `false` |
-| `clearable` | 是否可清空 | `boolean` | `false` |
-| `multiple` | 多选（复选框） | `boolean` | `false` |
-| `max-tag-count` | 最多展示的标签数 | `number` | — |
-| `check-strictly` | 多选时父子勾选互不影响 | `boolean` | `false` |
-| `default-expand-all` | 展开全部节点 | `boolean` | `false` |
-| `filterable` | 面板内是否显示搜索框 | `boolean` | `true` |
-| `filter-placeholder` | 搜索框占位文本 | `string` | `'搜索节点'` |
-| `empty-text` | 空数据文案 | `string` | `'暂无数据'` |
+| 属性                 | 说明                             | 类型                                                  | 默认值       |
+| -------------------- | -------------------------------- | ----------------------------------------------------- | ------------ |
+| `model-value`        | 绑定值，多选时为数组             | `string \| number \| Array<string \| number> \| null` | —            |
+| `data`               | 树形数据                         | `TreeOption[]`                                        | `[]`         |
+| `field-names`        | 字段映射                         | `{ label?, value?, children?, disabled? }`            | —            |
+| `placeholder`        | 占位文本                         | `string`                                              | `'请选择'`   |
+| `size`               | 尺寸                             | `'sm' \| 'md' \| 'lg'`                                | `'md'`       |
+| `disabled`           | 是否禁用                         | `boolean`                                             | `false`      |
+| `clearable`          | 是否可清空                       | `boolean`                                             | `false`      |
+| `multiple`           | 多选（复选框）                   | `boolean`                                             | `false`      |
+| `max-tag-count`      | 最多展示的标签数                 | `number`                                              | —            |
+| `check-strictly`     | 多选时父子勾选互不影响           | `boolean`                                             | `false`      |
+| `default-expand-all` | 展开全部节点                     | `boolean`                                             | `false`      |
+| `filterable`         | 面板内是否显示搜索框             | `boolean`                                             | `true`       |
+| `filter-placeholder` | 搜索框占位文本                   | `string`                                              | `'搜索节点'` |
+| `empty-text`         | 空数据文案                       | `string`                                              | `'暂无数据'` |
+| `popper-class`       | 浮层额外类名，用于多实例主题隔离 | `string`                                              | `''`         |
 
 ### Events
 
-| 事件名 | 说明 | 回调参数 |
-| --- | --- | --- |
-| `update:modelValue` | 选中或取消 | `(value)`，多选时 `value` 为数组 |
-| `change` | 选中或取消 | `(value, nodes)`，`nodes` 为对应的节点数组 |
-| `visible-change` | 面板显隐变化 | `(visible: boolean)` |
-| `clear` | 点击清空 | — |
-| `focus` / `blur` | 焦点变化 | `(event: FocusEvent)` |
+| 事件名              | 说明         | 回调参数                                   |
+| ------------------- | ------------ | ------------------------------------------ |
+| `update:modelValue` | 选中或取消   | `(value)`，多选时 `value` 为数组           |
+| `change`            | 选中或取消   | `(value, nodes)`，`nodes` 为对应的节点数组 |
+| `visible-change`    | 面板显隐变化 | `(visible: boolean)`                       |
+| `clear`             | 点击清空     | —                                          |
+| `focus` / `blur`    | 焦点变化     | `(event: FocusEvent)`                      |
 
 ### Exposes
 
-| 方法 | 说明 |
-| --- | --- |
+| 方法                 | 说明              |
+| -------------------- | ----------------- |
 | `focus()` / `blur()` | 聚焦 / 失焦触发器 |
-| `open()` / `close()` | 打开 / 关闭面板 |
+| `open()` / `close()` | 打开 / 关闭面板   |
 
 ## 说明
 

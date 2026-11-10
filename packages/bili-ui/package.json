@@ -41,7 +41,8 @@
     "vue": "^3.4.0"
   },
   "dependencies": {
-    "@floating-ui/dom": "^1.8.0"
+    "@floating-ui/dom": "^1.8.0",
+    "qrcode-generator": "^2.0.4"
   },
   "devDependencies": {
     "@types/node": "^26.6.6",

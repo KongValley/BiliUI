@@ -69,39 +69,40 @@ import virtualCode from '../examples/select/virtual.vue?raw'
 
 ## 键盘交互
 
-| 按键 | 行为 |
-| --- | --- |
-| `↑` / `↓` | 打开面板或移动高亮项，自动跳过禁用项 |
-| `Enter` | 选中高亮项；多选时切换选中且不关闭面板；未打开时打开面板 |
-| `Backspace` | 多选且输入框为空时移除最后一个标签 |
-| `Esc` | 关闭面板 |
-| `Tab` | 关闭面板并移出焦点 |
+| 按键        | 行为                                                     |
+| ----------- | -------------------------------------------------------- |
+| `↑` / `↓`   | 打开面板或移动高亮项，自动跳过禁用项                     |
+| `Enter`     | 选中高亮项；多选时切换选中且不关闭面板；未打开时打开面板 |
+| `Backspace` | 多选且输入框为空时移除最后一个标签                       |
+| `Esc`       | 关闭面板                                                 |
+| `Tab`       | 关闭面板并移出焦点                                       |
 
 ## API
 
 ### Props
 
-| 属性 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| `model-value` | 绑定值，多选时为数组 | `string \| number \| Array<string \| number> \| null` | — |
-| `options` | 选项列表，可包含分组 | `SelectOptionItem[]` | `[]` |
-| `placeholder` | 占位文本 | `string` | `'请选择'` |
-| `size` | 尺寸 | `'sm' \| 'md' \| 'lg'` | `'md'` |
-| `disabled` | 是否禁用 | `boolean` | `false` |
-| `clearable` | 是否可清空 | `boolean` | `false` |
-| `filterable` | 是否可搜索 | `boolean` | `false` |
-| `multiple` | 是否多选 | `boolean` | `false` |
-| `max-tag-count` | 最多展示的标签数，超出折叠为 `+N` | `number` | — |
-| `select-all` | 多选时显示全选行 | `boolean` | `false` |
-| `filter-method` | 自定义本地过滤 | `(query, option) => boolean` | — |
-| `remote` | 使用远程搜索，不做本地过滤 | `boolean` | `false` |
-| `remote-method` | 输入关键字时调用，可返回 Promise | `(query) => void \| Promise<void>` | — |
-| `loading` | 外部控制的加载态 | `boolean` | `false` |
-| `virtual` | 强制开启虚拟滚动 | `boolean` | — |
-| `virtual-threshold` | 自动开启虚拟滚动的选项数 | `number` | `200` |
-| `item-height` | 虚拟列表行高（px） | `number` | `34` |
-| `panel-max-height` | 面板列表最大高度（px） | `number` | `264` |
-| `empty-text` | 无数据文案 | `string` | `'暂无数据'` |
+| 属性                | 说明                              | 类型                                                  | 默认值       |
+| ------------------- | --------------------------------- | ----------------------------------------------------- | ------------ |
+| `model-value`       | 绑定值，多选时为数组              | `string \| number \| Array<string \| number> \| null` | —            |
+| `options`           | 选项列表，可包含分组              | `SelectOptionItem[]`                                  | `[]`         |
+| `placeholder`       | 占位文本                          | `string`                                              | `'请选择'`   |
+| `size`              | 尺寸                              | `'sm' \| 'md' \| 'lg'`                                | `'md'`       |
+| `disabled`          | 是否禁用                          | `boolean`                                             | `false`      |
+| `clearable`         | 是否可清空                        | `boolean`                                             | `false`      |
+| `filterable`        | 是否可搜索                        | `boolean`                                             | `false`      |
+| `multiple`          | 是否多选                          | `boolean`                                             | `false`      |
+| `max-tag-count`     | 最多展示的标签数，超出折叠为 `+N` | `number`                                              | —            |
+| `select-all`        | 多选时显示全选行                  | `boolean`                                             | `false`      |
+| `filter-method`     | 自定义本地过滤                    | `(query, option) => boolean`                          | —            |
+| `remote`            | 使用远程搜索，不做本地过滤        | `boolean`                                             | `false`      |
+| `remote-method`     | 输入关键字时调用，可返回 Promise  | `(query) => void \| Promise<void>`                    | —            |
+| `loading`           | 外部控制的加载态                  | `boolean`                                             | `false`      |
+| `virtual`           | 强制开启虚拟滚动                  | `boolean`                                             | —            |
+| `virtual-threshold` | 自动开启虚拟滚动的选项数          | `number`                                              | `200`        |
+| `item-height`       | 虚拟列表行高（px）                | `number`                                              | `34`         |
+| `panel-max-height`  | 面板列表最大高度（px）            | `number`                                              | `264`        |
+| `empty-text`        | 无数据文案                        | `string`                                              | `'暂无数据'` |
+| `popper-class`      | 浮层额外类名，用于多实例主题隔离  | `string`                                              | `''`         |
 
 选项结构：
 
@@ -122,20 +123,20 @@ type SelectOptionItem = SelectOption | SelectOptionGroup
 
 ### Events
 
-| 事件名 | 说明 | 回调参数 |
-| --- | --- | --- |
+| 事件名              | 说明             | 回调参数                                  |
+| ------------------- | ---------------- | ----------------------------------------- |
 | `update:modelValue` | 选中、取消或清空 | `(value, option?)`，多选时 `value` 为数组 |
-| `change` | 选中、取消或清空 | `(value, option?)` |
-| `visible-change` | 面板显隐变化 | `(visible: boolean)` |
-| `clear` | 点击清空 | — |
-| `focus` / `blur` | 焦点变化 | `(event: FocusEvent)` |
+| `change`            | 选中、取消或清空 | `(value, option?)`                        |
+| `visible-change`    | 面板显隐变化     | `(visible: boolean)`                      |
+| `clear`             | 点击清空         | —                                         |
+| `focus` / `blur`    | 焦点变化         | `(event: FocusEvent)`                     |
 
 ### Exposes
 
-| 方法 | 说明 |
-| --- | --- |
-| `focus()` | 聚焦触发器 |
-| `blur()` | 失焦 |
+| 方法                 | 说明                |
+| -------------------- | ------------------- |
+| `focus()`            | 聚焦触发器          |
+| `blur()`             | 失焦                |
 | `open()` / `close()` | 受控打开 / 关闭面板 |
 
 ## 说明

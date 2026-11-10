@@ -1,13 +1,19 @@
 @use '../../../styles/mixins' as *;
 
 @include b(slider) {
+  --bili-slider-padding: 8px 0;
   --bili-slider-rail-height: 4px;
   --bili-slider-handle-size: 14px;
+  --bili-slider-rail-color: var(--bili-fill-color);
+  --bili-slider-fill-color: var(--bili-color-primary);
+  --bili-slider-handle-bg: var(--bili-bg-container);
+  --bili-slider-handle-border-color: var(--bili-color-primary);
+  --bili-slider-focus-color: var(--bili-color-primary);
 
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 8px 0;
+  padding: var(--bili-slider-padding);
   user-select: none;
 
   @include e(track) {
@@ -20,14 +26,14 @@
     &:focus-visible .#{$namespace}-slider__handle {
       box-shadow:
         0 0 0 2px var(--bili-bg-container),
-        0 0 0 4px var(--bili-color-primary);
+        0 0 0 4px var(--bili-slider-focus-color);
     }
   }
 
   @include e(rail) {
     position: absolute;
     inset: 0;
-    background-color: var(--bili-fill-color);
+    background-color: var(--bili-slider-rail-color);
     border-radius: var(--bili-radius-round);
   }
 
@@ -35,7 +41,7 @@
     position: absolute;
     top: 0;
     bottom: 0;
-    background-color: var(--bili-color-primary);
+    background-color: var(--bili-slider-fill-color);
     border-radius: var(--bili-radius-round);
     transition:
       left var(--bili-transition-duration-fast) var(--bili-transition-function),
@@ -49,8 +55,8 @@
     height: var(--bili-slider-handle-size);
     padding: 0;
     cursor: grab;
-    background-color: var(--bili-bg-container);
-    border: 2px solid var(--bili-color-primary);
+    background-color: var(--bili-slider-handle-bg);
+    border: 2px solid var(--bili-slider-handle-border-color);
     border-radius: 50%;
     box-shadow: var(--bili-shadow-sm);
     transform: translate(-50%, -50%);

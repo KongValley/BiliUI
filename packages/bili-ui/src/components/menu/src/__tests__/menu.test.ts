@@ -69,9 +69,10 @@ describe('BiliMenu', () => {
     const wrapper = mount(Menu, {
       props: { mode: 'vertical' },
       slots: {
-        default: () => h(SubMenu, { subKey: 'sub', title: '分组' }, () =>
-          h(MenuItem, { itemKey: 'child', label: '子项' })
-        )
+        default: () =>
+          h(SubMenu, { subKey: 'sub', title: '分组' }, () =>
+            h(MenuItem, { itemKey: 'child', label: '子项' })
+          )
       }
     })
 
@@ -91,9 +92,10 @@ describe('BiliMenu', () => {
     const wrapper = mount(Menu, {
       props: { mode: 'vertical', defaultOpenedKeys: ['sub'] },
       slots: {
-        default: () => h(SubMenu, { subKey: 'sub', title: '分组' }, () =>
-          h(MenuItem, { itemKey: 'child', label: '子项' })
-        )
+        default: () =>
+          h(SubMenu, { subKey: 'sub', title: '分组' }, () =>
+            h(MenuItem, { itemKey: 'child', label: '子项' })
+          )
       }
     })
     const element = wrapper.find('.bili-sub-menu__inline').element as HTMLElement
@@ -119,11 +121,12 @@ describe('BiliMenu', () => {
 
   it('floats sub menus instead of expanding inline when collapsed', async () => {
     const wrapper = mount(Menu, {
-      props: { mode: 'vertical', collapsed: true },
+      props: { mode: 'vertical', collapsed: true, popperClass: 'custom-menu-popup' },
       slots: {
-        default: () => h(SubMenu, { subKey: 'sub', title: '分组' }, () =>
-          h(MenuItem, { itemKey: 'child', label: '子项' })
-        )
+        default: () =>
+          h(SubMenu, { subKey: 'sub', title: '分组' }, () =>
+            h(MenuItem, { itemKey: 'child', label: '子项' })
+          )
       },
       attachTo: document.body
     })
@@ -136,6 +139,7 @@ describe('BiliMenu', () => {
 
     const popup = document.body.querySelector('.bili-sub-menu__popup')
     expect(popup).not.toBeNull()
+    expect(popup?.classList.contains('custom-menu-popup')).toBe(true)
     expect(popup?.textContent).toContain('子项')
     expect(wrapper.find('.bili-sub-menu').classes()).toContain('is-open')
   })

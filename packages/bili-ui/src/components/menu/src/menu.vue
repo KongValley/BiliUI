@@ -86,6 +86,7 @@ const context: MenuContext = {
   triggerValue: computed(() => props.trigger),
   collapsed: isCollapsed,
   selectedKey,
+  popperClass: computed(() => props.popperClass),
   isOpen,
   toggleOpen,
   select,
@@ -247,21 +248,11 @@ defineExpose({ measureOverflow, toggleOpen, openedKeys, overflowCount })
 <template>
   <nav
     ref="rootRef"
-    :class="[
-      ns.b(),
-      ns.m(mode),
-      ns.is('collapsed', isCollapsed),
-      ns.is('overflow', useOverflow)
-    ]"
+    :class="[ns.b(), ns.m(mode), ns.is('collapsed', isCollapsed), ns.is('overflow', useOverflow)]"
     :style="rootStyle"
     role="navigation"
   >
-    <ul
-      v-if="hasItems"
-      ref="listRef"
-      :class="[ns.e('list'), ns.e(`list-${mode}`)]"
-      role="menubar"
-    >
+    <ul v-if="hasItems" ref="listRef" :class="[ns.e('list'), ns.e(`list-${mode}`)]" role="menubar">
       <template v-for="item in visibleItems" :key="item.key">
         <SubMenuNode
           v-if="item.children?.length"
@@ -289,7 +280,12 @@ defineExpose({ measureOverflow, toggleOpen, openedKeys, overflowCount })
       </template>
     </ul>
 
-    <ul v-else-if="hasSlot" ref="listRef" :class="[ns.e('list'), ns.e(`list-${mode}`)]" role="menubar">
+    <ul
+      v-else-if="hasSlot"
+      ref="listRef"
+      :class="[ns.e('list'), ns.e(`list-${mode}`)]"
+      role="menubar"
+    >
       <slot />
     </ul>
 
@@ -311,7 +307,7 @@ defineExpose({ measureOverflow, toggleOpen, openedKeys, overflowCount })
         <ul
           v-if="moreVisible"
           ref="morePanelRef"
-          :class="[ns.e('panel'), ns.e('list')]"
+          :class="[ns.e('panel'), ns.e('list'), popperClass]"
           :style="moreStyles"
           role="menu"
         >

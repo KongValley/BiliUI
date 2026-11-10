@@ -37,9 +37,14 @@ export const selectProps = {
   },
   size: {
     type: String as PropType<ComponentSize>,
-    default: 'md'
+    default: undefined
   },
   disabled: Boolean,
+  /** Extra class on the teleported panel, useful for per-instance theming. */
+  popperClass: {
+    type: String,
+    default: ''
+  },
   clearable: Boolean,
   filterable: Boolean,
   /** Multi-select. The bound value becomes an array. */

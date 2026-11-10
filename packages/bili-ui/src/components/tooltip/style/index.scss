@@ -7,26 +7,35 @@
   }
 
   @include e(content) {
+    --bili-tooltip-color: var(--bili-color-white);
+    --bili-tooltip-bg: #303133;
+    --bili-tooltip-padding: 6px 10px;
+    --bili-tooltip-font-size: var(--bili-font-size-xs);
+    --bili-tooltip-radius: var(--bili-radius-base);
+    --bili-tooltip-shadow: var(--bili-shadow-base);
+    --bili-tooltip-light-color: var(--bili-text-primary);
+    --bili-tooltip-light-bg: var(--bili-bg-elevated);
+    --bili-tooltip-light-border: var(--bili-border-color-light);
     position: absolute;
     top: 0;
     left: 0;
     max-width: 320px;
-    padding: 6px 10px;
-    font-size: var(--bili-font-size-xs);
+    padding: var(--bili-tooltip-padding);
+    font-size: var(--bili-tooltip-font-size);
     line-height: 1.5;
-    color: var(--bili-color-white);
+    color: var(--bili-tooltip-color);
     word-break: break-word;
     pointer-events: none;
-    background-color: #303133;
-    border-radius: var(--bili-radius-base);
-    box-shadow: var(--bili-shadow-base);
+    background-color: var(--bili-tooltip-bg);
+    border-radius: var(--bili-tooltip-radius);
+    box-shadow: var(--bili-tooltip-shadow);
   }
 
   @include m(light) {
-    color: var(--bili-text-primary);
-    background-color: var(--bili-bg-elevated);
-    border: 1px solid var(--bili-border-color-light);
-    box-shadow: var(--bili-shadow-base);
+    color: var(--bili-tooltip-light-color);
+    background-color: var(--bili-tooltip-light-bg);
+    border: 1px solid var(--bili-tooltip-light-border);
+    box-shadow: var(--bili-tooltip-shadow);
   }
 
   @include e(arrow) {

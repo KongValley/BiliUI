@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
+import { useConfig } from '../../../hooks/use-config'
 import BiliIcon from '../../icon/src/icon.vue'
 import { buttonProps } from './button'
 
@@ -12,6 +14,8 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('button')
+const config = useConfig()
+const mergedSize = computed(() => props.size ?? config.value.size)
 
 const handleClick = (event: MouseEvent) => {
   if (props.disabled || props.loading) {
@@ -27,7 +31,7 @@ const handleClick = (event: MouseEvent) => {
     :class="[
       ns.b(),
       ns.m(type),
-      ns.m(size),
+      ns.m(mergedSize),
       ns.is('plain', plain),
       ns.is('round', round),
       ns.is('circle', circle),

@@ -1,6 +1,9 @@
 @use '../../../styles/mixins' as *;
 
 @include b(input-number) {
+  --bili-input-number-bg: var(--bili-bg-container);
+  --bili-input-number-border-color: var(--bili-border-color);
+  --bili-input-number-radius: var(--bili-radius-base);
   --bili-input-number-height: var(--bili-control-height-md);
 
   display: inline-flex;
@@ -8,9 +11,9 @@
   width: 140px;
   height: var(--bili-input-number-height);
   overflow: hidden;
-  background-color: var(--bili-bg-container);
-  border: 1px solid var(--bili-border-color);
-  border-radius: var(--bili-radius-base);
+  background-color: var(--bili-input-number-bg);
+  border: 1px solid var(--bili-input-number-border-color);
+  border-radius: var(--bili-input-number-radius);
   transition:
     border-color var(--bili-transition-duration) var(--bili-transition-function),
     box-shadow var(--bili-transition-duration) var(--bili-transition-function);

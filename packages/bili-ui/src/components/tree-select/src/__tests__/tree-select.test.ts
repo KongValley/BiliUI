@@ -45,6 +45,20 @@ afterEach(() => {
 })
 
 describe('BiliTreeSelect', () => {
+  it('applies popper-class to the teleported panel', async () => {
+    const wrapper = mount(TreeSelect, {
+      props: { modelValue: null, data, popperClass: 'custom-tree-select-panel' },
+      attachTo: document.body
+    })
+
+    await wrapper.find('.bili-tree-select').trigger('click')
+    await nextTick()
+
+    expect(
+      document.body.querySelector('.bili-tree-select__panel.custom-tree-select-panel')
+    ).not.toBeNull()
+  })
+
   it('selects a single node and closes the panel', async () => {
     const wrapper = mount(TreeSelect, {
       props: { modelValue: null, data, defaultExpandAll: true },
@@ -129,9 +143,9 @@ describe('BiliTreeSelect', () => {
     filter!.dispatchEvent(new Event('input', { bubbles: true }))
     await nextTick()
 
-    const labels = Array.from(
-      document.body.querySelectorAll<HTMLElement>('.bili-tree__node')
-    ).map(node => node.textContent?.trim())
+    const labels = Array.from(document.body.querySelectorAll<HTMLElement>('.bili-tree__node')).map(
+      node => node.textContent?.trim()
+    )
     expect(labels).toEqual(['研发', '前端', 'Vue'])
 
     nodeByLabel('Vue').click()

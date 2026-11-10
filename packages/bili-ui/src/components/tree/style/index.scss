@@ -1,9 +1,11 @@
 @use '../../../styles/mixins' as *;
 
 @include b(tree) {
+  --bili-tree-font-size: var(--bili-font-size-base);
+  --bili-tree-color: var(--bili-text-regular);
   width: 100%;
-  font-size: var(--bili-font-size-base);
-  color: var(--bili-text-regular);
+  font-size: var(--bili-tree-font-size);
+  color: var(--bili-tree-color);
 
   @include e(filter) {
     position: relative;

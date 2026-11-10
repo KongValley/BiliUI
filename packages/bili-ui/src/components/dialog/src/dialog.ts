@@ -33,5 +33,15 @@ export const dialogProps = {
   destroyOnClose: {
     type: Boolean,
     default: false
+  },
+  /** Extra class on the teleported overlay. */
+  overlayClass: {
+    type: String,
+    default: ''
+  },
+  /** Extra class on the dialog panel, useful for per-instance theming. */
+  panelClass: {
+    type: String,
+    default: ''
   }
 } as const

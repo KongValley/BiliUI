@@ -58,13 +58,18 @@ describe('BiliImage', () => {
   })
 
   it('opens the preview dialog at the initial index', async () => {
-    const wrapper = mountImage({ previewSrcList: urls, initialIndex: 1 })
+    const wrapper = mountImage({
+      previewSrcList: urls,
+      initialIndex: 1,
+      previewClass: 'custom-preview-theme'
+    })
 
     await wrapper.find('.bili-image__preview-mask').trigger('click')
     await nextTick()
 
     const viewer = viewerEl()
     expect(viewer).not.toBeNull()
+    expect(viewer!.classList.contains('custom-preview-theme')).toBe(true)
     expect(viewer!.querySelector('.bili-image-viewer__counter')?.textContent).toContain('2 / 3')
     expect(viewer!.querySelector<HTMLImageElement>('.bili-image-viewer__img')?.src).toContain(
       '/two.png'

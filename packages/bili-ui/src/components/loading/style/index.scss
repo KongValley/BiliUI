@@ -1,12 +1,14 @@
 @use '../../../styles/mixins' as *;
 
 @include b(loading) {
+  --bili-loading-gap: 8px;
+  --bili-loading-color: var(--bili-color-primary);
   display: inline-flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--bili-loading-gap);
   align-items: center;
   justify-content: center;
-  color: var(--bili-color-primary);
+  color: var(--bili-loading-color);
 
   @include e(spinner) {
     width: 24px;

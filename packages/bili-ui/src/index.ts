@@ -6,6 +6,8 @@ import { vLoading } from './components/loading'
 
 export * from './components'
 export { BiliMessage, BiliNotification, vLoading }
+export { useConfig, useLocale, formatLocale, defaultConfig, zhCNLocale } from './hooks/use-config'
+export type { BiliConfig, BiliLocale } from './hooks/use-config'
 
 export const version = '0.1.0'
 

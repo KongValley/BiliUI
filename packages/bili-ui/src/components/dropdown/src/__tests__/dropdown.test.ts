@@ -25,6 +25,18 @@ const mountDropdown = (props: Record<string, any> = {}) =>
   })
 
 describe('BiliDropdown', () => {
+  it('applies popper-class to the teleported popup', async () => {
+    const wrapper = mountDropdown({ popperClass: 'custom-dropdown-popup' })
+    await wrapper.trigger('click')
+    await nextTick()
+
+    expect(
+      document.body.querySelector('.bili-dropdown__popup.custom-dropdown-popup')
+    ).not.toBeNull()
+
+    wrapper.unmount()
+  })
+
   it('opens on click when trigger is click', async () => {
     const wrapper = mountDropdown()
     await nextTick()
@@ -62,7 +74,10 @@ describe('BiliDropdown', () => {
     button.click()
     await nextTick()
 
-    expect(wrapper.emitted('command')?.[0]).toEqual(['copy', expect.objectContaining({ key: 'copy' })])
+    expect(wrapper.emitted('command')?.[0]).toEqual([
+      'copy',
+      expect.objectContaining({ key: 'copy' })
+    ])
     expect(wrapper.emitted('visible-change')?.at(-1)).toEqual([false])
 
     wrapper.unmount()

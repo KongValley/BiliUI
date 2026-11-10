@@ -33,31 +33,32 @@ import presetsCode from '../examples/color-picker/presets.vue?raw'
 
 ### Props
 
-| 属性 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| `model-value` | 绑定的颜色值，`#rrggbb` | `string` | `''` |
-| `placeholder` | 占位文本 | `string` | `'请选择颜色'` |
-| `size` | 尺寸 | `'sm' \| 'md' \| 'lg'` | `'md'` |
-| `disabled` | 是否禁用 | `boolean` | `false` |
-| `clearable` | 是否可清空 | `boolean` | `false` |
-| `presets` | 预设颜色列表 | `string[]` | 内置 12 色 |
+| 属性           | 说明                             | 类型                   | 默认值         |
+| -------------- | -------------------------------- | ---------------------- | -------------- |
+| `model-value`  | 绑定的颜色值，`#rrggbb`          | `string`               | `''`           |
+| `placeholder`  | 占位文本                         | `string`               | `'请选择颜色'` |
+| `size`         | 尺寸                             | `'sm' \| 'md' \| 'lg'` | `'md'`         |
+| `disabled`     | 是否禁用                         | `boolean`              | `false`        |
+| `clearable`    | 是否可清空                       | `boolean`              | `false`        |
+| `presets`      | 预设颜色列表                     | `string[]`             | 内置 12 色     |
+| `popper-class` | 浮层额外类名，用于多实例主题隔离 | `string`               | `''`           |
 
 ### Events
 
-| 事件名 | 说明 | 回调参数 |
-| --- | --- | --- |
-| `update:modelValue` | 颜色变化 | `(value: string)` |
-| `change` | 颜色变化（拖动、输入或预设） | `(value: string)` |
-| `visible-change` | 面板显隐变化 | `(visible: boolean)` |
-| `clear` | 点击清空 | — |
-| `focus` / `blur` | 焦点变化 | `(event: FocusEvent)` |
+| 事件名              | 说明                         | 回调参数              |
+| ------------------- | ---------------------------- | --------------------- |
+| `update:modelValue` | 颜色变化                     | `(value: string)`     |
+| `change`            | 颜色变化（拖动、输入或预设） | `(value: string)`     |
+| `visible-change`    | 面板显隐变化                 | `(visible: boolean)`  |
+| `clear`             | 点击清空                     | —                     |
+| `focus` / `blur`    | 焦点变化                     | `(event: FocusEvent)` |
 
 ### Exposes
 
-| 方法 | 说明 |
-| --- | --- |
+| 方法                 | 说明            |
+| -------------------- | --------------- |
 | `open()` / `close()` | 打开 / 关闭面板 |
-| `focus()` | 聚焦触发器 |
+| `focus()`            | 聚焦触发器      |
 
 ## 说明
 

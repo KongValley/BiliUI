@@ -1,0 +1,25 @@
+@use '../../../styles/mixins' as *;
+
+@include b(affix) {
+  position: relative;
+  box-sizing: border-box;
+
+  @include when(fixed) {
+    width: var(--bili-affix-width, auto);
+    height: var(--bili-affix-height, auto);
+  }
+
+  @include e(content) {
+    box-sizing: border-box;
+    will-change: top, bottom, left;
+
+    @include when(fixed) {
+      position: fixed;
+      top: var(--bili-affix-top, auto);
+      bottom: var(--bili-affix-bottom, auto);
+      left: var(--bili-affix-left, 0);
+      z-index: var(--bili-affix-z-index, 100);
+      width: var(--bili-affix-width, auto);
+    }
+  }
+}

@@ -1,9 +1,10 @@
 @use '../../../styles/mixins' as *;
 
 @include b(form) {
+  --bili-form-gap: 18px;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: var(--bili-form-gap);
 
   @include m(inline) {
     flex-direction: row;
@@ -13,9 +14,10 @@
 }
 
 @include b(form-item) {
+  --bili-form-item-gap: 12px;
   display: flex;
   align-items: flex-start;
-  gap: 12px;
+  gap: var(--bili-form-item-gap);
 
   @include e(label) {
     flex-shrink: 0;
@@ -69,12 +71,12 @@
 
   @include when(error) {
     .#{$namespace}-form-item__control {
-    .#{$namespace}-input,
-    .#{$namespace}-select,
-    .#{$namespace}-input-number {
-      border-color: var(--bili-color-danger);
-      animation: bili-shake var(--bili-transition-duration-slow) var(--bili-transition-function);
-    }
+      .#{$namespace}-input,
+      .#{$namespace}-select,
+      .#{$namespace}-input-number {
+        border-color: var(--bili-color-danger);
+        animation: bili-shake var(--bili-transition-duration-slow) var(--bili-transition-function);
+      }
     }
   }
 }
@@ -91,9 +93,10 @@
 }
 
 @include b(form-list) {
+  --bili-form-list-gap: 12px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--bili-form-list-gap);
   width: 100%;
 
   @include e(item) {

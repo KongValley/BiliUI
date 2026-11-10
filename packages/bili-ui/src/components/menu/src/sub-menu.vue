@@ -38,21 +38,21 @@ const opensToSide = computed(
 
 const arrowName = computed(() => (opensToSide.value ? 'chevron-right' : 'chevron-down'))
 
-const placement = computed<Placement>(() =>
-  opensToSide.value ? 'right-start' : 'bottom-start'
-)
+const placement = computed<Placement>(() => (opensToSide.value ? 'right-start' : 'bottom-start'))
 
-const { floatingStyles, isPositioned, placement: resolvedPlacement } = useFloating(
-  triggerRef,
-  popupRef,
-  { placement, offset: 4 }
-)
+const {
+  floatingStyles,
+  isPositioned,
+  placement: resolvedPlacement
+} = useFloating(triggerRef, popupRef, { placement, offset: 4 })
 
 const popupStyles = computed<CSSProperties>(() => ({
   ...floatingStyles.value,
   zIndex: currentZIndex.value,
   visibility: isPositioned.value ? 'visible' : 'hidden'
 }))
+
+const popperClass = computed(() => menu.popperClass.value)
 
 const openPopup = () => {
   if (props.disabled || popupVisible.value || isInline.value) return
@@ -146,7 +146,7 @@ useClickOutside([triggerRef, popupRef], () => {
         <ul
           v-if="popupVisible"
           ref="popupRef"
-          :class="[ns.e('popup'), ns.e('list')]"
+          :class="[ns.e('popup'), ns.e('list'), popperClass]"
           :style="popupStyles"
           :data-placement="resolvedPlacement.split('-')[0]"
           role="menu"

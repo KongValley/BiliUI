@@ -27,9 +27,7 @@ const options = [
 ]
 
 const findOption = (text: string): HTMLElement => {
-  const items = Array.from(
-    document.body.querySelectorAll<HTMLElement>('.bili-cascader__option')
-  )
+  const items = Array.from(document.body.querySelectorAll<HTMLElement>('.bili-cascader__option'))
   const item = items.find(node => node.textContent?.trim() === text)
   if (!item) throw new Error(`option not found: ${text}`)
   return item
@@ -45,6 +43,19 @@ afterEach(() => {
 })
 
 describe('BiliCascader', () => {
+  it('applies popper-class to the teleported panel', async () => {
+    const wrapper = mount(Cascader, {
+      props: { modelValue: null, options, popperClass: 'custom-cascader-panel' },
+      attachTo: document.body
+    })
+
+    await openPanel(wrapper)
+
+    expect(
+      document.body.querySelector('.bili-cascader__panel.custom-cascader-panel')
+    ).not.toBeNull()
+  })
+
   it('cascades through columns and selects a leaf', async () => {
     const wrapper = mount(Cascader, {
       props: { modelValue: null, options },

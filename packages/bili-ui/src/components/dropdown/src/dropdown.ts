@@ -2,14 +2,7 @@ import type { PropType } from 'vue'
 
 export type DropdownTrigger = 'hover' | 'click' | 'contextmenu'
 export type DropdownPlacement =
-  | 'bottom-start'
-  | 'bottom'
-  | 'bottom-end'
-  | 'top-start'
-  | 'top'
-  | 'top-end'
-  | 'left'
-  | 'right'
+  'bottom-start' | 'bottom' | 'bottom-end' | 'top-start' | 'top' | 'top-end' | 'left' | 'right'
 
 export interface DropdownItem {
   key: string
@@ -36,6 +29,11 @@ export const dropdownProps = {
     default: () => []
   },
   disabled: Boolean,
+  /** Extra class on the teleported popup, useful for per-instance theming. */
+  popperClass: {
+    type: String,
+    default: ''
+  },
   /** Show a caret next to the trigger content. */
   arrow: {
     type: Boolean,

@@ -1,13 +1,15 @@
 @use '../../../styles/mixins' as *;
 
 @include b(empty) {
+  --bili-empty-gap: 12px;
+  --bili-empty-padding: 32px 16px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--bili-empty-gap);
   align-items: center;
   justify-content: center;
   width: 100%;
-  padding: 32px 16px;
+  padding: var(--bili-empty-padding);
   text-align: center;
 
   @include e(image) {

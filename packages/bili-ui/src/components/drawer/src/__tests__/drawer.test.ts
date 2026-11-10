@@ -8,6 +8,24 @@ afterEach(() => {
 })
 
 describe('BiliDrawer', () => {
+  it('applies overlay-class and panel-class to the teleported layers', async () => {
+    mount(Drawer, {
+      props: {
+        modelValue: true,
+        title: '筛选',
+        overlayClass: 'custom-drawer-overlay',
+        panelClass: 'custom-drawer-panel'
+      },
+      attachTo: document.body
+    })
+    await nextTick()
+
+    expect(document.body.querySelector('.bili-drawer.custom-drawer-panel')).not.toBeNull()
+    expect(
+      document.body.querySelector('.bili-drawer__overlay.custom-drawer-overlay')
+    ).not.toBeNull()
+  })
+
   it('renders into body when visible', async () => {
     const wrapper = mount(Drawer, {
       props: { modelValue: false, title: '筛选' },

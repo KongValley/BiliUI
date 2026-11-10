@@ -43,23 +43,24 @@ import fitCode from '../examples/image/fit.vue?raw'
 
 ### Props
 
-| 属性                    | 说明                         | 类型                                                       | 默认值   |
-| ----------------------- | ---------------------------- | ---------------------------------------------------------- | -------- |
-| `src`                   | 图片地址                     | `string`                                                   | `''`     |
-| `alt`                   | 替代文本                     | `string`                                                   | `''`     |
-| `fit`                   | 填充模式                     | `'fill' \| 'contain' \| 'cover' \| 'none' \| 'scale-down'` | `'fill'` |
-| `width`                 | 宽度                         | `string \| number`                                         | —        |
-| `height`                | 高度                         | `string \| number`                                         | —        |
-| `preview-src-list`      | 预览图片列表，非空时开启预览 | `string[]`                                                 | `[]`     |
-| `initial-index`         | 预览初始索引                 | `number`                                                   | `0`      |
-| `preview-teleported`    | 预览层是否挂载到 `body`      | `boolean`                                                  | `true`   |
-| `hide-on-click-modal`   | 点击遮罩是否关闭预览         | `boolean`                                                  | `false`  |
-| `close-on-press-escape` | 是否允许 `Esc` 关闭预览      | `boolean`                                                  | `true`   |
-| `lazy`                  | 使用浏览器原生懒加载         | `boolean`                                                  | `false`  |
-| `min-scale`             | 预览最小缩放比               | `number`                                                   | `0.25`   |
-| `max-scale`             | 预览最大缩放比               | `number`                                                   | `4`      |
-| `zoom-rate`             | 每次缩放的倍率               | `number`                                                   | `1.25`   |
-| `z-index`               | 预览层级，省略时自动递增     | `number`                                                   | —        |
+| 属性                    | 说明                               | 类型                                                       | 默认值   |
+| ----------------------- | ---------------------------------- | ---------------------------------------------------------- | -------- |
+| `src`                   | 图片地址                           | `string`                                                   | `''`     |
+| `alt`                   | 替代文本                           | `string`                                                   | `''`     |
+| `fit`                   | 填充模式                           | `'fill' \| 'contain' \| 'cover' \| 'none' \| 'scale-down'` | `'fill'` |
+| `width`                 | 宽度                               | `string \| number`                                         | —        |
+| `height`                | 高度                               | `string \| number`                                         | —        |
+| `preview-src-list`      | 预览图片列表，非空时开启预览       | `string[]`                                                 | `[]`     |
+| `initial-index`         | 预览初始索引                       | `number`                                                   | `0`      |
+| `preview-teleported`    | 预览层是否挂载到 `body`            | `boolean`                                                  | `true`   |
+| `hide-on-click-modal`   | 点击遮罩是否关闭预览               | `boolean`                                                  | `false`  |
+| `close-on-press-escape` | 是否允许 `Esc` 关闭预览            | `boolean`                                                  | `true`   |
+| `lazy`                  | 使用浏览器原生懒加载               | `boolean`                                                  | `false`  |
+| `min-scale`             | 预览最小缩放比                     | `number`                                                   | `0.25`   |
+| `max-scale`             | 预览最大缩放比                     | `number`                                                   | `4`      |
+| `zoom-rate`             | 每次缩放的倍率                     | `number`                                                   | `1.25`   |
+| `z-index`               | 预览层级，省略时自动递增           | `number`                                                   | —        |
+| `preview-class`         | 预览层额外类名，用于多实例主题隔离 | `string`                                                   | `''`     |
 
 ### Events
 

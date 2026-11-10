@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, ref } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
+import { useConfig } from '../../../hooks/use-config'
 import BiliIcon from '../../icon/src/icon.vue'
 import { useFormItem } from '../../form/src/types'
 import { inputProps } from './input'
@@ -20,6 +21,8 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('input')
+const config = useConfig()
+const mergedSize = computed(() => props.size ?? config.value.size)
 const formItem = useFormItem()
 const slots = defineSlots<{
   prefix?: () => any
@@ -107,7 +110,7 @@ defineExpose({ inputRef, textareaRef, focus, blur, select })
   <div
     :class="[
       ns.b(),
-      ns.m(size),
+      ns.m(mergedSize),
       ns.is('group', hasAddon),
       ns.is('textarea', type === 'textarea'),
       ns.is('disabled', disabled),

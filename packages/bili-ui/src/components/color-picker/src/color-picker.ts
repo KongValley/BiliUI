@@ -15,6 +15,11 @@ export const colorPickerProps = {
     default: 'md'
   },
   disabled: Boolean,
+  /** Extra class on the teleported panel, useful for per-instance theming. */
+  popperClass: {
+    type: String,
+    default: ''
+  },
   clearable: Boolean,
   /** Swatches shown below the picker. */
   presets: {

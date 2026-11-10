@@ -1,9 +1,10 @@
 @use '../../../styles/mixins' as *;
 
 @include b(statistic) {
+  --bili-statistic-gap: 4px;
   display: inline-flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--bili-statistic-gap);
   min-width: 0;
 
   @include e(title) {

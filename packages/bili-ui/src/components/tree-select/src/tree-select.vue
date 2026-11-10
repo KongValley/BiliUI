@@ -54,18 +54,12 @@ const selectedKeys = computed<TreeKey[]>(() => {
 })
 
 const findNode = (key: TreeKey): TreeOption | undefined => {
-  const path = findNodePath(
-    props.data,
-    value => value === key,
-    fields.value
-  )
+  const path = findNodePath(props.data, value => value === key, fields.value)
   return path?.[path.length - 1]
 }
 
 const selectedNodes = computed<TreeOption[]>(() =>
-  selectedKeys.value
-    .map(key => findNode(key))
-    .filter((node): node is TreeOption => !!node)
+  selectedKeys.value.map(key => findNode(key)).filter((node): node is TreeOption => !!node)
 )
 
 const selectedLabel = computed(() =>
@@ -125,9 +119,7 @@ const handleSelect = (key: TreeKey) => {
 }
 
 const handleCheck = (keys: TreeKey[]) => {
-  const nodes = keys
-    .map(key => findNode(key))
-    .filter((node): node is TreeOption => !!node)
+  const nodes = keys.map(key => findNode(key)).filter((node): node is TreeOption => !!node)
   commit([...keys], nodes)
 }
 
@@ -217,10 +209,7 @@ defineExpose({ focus, blur, open, close })
           <span v-if="restTagCount > 0" :class="[ns.e('tag'), ns.is('rest', true)]">
             +{{ restTagCount }}
           </span>
-          <span
-            v-if="!selectedNodes.length"
-            :class="[ns.e('value'), ns.is('placeholder', true)]"
-          >
+          <span v-if="!selectedNodes.length" :class="[ns.e('value'), ns.is('placeholder', true)]">
             {{ placeholder }}
           </span>
         </div>
@@ -256,7 +245,7 @@ defineExpose({ focus, blur, open, close })
         v-if="isOpen"
         :id="panelId"
         ref="panelRef"
-        :class="ns.e('panel')"
+        :class="[ns.e('panel'), popperClass]"
         :style="panelStyles"
       >
         <BiliTree

@@ -33,35 +33,37 @@ import customCode from '../examples/dialog/custom.vue?raw'
 
 ### Props
 
-| 属性 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| `model-value` | 是否显示 | `boolean` | `false` |
-| `title` | 标题 | `string` | `''` |
-| `width` | 宽度 | `string \| number` | `480` |
-| `top` | 距顶部距离 | `string \| number` | `'15vh'` |
-| `show-close` | 是否显示关闭按钮 | `boolean` | `true` |
-| `close-on-click-modal` | 点击遮罩是否关闭 | `boolean` | `true` |
-| `close-on-esc` | 按 Esc 是否关闭 | `boolean` | `true` |
-| `lock-scroll` | 打开时是否锁定页面滚动 | `boolean` | `true` |
-| `destroy-on-close` | 关闭后是否销毁内容 | `boolean` | `false` |
+| 属性                   | 说明                             | 类型               | 默认值   |
+| ---------------------- | -------------------------------- | ------------------ | -------- |
+| `model-value`          | 是否显示                         | `boolean`          | `false`  |
+| `title`                | 标题                             | `string`           | `''`     |
+| `width`                | 宽度                             | `string \| number` | `480`    |
+| `top`                  | 距顶部距离                       | `string \| number` | `'15vh'` |
+| `show-close`           | 是否显示关闭按钮                 | `boolean`          | `true`   |
+| `close-on-click-modal` | 点击遮罩是否关闭                 | `boolean`          | `true`   |
+| `close-on-esc`         | 按 Esc 是否关闭                  | `boolean`          | `true`   |
+| `lock-scroll`          | 打开时是否锁定页面滚动           | `boolean`          | `true`   |
+| `destroy-on-close`     | 关闭后是否销毁内容               | `boolean`          | `false`  |
+| `overlay-class`        | 遮罩层额外类名                   | `string`           | `''`     |
+| `panel-class`          | 面板额外类名，用于多实例主题隔离 | `string`           | `''`     |
 
 ### Events
 
-| 事件名 | 说明 | 回调参数 |
-| --- | --- | --- |
+| 事件名              | 说明           | 回调参数         |
+| ------------------- | -------------- | ---------------- |
 | `update:modelValue` | 请求关闭时触发 | `(value: false)` |
-| `open` | 开始打开 | — |
-| `opened` | 打开动画结束 | — |
-| `close` | 请求关闭 | — |
-| `closed` | 关闭动画结束 | — |
+| `open`              | 开始打开       | —                |
+| `opened`            | 打开动画结束   | —                |
+| `close`             | 请求关闭       | —                |
+| `closed`            | 关闭动画结束   | —                |
 
 ### Slots
 
-| 插槽名 | 说明 |
-| --- | --- |
+| 插槽名    | 说明       |
+| --------- | ---------- |
 | `default` | 对话框正文 |
-| `header` | 自定义头部 |
-| `footer` | 底部操作区 |
+| `header`  | 自定义头部 |
+| `footer`  | 底部操作区 |
 
 ## 行为说明
 

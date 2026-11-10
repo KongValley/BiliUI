@@ -43,9 +43,7 @@ const { floatingStyles, isPositioned } = useFloating(triggerRef, panelRef, {
 
 const normalizedValue = computed(() => normalizeHex(props.modelValue))
 const hasValue = computed(() => !!normalizedValue.value)
-const currentHex = computed(() =>
-  hsvToHex({ h: hue.value, s: saturation.value, v: value.value })
-)
+const currentHex = computed(() => hsvToHex({ h: hue.value, s: saturation.value, v: value.value }))
 const displayHex = computed(() => normalizedValue.value ?? currentHex.value)
 
 const hexInput = ref(displayHex.value.toUpperCase())
@@ -123,8 +121,7 @@ const emitCurrent = () => {
   emit('change', hex)
 }
 
-const clamp = (input: number, min: number, max: number) =>
-  Math.min(max, Math.max(min, input))
+const clamp = (input: number, min: number, max: number) => Math.min(max, Math.max(min, input))
 
 let dragType: 'sv' | 'hue' | null = null
 
@@ -251,7 +248,7 @@ defineExpose({ open, close, focus: () => triggerRef.value?.focus() })
         v-if="isOpen"
         :id="panelId"
         ref="panelRef"
-        :class="ns.e('panel')"
+        :class="[ns.e('panel'), popperClass]"
         :style="panelStyles"
         role="dialog"
         :aria-label="placeholder"
@@ -267,11 +264,7 @@ defineExpose({ open, close, focus: () => triggerRef.value?.focus() })
           <span :class="ns.e('sv-marker')" :style="markerStyles" />
         </div>
 
-        <div
-          ref="hueRef"
-          :class="ns.e('hue')"
-          @pointerdown="startDrag($event, 'hue')"
-        >
+        <div ref="hueRef" :class="ns.e('hue')" @pointerdown="startDrag($event, 'hue')">
           <span :class="ns.e('hue-marker')" :style="hueMarkerStyles" />
         </div>
 

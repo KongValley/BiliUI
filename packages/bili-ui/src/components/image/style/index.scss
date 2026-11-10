@@ -1,12 +1,20 @@
 @use '../../../styles/mixins' as *;
 
 @include b(image) {
+  --bili-image-bg: var(--bili-fill-color-light);
+  --bili-image-mask-bg: rgba(31, 35, 41, 0.5);
+  --bili-image-mask-color: var(--bili-color-white);
+  --bili-image-placeholder-bg: var(--bili-fill-color-light);
+  --bili-image-placeholder-color: var(--bili-text-placeholder);
+  --bili-image-error-bg: var(--bili-fill-color);
+  --bili-image-error-color: var(--bili-text-secondary);
+
   position: relative;
   display: inline-block;
   overflow: hidden;
   line-height: 0;
   vertical-align: middle;
-  background-color: var(--bili-fill-color-light);
+  background-color: var(--bili-image-bg);
   border-radius: var(--bili-image-radius, var(--bili-radius-base));
 
   @include e(inner) {
@@ -31,8 +39,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--bili-text-placeholder);
-    background-color: var(--bili-fill-color-light);
+    color: var(--bili-image-placeholder-color);
+    background-color: var(--bili-image-placeholder-bg);
   }
 
   @include e(placeholder-icon) {
@@ -48,8 +56,8 @@
     justify-content: center;
     font-size: var(--bili-font-size-sm);
     line-height: 1.5;
-    color: var(--bili-text-secondary);
-    background-color: var(--bili-fill-color);
+    color: var(--bili-image-error-color);
+    background-color: var(--bili-image-error-bg);
   }
 
   @include e(preview-mask) {
@@ -63,9 +71,9 @@
     padding: 0;
     font-family: inherit;
     font-size: var(--bili-font-size-sm);
-    color: var(--bili-color-white);
+    color: var(--bili-image-mask-color);
     cursor: zoom-in;
-    background-color: rgba(31, 35, 41, 0.5);
+    background-color: var(--bili-image-mask-bg);
     border: 0;
     opacity: 0;
     transition: opacity var(--bili-transition-duration) var(--bili-transition-function);
@@ -88,9 +96,9 @@
   align-items: center;
   justify-content: center;
   padding: 0;
-  color: var(--bili-color-white);
+  color: var(--bili-image-viewer-action-color, var(--bili-color-white));
   cursor: pointer;
-  background-color: rgba(255, 255, 255, 0.12);
+  background-color: var(--bili-image-viewer-action-bg, rgba(255, 255, 255, 0.12));
   border: 0;
   border-radius: 50%;
   transition:
@@ -98,25 +106,33 @@
     opacity var(--bili-transition-duration) var(--bili-transition-function);
 
   &:hover {
-    background-color: rgba(255, 255, 255, 0.24);
+    background-color: var(--bili-image-viewer-action-hover-bg, rgba(255, 255, 255, 0.24));
   }
 
   &:focus-visible {
-    outline: 2px solid var(--bili-color-white);
+    outline: 2px solid var(--bili-image-viewer-action-color, var(--bili-color-white));
     outline-offset: 2px;
   }
 }
 
 @include b(image-viewer) {
+  --bili-image-viewer-color: var(--bili-color-white);
+  --bili-image-viewer-bg: rgba(17, 19, 23, 0.82);
+  --bili-image-viewer-action-color: var(--bili-color-white);
+  --bili-image-viewer-action-bg: rgba(255, 255, 255, 0.12);
+  --bili-image-viewer-action-hover-bg: rgba(255, 255, 255, 0.24);
+  --bili-image-viewer-muted-color: rgba(255, 255, 255, 0.86);
+  --bili-image-viewer-divider-color: rgba(255, 255, 255, 0.24);
+  --bili-image-viewer-actions-bg: rgba(255, 255, 255, 0.12);
   position: fixed;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  color: var(--bili-color-white);
+  color: var(--bili-image-viewer-color);
   user-select: none;
-  background-color: rgba(17, 19, 23, 0.82);
+  background-color: var(--bili-image-viewer-bg);
   backdrop-filter: blur(2px);
   outline: none;
 
@@ -165,7 +181,7 @@
     z-index: 3;
     font-size: var(--bili-font-size-sm);
     font-variant-numeric: tabular-nums;
-    color: rgba(255, 255, 255, 0.86);
+    color: var(--bili-image-viewer-muted-color);
   }
 
   @include e(arrow) {
@@ -202,7 +218,7 @@
     gap: 6px;
     align-items: center;
     padding: 6px 10px;
-    background-color: rgba(255, 255, 255, 0.12);
+    background-color: var(--bili-image-viewer-actions-bg);
     border-radius: var(--bili-radius-round);
     backdrop-filter: blur(6px);
     transform: translateX(-50%);
@@ -217,7 +233,7 @@
     background-color: transparent;
 
     &:hover {
-      background-color: rgba(255, 255, 255, 0.2);
+      background-color: var(--bili-image-viewer-action-hover-bg);
     }
   }
 
@@ -226,14 +242,14 @@
     font-size: var(--bili-font-size-xs);
     font-variant-numeric: tabular-nums;
     text-align: center;
-    color: rgba(255, 255, 255, 0.86);
+    color: var(--bili-image-viewer-muted-color);
   }
 
   @include e(divider) {
     width: 1px;
     height: 16px;
     margin: 0 2px;
-    background-color: rgba(255, 255, 255, 0.24);
+    background-color: var(--bili-image-viewer-divider-color);
   }
 }
 

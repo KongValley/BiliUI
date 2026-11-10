@@ -1,8 +1,19 @@
 @use '../../../styles/mixins' as *;
 
 @include b(select) {
+  --bili-select-gap: 6px;
+  --bili-select-font-size: var(--bili-font-size-base);
+  --bili-select-color: var(--bili-text-primary);
+  --bili-select-bg: var(--bili-bg-container);
+  --bili-select-border-color: var(--bili-border-color);
+  --bili-select-radius: var(--bili-radius-base);
   --bili-select-height: var(--bili-control-height-md);
   --bili-select-padding: var(--bili-control-padding-md);
+  --bili-select-placeholder-color: var(--bili-text-placeholder);
+  --bili-select-hover-border-color: var(--bili-color-primary-hover);
+  --bili-select-focus-border-color: var(--bili-color-primary);
+  --bili-select-focus-shadow: var(--bili-color-primary-light);
+  --bili-select-disabled-bg: var(--bili-bg-disabled);
 
   position: relative;
   display: inline-flex;
@@ -11,29 +22,29 @@
   min-width: 0;
   height: var(--bili-select-height);
   padding: 0 var(--bili-select-padding);
-  gap: 6px;
-  font-size: var(--bili-font-size-base);
-  color: var(--bili-text-primary);
+  gap: var(--bili-select-gap);
+  font-size: var(--bili-select-font-size);
+  color: var(--bili-select-color);
   cursor: pointer;
-  background-color: var(--bili-bg-container);
-  border: 1px solid var(--bili-border-color);
-  border-radius: var(--bili-radius-base);
+  background-color: var(--bili-select-bg);
+  border: 1px solid var(--bili-select-border-color);
+  border-radius: var(--bili-select-radius);
   outline: none;
   transition:
     border-color var(--bili-transition-duration) var(--bili-transition-function),
     box-shadow var(--bili-transition-duration) var(--bili-transition-function);
 
   &:hover {
-    border-color: var(--bili-color-primary-hover);
+    border-color: var(--bili-select-hover-border-color);
   }
 
   &:focus-visible {
-    box-shadow: 0 0 0 3px var(--bili-color-primary-light);
+    box-shadow: 0 0 0 3px var(--bili-select-focus-shadow);
   }
 
   @include when(open) {
-    border-color: var(--bili-color-primary);
-    box-shadow: 0 0 0 3px var(--bili-color-primary-light);
+    border-color: var(--bili-select-focus-border-color);
+    box-shadow: 0 0 0 3px var(--bili-select-focus-shadow);
   }
 
   @include when(multiple) {
@@ -45,11 +56,11 @@
 
   @include when(disabled) {
     cursor: not-allowed;
-    background-color: var(--bili-bg-disabled);
+    background-color: var(--bili-select-disabled-bg);
     border-color: var(--bili-border-color-light);
 
     .#{$namespace}-select__value {
-      color: var(--bili-text-placeholder);
+      color: var(--bili-select-placeholder-color);
     }
   }
 
@@ -138,7 +149,7 @@
     outline: none;
 
     &::placeholder {
-      color: var(--bili-text-placeholder);
+      color: var(--bili-select-search-placeholder-color);
     }
   }
 
@@ -199,14 +210,24 @@
 
 @include b(select) {
   @include e(panel) {
+    --bili-select-panel-bg: var(--bili-bg-elevated);
+    --bili-select-panel-border-color: var(--bili-border-color-light);
+    --bili-select-panel-radius: var(--bili-radius-md);
+    --bili-select-panel-shadow: var(--bili-shadow-base);
+    --bili-select-option-color: var(--bili-text-regular);
+    --bili-select-option-hover-bg: var(--bili-fill-color-light);
+    --bili-select-option-selected-color: var(--bili-color-primary);
+    --bili-select-option-selected-bg: var(--bili-color-primary-light);
+    --bili-select-option-disabled-color: var(--bili-text-placeholder);
+    --bili-select-search-placeholder-color: var(--bili-text-placeholder);
     position: absolute;
     top: 0;
     left: 0;
     padding: 4px;
-    background-color: var(--bili-bg-elevated);
-    border: 1px solid var(--bili-border-color-light);
-    border-radius: var(--bili-radius-md);
-    box-shadow: var(--bili-shadow-base);
+    background-color: var(--bili-select-panel-bg);
+    border: 1px solid var(--bili-select-panel-border-color);
+    border-radius: var(--bili-select-panel-radius);
+    box-shadow: var(--bili-select-panel-shadow);
     will-change: transform;
   }
 
@@ -259,7 +280,7 @@
     padding: 7px 10px;
     font-size: var(--bili-font-size-base);
     line-height: 1.4;
-    color: var(--bili-text-regular);
+    color: var(--bili-select-option-color);
     text-align: left;
     cursor: pointer;
     background: transparent;
@@ -273,17 +294,17 @@
     &:hover,
     &.is-active {
       padding-left: 13px;
-      background-color: var(--bili-fill-color-light);
+      background-color: var(--bili-select-option-hover-bg);
     }
 
     &.is-selected {
       font-weight: var(--bili-font-weight-medium);
-      color: var(--bili-color-primary);
-      background-color: var(--bili-color-primary-light);
+      color: var(--bili-select-option-selected-color);
+      background-color: var(--bili-select-option-selected-bg);
     }
 
     &.is-disabled {
-      color: var(--bili-text-placeholder);
+      color: var(--bili-select-option-disabled-color);
       cursor: not-allowed;
       background-color: transparent;
       padding-left: 10px;

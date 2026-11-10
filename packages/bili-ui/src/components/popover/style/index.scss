@@ -4,17 +4,26 @@
   display: inline-flex;
 
   @include e(content) {
+    --bili-popover-color: var(--bili-text-regular);
+    --bili-popover-bg: var(--bili-bg-elevated);
+    --bili-popover-border-color: var(--bili-border-color-light);
+    --bili-popover-padding: 12px 14px;
+    --bili-popover-font-size: var(--bili-font-size-sm);
+    --bili-popover-radius: var(--bili-radius-lg);
+    --bili-popover-shadow: var(--bili-shadow-md);
+    --bili-popover-title-color: var(--bili-text-primary);
+    --bili-popover-arrow-size: 9px;
     position: absolute;
     top: 0;
     left: 0;
-    padding: 12px 14px;
-    font-size: var(--bili-font-size-sm);
+    padding: var(--bili-popover-padding);
+    font-size: var(--bili-popover-font-size);
     line-height: 1.6;
-    color: var(--bili-text-regular);
-    background-color: var(--bili-bg-elevated);
-    border: 1px solid var(--bili-border-color-light);
-    border-radius: var(--bili-radius-lg);
-    box-shadow: var(--bili-shadow-md);
+    color: var(--bili-popover-color);
+    background-color: var(--bili-popover-bg);
+    border: 1px solid var(--bili-popover-border-color);
+    border-radius: var(--bili-popover-radius);
+    box-shadow: var(--bili-popover-shadow);
   }
 
   @include e(title) {
@@ -22,11 +31,11 @@
     font-size: var(--bili-font-size-base);
     font-weight: var(--bili-font-weight-semibold);
     line-height: 1.4;
-    color: var(--bili-text-primary);
+    color: var(--bili-popover-title-color);
   }
 
   @include e(body) {
-    color: var(--bili-text-regular);
+    color: var(--bili-popover-color);
   }
 
   @include e(footer) {
@@ -41,10 +50,10 @@
 
   @include e(arrow) {
     position: absolute;
-    width: 9px;
-    height: 9px;
-    background-color: var(--bili-bg-elevated);
-    border: 1px solid var(--bili-border-color-light);
+    width: var(--bili-popover-arrow-size);
+    height: var(--bili-popover-arrow-size);
+    background-color: var(--bili-popover-bg);
+    border: 1px solid var(--bili-popover-border-color);
     transform: rotate(45deg);
 
     &[data-placement='bottom'] {

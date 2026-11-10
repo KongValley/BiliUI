@@ -1,9 +1,11 @@
 @use '../../../styles/mixins' as *;
 
 @include b(collapse) {
+  --bili-collapse-font-size: var(--bili-font-size-base);
+  --bili-collapse-color: var(--bili-text-regular);
   overflow: hidden;
-  font-size: var(--bili-font-size-base);
-  color: var(--bili-text-regular);
+  font-size: var(--bili-collapse-font-size);
+  color: var(--bili-collapse-color);
 
   @include when(bordered) {
     border: 1px solid var(--bili-border-color-light);

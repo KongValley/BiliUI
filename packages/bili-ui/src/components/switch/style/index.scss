@@ -1,17 +1,27 @@
 @use '../../../styles/mixins' as *;
 
 @include b(switch) {
+  --bili-switch-gap: 8px;
+  --bili-switch-font-size: var(--bili-font-size-base);
+  --bili-switch-color: var(--bili-text-regular);
   --bili-switch-width: 44px;
   --bili-switch-height: 24px;
   --bili-switch-action-size: 20px;
   --bili-switch-padding: 2px;
+  --bili-switch-off-bg: var(--bili-fill-color);
+  --bili-switch-off-hover-bg: var(--bili-border-color);
+  --bili-switch-on-bg: var(--bili-color-primary);
+  --bili-switch-on-hover-bg: var(--bili-color-primary-hover);
+  --bili-switch-action-bg: var(--bili-color-white);
+  --bili-switch-action-color: var(--bili-color-primary);
+  --bili-switch-action-shadow: var(--bili-shadow-sm);
 
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--bili-switch-gap);
   padding: 0;
-  font-size: var(--bili-font-size-base);
-  color: var(--bili-text-regular);
+  font-size: var(--bili-switch-font-size);
+  color: var(--bili-switch-color);
   vertical-align: middle;
   cursor: pointer;
   background: transparent;
@@ -25,7 +35,7 @@
     width: var(--bili-switch-width);
     height: var(--bili-switch-height);
     padding: var(--bili-switch-padding);
-    background-color: var(--bili-fill-color);
+    background-color: var(--bili-switch-off-bg);
     border-radius: var(--bili-radius-round);
     transition: background-color var(--bili-transition-duration) var(--bili-transition-function);
   }
@@ -37,10 +47,10 @@
     width: var(--bili-switch-action-size);
     height: var(--bili-switch-action-size);
     font-size: 12px;
-    color: var(--bili-color-primary);
-    background-color: var(--bili-color-white);
+    color: var(--bili-switch-action-color);
+    background-color: var(--bili-switch-action-bg);
     border-radius: 50%;
-    box-shadow: var(--bili-shadow-sm);
+    box-shadow: var(--bili-switch-action-shadow);
     transition:
       transform var(--bili-transition-duration) var(--bili-transition-function-spring),
       width var(--bili-transition-duration) var(--bili-transition-function-spring);
@@ -57,18 +67,20 @@
   }
 
   &:hover:not(.is-disabled) .#{$namespace}-switch__core {
-    background-color: var(--bili-border-color);
+    background-color: var(--bili-switch-off-hover-bg);
   }
 
   @include when(checked) {
     .#{$namespace}-switch__core {
-      background-color: var(--bili-color-primary);
+      background-color: var(--bili-switch-on-bg);
     }
 
     .#{$namespace}-switch__action {
-      color: var(--bili-color-primary);
+      color: var(--bili-switch-action-color);
       transform: translateX(
-        calc(var(--bili-switch-width) - var(--bili-switch-action-size) - 2 * var(--bili-switch-padding))
+        calc(
+          var(--bili-switch-width) - var(--bili-switch-action-size) - 2 * var(--bili-switch-padding)
+        )
       );
     }
 
@@ -76,13 +88,14 @@
     &:active:not(.is-disabled) .#{$namespace}-switch__action {
       transform: translateX(
         calc(
-          var(--bili-switch-width) - var(--bili-switch-action-size) - 2 * var(--bili-switch-padding) - 3px
+          var(--bili-switch-width) - var(--bili-switch-action-size) - 2 *
+            var(--bili-switch-padding) - 3px
         )
       );
     }
 
     &:hover:not(.is-disabled) .#{$namespace}-switch__core {
-      background-color: var(--bili-color-primary-hover);
+      background-color: var(--bili-switch-on-hover-bg);
     }
   }
 

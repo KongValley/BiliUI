@@ -1,6 +1,15 @@
 @use '../../../styles/mixins' as *;
 
 @include b(carousel) {
+  --bili-carousel-bg: var(--bili-fill-color-light);
+  --bili-carousel-radius: var(--bili-radius-md);
+  --bili-carousel-arrow-color: var(--bili-color-white);
+  --bili-carousel-arrow-bg: rgba(31, 35, 41, 0.36);
+  --bili-carousel-arrow-hover-bg: rgba(31, 35, 41, 0.56);
+  --bili-carousel-indicator-bg: rgba(255, 255, 255, 0.48);
+  --bili-carousel-indicator-hover-bg: rgba(255, 255, 255, 0.8);
+  --bili-carousel-indicator-active-bg: var(--bili-color-white);
+
   position: relative;
   width: 100%;
   outline: none;
@@ -9,12 +18,12 @@
     position: relative;
     width: 100%;
     overflow: hidden;
-    background-color: var(--bili-fill-color-light);
-    border-radius: var(--bili-carousel-radius, var(--bili-radius-md));
+    background-color: var(--bili-carousel-bg);
+    border-radius: var(--bili-carousel-radius);
   }
 
   &:focus-visible {
-    border-radius: var(--bili-carousel-radius, var(--bili-radius-md));
+    border-radius: var(--bili-carousel-radius);
     outline: 2px solid var(--bili-color-primary);
     outline-offset: 2px;
   }
@@ -30,9 +39,9 @@
     height: 36px;
     padding: 0;
     font-size: 18px;
-    color: var(--bili-color-white);
+    color: var(--bili-carousel-arrow-color);
     cursor: pointer;
-    background-color: rgba(31, 35, 41, 0.36);
+    background-color: var(--bili-carousel-arrow-bg);
     border: 0;
     border-radius: 50%;
     opacity: 0;
@@ -42,7 +51,7 @@
     transform: translateY(-50%);
 
     &:hover {
-      background-color: rgba(31, 35, 41, 0.56);
+      background-color: var(--bili-carousel-arrow-hover-bg);
     }
 
     &:focus-visible {
@@ -145,7 +154,7 @@
     height: 4px;
     padding: 0;
     cursor: pointer;
-    background-color: rgba(255, 255, 255, 0.48);
+    background-color: var(--bili-carousel-indicator-bg);
     border: 0;
     border-radius: var(--bili-radius-round);
     transition:
@@ -154,7 +163,7 @@
       background-color var(--bili-transition-duration) var(--bili-transition-function);
 
     &:hover {
-      background-color: rgba(255, 255, 255, 0.8);
+      background-color: var(--bili-carousel-indicator-hover-bg);
     }
 
     &:focus-visible {
@@ -164,7 +173,7 @@
 
     @include when(active) {
       width: 28px;
-      background-color: var(--bili-color-white);
+      background-color: var(--bili-carousel-indicator-active-bg);
     }
   }
 }

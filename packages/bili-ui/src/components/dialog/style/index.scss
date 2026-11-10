@@ -1,20 +1,32 @@
 @use '../../../styles/mixins' as *;
 
 @include b(dialog) {
+  --bili-dialog-bg: var(--bili-bg-container);
+  --bili-dialog-radius: var(--bili-radius-lg);
+  --bili-dialog-shadow: var(--bili-shadow-lg);
+  --bili-dialog-header-padding: 18px 20px 8px;
+  --bili-dialog-body-padding: 8px 20px 20px;
+  --bili-dialog-footer-padding: 0 20px 20px;
+  --bili-dialog-title-color: var(--bili-text-primary);
+  --bili-dialog-close-color: var(--bili-text-secondary);
+  --bili-dialog-close-hover-color: var(--bili-text-primary);
+  --bili-dialog-close-hover-bg: var(--bili-fill-color);
+
   position: relative;
   width: 480px;
   max-width: calc(100vw - 32px);
   margin: 15vh auto 30px;
-  background-color: var(--bili-bg-container);
-  border-radius: var(--bili-radius-lg);
-  box-shadow: var(--bili-shadow-lg);
+  background-color: var(--bili-dialog-bg);
+  border-radius: var(--bili-dialog-radius);
+  box-shadow: var(--bili-dialog-shadow);
   outline: none;
 
   @include e(overlay) {
+    --bili-dialog-overlay-bg: rgba(15, 18, 23, 0.45);
     position: fixed;
     inset: 0;
     overflow: auto;
-    background-color: rgba(15, 18, 23, 0.45);
+    background-color: var(--bili-dialog-overlay-bg);
   }
 
   @include e(header) {
@@ -22,14 +34,14 @@
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-    padding: 18px 20px 8px;
+    padding: var(--bili-dialog-header-padding);
   }
 
   @include e(title) {
     font-size: var(--bili-font-size-md);
     font-weight: var(--bili-font-weight-semibold);
     line-height: 1.4;
-    color: var(--bili-text-primary);
+    color: var(--bili-dialog-title-color);
   }
 
   @include e(close) {
@@ -41,7 +53,7 @@
     height: 24px;
     padding: 0;
     font-size: 16px;
-    color: var(--bili-text-secondary);
+    color: var(--bili-dialog-close-color);
     cursor: pointer;
     background: transparent;
     border: 0;
@@ -52,8 +64,8 @@
       transform var(--bili-transition-duration) var(--bili-transition-function-spring);
 
     &:hover {
-      color: var(--bili-text-primary);
-      background-color: var(--bili-fill-color);
+      color: var(--bili-dialog-close-hover-color);
+      background-color: var(--bili-dialog-close-hover-bg);
       transform: rotate(90deg);
     }
 
@@ -63,7 +75,7 @@
   }
 
   @include e(body) {
-    padding: 8px 20px 20px;
+    padding: var(--bili-dialog-body-padding);
     font-size: var(--bili-font-size-base);
     line-height: 1.6;
     color: var(--bili-text-regular);
@@ -74,7 +86,7 @@
     gap: 8px;
     align-items: center;
     justify-content: flex-end;
-    padding: 0 20px 20px;
+    padding: var(--bili-dialog-footer-padding);
   }
 }
 

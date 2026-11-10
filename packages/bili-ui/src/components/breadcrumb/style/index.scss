@@ -1,8 +1,10 @@
 @use '../../../styles/mixins' as *;
 
 @include b(breadcrumb) {
-  font-size: var(--bili-font-size-sm);
-  color: var(--bili-text-secondary);
+  --bili-breadcrumb-font-size: var(--bili-font-size-sm);
+  --bili-breadcrumb-color: var(--bili-text-secondary);
+  font-size: var(--bili-breadcrumb-font-size);
+  color: var(--bili-breadcrumb-color);
 
   @include e(list) {
     display: flex;

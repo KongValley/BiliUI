@@ -1,15 +1,21 @@
 @use '../../../styles/mixins' as *;
 
 @include b(rate) {
+  --bili-rate-gap: 2px;
+  --bili-rate-font-size: 20px;
+  --bili-rate-color: var(--bili-color-primary);
+  --bili-rate-void-color: var(--bili-text-placeholder);
+  --bili-rate-text-color: var(--bili-text-regular);
+  --bili-rate-focus-color: var(--bili-color-primary-light);
   display: inline-flex;
-  gap: 2px;
+  gap: var(--bili-rate-gap);
   align-items: center;
-  font-size: 20px;
+  font-size: var(--bili-rate-font-size);
   line-height: 1;
   outline: none;
 
   &:focus-visible {
-    box-shadow: 0 0 0 3px var(--bili-color-primary-light);
+    box-shadow: 0 0 0 3px var(--bili-rate-focus-color);
     border-radius: var(--bili-radius-sm);
   }
 
@@ -18,7 +24,8 @@
     display: inline-flex;
     flex-shrink: 0;
     cursor: pointer;
-    transition: transform var(--bili-transition-duration-fast) var(--bili-transition-function-spring);
+    transition: transform var(--bili-transition-duration-fast)
+      var(--bili-transition-function-spring);
 
     &:hover {
       transform: scale(1.12);
@@ -27,7 +34,7 @@
 
   @include e(icon-void) {
     display: block;
-    color: var(--bili-text-placeholder);
+    color: var(--bili-rate-void-color);
   }
 
   @include e(fill) {
@@ -37,7 +44,7 @@
     left: 0;
     display: inline-flex;
     overflow: hidden;
-    color: var(--bili-color-primary);
+    color: var(--bili-rate-color);
     pointer-events: none;
 
     .#{$namespace}-rate__icon {
@@ -54,7 +61,7 @@
     margin-left: 8px;
     font-size: var(--bili-font-size-sm);
     line-height: 1;
-    color: var(--bili-text-regular);
+    color: var(--bili-rate-text-color);
   }
 
   @include m(sm) {

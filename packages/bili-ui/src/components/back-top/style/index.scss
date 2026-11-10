@@ -1,0 +1,64 @@
+@use '../../../styles/mixins' as *;
+
+@include b(back-top) {
+  --bili-back-top-size: 40px;
+  --bili-back-top-font-size: 20px;
+  --bili-back-top-color: var(--bili-color-on-primary);
+  --bili-back-top-bg: var(--bili-color-primary);
+  --bili-back-top-hover-bg: var(--bili-color-primary-hover);
+  --bili-back-top-active-bg: var(--bili-color-primary-active);
+  --bili-back-top-radius: 50%;
+  --bili-back-top-shadow: var(--bili-shadow-base);
+  --bili-back-top-hover-shadow: var(--bili-shadow-md);
+  --bili-back-top-focus-color: var(--bili-color-primary);
+  position: fixed;
+  right: var(--bili-back-top-right, 40px);
+  bottom: var(--bili-back-top-bottom, 40px);
+  z-index: var(--bili-back-top-z-index, 100);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--bili-back-top-size);
+  height: var(--bili-back-top-size);
+  padding: 0;
+  font-size: var(--bili-back-top-font-size);
+  color: var(--bili-back-top-color);
+  cursor: pointer;
+  background-color: var(--bili-back-top-bg);
+  border: 0;
+  border-radius: var(--bili-back-top-radius);
+  box-shadow: var(--bili-back-top-shadow);
+  transition:
+    background-color var(--bili-transition-duration) var(--bili-transition-function),
+    transform var(--bili-transition-duration) var(--bili-transition-function),
+    box-shadow var(--bili-transition-duration) var(--bili-transition-function);
+
+  &:hover {
+    background-color: var(--bili-back-top-hover-bg);
+    box-shadow: var(--bili-back-top-hover-shadow);
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    background-color: var(--bili-back-top-active-bg);
+    transform: scale(var(--bili-press-scale));
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--bili-back-top-focus-color);
+    outline-offset: 3px;
+  }
+}
+
+.bili-back-top-enter-active,
+.bili-back-top-leave-active {
+  transition:
+    opacity var(--bili-transition-duration) var(--bili-transition-function),
+    transform var(--bili-transition-duration) var(--bili-transition-function);
+}
+
+.bili-back-top-enter-from,
+.bili-back-top-leave-to {
+  opacity: 0;
+  transform: translateY(8px);
+}

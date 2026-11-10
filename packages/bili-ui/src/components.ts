@@ -38,6 +38,12 @@ import { BiliStatistic } from './components/statistic'
 import { BiliImage } from './components/image'
 import { BiliCarousel, BiliCarouselItem } from './components/carousel'
 import { BiliAnchor, BiliAnchorLink } from './components/anchor'
+import { BiliBackTop } from './components/back-top'
+import { BiliAffix } from './components/affix'
+import { BiliWatermark } from './components/watermark'
+import { BiliTour } from './components/tour'
+import { BiliQRCode } from './components/qrcode'
+import { BiliConfigProvider } from './components/config-provider'
 import { BiliForm, BiliFormItem, BiliFormList } from './components/form'
 import { BiliTooltip } from './components/tooltip'
 import { BiliDialog } from './components/dialog'
@@ -97,6 +103,12 @@ export * from './components/statistic'
 export * from './components/image'
 export * from './components/carousel'
 export * from './components/anchor'
+export * from './components/back-top'
+export * from './components/affix'
+export * from './components/watermark'
+export * from './components/tour'
+export * from './components/qrcode'
+export * from './components/config-provider'
 export * from './components/form'
 export * from './components/tooltip'
 export * from './components/dialog'
@@ -165,6 +177,12 @@ export const components = [
   BiliCarouselItem,
   BiliAnchor,
   BiliAnchorLink,
+  BiliBackTop,
+  BiliAffix,
+  BiliWatermark,
+  BiliTour,
+  BiliQRCode,
+  BiliConfigProvider,
   BiliForm,
   BiliFormItem,
   BiliFormList,

@@ -1,0 +1,22 @@
+@use '../../../styles/mixins' as *;
+
+@include b(watermark) {
+  --bili-watermark-opacity: 1;
+  position: relative;
+
+  @include e(overlay) {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: var(--bili-watermark-image, none);
+    background-repeat: repeat;
+    background-size: var(--bili-watermark-size, auto);
+    background-position: var(--bili-watermark-position, 0 0);
+    opacity: var(--bili-watermark-opacity);
+    z-index: var(--bili-watermark-z-index, 9);
+
+    @include when(empty) {
+      display: none;
+    }
+  }
+}

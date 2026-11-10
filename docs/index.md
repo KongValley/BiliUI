@@ -18,7 +18,7 @@ hero:
 
 features:
   - icon: 🧩
-    title: 59 个核心组件
+    title: 65 个核心组件
     details: 覆盖基础、表单、反馈与数据展示，满足中后台产品的主要搭建场景。
   - icon: 🎨
     title: 三层设计令牌

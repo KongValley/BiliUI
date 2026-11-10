@@ -123,7 +123,7 @@ defineExpose({ open, close, toggle })
         <div
           v-if="visible"
           ref="contentRef"
-          :class="[ns.e('content'), ns.is('with-title', !!title || !!$slots.title)]"
+          :class="[ns.e('content'), ns.is('with-title', !!title || !!$slots.title), popperClass]"
           :style="contentStyles"
           role="dialog"
           @mouseenter="handleEnter"

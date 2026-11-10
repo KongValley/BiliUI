@@ -1,10 +1,11 @@
 @use '../../../styles/mixins' as *;
 
 @include b(chart) {
+  --bili-chart-color: var(--bili-text-regular);
   position: relative;
   width: 100%;
   font-family: var(--bili-font-family);
-  color: var(--bili-text-regular);
+  color: var(--bili-chart-color);
 
   @include e(canvas) {
     position: relative;
@@ -277,13 +278,15 @@
 }
 
 @include b(chart-legend) {
+  --bili-chart-legend-gap: 6px 18px;
+  --bili-chart-legend-padding: 12px 0 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 6px 18px;
+  gap: var(--bili-chart-legend-gap);
   justify-content: center;
   // Host docs styles (`.vp-doc ul`, `.vp-doc li + li`) would otherwise add
   // margins/padding and lift the first legend item off the shared baseline.
-  padding: 12px 0 0 !important;
+  padding: var(--bili-chart-legend-padding) !important;
   margin: 0 !important;
   list-style: none !important;
 
@@ -324,18 +327,25 @@
 }
 
 @include b(chart-tooltip) {
+  --bili-chart-tooltip-padding: 9px 12px;
+  --bili-chart-tooltip-font-size: var(--bili-font-size-xs);
+  --bili-chart-tooltip-color: var(--bili-text-primary);
+  --bili-chart-tooltip-bg: var(--bili-bg-elevated);
+  --bili-chart-tooltip-border-color: var(--bili-border-color-light);
+  --bili-chart-tooltip-radius: var(--bili-radius-md);
+  --bili-chart-tooltip-shadow: var(--bili-shadow-md);
   position: absolute;
   z-index: 3;
   min-width: 118px;
-  padding: 9px 12px;
-  font-size: var(--bili-font-size-xs);
+  padding: var(--bili-chart-tooltip-padding);
+  font-size: var(--bili-chart-tooltip-font-size);
   line-height: 1.6;
-  color: var(--bili-text-primary);
+  color: var(--bili-chart-tooltip-color);
   pointer-events: none;
-  background-color: var(--bili-bg-elevated);
-  border: 1px solid var(--bili-border-color-light);
-  border-radius: var(--bili-radius-md);
-  box-shadow: var(--bili-shadow-md);
+  background-color: var(--bili-chart-tooltip-bg);
+  border: 1px solid var(--bili-chart-tooltip-border-color);
+  border-radius: var(--bili-chart-tooltip-radius);
+  box-shadow: var(--bili-chart-tooltip-shadow);
   animation: bili-chart-tooltip-in 0.16s var(--bili-transition-function-out) both;
 
   @include e(title) {

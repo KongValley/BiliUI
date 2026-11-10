@@ -151,7 +151,7 @@ defineExpose({ show, hide, visible })
         v-if="visible"
         :id="tooltipId"
         ref="contentRef"
-        :class="[ns.e('content'), ns.m(effect)]"
+        :class="[ns.e('content'), ns.m(effect), popperClass]"
         :style="contentStyles"
         role="tooltip"
       >

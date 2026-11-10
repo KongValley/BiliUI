@@ -34,6 +34,18 @@ describe('BiliSelect', () => {
     expect(wrapper.emitted('change')?.[0]?.[0]).toBe('banana')
   })
 
+  it('applies popper-class to the teleported panel', async () => {
+    const wrapper = mount(Select, {
+      props: { modelValue: null, options, popperClass: 'custom-select-panel' },
+      attachTo: document.body
+    })
+
+    await wrapper.find('.bili-select').trigger('click')
+    await flushPromises()
+
+    expect(document.body.querySelector('.bili-select__panel.custom-select-panel')).not.toBeNull()
+  })
+
   it('filters options by keyword', async () => {
     const wrapper = mount(Select, {
       props: { modelValue: null, options, filterable: true },
@@ -132,9 +144,7 @@ describe('BiliSelect', () => {
     await wrapper.find('.bili-select').trigger('click')
     await flushPromises()
 
-    const checkbox = document.body.querySelector<HTMLInputElement>(
-      '.bili-select__select-all input'
-    )
+    const checkbox = document.body.querySelector<HTMLInputElement>('.bili-select__select-all input')
     expect(checkbox).not.toBeNull()
     checkbox!.checked = true
     checkbox!.dispatchEvent(new Event('change', { bubbles: true }))
@@ -167,9 +177,9 @@ describe('BiliSelect', () => {
     await wrapper.find('.bili-select').trigger('click')
     await flushPromises()
 
-    const labels = Array.from(
-      document.body.querySelectorAll('.bili-select__group-label')
-    ).map(node => node.textContent?.trim())
+    const labels = Array.from(document.body.querySelectorAll('.bili-select__group-label')).map(
+      node => node.textContent?.trim()
+    )
     expect(labels).toEqual(['水果', '蔬菜'])
     expect(document.body.querySelectorAll('.bili-select__option')).toHaveLength(3)
   })

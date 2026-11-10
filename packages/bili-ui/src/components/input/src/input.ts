@@ -12,7 +12,7 @@ export const inputProps = {
   },
   size: {
     type: String as PropType<ComponentSize>,
-    default: 'md'
+    default: undefined
   },
   placeholder: {
     type: String,

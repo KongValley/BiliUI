@@ -1,11 +1,14 @@
 @use '../../../styles/mixins' as *;
 
 @include b(code-block) {
+  --bili-code-block-bg: var(--bili-code-bg);
+  --bili-code-block-border-color: var(--bili-border-color-light);
+  --bili-code-block-radius: var(--bili-radius-lg);
   overflow: hidden;
   font-family: var(--bili-font-family-mono);
-  background: var(--bili-code-bg);
-  border: 1px solid var(--bili-border-color-light);
-  border-radius: var(--bili-radius-lg);
+  background: var(--bili-code-block-bg);
+  border: 1px solid var(--bili-code-block-border-color);
+  border-radius: var(--bili-code-block-radius);
 
   // ---------------------------------------------------------------- header
   @include e(header) {
