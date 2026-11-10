@@ -1,0 +1,131 @@
+@use '../../../styles/mixins' as *;
+
+@include b(calendar) {
+  width: 300px;
+  padding: 12px;
+  font-size: var(--bili-font-size-base);
+  color: var(--bili-text-regular);
+  background-color: var(--bili-bg-container);
+  border: 1px solid var(--bili-border-color-light);
+  border-radius: var(--bili-radius-md);
+
+  @include e(header) {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2px 10px;
+  }
+
+  @include e(nav) {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+  }
+
+  @include e(nav-button) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    font-size: 12px;
+    color: var(--bili-text-secondary);
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    border-radius: var(--bili-radius-sm);
+
+    &:hover {
+      color: var(--bili-text-primary);
+      background-color: var(--bili-fill-color);
+    }
+  }
+
+  @include e(label) {
+    font-size: var(--bili-font-size-base);
+    font-weight: var(--bili-font-weight-medium);
+    color: var(--bili-text-primary);
+  }
+
+  @include e(today) {
+    padding: 2px 6px;
+    font-size: var(--bili-font-size-xs);
+    color: var(--bili-color-primary);
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    border-radius: var(--bili-radius-sm);
+
+    &:hover {
+      background-color: var(--bili-color-primary-light);
+    }
+  }
+
+  @include e(weekdays) {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--bili-border-color-lighter);
+  }
+
+  @include e(weekday) {
+    font-size: var(--bili-font-size-xs);
+    color: var(--bili-text-secondary);
+    text-align: center;
+  }
+
+  @include e(days) {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    padding-top: 6px;
+  }
+
+  @include e(day) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 34px;
+    padding: 0;
+    font-size: var(--bili-font-size-sm);
+    color: var(--bili-text-regular);
+    cursor: pointer;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--bili-radius-sm);
+    transition:
+      background-color var(--bili-transition-duration-fast) var(--bili-transition-function),
+      color var(--bili-transition-duration-fast) var(--bili-transition-function),
+      border-color var(--bili-transition-duration-fast) var(--bili-transition-function);
+
+    &:hover:not(:disabled) {
+      background-color: var(--bili-fill-color-light);
+    }
+
+    &.is-outside {
+      color: var(--bili-text-placeholder);
+    }
+
+    &.is-today {
+      font-weight: var(--bili-font-weight-medium);
+      color: var(--bili-color-primary);
+      border-color: var(--bili-color-primary);
+    }
+
+    &.is-selected {
+      font-weight: var(--bili-font-weight-medium);
+      color: var(--bili-color-on-primary);
+      background-color: var(--bili-color-primary);
+      border-color: var(--bili-color-primary);
+    }
+
+    &.is-disabled {
+      color: var(--bili-text-placeholder);
+      cursor: not-allowed;
+      background-color: transparent;
+      opacity: 0.5;
+    }
+  }
+}

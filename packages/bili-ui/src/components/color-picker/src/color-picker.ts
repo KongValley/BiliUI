@@ -1,0 +1,37 @@
+import type { PropType } from 'vue'
+import type { ComponentSize } from '../../../utils/types'
+
+export const colorPickerProps = {
+  modelValue: {
+    type: String,
+    default: ''
+  },
+  placeholder: {
+    type: String,
+    default: '请选择颜色'
+  },
+  size: {
+    type: String as PropType<ComponentSize>,
+    default: 'md'
+  },
+  disabled: Boolean,
+  clearable: Boolean,
+  /** Swatches shown below the picker. */
+  presets: {
+    type: Array as PropType<string[]>,
+    default: () => [
+      '#e0356b',
+      '#fb7299',
+      '#fa8c16',
+      '#fadb14',
+      '#52c41a',
+      '#13c2c2',
+      '#1677ff',
+      '#722ed1',
+      '#eb2f96',
+      '#000000',
+      '#595959',
+      '#ffffff'
+    ]
+  }
+} as const

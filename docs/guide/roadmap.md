@@ -1,7 +1,7 @@
 # Bili UI 组件开发计划
 
-> 现状：47 个组件目录 / 67 个对外组件，397 个单测。
-> 进度：P0 已完成；P1 除 DatePicker / TimePicker 外已完成；P2 已完成；P3 已完成 4 项（Cascader、Tree / TreeSelect、Transfer、Rate）。
+> 现状：51 个组件目录 / 72 个对外组件，425 个单测。
+> 进度：P0 已完成；P1 除 DatePicker / TimePicker 外已完成；P2 已完成；P3 已完成 8 项（Cascader、Tree / TreeSelect、Transfer、Rate、ColorPicker、Calendar、Timeline、Statistic）。
 > 每个组件的完成标准一致：`index.ts` + `src` + `style` + `__tests__` + 文档页 + 示例 + 注册导出 + 全量校验通过。
 
 ## 批次划分
@@ -11,7 +11,7 @@
 | P0 | 补齐页面级高频刚需 | 8 | ✅ 已完成 | 缺了它们几乎做不了完整业务页面 |
 | P1 | 中后台进阶场景 | 10 | ⏳ 除 DatePicker / TimePicker 外已完成 | 分步流程、上传、日期、气泡卡片等 |
 | P2 | 现有组件能力补强 | 4 项 | ✅ 已完成 | 提升既有组件的深度而非广度 |
-| P3 | 长尾组件池 | 17 | ⏳ 已完成 4 项，其余按需排期 | 按实际业务需要排期 |
+| P3 | 长尾组件池 | 17 | ⏳ 已完成 8 项，其余按需排期 | 按实际业务需要排期 |
 
 ---
 
@@ -149,9 +149,9 @@ success / warning / info / error / 403 / 404 / 500 预设插画、标题 + 副�
 
 ## P3 · 长尾组件池（17 个，部分完成 ⏳）
 
-已完成：**Cascader 级联选择 ✅、Tree / TreeSelect ✅、Transfer 穿梭框 ✅、Rate 评分 ✅**。
+已完成：**Cascader 级联选择 ✅、Tree / TreeSelect ✅、Transfer 穿梭框 ✅、Rate 评分 ✅、ColorPicker 取色器 ✅、Calendar 日历 ✅、Timeline 时间线 ✅、Statistic 数值统计 ✅**。
 
-待排期：ColorPicker 取色器、Calendar 日历、Timeline 时间线、Statistic 数值统计、Image 图片预览、Carousel 走马灯、Anchor 锚点、BackTop 回到顶部、Affix 固钉、Watermark 水印、Tour 引导、QRCode 二维码、ConfigProvider 全局配置。
+待排期：Image 图片预览、Carousel 走马灯、Anchor 锚点、BackTop 回到顶部、Affix 固钉、Watermark 水印、Tour 引导、QRCode 二维码、ConfigProvider 全局配置。
 
 ---
 
@@ -160,7 +160,7 @@ success / warning / info / error / 403 / 404 / 500 预设插画、标题 + 副�
 1. DatePicker / TimePicker：补齐 P1 最后一项。
 2. ConfigProvider + 国际化：为后续组件统一尺寸、`zIndex` 与文案，避免再次硬编码中文。
 3. 按需样式与发布流程：拆分样式入口，接入 `changeset`、npm 发布与 CI 全量校验。
-4. 其余 P3 组件按业务优先级从 Image 预览 / ColorPicker / Timeline 开始。
+4. 其余 P3 组件按业务优先级从 Image 预览 / Carousel / Anchor 开始。
 
 ---
 

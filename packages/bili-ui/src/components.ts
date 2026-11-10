@@ -31,6 +31,10 @@ import { BiliTree } from './components/tree'
 import { BiliTreeSelect } from './components/tree-select'
 import { BiliTransfer } from './components/transfer'
 import { BiliRate } from './components/rate'
+import { BiliColorPicker } from './components/color-picker'
+import { BiliCalendar } from './components/calendar'
+import { BiliTimeline, BiliTimelineItem } from './components/timeline'
+import { BiliStatistic } from './components/statistic'
 import { BiliForm, BiliFormItem, BiliFormList } from './components/form'
 import { BiliTooltip } from './components/tooltip'
 import { BiliDialog } from './components/dialog'
@@ -88,6 +92,10 @@ export * from './components/tree'
 export * from './components/tree-select'
 export * from './components/transfer'
 export * from './components/rate'
+export * from './components/color-picker'
+export * from './components/calendar'
+export * from './components/timeline'
+export * from './components/statistic'
 export * from './components/form'
 export * from './components/tooltip'
 export * from './components/dialog'
@@ -146,6 +154,11 @@ export const components = [
   BiliTreeSelect,
   BiliTransfer,
   BiliRate,
+  BiliColorPicker,
+  BiliCalendar,
+  BiliTimeline,
+  BiliTimelineItem,
+  BiliStatistic,
   BiliForm,
   BiliFormItem,
   BiliFormList,

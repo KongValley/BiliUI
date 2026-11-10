@@ -1,0 +1,45 @@
+@use '../../../styles/mixins' as *;
+
+@include b(statistic) {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+
+  @include e(title) {
+    font-size: var(--bili-font-size-sm);
+    line-height: 1.4;
+    color: var(--bili-text-secondary);
+  }
+
+  @include e(value-row) {
+    display: inline-flex;
+    gap: 4px;
+    align-items: baseline;
+    min-width: 0;
+  }
+
+  @include e(value) {
+    font-size: 24px;
+    font-weight: var(--bili-font-weight-medium);
+    font-variant-numeric: tabular-nums;
+    line-height: 1.2;
+    color: var(--bili-text-primary);
+    overflow-wrap: anywhere;
+  }
+
+  &__prefix,
+  &__suffix {
+    font-size: var(--bili-font-size-base);
+    color: var(--bili-text-regular);
+    white-space: nowrap;
+  }
+
+  @include e(prefix) {
+    margin-right: 2px;
+  }
+
+  @include e(suffix) {
+    margin-left: 2px;
+  }
+}
