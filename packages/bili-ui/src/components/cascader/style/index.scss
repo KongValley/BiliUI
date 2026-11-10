@@ -1,0 +1,229 @@
+@use '../../../styles/mixins' as *;
+
+@include b(cascader) {
+  --bili-cascader-height: var(--bili-control-height-md);
+  --bili-cascader-padding: var(--bili-control-padding-md);
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  min-width: 0;
+  height: var(--bili-cascader-height);
+  padding: 0 var(--bili-cascader-padding);
+  font-size: var(--bili-font-size-base);
+  color: var(--bili-text-primary);
+  cursor: pointer;
+  background-color: var(--bili-bg-container);
+  border: 1px solid var(--bili-border-color);
+  border-radius: var(--bili-radius-base);
+  outline: none;
+  transition:
+    border-color var(--bili-transition-duration) var(--bili-transition-function),
+    box-shadow var(--bili-transition-duration) var(--bili-transition-function);
+
+  &:hover {
+    border-color: var(--bili-color-primary-hover);
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 3px var(--bili-color-primary-light);
+  }
+
+  @include when(open) {
+    border-color: var(--bili-color-primary);
+    box-shadow: 0 0 0 3px var(--bili-color-primary-light);
+  }
+
+  @include when(disabled) {
+    cursor: not-allowed;
+    background-color: var(--bili-bg-disabled);
+    border-color: var(--bili-border-color-light);
+
+    .#{$namespace}-cascader__value {
+      color: var(--bili-text-placeholder);
+    }
+  }
+
+  @include e(value) {
+    @include utils-ellipsis;
+
+    flex: 1;
+    min-width: 0;
+
+    &.is-placeholder {
+      color: var(--bili-text-placeholder);
+    }
+  }
+
+  @include e(suffix) {
+    display: inline-flex;
+    flex-shrink: 0;
+    gap: 4px;
+    align-items: center;
+    color: var(--bili-text-secondary);
+  }
+
+  @include e(clear) {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    font-size: 14px;
+    color: var(--bili-text-secondary);
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    border-radius: 50%;
+
+    &:hover {
+      color: var(--bili-text-regular);
+    }
+  }
+
+  &:hover .#{$namespace}-cascader__clear,
+  &.is-open .#{$namespace}-cascader__clear {
+    display: inline-flex;
+  }
+
+  @include e(arrow) {
+    font-size: 12px;
+    transition: transform var(--bili-transition-duration) var(--bili-transition-function-spring);
+  }
+
+  @include when(open) {
+    .#{$namespace}-cascader__arrow {
+      transform: rotate(180deg);
+    }
+  }
+
+  @include m(sm) {
+    --bili-cascader-height: var(--bili-control-height-sm);
+    --bili-cascader-padding: var(--bili-control-padding-sm);
+    font-size: var(--bili-font-size-sm);
+  }
+
+  @include m(lg) {
+    --bili-cascader-height: var(--bili-control-height-lg);
+    --bili-cascader-padding: var(--bili-control-padding-lg);
+  }
+}
+
+@include b(cascader) {
+  @include e(panel) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 4px;
+    background-color: var(--bili-bg-elevated);
+    border: 1px solid var(--bili-border-color-light);
+    border-radius: var(--bili-radius-md);
+    box-shadow: var(--bili-shadow-base);
+    will-change: transform;
+  }
+
+  @include e(columns) {
+    display: flex;
+    max-height: 264px;
+  }
+
+  @include e(column) {
+    display: flex;
+    flex-direction: column;
+    min-width: 156px;
+    max-height: 264px;
+    padding-right: 4px;
+    overflow-y: auto;
+    border-right: 1px solid var(--bili-border-color-lighter);
+    @include utils-scrollbar;
+
+    &:last-child {
+      padding-right: 0;
+      border-right: 0;
+    }
+  }
+
+  @include e(option) {
+    display: flex;
+    flex-shrink: 0;
+    gap: 6px;
+    align-items: center;
+    width: 100%;
+    padding: 7px 10px;
+    font-size: var(--bili-font-size-base);
+    line-height: 1.4;
+    color: var(--bili-text-regular);
+    text-align: left;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    border-radius: var(--bili-radius-sm);
+    transition:
+      background-color var(--bili-transition-duration-fast) var(--bili-transition-function),
+      color var(--bili-transition-duration-fast) var(--bili-transition-function);
+
+    &:hover,
+    &.is-active {
+      background-color: var(--bili-fill-color-light);
+    }
+
+    &.is-selected {
+      font-weight: var(--bili-font-weight-medium);
+      color: var(--bili-color-primary);
+      background-color: var(--bili-color-primary-light);
+    }
+
+    &.is-disabled {
+      color: var(--bili-text-placeholder);
+      cursor: not-allowed;
+      background-color: transparent;
+    }
+  }
+
+  @include e(option-label) {
+    @include utils-ellipsis;
+
+    flex: 1;
+  }
+
+  @include e(option-arrow) {
+    flex-shrink: 0;
+    font-size: 12px;
+    color: var(--bili-text-placeholder);
+  }
+
+  @include e(option-check) {
+    flex-shrink: 0;
+    font-size: 13px;
+    color: var(--bili-color-primary);
+    animation: bili-pop-in var(--bili-transition-duration) var(--bili-transition-function-out);
+  }
+
+  @include e(empty) {
+    padding: 20px 24px;
+    font-size: var(--bili-font-size-sm);
+    color: var(--bili-text-secondary);
+    text-align: center;
+  }
+}
+
+.bili-cascader-dropdown-enter-active {
+  transition:
+    opacity var(--bili-transition-duration-fast) var(--bili-transition-function),
+    transform var(--bili-transition-duration) var(--bili-transition-function-out);
+}
+
+.bili-cascader-dropdown-leave-active {
+  transition:
+    opacity var(--bili-transition-duration-fast) var(--bili-transition-function-in),
+    transform var(--bili-transition-duration-fast) var(--bili-transition-function-in);
+}
+
+.bili-cascader-dropdown-enter-from,
+.bili-cascader-dropdown-leave-to {
+  opacity: 0;
+  transform: translateY(-6px) scale(0.96);
+}

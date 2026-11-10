@@ -1,0 +1,178 @@
+@use '../../../styles/mixins' as *;
+
+@include b(transfer) {
+  display: flex;
+  gap: 12px;
+  align-items: stretch;
+  width: 100%;
+  font-size: var(--bili-font-size-base);
+  color: var(--bili-text-regular);
+
+  @include e(panel) {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+    background-color: var(--bili-bg-container);
+    border: 1px solid var(--bili-border-color);
+    border-radius: var(--bili-radius-md);
+  }
+
+  @include e(header) {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding: 9px 12px;
+    background-color: var(--bili-bg-muted);
+    border-bottom: 1px solid var(--bili-border-color-lighter);
+  }
+
+  @include e(title) {
+    @include utils-ellipsis;
+
+    font-size: var(--bili-font-size-sm);
+    font-weight: var(--bili-font-weight-medium);
+    color: var(--bili-text-primary);
+  }
+
+  @include e(count) {
+    margin-left: auto;
+    font-size: var(--bili-font-size-xs);
+    color: var(--bili-text-secondary);
+    white-space: nowrap;
+  }
+
+  @include e(filter) {
+    padding: 8px 8px 0;
+  }
+
+  @include e(filter-input) {
+    width: 100%;
+    height: 30px;
+    padding: 0 8px;
+    font: inherit;
+    font-size: var(--bili-font-size-sm);
+    color: var(--bili-text-primary);
+    background-color: var(--bili-bg-container);
+    border: 1px solid var(--bili-border-color);
+    border-radius: var(--bili-radius-sm);
+    outline: none;
+    transition:
+      border-color var(--bili-transition-duration) var(--bili-transition-function),
+      box-shadow var(--bili-transition-duration) var(--bili-transition-function);
+
+    &::placeholder {
+      color: var(--bili-text-placeholder);
+    }
+
+    &:focus {
+      border-color: var(--bili-color-primary);
+      box-shadow: 0 0 0 3px var(--bili-color-primary-light);
+    }
+  }
+
+  @include e(list) {
+    flex: 1;
+    min-height: 220px;
+    max-height: 280px;
+    padding: 4px;
+    overflow-y: auto;
+    @include utils-scrollbar;
+  }
+
+  @include e(item) {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding: 6px 8px;
+    cursor: pointer;
+    border-radius: var(--bili-radius-sm);
+    transition: background-color var(--bili-transition-duration-fast) var(--bili-transition-function);
+
+    &:hover {
+      background-color: var(--bili-fill-color-light);
+    }
+
+    &.is-checked {
+      background-color: var(--bili-color-primary-light);
+    }
+
+    &.is-disabled {
+      color: var(--bili-text-placeholder);
+      cursor: not-allowed;
+      background-color: transparent;
+    }
+  }
+
+  @include e(item-label) {
+    @include utils-ellipsis;
+
+    min-width: 0;
+  }
+
+  @include e(empty) {
+    padding: 32px 12px;
+    font-size: var(--bili-font-size-sm);
+    color: var(--bili-text-secondary);
+    text-align: center;
+  }
+
+  @include e(actions) {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    padding: 0 2px;
+  }
+
+  @include e(action) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    font-size: 14px;
+    color: var(--bili-text-regular);
+    cursor: pointer;
+    background-color: var(--bili-bg-container);
+    border: 1px solid var(--bili-border-color);
+    border-radius: 50%;
+    transition:
+      color var(--bili-transition-duration) var(--bili-transition-function),
+      border-color var(--bili-transition-duration) var(--bili-transition-function),
+      background-color var(--bili-transition-duration) var(--bili-transition-function);
+
+    &:hover:not(:disabled) {
+      color: var(--bili-color-primary);
+      background-color: var(--bili-color-primary-light);
+      border-color: var(--bili-color-primary);
+    }
+
+    &:disabled {
+      color: var(--bili-text-placeholder);
+      cursor: not-allowed;
+      background-color: var(--bili-bg-muted);
+    }
+  }
+
+  @include when(disabled) {
+    .#{$namespace}-transfer__item {
+      cursor: not-allowed;
+    }
+  }
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+
+    .#{$namespace}-transfer__actions {
+      flex-direction: row;
+    }
+
+    .#{$namespace}-transfer__action {
+      transform: rotate(90deg);
+    }
+  }
+}

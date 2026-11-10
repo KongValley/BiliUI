@@ -61,9 +61,13 @@ export default defineConfig({
             { text: 'Radio 单选框', link: '/components/radio' },
             { text: 'Switch 开关', link: '/components/switch' },
             { text: 'Select 选择器', link: '/components/select' },
+            { text: 'Cascader 级联选择', link: '/components/cascader' },
+            { text: 'TreeSelect 树选择', link: '/components/tree-select' },
             { text: 'InputNumber 数字输入', link: '/components/input-number' },
             { text: 'Slider 滑块', link: '/components/slider' },
             { text: 'Upload 上传', link: '/components/upload' },
+            { text: 'Transfer 穿梭框', link: '/components/transfer' },
+            { text: 'Rate 评分', link: '/components/rate' },
             { text: 'Form 表单', link: '/components/form' }
           ]
         },
@@ -86,6 +90,7 @@ export default defineConfig({
             { text: 'Card 卡片', link: '/components/card' },
             { text: 'Chart 图表', link: '/components/chart' },
             { text: 'Table 表格', link: '/components/table' },
+            { text: 'Tree 树形控件', link: '/components/tree' },
             { text: 'Pagination 分页', link: '/components/pagination' },
             { text: 'Progress 进度条', link: '/components/progress' },
             { text: 'Skeleton 骨架屏', link: '/components/skeleton' },

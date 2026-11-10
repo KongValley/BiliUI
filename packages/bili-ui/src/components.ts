@@ -26,6 +26,11 @@ import { BiliCheckbox, BiliCheckboxGroup } from './components/checkbox'
 import { BiliRadio, BiliRadioGroup } from './components/radio'
 import { BiliSwitch } from './components/switch'
 import { BiliSelect } from './components/select'
+import { BiliCascader } from './components/cascader'
+import { BiliTree } from './components/tree'
+import { BiliTreeSelect } from './components/tree-select'
+import { BiliTransfer } from './components/transfer'
+import { BiliRate } from './components/rate'
 import { BiliForm, BiliFormItem, BiliFormList } from './components/form'
 import { BiliTooltip } from './components/tooltip'
 import { BiliDialog } from './components/dialog'
@@ -78,6 +83,11 @@ export * from './components/checkbox'
 export * from './components/radio'
 export * from './components/switch'
 export * from './components/select'
+export * from './components/cascader'
+export * from './components/tree'
+export * from './components/tree-select'
+export * from './components/transfer'
+export * from './components/rate'
 export * from './components/form'
 export * from './components/tooltip'
 export * from './components/dialog'
@@ -131,6 +141,11 @@ export const components = [
   BiliRadioGroup,
   BiliSwitch,
   BiliSelect,
+  BiliCascader,
+  BiliTree,
+  BiliTreeSelect,
+  BiliTransfer,
+  BiliRate,
   BiliForm,
   BiliFormItem,
   BiliFormList,

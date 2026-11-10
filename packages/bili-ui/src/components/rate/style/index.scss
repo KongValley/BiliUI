@@ -1,0 +1,85 @@
+@use '../../../styles/mixins' as *;
+
+@include b(rate) {
+  display: inline-flex;
+  gap: 2px;
+  align-items: center;
+  font-size: 20px;
+  line-height: 1;
+  outline: none;
+
+  &:focus-visible {
+    box-shadow: 0 0 0 3px var(--bili-color-primary-light);
+    border-radius: var(--bili-radius-sm);
+  }
+
+  @include e(item) {
+    position: relative;
+    display: inline-flex;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: transform var(--bili-transition-duration-fast) var(--bili-transition-function-spring);
+
+    &:hover {
+      transform: scale(1.12);
+    }
+  }
+
+  @include e(icon-void) {
+    display: block;
+    color: var(--bili-text-placeholder);
+  }
+
+  @include e(fill) {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    display: inline-flex;
+    overflow: hidden;
+    color: var(--bili-color-primary);
+    pointer-events: none;
+
+    .#{$namespace}-rate__icon {
+      flex-shrink: 0;
+      color: currentColor;
+    }
+  }
+
+  @include e(icon) {
+    display: block;
+  }
+
+  @include e(text) {
+    margin-left: 8px;
+    font-size: var(--bili-font-size-sm);
+    line-height: 1;
+    color: var(--bili-text-regular);
+  }
+
+  @include m(sm) {
+    font-size: 16px;
+  }
+
+  @include m(lg) {
+    font-size: 26px;
+  }
+
+  @include when(disabled) {
+    cursor: not-allowed;
+
+    .#{$namespace}-rate__item {
+      cursor: not-allowed;
+    }
+  }
+
+  @include when(readonly) {
+    .#{$namespace}-rate__item {
+      cursor: default;
+
+      &:hover {
+        transform: none;
+      }
+    }
+  }
+}
