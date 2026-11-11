@@ -45,7 +45,7 @@ import 'bili-ui/style.css'
 </template>
 ```
 
-> 当前版本提供整包样式 `bili-ui/style.css`，按组件粒度拆分样式将在后续版本提供。
+> 需要减小 CSS 体积时，改用按需样式入口，详见[按需样式](/guide/on-demand)。
 
 ## 主题与暗色模式
 
@@ -67,6 +67,25 @@ document.documentElement.classList.toggle('dark')
 ```
 
 如果使用 VitePress，主题切换按钮会天然与该机制对齐。
+
+## SSR / Nuxt
+
+组件在 `setup` 阶段不访问 `document` / `window`，可直接用于 SSR。Nuxt 3 中创建一个插件即可：
+
+```ts
+// plugins/bili-ui.ts
+import BiliUI from 'bili-ui'
+import 'bili-ui/style.css'
+
+export default defineNuxtPlugin(nuxtApp => {
+  nuxtApp.vueApp.use(BiliUI)
+})
+```
+
+- Teleport 浮层（Dialog、Drawer、Tooltip 等）在服务端不会渲染内容，客户端挂载后正常显示。
+- 需要浏览器尺寸的组件（Chart、VirtualList、Affix 等）在 `onMounted` 后才开始测量。
+- 自定义主题色时在插件或客户端入口调用 `setThemeColor`，避免在服务端写入 `<style>`。
+- 仓库包含 `vue/server-renderer` 冒烟测试，覆盖表单、表格、日期、浮层与新增组件。
 
 ## 浏览器支持
 

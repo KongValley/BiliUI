@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { mount } from '@vue/test-utils'
-import { h } from 'vue'
+import { h, nextTick } from 'vue'
 import Checkbox from '../checkbox.vue'
 import CheckboxGroup from '../checkbox-group.vue'
 
@@ -49,6 +49,20 @@ describe('BiliCheckbox', () => {
 
     const inputs = wrapper.findAll('input')
     await inputs[1].setValue(true)
+    expect(wrapper.emitted('update:modelValue')).toBeUndefined()
+  })
+
+  it('exposes the indeterminate state to the native input', async () => {
+    const wrapper = mount(Checkbox, { props: { indeterminate: true } })
+    await nextTick()
+    expect(wrapper.classes()).toContain('is-indeterminate')
+    expect((wrapper.find('input').element as HTMLInputElement).indeterminate).toBe(true)
+  })
+
+  it('does not toggle when disabled', async () => {
+    const wrapper = mount(Checkbox, { props: { disabled: true } })
+    await wrapper.find('input').setValue(true)
+    expect(wrapper.classes()).toContain('is-disabled')
     expect(wrapper.emitted('update:modelValue')).toBeUndefined()
   })
 })

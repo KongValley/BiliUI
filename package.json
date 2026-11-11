@@ -17,9 +17,14 @@
     "test:watch": "pnpm --filter bili-ui test:watch",
     "typecheck": "pnpm --filter bili-ui typecheck",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "changeset publish",
+    "ssr:check": "pnpm --filter bili-ui test -- src/__tests__/ssr.test.ts"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.29.7",
     "@eslint/js": "^10.0.1",
     "eslint": "^10.14.0",
     "eslint-config-prettier": "^10.1.8",

@@ -52,6 +52,24 @@ describe('BiliTooltip', () => {
       document.body.querySelector('.bili-tooltip__content.custom-tooltip-theme')
     ).not.toBeNull()
   })
+
+  it('links the trigger to the tooltip through aria-describedby', async () => {
+    const wrapper = mount(Tooltip, {
+      props: { content: '提示内容', delay: 0 },
+      slots: { default: '<button>hover</button>' },
+      attachTo: document.body
+    })
+    const trigger = wrapper.find('.bili-tooltip__trigger')
+
+    expect(trigger.attributes('aria-describedby')).toBeUndefined()
+
+    await trigger.trigger('mouseenter')
+    await flushPromises()
+
+    const id = trigger.attributes('aria-describedby')
+    expect(id).toBeTruthy()
+    expect(document.getElementById(id!)?.classList.contains('bili-tooltip__content')).toBe(true)
+  })
 })
 
 describe('BiliLoading', () => {

@@ -83,4 +83,29 @@ describe('BiliDialog', () => {
 
     expect(wrapper.emitted('update:modelValue')).toBeUndefined()
   })
+
+  it('closes when the mask is clicked and respects closeOnClickModal', async () => {
+    const wrapper = mount(Dialog, {
+      props: { modelValue: true, title: '提示' },
+      attachTo: document.body
+    })
+    await nextTick()
+
+    document.body
+      .querySelector<HTMLElement>('.bili-dialog__overlay')
+      ?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    await nextTick()
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([false])
+
+    const locked = mount(Dialog, {
+      props: { modelValue: true, title: '提示', closeOnClickModal: false },
+      attachTo: document.body
+    })
+    await nextTick()
+    document.body
+      .querySelector<HTMLElement>('.bili-dialog__overlay')
+      ?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    await nextTick()
+    expect(locked.emitted('update:modelValue')).toBeUndefined()
+  })
 })

@@ -1,7 +1,7 @@
 # Bili UI 组件开发计划
 
-> 现状：62 个组件目录 / 85 个对外组件，535 个单测。
-> 进度：P0、P1、P2、P3 已全部完成。
+> 现状：69 个组件目录 / 95 个对外组件，635 个单测。
+> 进度：P0、P1、P2、P3、P4 已全部完成。
 > 每个组件的完成标准一致：`index.ts` + `src` + `style` + `__tests__` + 文档页 + 示例 + 注册导出 + 全量校验通过。
 
 ## 批次划分
@@ -12,6 +12,7 @@
 | P1   | 中后台进阶场景     | 10     | ✅ 已完成 | 分步流程、上传、日期、气泡卡片等 |
 | P2   | 现有组件能力补强   | 4 项   | ✅ 已完成 | 提升既有组件的深度而非广度       |
 | P3   | 长尾组件池         | 17     | ✅ 已完成 | 长尾能力已全部落地               |
+| P4   | 扩展组件池         | 7      | ✅ 已完成 | 列表、虚拟列表、排版、分割等     |
 
 ---
 
@@ -156,12 +157,17 @@ P3 组件池已全部完成，后续按业务反馈补充新组件。
 
 ---
 
+## P4 · 扩展组件池（7 个，已完成 ✅）
+
+已完成：**Segmented 分段控制器 ✅、List 列表 ✅、VirtualList 虚拟列表 ✅、Typography 排版 ✅、Splitter 面板分割 ✅、AutoComplete 自动补全 ✅、Mention 提及 ✅**。
+
+---
+
 ## 下一批建议
 
-1. 发布流程：接入 `changeset`、npm 发布与 CI 全量校验。
-2. SSR / Nuxt 适配：Teleport、ResizeObserver 与 `document` 访问点冒烟测试。
-3. 文档站增强：示例在线编辑已支持，可继续增加分享链接与 API 表按组件内嵌。
-4. 按业务反馈补充新组件，并在新增文案时同步扩充 `BiliLocale` 字段。
+1. 真实 Nuxt 示例项目与 Nuxt Module 封装，覆盖 SSR 水合与按需样式。
+2. 无障碍与键盘交互专项审计，补充 axe-core 自动化检查。
+3. 按业务反馈继续补充组件，并在新增文案时同步扩充 `BiliLocale` 字段。
 
 ---
 
@@ -172,8 +178,8 @@ P3 组件池已全部完成，后续按业务反馈补充新组件。
 - ✅ 样式覆写：50+ 组件提供组件级 CSS 变量，BackTop / Affix / Watermark / QRCode 的动态尺寸与位置改为 CSS 变量消费；浮层支持 `popper-class` / `overlay-class` / `panel-class` / `preview-class`，多实例主题可隔离
 - ✅ 文档站新增《样式覆写》指南，主题文档与组件 API 表同步更新
 - ✅ 按需样式：`styles/index.scss` 保持全量入口，同时生成 `dist/components/<component>/style.css`，支持 `import 'bili-ui/components/button/style.css'`（含依赖样式与设计令牌）
-- ✅ 示例可编辑：DemoBlock 支持在线编辑、运行、重置与取消，编译结果使用独立 scoped 样式
-- ✅ API 表自动生成：`vue-component-meta` 扫描 85 个组件生成 `/guide/api` 参考页
-- ⏳ SSR / Nuxt：现有 `Teleport`、`ResizeObserver`、`document` 访问点做一轮 SSR 冒烟测试
+- ✅ 示例可编辑：DemoBlock 支持在线编辑、运行、重置、取消与分享链接，编译结果使用独立 scoped 样式
+- ✅ API 表自动生成：`vue-component-meta` 扫描 95 个组件生成 `/guide/api` 参考页，并支持 `<ApiReference name="BiliButton" />` 按组件内嵌
 - ✅ 文档站组件搜索（VitePress local search 已接入）
-- ⏳ 发布：`changeset` 版本管理 + npm 发布流程 + CI 跑全量校验
+- ✅ SSR：`vue/server-renderer` 组件树冒烟测试覆盖表单、表格、日期、浮层与新组件
+- ✅ 发布：`changeset` 版本管理、npm `publishConfig`、GitHub Actions CI 与 Release 工作流已配置（发布需仓库配置 `NPM_TOKEN`）

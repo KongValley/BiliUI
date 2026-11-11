@@ -7,16 +7,16 @@ title: InputNumber 数字输入
 用于需要精确输入的数值场景，支持步进、精度控制与范围约束。
 
 <script setup>
-import DemoSlider from '../examples/slider/basic.vue'
-import sliderCode from '../examples/slider/basic.vue?raw'
+import DemoBasic from '../examples/input-number/basic.vue'
+import basicCode from '../examples/input-number/basic.vue?raw'
 </script>
 
 ## 基础用法
 
 `v-model` 绑定数值，`step` 与 `precision` 控制步长与小数位，失焦时自动收敛到 `[min, max]`。
 
-<DemoBlock :code="sliderCode">
-  <DemoSlider />
+<DemoBlock :code="basicCode">
+  <DemoBasic />
 </DemoBlock>
 
 ## API

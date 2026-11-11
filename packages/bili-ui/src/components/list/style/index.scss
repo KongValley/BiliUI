@@ -1,0 +1,93 @@
+@use '../../../styles/mixins' as *;
+
+@include b(list) {
+  --bili-list-bg: var(--bili-bg-container);
+  --bili-list-border-color: var(--bili-border-color-light);
+  --bili-list-radius: var(--bili-radius-md);
+  --bili-list-padding-y: 12px;
+  --bili-list-padding-x: 16px;
+  --bili-list-font-size: var(--bili-font-size-base);
+  --bili-list-color: var(--bili-text-regular);
+  --bili-list-header-bg: var(--bili-fill-color-lighter);
+  --bili-list-hover-bg: var(--bili-fill-color-light);
+  --bili-list-loading-bg: rgb(255 255 255 / 72%);
+
+  overflow: hidden;
+  font-size: var(--bili-list-font-size);
+  color: var(--bili-list-color);
+  background-color: var(--bili-list-bg);
+
+  &__header,
+  &__footer {
+    padding: var(--bili-list-padding-y) var(--bili-list-padding-x);
+    font-size: var(--bili-font-size-sm);
+    font-weight: var(--bili-font-weight-medium);
+    color: var(--bili-text-secondary);
+    background-color: var(--bili-list-header-bg);
+  }
+
+  @include e(header) {
+    border-bottom: 1px solid var(--bili-list-border-color);
+  }
+
+  @include e(footer) {
+    border-top: 1px solid var(--bili-list-border-color);
+  }
+
+  @include e(body) {
+    position: relative;
+  }
+
+  @include e(item) {
+    padding: var(--bili-list-padding-y) var(--bili-list-padding-x);
+    transition: background-color var(--bili-transition-duration-fast)
+      var(--bili-transition-function);
+  }
+
+  @include is(split) {
+    .#{$namespace}-list__item + .#{$namespace}-list__item {
+      border-top: 1px solid var(--bili-list-border-color);
+    }
+  }
+
+  @include is(hoverable) {
+    .#{$namespace}-list__item:hover {
+      background-color: var(--bili-list-hover-bg);
+    }
+  }
+
+  @include is(bordered) {
+    border: 1px solid var(--bili-list-border-color);
+    border-radius: var(--bili-list-radius);
+  }
+
+  @include e(empty) {
+    padding: 8px var(--bili-list-padding-x);
+  }
+
+  @include e(loading) {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bili-list-loading-bg);
+    backdrop-filter: blur(1px);
+  }
+
+  @include m(sm) {
+    --bili-list-padding-y: 8px;
+    --bili-list-padding-x: 12px;
+    --bili-list-font-size: var(--bili-font-size-sm);
+  }
+
+  @include m(lg) {
+    --bili-list-padding-y: 16px;
+    --bili-list-padding-x: 20px;
+    --bili-list-font-size: var(--bili-font-size-md);
+  }
+}
+
+html.dark .bili-list {
+  --bili-list-loading-bg: rgb(27 30 35 / 76%);
+}

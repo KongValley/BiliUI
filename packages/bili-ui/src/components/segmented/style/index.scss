@@ -1,0 +1,118 @@
+@use '../../../styles/mixins' as *;
+
+@include b(segmented) {
+  --bili-segmented-height: 32px;
+  --bili-segmented-padding: 3px;
+  --bili-segmented-gap: 2px;
+  --bili-segmented-bg: var(--bili-fill-color);
+  --bili-segmented-thumb-bg: var(--bili-bg-container);
+  --bili-segmented-thumb-shadow: var(--bili-shadow-sm);
+  --bili-segmented-color: var(--bili-text-secondary);
+  --bili-segmented-active-color: var(--bili-text-primary);
+  --bili-segmented-hover-color: var(--bili-color-primary);
+  --bili-segmented-radius: var(--bili-radius-md);
+  --bili-segmented-item-radius: var(--bili-radius-base);
+  --bili-segmented-font-size: var(--bili-font-size-base);
+
+  position: relative;
+  display: inline-flex;
+  gap: var(--bili-segmented-gap);
+  align-items: center;
+  height: var(--bili-segmented-height);
+  padding: var(--bili-segmented-padding);
+  font-size: var(--bili-segmented-font-size);
+  background-color: var(--bili-segmented-bg);
+  border-radius: var(--bili-segmented-radius);
+
+  @include e(thumb) {
+    position: absolute;
+    top: var(--bili-segmented-padding);
+    bottom: var(--bili-segmented-padding);
+    left: 0;
+    pointer-events: none;
+    background-color: var(--bili-segmented-thumb-bg);
+    border-radius: var(--bili-segmented-item-radius);
+    box-shadow: var(--bili-segmented-thumb-shadow);
+    transition:
+      transform var(--bili-transition-duration) var(--bili-transition-function-out),
+      width var(--bili-transition-duration) var(--bili-transition-function-out),
+      opacity var(--bili-transition-duration-fast) var(--bili-transition-function);
+  }
+
+  @include e(item) {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 0 14px;
+    font: inherit;
+    color: var(--bili-segmented-color);
+    white-space: nowrap;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    border-radius: var(--bili-segmented-item-radius);
+    transition:
+      color var(--bili-transition-duration) var(--bili-transition-function),
+      opacity var(--bili-transition-duration-fast) var(--bili-transition-function);
+
+    &:hover:not(:disabled):not(.is-selected) {
+      color: var(--bili-segmented-hover-color);
+    }
+
+    &.is-selected {
+      font-weight: var(--bili-font-weight-medium);
+      color: var(--bili-segmented-active-color);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: var(--bili-disabled-opacity);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--bili-color-primary);
+      outline-offset: -2px;
+    }
+  }
+
+  @include e(icon) {
+    flex: none;
+  }
+
+  @include is(block) {
+    display: flex;
+    width: 100%;
+
+    .#{$namespace}-segmented__item {
+      flex: 1;
+    }
+  }
+
+  @include when(disabled) {
+    .#{$namespace}-segmented__item {
+      cursor: not-allowed;
+    }
+  }
+
+  @include m(sm) {
+    --bili-segmented-height: 26px;
+    --bili-segmented-font-size: var(--bili-font-size-xs);
+
+    .#{$namespace}-segmented__item {
+      padding: 0 10px;
+    }
+  }
+
+  @include m(lg) {
+    --bili-segmented-height: 40px;
+    --bili-segmented-font-size: var(--bili-font-size-md);
+
+    .#{$namespace}-segmented__item {
+      padding: 0 18px;
+    }
+  }
+}

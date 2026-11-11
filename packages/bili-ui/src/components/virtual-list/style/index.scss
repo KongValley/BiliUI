@@ -1,0 +1,33 @@
+@use '../../../styles/mixins' as *;
+
+@include b(virtual-list) {
+  --bili-virtual-list-bg: var(--bili-bg-container);
+  --bili-virtual-list-color: var(--bili-text-regular);
+  --bili-virtual-list-hover-bg: var(--bili-fill-color-light);
+
+  overflow: auto;
+  font-size: var(--bili-font-size-base);
+  color: var(--bili-virtual-list-color);
+  background-color: var(--bili-virtual-list-bg);
+  contain: strict;
+
+  @include e(phantom) {
+    position: relative;
+    width: 100%;
+  }
+
+  @include e(item) {
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: background-color var(--bili-transition-duration-fast)
+      var(--bili-transition-function);
+
+    &:hover {
+      background-color: var(--bili-virtual-list-hover-bg);
+    }
+  }
+}

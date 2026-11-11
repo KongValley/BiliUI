@@ -35,4 +35,13 @@ describe('BiliButton', () => {
     const wrapper = mount(Button, { props: { loading: true } })
     expect(wrapper.find('.bili-button__loading').exists()).toBe(true)
   })
+
+  it('applies block, round and native type attributes', () => {
+    const wrapper = mount(Button, {
+      props: { block: true, round: true, nativeType: 'submit' }
+    })
+    expect(wrapper.classes()).toContain('is-block')
+    expect(wrapper.classes()).toContain('is-round')
+    expect(wrapper.attributes('type')).toBe('submit')
+  })
 })

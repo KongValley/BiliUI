@@ -1,0 +1,160 @@
+@use '../../../styles/mixins' as *;
+
+@mixin typography-type-colors($block) {
+  @each $type, $token in (
+    secondary: --bili-text-secondary,
+    success: --bili-color-success,
+    warning: --bili-color-warning,
+    danger: --bili-color-danger,
+    disabled: --bili-text-placeholder
+  ) {
+    &.#{$namespace}-#{$block}--#{$type} {
+      color: var(#{$token});
+    }
+  }
+}
+
+@mixin typography-decoration($block) {
+  &.#{$namespace}-#{$block}.is-strong {
+    font-weight: var(--bili-font-weight-semibold);
+  }
+
+  &.#{$namespace}-#{$block}.is-italic {
+    font-style: italic;
+  }
+
+  &.#{$namespace}-#{$block}.is-underline {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  &.#{$namespace}-#{$block}.is-delete {
+    text-decoration: line-through;
+  }
+
+  &.#{$namespace}-#{$block}.is-ellipsis {
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: bottom;
+  }
+
+  &.#{$namespace}-#{$block}.is-ellipsis-multiline {
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    -webkit-box-orient: vertical;
+  }
+}
+
+@include b(text) {
+  font-size: inherit;
+  line-height: inherit;
+  color: var(--bili-text-regular);
+
+  @include typography-type-colors(text);
+  @include typography-decoration(text);
+
+  &.is-mark {
+    padding: 0 3px;
+    color: var(--bili-color-warning);
+    background-color: var(--bili-color-warning-light);
+    border-radius: 3px;
+  }
+
+  &.is-code {
+    padding: 1px 5px;
+    font-family: var(--bili-font-family-mono);
+    font-size: 0.92em;
+    background-color: var(--bili-fill-color);
+    border-radius: var(--bili-radius-sm);
+  }
+}
+
+@include b(title) {
+  margin: 0 0 12px;
+  font-weight: var(--bili-font-weight-semibold);
+  line-height: 1.35;
+  color: var(--bili-text-primary);
+
+  @include typography-type-colors(title);
+  @include typography-decoration(title);
+
+  @include m(level-1) {
+    font-size: 28px;
+  }
+
+  @include m(level-2) {
+    font-size: 24px;
+  }
+
+  @include m(level-3) {
+    font-size: 20px;
+  }
+
+  @include m(level-4) {
+    font-size: 16px;
+  }
+
+  @include m(level-5) {
+    font-size: 14px;
+  }
+}
+
+@include b(paragraph) {
+  margin: 0;
+  font-size: var(--bili-font-size-base);
+  line-height: 1.7;
+  color: var(--bili-text-regular);
+
+  @include typography-type-colors(paragraph);
+  @include typography-decoration(paragraph);
+
+  &.is-spacing {
+    margin-bottom: 12px;
+  }
+}
+
+@include b(link) {
+  color: var(--bili-color-primary);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color var(--bili-transition-duration-fast) var(--bili-transition-function);
+
+  @include typography-type-colors(link);
+
+  &:hover {
+    color: var(--bili-color-primary-hover);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  &.is-underline {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--bili-color-primary);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  &.is-ellipsis {
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: bottom;
+  }
+
+  &.is-disabled {
+    color: var(--bili-text-placeholder);
+    text-decoration: none;
+    cursor: not-allowed;
+  }
+}

@@ -44,4 +44,9 @@ describe('BiliEmpty', () => {
   it('applies the small modifier', () => {
     expect(mount(Empty, { props: { small: true } }).classes()).toContain('is-small')
   })
+
+  it('omits the footer when no action slot is provided', () => {
+    const wrapper = mount(Empty)
+    expect(wrapper.find('.bili-empty__footer').exists()).toBe(false)
+  })
 })

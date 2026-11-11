@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, ref } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { createApp, type App } from 'vue'
 import * as VueRuntime from 'vue'
 import BiliUI, * as BiliExports from 'bili-ui'
@@ -21,10 +21,14 @@ const running = ref(false)
 const error = ref('')
 const live = ref(false)
 const liveRef = ref<HTMLElement | null>(null)
+const shared = ref(false)
+const rootRef = ref<HTMLElement | null>(null)
+let demoIndex = 0
 
 let liveApp: App | null = null
 let styleElement: HTMLStyleElement | null = null
 let demoId = 0
+let copyTimer: ReturnType<typeof setTimeout> | null = null
 
 const lines = computed(() => (props.code ? props.code.trimEnd().split('\n').length : 0))
 
@@ -56,6 +60,76 @@ const resetDraft = () => {
   error.value = ''
   destroyLive()
 }
+
+const encodeDemo = (value: string) => {
+  const bytes = new TextEncoder().encode(value)
+  let binary = ''
+  bytes.forEach(byte => (binary += String.fromCharCode(byte)))
+  return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
+}
+
+const decodeDemo = (value: string) => {
+  const base64 = value.replace(/-/g, '+').replace(/_/g, '/')
+  const padded = base64 + '='.repeat((4 - (base64.length % 4)) % 4)
+  const binary = atob(padded)
+  const bytes = Uint8Array.from(binary, char => char.charCodeAt(0))
+  return new TextDecoder().decode(bytes)
+}
+
+const copyText = async (text: string) => {
+  if (navigator.clipboard?.writeText) {
+    await navigator.clipboard.writeText(text)
+    return
+  }
+  const textarea = document.createElement('textarea')
+  textarea.value = text
+  textarea.style.position = 'fixed'
+  textarea.style.opacity = '0'
+  document.body.appendChild(textarea)
+  textarea.select()
+  document.execCommand('copy')
+  textarea.remove()
+}
+
+const shareDemo = async () => {
+  if (typeof window === 'undefined') return
+  const source = editing.value ? draft.value : props.code ?? ''
+  const url = new URL(window.location.href)
+  url.searchParams.set('demo', encodeDemo(`${demoIndex}:${source}`))
+  try {
+    await copyText(url.toString())
+    shared.value = true
+    if (copyTimer) clearTimeout(copyTimer)
+    copyTimer = setTimeout(() => {
+      shared.value = false
+      copyTimer = null
+    }, 1800)
+  } catch {
+    error.value = '复制失败，请检查浏览器剪贴板权限'
+  }
+}
+
+onMounted(() => {
+  if (rootRef.value) {
+    const blocks = [...document.querySelectorAll('.demo-block')]
+    demoIndex = Math.max(0, blocks.indexOf(rootRef.value))
+  }
+
+  const value = new URLSearchParams(window.location.search).get('demo')
+  if (!value) return
+  try {
+    const decoded = decodeDemo(value)
+    const separator = decoded.indexOf(':')
+    if (separator === -1) return
+    const index = Number(decoded.slice(0, separator))
+    if (index !== demoIndex) return
+    draft.value = decoded.slice(separator + 1)
+    editing.value = true
+    expanded.value = true
+  } catch {
+    // Ignore malformed shared links.
+  }
+})
 
 const formatTypeImports = (source: string) =>
   source.replace(/import\s+type\s*\{[\s\S]*?\}\s*from\s*['"][^'"]+['"];?/g, '')
@@ -160,11 +234,14 @@ const run = async () => {
   }
 }
 
-onBeforeUnmount(destroyLive)
+onBeforeUnmount(() => {
+  destroyLive()
+  if (copyTimer) clearTimeout(copyTimer)
+})
 </script>
 
 <template>
-  <div class="demo-block">
+  <div ref="rootRef" class="demo-block">
     <div v-if="title" class="demo-block__title">{{ title }}</div>
     <div class="demo-block__preview">
       <div v-if="live" ref="liveRef" class="demo-block__live" />
@@ -174,6 +251,9 @@ onBeforeUnmount(destroyLive)
       <span v-if="code" class="demo-block__meta">{{ lines }} 行</span>
       <button v-if="code" class="demo-block__button" type="button" @click="beginEdit">
         编辑示例
+      </button>
+      <button v-if="code" class="demo-block__button" type="button" @click="shareDemo">
+        {{ shared ? '已复制链接' : '分享' }}
       </button>
       <button class="demo-block__button" type="button" @click="expanded = !expanded">
         {{ expanded ? '收起代码' : '查看代码' }}

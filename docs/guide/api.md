@@ -12,6 +12,20 @@ import ApiReference from '../.vitepress/theme/components/ApiReference.vue'
 
 <ApiReference />
 
+## 在组件页内嵌
+
+组件文档页可以按组件名内嵌同一份数据：
+
+```vue
+<script setup>
+import ApiReference from '../.vitepress/theme/components/ApiReference.vue'
+</script>
+
+<ApiReference name="BiliButton" />
+```
+
+不传 `name` 时渲染完整的可搜索 API 参考。
+
 ## 说明
 
 - 数据来源：`packages/bili-ui/src/components/**/*.vue` 的类型定义与 `defineProps` / `defineEmits` / `defineExpose`。

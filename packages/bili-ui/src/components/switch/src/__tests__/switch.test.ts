@@ -37,4 +37,21 @@ describe('BiliSwitch', () => {
     })
     expect(wrapper.text()).toContain('开')
   })
+
+  it('does not toggle while loading', async () => {
+    const wrapper = mount(Switch, { props: { modelValue: false, loading: true } })
+    await wrapper.trigger('click')
+    expect(wrapper.classes()).toContain('is-loading')
+    expect(wrapper.attributes('disabled')).toBeDefined()
+    expect(wrapper.emitted('update:modelValue')).toBeUndefined()
+  })
+
+  it('emits change with the next value and applies a custom width', async () => {
+    const wrapper = mount(Switch, {
+      props: { modelValue: true, activeValue: true, inactiveValue: false, width: 64 }
+    })
+    await wrapper.trigger('click')
+    expect(wrapper.emitted('change')?.[0]).toEqual([false])
+    expect(wrapper.attributes('style')).toContain('--bili-switch-width: 64px')
+  })
 })

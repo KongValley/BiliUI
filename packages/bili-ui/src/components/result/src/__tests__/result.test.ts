@@ -49,4 +49,10 @@ describe('BiliResult', () => {
     expect(wrapper.find('.custom-sub').text()).toBe('副标题')
     expect(wrapper.find('.bili-result__extra .action').text()).toBe('返回首页')
   })
+
+  it('renders every error status as a code block', () => {
+    const wrapper = mount(Result, { props: { status: '500', title: '服务异常' } })
+    expect(wrapper.find('.bili-result__code').text()).toBe('500')
+    expect(wrapper.find('.bili-result__title').text()).toBe('服务异常')
+  })
 })

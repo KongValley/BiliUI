@@ -3,6 +3,7 @@ import { BiliIcon } from './components/icon'
 import { BiliSpace } from './components/space'
 import { BiliDivider } from './components/divider'
 import { BiliTag } from './components/tag'
+import { BiliText, BiliTitle, BiliParagraph, BiliLink } from './components/typography'
 import { BiliCodeBlock } from './components/code-block'
 import { BiliAvatar } from './components/avatar'
 import { BiliTabs, BiliTabPane } from './components/tabs'
@@ -24,8 +25,11 @@ import { BiliUpload } from './components/upload'
 import { BiliInput } from './components/input'
 import { BiliCheckbox, BiliCheckboxGroup } from './components/checkbox'
 import { BiliRadio, BiliRadioGroup } from './components/radio'
+import { BiliSegmented } from './components/segmented'
 import { BiliSwitch } from './components/switch'
 import { BiliSelect } from './components/select'
+import { BiliAutoComplete } from './components/auto-complete'
+import { BiliMention } from './components/mention'
 import { BiliCascader } from './components/cascader'
 import { BiliTree } from './components/tree'
 import { BiliTreeSelect } from './components/tree-select'
@@ -52,6 +56,8 @@ import { BiliDialog } from './components/dialog'
 import { BiliDrawer } from './components/drawer'
 import { BiliLoading } from './components/loading'
 import { BiliTable } from './components/table'
+import { BiliList } from './components/list'
+import { BiliVirtualList } from './components/virtual-list'
 import { BiliPagination } from './components/pagination'
 import { BiliCard } from './components/card'
 import { BiliRow, BiliCol } from './components/grid'
@@ -62,6 +68,7 @@ import {
   BiliLayoutContent,
   BiliLayoutFooter
 } from './components/layout'
+import { BiliSplitter } from './components/splitter'
 import { BiliMenu, BiliMenuItem, BiliSubMenu } from './components/menu'
 import { BiliLineChart, BiliBarChart, BiliPieChart, BiliGaugeChart } from './components/chart'
 
@@ -70,6 +77,7 @@ export * from './components/icon'
 export * from './components/space'
 export * from './components/divider'
 export * from './components/tag'
+export * from './components/typography'
 export * from './components/code-block'
 export * from './components/avatar'
 export * from './components/tabs'
@@ -91,8 +99,11 @@ export * from './components/upload'
 export * from './components/input'
 export * from './components/checkbox'
 export * from './components/radio'
+export * from './components/segmented'
 export * from './components/switch'
 export * from './components/select'
+export * from './components/auto-complete'
+export * from './components/mention'
 export * from './components/cascader'
 export * from './components/tree'
 export * from './components/tree-select'
@@ -119,10 +130,13 @@ export * from './components/dialog'
 export * from './components/drawer'
 export * from './components/loading'
 export * from './components/table'
+export * from './components/list'
+export * from './components/virtual-list'
 export * from './components/pagination'
 export * from './components/card'
 export * from './components/grid'
 export * from './components/layout'
+export * from './components/splitter'
 export * from './components/menu'
 export * from './components/chart'
 export * from './components/message'
@@ -133,6 +147,10 @@ export const components = [
   BiliSpace,
   BiliDivider,
   BiliTag,
+  BiliText,
+  BiliTitle,
+  BiliParagraph,
+  BiliLink,
   BiliCodeBlock,
   BiliAvatar,
   BiliTabs,
@@ -164,8 +182,11 @@ export const components = [
   BiliCheckboxGroup,
   BiliRadio,
   BiliRadioGroup,
+  BiliSegmented,
   BiliSwitch,
   BiliSelect,
+  BiliAutoComplete,
+  BiliMention,
   BiliCascader,
   BiliTree,
   BiliTreeSelect,
@@ -197,6 +218,8 @@ export const components = [
   BiliDrawer,
   BiliLoading,
   BiliTable,
+  BiliList,
+  BiliVirtualList,
   BiliPagination,
   BiliCard,
   BiliRow,
@@ -206,6 +229,7 @@ export const components = [
   BiliLayoutAside,
   BiliLayoutContent,
   BiliLayoutFooter,
+  BiliSplitter,
   BiliMenu,
   BiliMenuItem,
   BiliSubMenu,
