@@ -16,6 +16,25 @@ Bili UI 的样式分为三层令牌：**SCSS 原始值** → **语义 CSS 变量
 
 > 建议同时提供 `hover`、`active`、`light` 与 `on-primary` 四个衍生值，否则按钮、标签等组件在交互态下可能出现对比度不足。
 
+## 运行时切换主题色
+
+`setThemeColor` 会写入一份同时包含亮色与暗色派生值的样式，组件、浮层和图表会自动跟随：
+
+```ts
+import { setThemeColor, resetThemeColor, themeColorPresets } from 'bili-ui'
+
+setThemeColor('#4f7cff') // 自动派生 hover / active / light / on-primary
+resetThemeColor() // 恢复品牌默认色
+
+// 内置预设：[{ name: '招牌粉', color: '#e0356b' }, ...]
+console.log(themeColorPresets)
+```
+
+- 切换后无需重新挂载组件，CSS 变量会立即生效。
+- `html.dark` 会自动使用提亮后的主色与适配暗色背景的浅色变量。
+- 同时更新 `--bili-chart-color-1`，折线图、柱状图等默认系列色会跟随主题。
+- 文档站导航栏右侧提供调色板入口，可实时预览预设色和自定义颜色。
+
 ## 语义令牌
 
 | 变量                      | 用途     | 亮色默认值 |

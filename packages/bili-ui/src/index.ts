@@ -15,6 +15,14 @@ export {
   enUSLocale
 } from './hooks/use-config'
 export type { BiliConfig, BiliLocale } from './hooks/use-config'
+export {
+  setThemeColor,
+  resetThemeColor,
+  getThemeColor,
+  themeColorPresets,
+  defaultThemeColor
+} from './hooks/use-theme'
+export type { ThemeColorPreset } from './hooks/use-theme'
 
 export const version = '0.1.0'
 

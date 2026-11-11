@@ -17,3 +17,11 @@ export {
   enUSLocale
 } from './use-config'
 export type { BiliConfig, BiliLocale } from './use-config'
+export {
+  setThemeColor,
+  resetThemeColor,
+  getThemeColor,
+  themeColorPresets,
+  defaultThemeColor
+} from './use-theme'
+export type { ThemeColorPreset } from './use-theme'

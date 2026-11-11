@@ -1,6 +1,6 @@
 # Bili UI 组件开发计划
 
-> 现状：62 个组件目录 / 85 个对外组件，531 个单测。
+> 现状：62 个组件目录 / 85 个对外组件，535 个单测。
 > 进度：P0、P1、P2、P3 已全部完成。
 > 每个组件的完成标准一致：`index.ts` + `src` + `style` + `__tests__` + 文档页 + 示例 + 注册导出 + 全量校验通过。
 
@@ -168,6 +168,7 @@ P3 组件池已全部完成，后续按业务反馈补充新组件。
 ## 工程侧待办（与组件并行）
 
 - ✅ ConfigProvider：全局尺寸、`zIndex` 起点、`namespace` 前缀与 `zhCNLocale` / `enUSLocale` 完整国际化均已接入
+- ✅ 运行时主题色：`setThemeColor` / `resetThemeColor` 自动派生亮暗变量与图表主色，文档站导航栏提供预设和自定义颜色切换
 - ✅ 样式覆写：50+ 组件提供组件级 CSS 变量，BackTop / Affix / Watermark / QRCode 的动态尺寸与位置改为 CSS 变量消费；浮层支持 `popper-class` / `overlay-class` / `panel-class` / `preview-class`，多实例主题可隔离
 - ✅ 文档站新增《样式覆写》指南，主题文档与组件 API 表同步更新
 - ✅ 按需样式：`styles/index.scss` 保持全量入口，同时生成 `dist/components/<component>/style.css`，支持 `import 'bili-ui/components/button/style.css'`（含依赖样式与设计令牌）

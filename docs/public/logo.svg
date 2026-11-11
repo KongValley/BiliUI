@@ -1,14 +1,31 @@
 <svg width="240" height="240" viewBox="0 0 240 240" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="bili-logo-gradient" x1="28" y1="16" x2="212" y2="224" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#FB7299" />
-      <stop offset="1" stop-color="#E0356B" />
+    <linearGradient id="bili-logo-bg" x1="32" y1="16" x2="208" y2="232" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF8DAE" />
+      <stop offset="0.55" stop-color="#F0507F" />
+      <stop offset="1" stop-color="#D92E62" />
+    </linearGradient>
+    <radialGradient id="bili-logo-glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(58 38) rotate(46) scale(150)">
+      <stop stop-color="#FFFFFF" stop-opacity="0.38" />
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="bili-logo-mark" x1="66" y1="58" x2="174" y2="182" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" />
+      <stop offset="1" stop-color="#FFE7EF" />
     </linearGradient>
   </defs>
-  <rect width="240" height="240" rx="56" fill="url(#bili-logo-gradient)" />
+
+  <rect width="240" height="240" rx="56" fill="url(#bili-logo-bg)" />
+  <circle cx="58" cy="38" r="150" fill="url(#bili-logo-glow)" />
+  <rect x="7" y="7" width="226" height="226" rx="50" stroke="#FFFFFF" stroke-opacity="0.16" stroke-width="2" />
+
   <path
-    d="M96 74.5C96 67.596 103.464 63.309 109.5 66.75L175.5 104.25C181.5 107.669 181.5 116.331 175.5 119.75L109.5 157.25C103.464 160.691 96 156.404 96 149.5V74.5Z"
-    fill="white"
+    d="M66 62V178M66 62H134C154 62 164 72 164 86C164 100 154 110 134 110H66M66 110H142C164 110 174 122 174 144C174 166 164 178 142 178H66"
+    stroke="url(#bili-logo-mark)"
+    stroke-width="22"
+    stroke-linecap="round"
+    stroke-linejoin="round"
   />
-  <circle cx="76" cy="120" r="10" fill="white" fill-opacity="0.62" />
+
+  <circle cx="188" cy="56" r="7" fill="#FFFFFF" fill-opacity="0.72" />
 </svg>
