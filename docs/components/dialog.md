@@ -11,6 +11,8 @@ import DemoBasic from '../examples/dialog/basic.vue'
 import basicCode from '../examples/dialog/basic.vue?raw'
 import DemoCustom from '../examples/dialog/custom.vue'
 import customCode from '../examples/dialog/custom.vue?raw'
+import DemoImperative from '../examples/dialog/imperative.vue'
+import imperativeCode from '../examples/dialog/imperative.vue?raw'
 </script>
 
 ## 基础用法
@@ -28,6 +30,16 @@ import customCode from '../examples/dialog/custom.vue?raw'
 <DemoBlock :code="customCode">
   <DemoCustom />
 </DemoBlock>
+
+## 命令式调用
+
+`BiliDialog.confirm` / `alert` / `prompt` 是 `BiliMessageBox` 的别名，适合删除确认、离开页面确认等无需在模板中维护 `v-model` 的场景。
+
+<DemoBlock :code="imperativeCode">
+  <DemoImperative />
+</DemoBlock>
+
+详细参数见 [MessageBox 消息确认](/components/message-box)。
 
 ## API
 

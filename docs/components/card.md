@@ -13,6 +13,8 @@ import DemoAdvanced from '../examples/card/advanced.vue'
 import advancedCode from '../examples/card/advanced.vue?raw'
 import DemoSlots from '../examples/card/slots.vue'
 import slotsCode from '../examples/card/slots.vue?raw'
+import DemoMetaGrid from '../examples/card/meta-grid.vue'
+import metaGridCode from '../examples/card/meta-grid.vue?raw'
 </script>
 
 ## 基础用法
@@ -38,6 +40,33 @@ import slotsCode from '../examples/card/slots.vue?raw'
 <DemoBlock :code="slotsCode">
   <DemoSlots />
 </DemoBlock>
+
+## 卡片元信息与宫格
+
+`BiliCardMeta` 组合头像、标题与描述，适合视频卡片、用户卡片；`BiliCardGrid` 把内容拆成带悬停反馈的等宽格子。
+
+<DemoBlock :code="metaGridCode">
+  <DemoMetaGrid />
+</DemoBlock>
+
+### CardMeta Props
+
+| 属性 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| `avatar` | 头像图片地址 | `string` | `''` |
+| `title` | 标题 | `string` | `''` |
+| `description` | 描述 | `string` | `''` |
+
+| 插槽名 | 说明 |
+| --- | --- |
+| `avatar` | 自定义头像内容 |
+| `title` / `description` | 自定义标题 / 描述 |
+
+### CardGrid Props
+
+| 属性 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| `hoverable` | 悬停反馈与点击事件 | `boolean` | `true` |
 
 ## API
 

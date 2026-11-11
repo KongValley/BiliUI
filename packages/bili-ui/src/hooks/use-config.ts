@@ -28,6 +28,7 @@ export interface BiliLocale {
   selectPlaceholder: string
   searchPlaceholder: string
   clearInput: string
+  inputTagPlaceholder: string
   showPassword: string
   hidePassword: string
   decrease: string
@@ -72,6 +73,8 @@ export interface BiliLocale {
   dialog: string
   drawer: string
   message: string
+  messageBox: string
+  promptPlaceholder: string
   notification: string
   notificationClose: string
   tourStep: string
@@ -109,13 +112,17 @@ export interface BiliLocale {
   breadcrumb: string
   avatar: string
   backTop: string
+  floatButton: string
+  scrollbar: string
   tabClose: string
+  tabAdd: string
   progress: string
   slider: string
   qrcode: string
   copy: string
   copied: string
   copyCode: string
+  edit: string
   // chart
   chartValue: string
   chartPercent: string
@@ -124,6 +131,9 @@ export interface BiliLocale {
   barChart: string
   pieChart: string
   gaugeChart: string
+  radarChart: string
+  scatterChart: string
+  funnelChart: string
   // form validation
   validationFailed: string
   required: string
@@ -158,6 +168,7 @@ export const zhCNLocale: BiliLocale = {
   selectPlaceholder: '请选择',
   searchPlaceholder: '请输入关键字',
   clearInput: '清空',
+  inputTagPlaceholder: '请输入后按回车',
   showPassword: '显示密码',
   hidePassword: '隐藏密码',
   decrease: '减少',
@@ -199,6 +210,8 @@ export const zhCNLocale: BiliLocale = {
   dialog: '对话框',
   drawer: '抽屉',
   message: '消息',
+  messageBox: '提示',
+  promptPlaceholder: '请输入内容',
   notification: '通知',
   notificationClose: '关闭通知',
   tourStep: '第 {index} 步',
@@ -232,13 +245,17 @@ export const zhCNLocale: BiliLocale = {
   breadcrumb: '面包屑',
   avatar: '头像',
   backTop: '回到顶部',
+  floatButton: '悬浮按钮',
+  scrollbar: '滚动区域',
   tabClose: '关闭标签',
+  tabAdd: '新建标签',
   progress: '进度 {percent}%',
   slider: '滑块 {index}',
   qrcode: '二维码',
   copy: '复制',
   copied: '已复制',
   copyCode: '复制代码',
+  edit: '编辑',
   chartValue: '数值',
   chartPercent: '占比',
   chartTotal: '总计',
@@ -246,6 +263,9 @@ export const zhCNLocale: BiliLocale = {
   barChart: '柱状图：{categories} 个分类，{series} 个系列',
   pieChart: '饼图：{count} 个分类',
   gaugeChart: '仪表盘：{value}{unit} / {max}{unit}',
+  radarChart: '雷达图：{count} 个指标',
+  scatterChart: '散点图：{count} 个数据点',
+  funnelChart: '漏斗图：{count} 个阶段',
   validationFailed: '校验未通过',
   required: '此项为必填项',
   email: '请输入正确的邮箱地址',
@@ -279,6 +299,7 @@ export const enUSLocale: BiliLocale = {
   selectPlaceholder: 'Select',
   searchPlaceholder: 'Search',
   clearInput: 'Clear',
+  inputTagPlaceholder: 'Type and press Enter',
   showPassword: 'Show password',
   hidePassword: 'Hide password',
   decrease: 'Decrease',
@@ -320,6 +341,8 @@ export const enUSLocale: BiliLocale = {
   dialog: 'Dialog',
   drawer: 'Drawer',
   message: 'Messages',
+  messageBox: 'Message',
+  promptPlaceholder: 'Please enter',
   notification: 'Notifications',
   notificationClose: 'Close notification',
   tourStep: 'Step {index}',
@@ -353,13 +376,17 @@ export const enUSLocale: BiliLocale = {
   breadcrumb: 'Breadcrumb',
   avatar: 'Avatar',
   backTop: 'Back to top',
+  floatButton: 'Floating button',
+  scrollbar: 'Scrollable area',
   tabClose: 'Close tab',
+  tabAdd: 'Add tab',
   progress: 'Progress {percent}%',
   slider: 'Slider {index}',
   qrcode: 'QR code',
   copy: 'Copy',
   copied: 'Copied',
   copyCode: 'Copy code',
+  edit: 'Edit',
   chartValue: 'Value',
   chartPercent: 'Percent',
   chartTotal: 'Total',
@@ -367,6 +394,9 @@ export const enUSLocale: BiliLocale = {
   barChart: 'Bar chart: {categories} categories, {series} series',
   pieChart: 'Pie chart: {count} categories',
   gaugeChart: 'Gauge: {value}{unit} / {max}{unit}',
+  radarChart: 'Radar chart: {count} indicators',
+  scatterChart: 'Scatter chart: {count} points',
+  funnelChart: 'Funnel chart: {count} stages',
   validationFailed: 'Validation failed',
   required: 'This field is required',
   email: 'Please enter a valid email address',

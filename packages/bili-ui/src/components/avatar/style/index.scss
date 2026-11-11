@@ -58,3 +58,30 @@ html.dark .bili-avatar.is-text {
   color: hsl(var(--bili-avatar-hue), 78%, 80%);
   background-color: hsl(var(--bili-avatar-hue), 32%, 24%);
 }
+
+@include b(avatar-group) {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+
+  > * + * {
+    margin-left: var(--bili-avatar-group-spacing, -8px);
+  }
+
+  > .#{$namespace}-avatar {
+    box-shadow: 0 0 0 2px var(--bili-bg-container);
+  }
+
+  @include e(rest) {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    font-weight: var(--bili-font-weight-semibold);
+    line-height: 1;
+    color: var(--bili-text-secondary);
+    user-select: none;
+    background-color: var(--bili-fill-color);
+    box-shadow: 0 0 0 2px var(--bili-bg-container);
+  }
+}

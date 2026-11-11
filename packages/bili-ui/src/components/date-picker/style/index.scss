@@ -367,3 +367,72 @@
     transform: scale(1);
   }
 }
+
+@include b(date-picker) {
+  &.#{$namespace}-date-picker__panel.is-datetime {
+    .#{$namespace}-date-picker__body {
+      width: 300px;
+    }
+  }
+
+  @include e(time) {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 10px;
+    margin-top: 8px;
+    border-top: 1px solid var(--bili-border-color-lighter);
+  }
+
+  @include e(time-fields) {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    min-width: 0;
+  }
+
+  @include e(time-field) {
+    display: inline-flex;
+    gap: 3px;
+    align-items: center;
+    font-size: var(--bili-font-size-xs);
+    color: var(--bili-text-secondary);
+
+    select {
+      height: 26px;
+      padding: 0 4px;
+      font: inherit;
+      font-size: var(--bili-font-size-sm);
+      font-variant-numeric: tabular-nums;
+      color: var(--bili-text-primary);
+      cursor: pointer;
+      background-color: var(--bili-bg-container);
+      border: 1px solid var(--bili-border-color);
+      border-radius: var(--bili-radius-sm);
+      outline: none;
+
+      &:focus {
+        border-color: var(--bili-color-primary);
+      }
+    }
+  }
+
+  @include e(confirm) {
+    flex: none;
+    height: 28px;
+    padding: 0 12px;
+    font: inherit;
+    font-size: var(--bili-font-size-sm);
+    color: var(--bili-color-on-primary);
+    cursor: pointer;
+    background-color: var(--bili-color-primary);
+    border: 0;
+    border-radius: var(--bili-radius-sm);
+    transition: background-color var(--bili-transition-duration) var(--bili-transition-function);
+
+    &:hover {
+      background-color: var(--bili-color-primary-hover);
+    }
+  }
+}

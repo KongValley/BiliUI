@@ -18,3 +18,63 @@
     width: 100%;
   }
 }
+
+@include b(space-compact) {
+  display: inline-flex;
+  align-items: stretch;
+  vertical-align: middle;
+
+  @include m(vertical) {
+    flex-direction: column;
+
+    > * {
+      margin-top: -1px;
+      margin-left: 0;
+    }
+
+    > *:first-child {
+      border-radius: var(--bili-radius-base) var(--bili-radius-base) 0 0;
+    }
+
+    > *:last-child {
+      border-radius: 0 0 var(--bili-radius-base) var(--bili-radius-base);
+    }
+  }
+
+  @include when(block) {
+    display: flex;
+    width: 100%;
+
+    > * {
+      flex: 1;
+      min-width: 0;
+    }
+  }
+
+  > * {
+    position: relative;
+    flex: none;
+    border-radius: 0;
+    transition:
+      border-color var(--bili-transition-duration) var(--bili-transition-function),
+      box-shadow var(--bili-transition-duration) var(--bili-transition-function);
+  }
+
+  > * + * {
+    margin-left: -1px;
+  }
+
+  > *:first-child {
+    border-radius: var(--bili-radius-base) 0 0 var(--bili-radius-base);
+  }
+
+  > *:last-child {
+    border-radius: 0 var(--bili-radius-base) var(--bili-radius-base) 0;
+  }
+
+  > *:hover,
+  > *:focus-within,
+  > *:focus-visible {
+    z-index: 2;
+  }
+}

@@ -1,11 +1,22 @@
 import type { App } from 'vue'
 import { components } from './components'
 import { BiliMessage } from './components/message'
+import { BiliMessageBox } from './components/message-box'
 import { BiliNotification } from './components/notification'
 import { vLoading } from './components/loading'
 
 export * from './components'
-export { BiliMessage, BiliNotification, vLoading }
+export { BiliMessage, BiliMessageBox, BiliNotification, vLoading }
+export type {
+  MessageBoxAction,
+  MessageBoxApi,
+  MessageBoxBeforeClose,
+  MessageBoxController,
+  MessageBoxOptions,
+  MessageBoxPromise,
+  MessageBoxResult,
+  MessageBoxType
+} from './components/message-box'
 export {
   useConfig,
   useLocale,
@@ -33,6 +44,10 @@ const BiliUI = {
     app.directive('loading', vLoading)
     app.config.globalProperties.$message = BiliMessage
     app.config.globalProperties.$notification = BiliNotification
+    app.config.globalProperties.$msgbox = BiliMessageBox
+    app.config.globalProperties.$alert = BiliMessageBox.alert
+    app.config.globalProperties.$confirm = BiliMessageBox.confirm
+    app.config.globalProperties.$prompt = BiliMessageBox.prompt
   }
 }
 

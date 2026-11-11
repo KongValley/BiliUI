@@ -1,0 +1,136 @@
+@use '../../../styles/mixins' as *;
+
+@include b(float-button) {
+  --bili-float-button-size: 40px;
+  --bili-float-button-bg: var(--bili-bg-container);
+  --bili-float-button-color: var(--bili-text-primary);
+  --bili-float-button-border: var(--bili-border-color-light);
+  --bili-float-button-shadow: var(--bili-shadow-base);
+  --bili-float-button-hover-shadow: var(--bili-shadow-md);
+  --bili-float-button-hover-color: var(--bili-color-primary);
+  --bili-float-button-primary-bg: var(--bili-color-primary);
+  --bili-float-button-primary-hover-bg: var(--bili-color-primary-hover);
+  --bili-float-button-primary-color: var(--bili-color-on-primary);
+
+  position: fixed;
+  right: var(--bili-float-button-right, 24px);
+  bottom: var(--bili-float-button-bottom, 24px);
+  z-index: var(--bili-float-button-z-index, 100);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: var(--bili-float-button-size, 40px);
+  height: var(--bili-float-button-size, 40px);
+  padding: 0;
+  font-family: inherit;
+  font-size: var(--bili-font-size-base);
+  color: var(--bili-float-button-color);
+  text-decoration: none;
+  cursor: pointer;
+  background-color: var(--bili-float-button-bg);
+  border: 1px solid var(--bili-float-button-border);
+  border-radius: 50%;
+  box-shadow: var(--bili-float-button-shadow);
+  transition:
+    color var(--bili-transition-duration) var(--bili-transition-function),
+    background-color var(--bili-transition-duration) var(--bili-transition-function),
+    box-shadow var(--bili-transition-duration) var(--bili-transition-function),
+    transform var(--bili-transition-duration) var(--bili-transition-function-spring);
+
+  &:hover {
+    color: var(--bili-float-button-hover-color);
+    box-shadow: var(--bili-float-button-hover-shadow);
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: scale(var(--bili-press-scale));
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--bili-color-primary);
+    outline-offset: 3px;
+  }
+
+  @include m(primary) {
+    --bili-float-button-bg: var(--bili-float-button-primary-bg);
+    --bili-float-button-color: var(--bili-float-button-primary-color);
+    --bili-float-button-border: transparent;
+    --bili-float-button-hover-color: var(--bili-float-button-primary-color);
+
+    &:hover {
+      background-color: var(--bili-float-button-primary-hover-bg);
+    }
+  }
+
+  @include m(square) {
+    border-radius: var(--bili-radius-md);
+  }
+
+  @include when(with-description) {
+    width: auto;
+    min-width: var(--bili-float-button-size, 40px);
+    padding: 0 16px;
+    border-radius: var(--bili-radius-round);
+
+    &.#{$namespace}-float-button--square {
+      border-radius: var(--bili-radius-md);
+    }
+  }
+
+  @include when(disabled) {
+    cursor: not-allowed;
+    opacity: 0.55;
+    box-shadow: none;
+    transform: none;
+  }
+
+  @include e(icon) {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  @include e(description) {
+    font-size: var(--bili-font-size-sm);
+    font-weight: var(--bili-font-weight-medium);
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  @include when(in-group) {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    z-index: auto;
+  }
+}
+
+@include b(float-button-group) {
+  position: fixed;
+  right: var(--bili-float-button-group-right, 24px);
+  bottom: var(--bili-float-button-group-bottom, 24px);
+  z-index: var(--bili-float-button-group-z-index, 100);
+  display: flex;
+  align-items: flex-end;
+  gap: var(--bili-float-button-group-gap, 12px);
+
+  @include m(vertical) {
+    flex-direction: column;
+  }
+
+  @include m(horizontal) {
+    flex-direction: row;
+  }
+
+  .#{$namespace}-float-button {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    z-index: auto;
+  }
+}

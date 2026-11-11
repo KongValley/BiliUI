@@ -264,3 +264,32 @@
     transform: translateY(0);
   }
 }
+
+@include b(tabs) {
+  @include e(add) {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    margin: 0 0 0 2px;
+    padding: 0;
+    font-size: 14px;
+    color: var(--bili-text-secondary);
+    cursor: pointer;
+    background: transparent;
+    border: 1px dashed var(--bili-border-color);
+    border-radius: var(--bili-radius-sm);
+    transition:
+      color var(--bili-transition-duration) var(--bili-transition-function),
+      border-color var(--bili-transition-duration) var(--bili-transition-function),
+      background-color var(--bili-transition-duration) var(--bili-transition-function);
+
+    &:hover {
+      color: var(--bili-color-primary);
+      background-color: var(--bili-color-primary-light);
+      border-color: var(--bili-color-primary);
+    }
+  }
+}

@@ -1,0 +1,114 @@
+@use '../../../styles/mixins' as *;
+
+@include b(scrollbar) {
+  --bili-scrollbar-size: 6px;
+  --bili-scrollbar-thumb-bg: var(--bili-text-placeholder);
+  --bili-scrollbar-thumb-hover-bg: var(--bili-text-secondary);
+  --bili-scrollbar-track-bg: transparent;
+  --bili-scrollbar-radius: 3px;
+
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+
+  @include e(wrap) {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    overscroll-behavior: contain;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    @include when(native) {
+      scrollbar-width: auto;
+      -ms-overflow-style: auto;
+
+      &::-webkit-scrollbar {
+        display: initial;
+      }
+    }
+  }
+
+  @include e(view) {
+    min-width: 0;
+  }
+
+  @include e(bar) {
+    position: absolute;
+    z-index: 2;
+    background-color: var(--bili-scrollbar-track-bg);
+    border-radius: var(--bili-scrollbar-radius);
+    opacity: 0;
+    transition: opacity var(--bili-transition-duration) var(--bili-transition-function);
+    // Do not steal clicks from the content while hidden.
+    pointer-events: none;
+
+    .#{$namespace}-scrollbar:not(.is-dragging) &:hover,
+    .#{$namespace}-scrollbar:hover > & {
+      pointer-events: auto;
+    }
+  }
+
+  @include e(bar-vertical) {
+    top: 2px;
+    right: 2px;
+    bottom: 2px;
+    width: var(--bili-scrollbar-size);
+  }
+
+  @include e(bar-horizontal) {
+    right: 2px;
+    bottom: 2px;
+    left: 2px;
+    height: var(--bili-scrollbar-size);
+  }
+
+  @include e(thumb) {
+    width: 100%;
+    height: 100%;
+    background-color: var(--bili-scrollbar-thumb-bg);
+    border-radius: var(--bili-scrollbar-radius);
+    opacity: 0.55;
+    cursor: grab;
+    transition:
+      background-color var(--bili-transition-duration) var(--bili-transition-function),
+      opacity var(--bili-transition-duration) var(--bili-transition-function);
+
+    &:hover {
+      background-color: var(--bili-scrollbar-thumb-hover-bg);
+      opacity: 0.9;
+    }
+
+    &:active {
+      cursor: grabbing;
+      opacity: 1;
+    }
+  }
+
+  @include when(dragging) {
+    user-select: none;
+
+    .#{$namespace}-scrollbar__thumb {
+      cursor: grabbing;
+    }
+  }
+}
+
+// The bars fade in while the pointer is over the area or while dragging.
+.bili-scrollbar:hover > .bili-scrollbar__bar,
+.bili-scrollbar.is-dragging > .bili-scrollbar__bar,
+.bili-scrollbar.is-always > .bili-scrollbar__bar {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@include b(scrollbar) {
+  &.is-native {
+    overflow: visible;
+  }
+}

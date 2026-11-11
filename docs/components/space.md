@@ -9,6 +9,8 @@ Space 用于为子元素提供统一的间距，支持水平/垂直、换行与�
 <script setup>
 import DemoBasic from '../examples/space/basic.vue'
 import basicCode from '../examples/space/basic.vue?raw'
+import DemoCompact from '../examples/space/compact.vue'
+import compactCode from '../examples/space/compact.vue?raw'
 </script>
 
 ## 基础用法
@@ -18,6 +20,21 @@ import basicCode from '../examples/space/basic.vue?raw'
 <DemoBlock :code="basicCode">
   <DemoBasic />
 </DemoBlock>
+
+## 紧凑排列
+
+`BiliSpaceCompact` 把按钮、输入框等控件紧贴排列，自动合并相邻圆角与边框，适合按钮组、搜索栏。
+
+<DemoBlock :code="compactCode">
+  <DemoCompact />
+</DemoBlock>
+
+### SpaceCompact Props
+
+| 属性 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| `direction` | 排列方向 | `'horizontal' \| 'vertical'` | `'horizontal'` |
+| `block` | 撑满容器宽度 | `boolean` | `false` |
 
 ## API
 

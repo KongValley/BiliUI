@@ -186,3 +186,126 @@ export const gaugeChartProps = {
   },
   valueFormatter: formatterProp
 } as const
+
+export interface RadarIndicator {
+  name: string
+  /** Upper bound of this axis; defaults to the largest value on the axis. */
+  max?: number
+}
+
+export interface RadarSeries {
+  name: string
+  data: number[]
+  color?: string
+}
+
+export const radarChartProps = {
+  indicators: {
+    type: Array as PropType<RadarIndicator[]>,
+    default: () => []
+  },
+  series: {
+    type: Array as PropType<RadarSeries[]>,
+    default: () => []
+  },
+  height: heightProp,
+  /** Number of concentric grid rings. */
+  levels: {
+    type: Number,
+    default: 4
+  },
+  showLegend: {
+    type: Boolean,
+    default: true
+  },
+  showGrid: {
+    type: Boolean,
+    default: true
+  },
+  valueFormatter: formatterProp,
+  emptyText: {
+    type: String,
+    default: ''
+  }
+} as const
+
+export interface ScatterPoint {
+  x: number
+  y: number
+}
+
+export interface ScatterSeries {
+  name: string
+  data: ScatterPoint[]
+  color?: string
+}
+
+export const scatterChartProps = {
+  series: {
+    type: Array as PropType<ScatterSeries[]>,
+    default: () => []
+  },
+  height: heightProp,
+  showLegend: {
+    type: Boolean,
+    default: true
+  },
+  showGrid: {
+    type: Boolean,
+    default: true
+  },
+  xMin: {
+    type: Number,
+    default: undefined
+  },
+  xMax: {
+    type: Number,
+    default: undefined
+  },
+  yMin: {
+    type: Number,
+    default: undefined
+  },
+  yMax: {
+    type: Number,
+    default: undefined
+  },
+  /** Radius of each point in px. */
+  pointSize: {
+    type: Number,
+    default: 5
+  },
+  valueFormatter: formatterProp,
+  emptyText: {
+    type: String,
+    default: ''
+  }
+} as const
+
+export interface FunnelDatum {
+  name: string
+  value: number
+  color?: string
+}
+
+export const funnelChartProps = {
+  data: {
+    type: Array as PropType<FunnelDatum[]>,
+    default: () => []
+  },
+  height: heightProp,
+  /** Vertical gap between stages in px. */
+  gap: {
+    type: Number,
+    default: 4
+  },
+  showLabels: {
+    type: Boolean,
+    default: true
+  },
+  valueFormatter: formatterProp,
+  emptyText: {
+    type: String,
+    default: ''
+  }
+} as const

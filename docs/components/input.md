@@ -13,6 +13,8 @@ import DemoTextarea from '../examples/input/textarea.vue'
 import textareaCode from '../examples/input/textarea.vue?raw'
 import DemoAddon from '../examples/input/addon.vue'
 import addonCode from '../examples/input/addon.vue?raw'
+import DemoVariants from '../examples/input/variants.vue'
+import variantsCode from '../examples/input/variants.vue?raw'
 </script>
 
 ## 基础用法
@@ -36,6 +38,45 @@ import addonCode from '../examples/input/addon.vue?raw'
 <DemoBlock :code="addonCode">
   <DemoAddon />
 </DemoBlock>
+
+## 搜索框与验证码
+
+`BiliInputSearch` 在输入框尾部提供搜索按钮，支持 `enter-button` 显示文字、`loading` 加载态与回车搜索；`BiliInputOtp` 把输入拆成固定数量的格子，自动跳格、支持粘贴与遮罩。
+
+<DemoBlock :code="variantsCode">
+  <DemoVariants />
+</DemoBlock>
+
+### InputSearch Props
+
+| 属性 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| `modelValue` | 输入值 | `string \| number` | `''` |
+| `enterButton` | 显示文字搜索按钮 | `boolean \| string` | `false` |
+| `loading` | 搜索中状态 | `boolean` | `false` |
+| `clearable` | 显示清空按钮 | `boolean` | `false` |
+| `size` / `disabled` | 尺寸 / 禁用 | `'sm' \| 'md' \| 'lg'` / `boolean` | 继承 ConfigProvider |
+
+| 事件名 | 说明 |
+| --- | --- |
+| `search` | 点击按钮或按回车，参数为当前值 |
+| `update:modelValue` / `input` / `change` / `clear` | 与 Input 一致 |
+
+### InputOtp Props
+
+| 属性 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| `modelValue` | 已输入字符 | `string` | `''` |
+| `length` | 格子数量 | `number` | `6` |
+| `mask` | 密码遮罩 | `boolean` | `false` |
+| `separator` | 格子之间的分隔符 | `string \| number` | `''` |
+| `type` | 键盘类型提示 | `'text' \| 'number'` | `'text'` |
+
+| 事件名 | 说明 |
+| --- | --- |
+| `update:modelValue` / `change` | 值变化 |
+| `complete` | 填满全部格子时触发，参数为完整值 |
+| `focus` / `blur` | 聚焦与失焦 |
 
 ## API
 

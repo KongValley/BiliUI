@@ -12,7 +12,9 @@ import {
   addMonths,
   buildMonthCells,
   compareDateKeys,
+  formatMonth,
   parseDate,
+  parseMonth,
   todayKey
 } from '../../../utils/date'
 import BiliIcon from '../../icon/src/icon.vue'
@@ -55,6 +57,8 @@ const viewYear = ref(new Date().getFullYear())
 const viewMonth = ref(new Date().getMonth())
 const pendingStart = ref<string | null>(null)
 const hoverKey = ref('')
+const pendingDayKey = ref('')
+const time = ref({ hour: 0, minute: 0, second: 0 })
 
 const { floatingStyles, isPositioned } = useFloating(triggerRef, panelRef, {
   placement: 'bottom-start',
@@ -63,8 +67,13 @@ const { floatingStyles, isPositioned } = useFloating(triggerRef, panelRef, {
 })
 
 const isRange = computed(() => props.type === 'daterange')
+const isMonth = computed(() => props.type === 'month')
+const isYear = computed(() => props.type === 'year')
+const isDateTime = computed(() => props.type === 'datetime')
 const mergedSize = computed(() => props.size ?? config.value.size)
 const singleKey = computed(() => (typeof props.modelValue === 'string' ? props.modelValue : ''))
+const datePart = computed(() => singleKey.value.split(' ')[0] ?? '')
+const timePart = computed(() => singleKey.value.split(' ')[1] ?? '')
 const rangeKeys = computed<[string, string] | null>(() =>
   Array.isArray(props.modelValue) ? props.modelValue : null
 )
@@ -73,7 +82,22 @@ const hasValue = computed(() =>
 )
 
 const selectedDate = computed(() => {
-  const key = isRange.value ? rangeKeys.value?.[0] : singleKey.value
+  if (isRange.value) {
+    const key = rangeKeys.value?.[0]
+    return key ? parseDate(key) : null
+  }
+
+  if (isMonth.value) {
+    const parsed = parseMonth(singleKey.value)
+    return parsed ? new Date(parsed.year, parsed.month, 1) : null
+  }
+
+  if (isYear.value) {
+    const year = Number(singleKey.value)
+    return singleKey.value.length === 4 && Number.isFinite(year) ? new Date(year, 0, 1) : null
+  }
+
+  const key = isDateTime.value ? datePart.value : singleKey.value
   return key ? parseDate(key) : null
 })
 
@@ -130,7 +154,11 @@ const cells = computed(() => {
     month: viewMonth.value,
     firstDayOfWeek: props.firstDayOfWeek,
     todayKey: todayKey(),
-    selectedKey: isRange.value ? '' : singleKey.value,
+    selectedKey: isRange.value
+      ? ''
+      : isDateTime.value
+        ? pendingDayKey.value || datePart.value
+        : singleKey.value,
     disabledDate: props.disabledDate
   })
 
@@ -172,7 +200,14 @@ const resetView = () => {
   const date = selectedDate.value ?? new Date()
   viewYear.value = date.getFullYear()
   viewMonth.value = date.getMonth()
-  view.value = 'day'
+  view.value = isYear.value ? 'year' : isMonth.value ? 'month' : 'day'
+}
+
+const resetTime = () => {
+  const match = /^(\d{1,2}):(\d{1,2})(?::(\d{1,2}))?$/.exec(timePart.value)
+  time.value = match
+    ? { hour: Number(match[1]), minute: Number(match[2]), second: Number(match[3] ?? 0) }
+    : { hour: 0, minute: 0, second: 0 }
 }
 
 const open = () => {
@@ -180,7 +215,9 @@ const open = () => {
   isOpen.value = true
   panelZIndex.value = props.zIndex ?? nextZIndex()
   pendingStart.value = null
+  pendingDayKey.value = isDateTime.value ? datePart.value || todayKey() : ''
   hoverKey.value = ''
+  resetTime()
   resetView()
   pushOverlay(token)
   emit('visible-change', true)
@@ -237,17 +274,28 @@ const handleNext = () => {
 }
 
 const cycleView = () => {
+  if (isYear.value) return
   if (view.value === 'day') view.value = 'month'
   else if (view.value === 'month') view.value = 'year'
 }
 
 const selectMonth = (month: number) => {
+  if (isMonth.value) {
+    emitValue(formatMonth(viewYear.value, month - 1))
+    close()
+    return
+  }
   viewMonth.value = month - 1
   view.value = 'day'
 }
 
 const selectYear = (year: number) => {
   viewYear.value = year
+  if (isYear.value) {
+    emitValue(String(year))
+    close()
+    return
+  }
   view.value = 'month'
 }
 
@@ -271,7 +319,20 @@ const handleDay = (key: string, disabled: boolean) => {
     selectRange(key)
     return
   }
+  if (isDateTime.value) {
+    pendingDayKey.value = key
+    return
+  }
   emitValue(key)
+  close()
+}
+
+const pad = (value: number) => String(value).padStart(2, '0')
+
+const confirmDateTime = () => {
+  const date = pendingDayKey.value || todayKey()
+  const { hour, minute, second } = time.value
+  emitValue(`${date} ${pad(hour)}:${pad(minute)}:${pad(second)}`)
   close()
 }
 
@@ -285,7 +346,12 @@ const resolveShortcutValue = (shortcut: DatePickerShortcut): DatePickerValue => 
 }
 
 const isDisabledKey = (key: string) => {
-  const date = parseDate(key)
+  let date = parseDate(key)
+  if (!date) {
+    const month = parseMonth(key)
+    if (month) date = new Date(month.year, month.month, 1)
+    else if (/^\d{4}$/.test(key)) date = new Date(Number(key), 0, 1)
+  }
   return !date || !!props.disabledDate?.(date)
 }
 
@@ -401,7 +467,12 @@ defineExpose({ open, close, focus: () => triggerRef.value?.focus() })
         v-if="isOpen"
         :id="panelId"
         ref="panelRef"
-        :class="[ns.e('panel'), popperClass, ns.is('with-shortcuts', shortcuts.length > 0)]"
+        :class="[
+          ns.e('panel'),
+          popperClass,
+          ns.is('with-shortcuts', shortcuts.length > 0),
+          ns.is('datetime', isDateTime)
+        ]"
         :style="panelStyles"
         role="dialog"
       >
@@ -463,6 +534,39 @@ defineExpose({ open, close, focus: () => triggerRef.value?.focus() })
                 @click="handleDay(cell.key, cell.disabled)"
               >
                 {{ cell.day }}
+              </button>
+            </div>
+
+            <div v-if="isDateTime" :class="ns.e('time')">
+              <div :class="ns.e('time-fields')">
+                <label :class="ns.e('time-field')">
+                  <span>{{ locale.hour }}</span>
+                  <select v-model.number="time.hour">
+                    <option v-for="hour in 24" :key="hour" :value="hour - 1">
+                      {{ pad(hour - 1) }}
+                    </option>
+                  </select>
+                </label>
+                <label :class="ns.e('time-field')">
+                  <span>{{ locale.minute }}</span>
+                  <select v-model.number="time.minute">
+                    <option v-for="minute in 60" :key="minute" :value="minute - 1">
+                      {{ pad(minute - 1) }}
+                    </option>
+                  </select>
+                </label>
+                <label :class="ns.e('time-field')">
+                  <span>{{ locale.second }}</span>
+                  <select v-model.number="time.second">
+                    <option v-for="second in 60" :key="second" :value="second - 1">
+                      {{ pad(second - 1) }}
+                    </option>
+                  </select>
+                </label>
+              </div>
+
+              <button type="button" :class="ns.e('confirm')" @click="confirmDateTime">
+                {{ locale.confirm }}
               </button>
             </div>
           </template>

@@ -1,0 +1,190 @@
+@use '../../../styles/mixins' as *;
+
+@include b(time-select) {
+  --bili-time-select-height: var(--bili-control-height-md);
+  --bili-time-select-padding: var(--bili-control-padding-md);
+  --bili-time-select-bg: var(--bili-bg-container);
+  --bili-time-select-border-color: var(--bili-border-color);
+  --bili-time-select-radius: var(--bili-radius-base);
+
+  position: relative;
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  height: var(--bili-time-select-height);
+  padding: 0 var(--bili-time-select-padding);
+  font-size: var(--bili-font-size-base);
+  color: var(--bili-text-primary);
+  cursor: pointer;
+  background-color: var(--bili-time-select-bg);
+  border: 1px solid var(--bili-time-select-border-color);
+  border-radius: var(--bili-time-select-radius);
+  outline: none;
+  transition:
+    border-color var(--bili-transition-duration) var(--bili-transition-function),
+    box-shadow var(--bili-transition-duration) var(--bili-transition-function);
+
+  &:hover {
+    border-color: var(--bili-color-primary-hover);
+  }
+
+  &:focus-visible {
+    border-color: var(--bili-color-primary);
+    box-shadow: 0 0 0 3px var(--bili-color-primary-light);
+  }
+
+  @include when(open) {
+    border-color: var(--bili-color-primary);
+    box-shadow: 0 0 0 3px var(--bili-color-primary-light);
+  }
+
+  @include when(disabled) {
+    cursor: not-allowed;
+    background-color: var(--bili-bg-disabled);
+    border-color: var(--bili-border-color-light);
+
+    .#{$namespace}-time-select__value {
+      color: var(--bili-text-placeholder);
+    }
+  }
+
+  @include m(sm) {
+    --bili-time-select-height: var(--bili-control-height-sm);
+    --bili-time-select-padding: var(--bili-control-padding-sm);
+    font-size: var(--bili-font-size-sm);
+  }
+
+  @include m(lg) {
+    --bili-time-select-height: var(--bili-control-height-lg);
+    --bili-time-select-padding: var(--bili-control-padding-lg);
+  }
+
+  @include e(icon) {
+    flex: none;
+    font-size: 14px;
+    color: var(--bili-text-secondary);
+  }
+
+  @include e(value) {
+    @include utils-ellipsis;
+
+    flex: 1;
+    min-width: 0;
+  }
+
+  @include e(placeholder) {
+    @include utils-ellipsis;
+
+    flex: 1;
+    min-width: 0;
+    color: var(--bili-text-placeholder);
+  }
+
+  @include e(suffix) {
+    display: inline-flex;
+    flex: none;
+    gap: 4px;
+    align-items: center;
+    color: var(--bili-text-secondary);
+  }
+
+  @include e(clear) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    font-size: 14px;
+    color: var(--bili-text-placeholder);
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    border-radius: 50%;
+
+    &:hover {
+      color: var(--bili-text-secondary);
+    }
+  }
+
+  @include e(arrow) {
+    font-size: 12px;
+    transition: transform var(--bili-transition-duration) var(--bili-transition-function-spring);
+  }
+
+  @include when(open) {
+    .#{$namespace}-time-select__arrow {
+      transform: rotate(180deg);
+    }
+  }
+
+  @include e(panel) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 4px;
+    background-color: var(--bili-bg-elevated);
+    border: 1px solid var(--bili-border-color-light);
+    border-radius: var(--bili-radius-md);
+    box-shadow: var(--bili-shadow-base);
+    will-change: transform;
+  }
+
+  @include e(list) {
+    max-height: 228px;
+    overflow-y: auto;
+    @include utils-scrollbar;
+  }
+
+  @include e(option) {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 7px 12px;
+    font-size: var(--bili-font-size-base);
+    font-variant-numeric: tabular-nums;
+    line-height: 1.4;
+    color: var(--bili-text-regular);
+    text-align: left;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    border-radius: var(--bili-radius-sm);
+    transition:
+      background-color var(--bili-transition-duration-fast) var(--bili-transition-function),
+      color var(--bili-transition-duration-fast) var(--bili-transition-function);
+
+    &:hover,
+    &.is-active {
+      background-color: var(--bili-fill-color-light);
+    }
+
+    &.is-selected {
+      font-weight: var(--bili-font-weight-medium);
+      color: var(--bili-color-primary);
+      background-color: var(--bili-color-primary-light);
+    }
+  }
+
+  @include e(empty) {
+    padding: 20px 24px;
+    font-size: var(--bili-font-size-sm);
+    color: var(--bili-text-placeholder);
+    text-align: center;
+  }
+}
+
+.bili-time-select-fade-enter-active,
+.bili-time-select-fade-leave-active {
+  transition:
+    opacity var(--bili-transition-duration-fast) var(--bili-transition-function),
+    transform var(--bili-transition-duration-fast) var(--bili-transition-function);
+}
+
+.bili-time-select-fade-enter-from,
+.bili-time-select-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-4px);
+}

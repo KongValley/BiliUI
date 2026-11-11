@@ -1,7 +1,7 @@
 # Bili UI 组件开发计划
 
-> 现状：69 个组件目录 / 95 个对外组件，635 个单测。
-> 进度：P0、P1、P2、P3、P4 已全部完成。
+> 现状：75 个组件目录 / 112 个对外组件，728 个单测。
+> 进度：P0、P1、P2、P3、P4、P5 已全部完成。
 > 每个组件的完成标准一致：`index.ts` + `src` + `style` + `__tests__` + 文档页 + 示例 + 注册导出 + 全量校验通过。
 
 ## 批次划分
@@ -13,6 +13,7 @@
 | P2   | 现有组件能力补强   | 4 项   | ✅ 已完成 | 提升既有组件的深度而非广度       |
 | P3   | 长尾组件池         | 17     | ✅ 已完成 | 长尾能力已全部落地               |
 | P4   | 扩展组件池         | 7      | ✅ 已完成 | 列表、虚拟列表、排版、分割等     |
+| P5   | 对齐主流库能力     | 6+11  | ✅ 已完成 | 消息确认、滚动条、标签输入等     |
 
 ---
 
@@ -163,6 +164,31 @@ P3 组件池已全部完成，后续按业务反馈补充新组件。
 
 ---
 
+## P5 · 对齐主流库能力（6 个组件 + 11 项能力补强，已完成 ✅）
+
+新组件：
+
+- **MessageBox 消息确认 ✅**：`alert` / `confirm` / `prompt` 命令式 API，支持输入校验、异步 `beforeClose` 与 loading；`BiliDialog` 同步暴露别名。
+- **Scrollbar 自定义滚动条 ✅**：纵向/横向、固定高度、悬浮/常驻、拖拽与轨道点击、`ResizeObserver` 自适应。
+- **FloatButton / FloatButtonGroup 悬浮按钮 ✅**：圆形/方形、图标 + 描述、链接、回到顶部与分组排列。
+- **InputTag 标签输入 ✅**：回车/分隔符提交、数量与长度限制、去重、失焦提交与 IME 兼容。
+- **CascaderPanel 级联面板 ✅**：独立面板、`change-on-select`、字段映射与路径同步。
+- **TimeSelect 固定时间 ✅**：区间/步长生成或固定选项、键盘导航。
+
+既有组件能力补强：
+
+- **Dialog**：`confirm` / `alert` / `prompt` / `closeAll` 命令式方法。
+- **DatePicker**：新增 `month` / `year` / `datetime` 类型，日期时间面板支持时/分/秒确认。
+- **Avatar**：新增 `AvatarGroup`，支持 `max` 折叠为 `+N`，尺寸与形状下发。
+- **Badge**：新增 `BadgeRibbon` 缎带角标，支持两端定位与自定义颜色。
+- **Card**：新增 `CardMeta` 与 `CardGrid`。
+- **Statistic**：新增 `StatisticCountdown` 倒计时，支持 `DD/HH/mm/ss` 格式化与 `finish`。
+- **Space**：新增 `SpaceCompact` 紧凑组合。
+- **Typography**：`copyable` / `editable` 与 `copy` / `change` 事件。
+- **Input**：新增 `InputSearch` 与 `InputOtp`。
+- **Tabs**：新增 `addable` 与 `add` 事件。
+- **Chart**：新增 `RadarChart` / `ScatterChart` / `FunnelChart`。
+
 ## 下一批建议
 
 1. 真实 Nuxt 示例项目与 Nuxt Module 封装，覆盖 SSR 水合与按需样式。
@@ -179,7 +205,7 @@ P3 组件池已全部完成，后续按业务反馈补充新组件。
 - ✅ 文档站新增《样式覆写》指南，主题文档与组件 API 表同步更新
 - ✅ 按需样式：`styles/index.scss` 保持全量入口，同时生成 `dist/components/<component>/style.css`，支持 `import 'bili-ui/components/button/style.css'`（含依赖样式与设计令牌）
 - ✅ 示例可编辑：DemoBlock 支持在线编辑、运行、重置、取消与分享链接，编译结果使用独立 scoped 样式
-- ✅ API 表自动生成：`vue-component-meta` 扫描 95 个组件生成 `/guide/api` 参考页，并支持 `<ApiReference name="BiliButton" />` 按组件内嵌
+- ✅ API 表自动生成：`vue-component-meta` 扫描 112 个组件生成 `/guide/api` 参考页，并支持 `<ApiReference name="BiliButton" />` 按组件内嵌
 - ✅ 文档站组件搜索（VitePress local search 已接入）
 - ✅ SSR：`vue/server-renderer` 组件树冒烟测试覆盖表单、表格、日期、浮层与新组件
 - ✅ 发布：`changeset` 版本管理、npm `publishConfig`、GitHub Actions CI 与 Release 工作流已配置（发布需仓库配置 `NPM_TOKEN`）

@@ -5,9 +5,9 @@ import { BiliDivider } from './components/divider'
 import { BiliTag } from './components/tag'
 import { BiliText, BiliTitle, BiliParagraph, BiliLink } from './components/typography'
 import { BiliCodeBlock } from './components/code-block'
-import { BiliAvatar } from './components/avatar'
+import { BiliAvatar, BiliAvatarGroup } from './components/avatar'
 import { BiliTabs, BiliTabPane } from './components/tabs'
-import { BiliBadge } from './components/badge'
+import { BiliBadge, BiliBadgeRibbon } from './components/badge'
 import { BiliProgress } from './components/progress'
 import { BiliAlert } from './components/alert'
 import { BiliSkeleton, BiliSkeletonItem } from './components/skeleton'
@@ -22,7 +22,8 @@ import { BiliPopover, BiliPopconfirm } from './components/popover'
 import { BiliInputNumber } from './components/input-number'
 import { BiliSlider } from './components/slider'
 import { BiliUpload } from './components/upload'
-import { BiliInput } from './components/input'
+import { BiliInput, BiliInputSearch, BiliInputOtp } from './components/input'
+import { BiliInputTag } from './components/input-tag'
 import { BiliCheckbox, BiliCheckboxGroup } from './components/checkbox'
 import { BiliRadio, BiliRadioGroup } from './components/radio'
 import { BiliSegmented } from './components/segmented'
@@ -31,6 +32,7 @@ import { BiliSelect } from './components/select'
 import { BiliAutoComplete } from './components/auto-complete'
 import { BiliMention } from './components/mention'
 import { BiliCascader } from './components/cascader'
+import { BiliCascaderPanel } from './components/cascader-panel'
 import { BiliTree } from './components/tree'
 import { BiliTreeSelect } from './components/tree-select'
 import { BiliTransfer } from './components/transfer'
@@ -38,13 +40,15 @@ import { BiliRate } from './components/rate'
 import { BiliColorPicker } from './components/color-picker'
 import { BiliDatePicker } from './components/date-picker'
 import { BiliTimePicker } from './components/time-picker'
+import { BiliTimeSelect } from './components/time-select'
 import { BiliCalendar } from './components/calendar'
 import { BiliTimeline, BiliTimelineItem } from './components/timeline'
-import { BiliStatistic } from './components/statistic'
+import { BiliStatistic, BiliStatisticCountdown } from './components/statistic'
 import { BiliImage } from './components/image'
 import { BiliCarousel, BiliCarouselItem } from './components/carousel'
 import { BiliAnchor, BiliAnchorLink } from './components/anchor'
 import { BiliBackTop } from './components/back-top'
+import { BiliFloatButton, BiliFloatButtonGroup } from './components/float-button'
 import { BiliAffix } from './components/affix'
 import { BiliWatermark } from './components/watermark'
 import { BiliTour } from './components/tour'
@@ -59,7 +63,7 @@ import { BiliTable } from './components/table'
 import { BiliList } from './components/list'
 import { BiliVirtualList } from './components/virtual-list'
 import { BiliPagination } from './components/pagination'
-import { BiliCard } from './components/card'
+import { BiliCard, BiliCardMeta, BiliCardGrid } from './components/card'
 import { BiliRow, BiliCol } from './components/grid'
 import {
   BiliLayout,
@@ -69,8 +73,18 @@ import {
   BiliLayoutFooter
 } from './components/layout'
 import { BiliSplitter } from './components/splitter'
+import { BiliScrollbar } from './components/scrollbar'
 import { BiliMenu, BiliMenuItem, BiliSubMenu } from './components/menu'
-import { BiliLineChart, BiliBarChart, BiliPieChart, BiliGaugeChart } from './components/chart'
+import { BiliSpaceCompact } from './components/space'
+import {
+  BiliLineChart,
+  BiliBarChart,
+  BiliPieChart,
+  BiliGaugeChart,
+  BiliRadarChart,
+  BiliScatterChart,
+  BiliFunnelChart
+} from './components/chart'
 
 export * from './components/button'
 export * from './components/icon'
@@ -97,6 +111,7 @@ export * from './components/input-number'
 export * from './components/slider'
 export * from './components/upload'
 export * from './components/input'
+export * from './components/input-tag'
 export * from './components/checkbox'
 export * from './components/radio'
 export * from './components/segmented'
@@ -105,6 +120,7 @@ export * from './components/select'
 export * from './components/auto-complete'
 export * from './components/mention'
 export * from './components/cascader'
+export * from './components/cascader-panel'
 export * from './components/tree'
 export * from './components/tree-select'
 export * from './components/transfer'
@@ -112,6 +128,7 @@ export * from './components/rate'
 export * from './components/color-picker'
 export * from './components/date-picker'
 export * from './components/time-picker'
+export * from './components/time-select'
 export * from './components/calendar'
 export * from './components/timeline'
 export * from './components/statistic'
@@ -119,6 +136,7 @@ export * from './components/image'
 export * from './components/carousel'
 export * from './components/anchor'
 export * from './components/back-top'
+export * from './components/float-button'
 export * from './components/affix'
 export * from './components/watermark'
 export * from './components/tour'
@@ -137,6 +155,7 @@ export * from './components/card'
 export * from './components/grid'
 export * from './components/layout'
 export * from './components/splitter'
+export * from './components/scrollbar'
 export * from './components/menu'
 export * from './components/chart'
 export * from './components/message'
@@ -145,6 +164,7 @@ export const components = [
   BiliButton,
   BiliIcon,
   BiliSpace,
+  BiliSpaceCompact,
   BiliDivider,
   BiliTag,
   BiliText,
@@ -153,9 +173,11 @@ export const components = [
   BiliLink,
   BiliCodeBlock,
   BiliAvatar,
+  BiliAvatarGroup,
   BiliTabs,
   BiliTabPane,
   BiliBadge,
+  BiliBadgeRibbon,
   BiliProgress,
   BiliAlert,
   BiliSkeleton,
@@ -178,6 +200,9 @@ export const components = [
   BiliSlider,
   BiliUpload,
   BiliInput,
+  BiliInputSearch,
+  BiliInputOtp,
+  BiliInputTag,
   BiliCheckbox,
   BiliCheckboxGroup,
   BiliRadio,
@@ -188,6 +213,7 @@ export const components = [
   BiliAutoComplete,
   BiliMention,
   BiliCascader,
+  BiliCascaderPanel,
   BiliTree,
   BiliTreeSelect,
   BiliTransfer,
@@ -195,16 +221,20 @@ export const components = [
   BiliColorPicker,
   BiliDatePicker,
   BiliTimePicker,
+  BiliTimeSelect,
   BiliCalendar,
   BiliTimeline,
   BiliTimelineItem,
   BiliStatistic,
+  BiliStatisticCountdown,
   BiliImage,
   BiliCarousel,
   BiliCarouselItem,
   BiliAnchor,
   BiliAnchorLink,
   BiliBackTop,
+  BiliFloatButton,
+  BiliFloatButtonGroup,
   BiliAffix,
   BiliWatermark,
   BiliTour,
@@ -222,6 +252,8 @@ export const components = [
   BiliVirtualList,
   BiliPagination,
   BiliCard,
+  BiliCardMeta,
+  BiliCardGrid,
   BiliRow,
   BiliCol,
   BiliLayout,
@@ -230,11 +262,15 @@ export const components = [
   BiliLayoutContent,
   BiliLayoutFooter,
   BiliSplitter,
+  BiliScrollbar,
   BiliMenu,
   BiliMenuItem,
   BiliSubMenu,
   BiliLineChart,
   BiliBarChart,
   BiliPieChart,
-  BiliGaugeChart
+  BiliGaugeChart,
+  BiliRadarChart,
+  BiliScatterChart,
+  BiliFunnelChart
 ]

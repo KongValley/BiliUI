@@ -11,6 +11,8 @@ import DemoBasic from '../examples/tabs/basic.vue'
 import basicCode from '../examples/tabs/basic.vue?raw'
 import DemoEditable from '../examples/tabs/editable.vue'
 import editableCode from '../examples/tabs/editable.vue?raw'
+import DemoAddable from '../examples/tabs/addable.vue'
+import addableCode from '../examples/tabs/addable.vue?raw'
 </script>
 
 ## 基础用法
@@ -29,6 +31,14 @@ import editableCode from '../examples/tabs/editable.vue?raw'
   <DemoEditable />
 </DemoBlock>
 
+## 新增标签
+
+`addable` 在标签列表末尾渲染「+」按钮并抛出 `add` 事件，配合 `closable` 可做可编辑标签页。
+
+<DemoBlock :code="addableCode">
+  <DemoAddable />
+</DemoBlock>
+
 ## API
 
 ### Tabs Props
@@ -40,6 +50,7 @@ import editableCode from '../examples/tabs/editable.vue?raw'
 | `direction` | 布局方向 | `'horizontal' \| 'vertical'` | `'horizontal'` |
 | `lazy` | 是否延迟挂载未访问的面板 | `boolean` | `false` |
 | `closable` | 是否允许关闭声明了 `closable` 的标签 | `boolean` | `false` |
+| `addable` | 是否显示新增标签按钮 | `boolean` | `false` |
 | `stretch` | 标签是否等分宽度 | `boolean` | `false` |
 | `animated` | 下划线是否带动画 | `boolean` | `true` |
 
@@ -60,6 +71,7 @@ import editableCode from '../examples/tabs/editable.vue?raw'
 | `update:modelValue` | 激活项变化 | `(value: string \| number)` |
 | `tab-click` | 点击标签时触发 | `({ name, pane })` |
 | `tab-remove` | 点击关闭时触发 | `(name: string \| number)` |
+| `add` | 点击新增按钮时触发 | — |
 
 ### Slots
 

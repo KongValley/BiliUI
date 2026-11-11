@@ -1,7 +1,7 @@
 import type { PropType } from 'vue'
 import type { ComponentSize } from '../../../utils/types'
 
-export type DatePickerType = 'date' | 'daterange'
+export type DatePickerType = 'date' | 'daterange' | 'month' | 'year' | 'datetime'
 export type DatePickerValue = string | [string, string] | null
 
 export interface DatePickerShortcut {

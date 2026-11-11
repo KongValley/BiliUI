@@ -21,6 +21,8 @@ export const tabsProps = {
   lazy: Boolean,
   /** Allow closing tabs that declare `closable`. */
   closable: Boolean,
+  /** Render an add button after the last tab. */
+  addable: Boolean,
   /** Stretch every tab to an equal share of the width. */
   stretch: Boolean,
   /** Animate the underline; disabled automatically with reduced motion. */

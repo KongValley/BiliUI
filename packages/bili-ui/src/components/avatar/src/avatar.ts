@@ -27,11 +27,11 @@ export const avatarProps = {
   /** `sm` / `md` / `lg` or any CSS length / pixel number. */
   size: {
     type: [String, Number] as PropType<string | number>,
-    default: 'md'
+    default: undefined
   },
   shape: {
     type: String as PropType<AvatarShape>,
-    default: 'circle'
+    default: undefined
   },
   fit: {
     type: String as PropType<AvatarFit>,

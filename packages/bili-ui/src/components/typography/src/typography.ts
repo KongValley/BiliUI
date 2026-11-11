@@ -8,6 +8,21 @@ export type TypographyType =
   | 'danger'
   | 'disabled'
 
+export interface TypographyCopyable {
+  /** Text copied to the clipboard; defaults to the rendered content. */
+  text?: string
+}
+
+const copyableProp = {
+  type: [Boolean, Object] as PropType<boolean | TypographyCopyable>,
+  default: false
+}
+
+const editableProp = {
+  type: Boolean,
+  default: false
+}
+
 const typeProp = {
   type: String as PropType<TypographyType>,
   default: 'default'
@@ -31,7 +46,9 @@ export const textProps = {
   delete: Boolean,
   mark: Boolean,
   code: Boolean,
-  ellipsis: ellipsisProp
+  ellipsis: ellipsisProp,
+  copyable: copyableProp,
+  editable: editableProp
 } as const
 
 export const titleProps = {
@@ -40,7 +57,9 @@ export const titleProps = {
     default: 1
   },
   type: typeProp,
-  ellipsis: ellipsisProp
+  ellipsis: ellipsisProp,
+  copyable: copyableProp,
+  editable: editableProp
 } as const
 
 export const paragraphProps = {
@@ -50,6 +69,8 @@ export const paragraphProps = {
   underline: Boolean,
   delete: Boolean,
   ellipsis: ellipsisProp,
+  copyable: copyableProp,
+  editable: editableProp,
   /** Adds the default paragraph bottom spacing. */
   spacing: {
     type: Boolean,
@@ -72,5 +93,7 @@ export const linkProps = {
     default: true
   },
   disabled: Boolean,
-  ellipsis: ellipsisProp
+  ellipsis: ellipsisProp,
+  copyable: copyableProp,
+  editable: editableProp
 } as const

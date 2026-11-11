@@ -1,0 +1,191 @@
+@use '../../../styles/mixins' as *;
+
+@include b(message-box) {
+  --bili-message-box-bg: var(--bili-bg-container);
+  --bili-message-box-radius: var(--bili-radius-lg);
+  --bili-message-box-shadow: var(--bili-shadow-lg);
+  --bili-message-box-width: 420px;
+  --bili-message-box-padding: 24px;
+  --bili-message-box-icon-color: var(--bili-color-info);
+
+  position: relative;
+  width: var(--bili-message-box-width);
+  max-width: calc(100vw - 32px);
+  margin: 20vh auto 30px;
+  overflow: hidden;
+  background-color: var(--bili-message-box-bg);
+  border-radius: var(--bili-message-box-radius);
+  box-shadow: var(--bili-message-box-shadow);
+  outline: none;
+
+  @include e(overlay) {
+    --bili-message-box-overlay: rgba(15, 18, 23, 0.45);
+    position: fixed;
+    inset: 0;
+    overflow: auto;
+    background-color: var(--bili-message-box-overlay);
+  }
+
+  @include e(header) {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px var(--bili-message-box-padding) 0;
+  }
+
+  @include e(title) {
+    font-size: var(--bili-font-size-md);
+    font-weight: var(--bili-font-weight-semibold);
+    line-height: 1.4;
+    color: var(--bili-text-primary);
+  }
+
+  @include e(close) {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    font-size: 16px;
+    color: var(--bili-text-secondary);
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    border-radius: var(--bili-radius-sm);
+    transition:
+      color var(--bili-transition-duration) var(--bili-transition-function),
+      background-color var(--bili-transition-duration) var(--bili-transition-function),
+      transform var(--bili-transition-duration) var(--bili-transition-function-spring);
+
+    &:hover {
+      color: var(--bili-text-primary);
+      background-color: var(--bili-fill-color);
+      transform: rotate(90deg);
+    }
+  }
+
+  @include e(body) {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 20px var(--bili-message-box-padding) 8px;
+  }
+
+  @include e(icon) {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    margin-top: 1px;
+    font-size: 20px;
+    color: var(--bili-message-box-icon-color);
+    animation: bili-scale-in var(--bili-transition-duration-slow)
+      var(--bili-transition-function-spring) both;
+  }
+
+  @include e(content) {
+    flex: 1;
+    min-width: 0;
+  }
+
+  @include e(message) {
+    font-size: var(--bili-font-size-base);
+    line-height: 1.6;
+    color: var(--bili-text-regular);
+    overflow-wrap: anywhere;
+  }
+
+  @include e(error) {
+    margin: 8px 0 0;
+    font-size: var(--bili-font-size-sm);
+    line-height: 1.4;
+    color: var(--bili-color-danger);
+  }
+
+  @include e(input) {
+    width: 100%;
+    height: var(--bili-control-height-md);
+    margin-top: 12px;
+    padding: 0 var(--bili-control-padding-md);
+    font: inherit;
+    font-size: var(--bili-font-size-base);
+    color: var(--bili-text-primary);
+    background-color: var(--bili-bg-container);
+    border: 1px solid var(--bili-border-color);
+    border-radius: var(--bili-radius-base);
+    outline: none;
+    transition:
+      border-color var(--bili-transition-duration) var(--bili-transition-function),
+      box-shadow var(--bili-transition-duration) var(--bili-transition-function);
+
+    &::placeholder {
+      color: var(--bili-text-placeholder);
+    }
+
+    &:focus {
+      border-color: var(--bili-color-primary);
+      box-shadow: 0 0 0 3px var(--bili-color-primary-light);
+    }
+
+    &[aria-invalid='true'] {
+      border-color: var(--bili-color-danger);
+    }
+  }
+
+  @include e(footer) {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 16px var(--bili-message-box-padding) 20px;
+  }
+
+  @include m(success) {
+    --bili-message-box-icon-color: var(--bili-color-success);
+  }
+
+  @include m(warning) {
+    --bili-message-box-icon-color: var(--bili-color-warning);
+  }
+
+  @include m(error) {
+    --bili-message-box-icon-color: var(--bili-color-danger);
+  }
+}
+
+.bili-message-box-enter-active,
+.bili-message-box-leave-active {
+  transition: opacity var(--bili-transition-duration) var(--bili-transition-function);
+}
+
+.bili-message-box-enter-from,
+.bili-message-box-leave-to {
+  opacity: 0;
+}
+
+.bili-message-box-enter-active .bili-message-box {
+  transition:
+    transform var(--bili-transition-duration-slow) var(--bili-transition-function-out),
+    opacity var(--bili-transition-duration) var(--bili-transition-function);
+}
+
+.bili-message-box-leave-active .bili-message-box {
+  transition:
+    transform var(--bili-transition-duration) var(--bili-transition-function-in),
+    opacity var(--bili-transition-duration-fast) var(--bili-transition-function-in);
+}
+
+.bili-message-box-enter-from .bili-message-box {
+  opacity: 0;
+  transform: translateY(-16px) scale(0.96);
+}
+
+.bili-message-box-leave-to .bili-message-box {
+  opacity: 0;
+  transform: translateY(-6px) scale(0.98);
+}

@@ -9,6 +9,8 @@ title: Typography 排版
 <script setup>
 import DemoBasic from '../examples/typography/basic.vue'
 import basicCode from '../examples/typography/basic.vue?raw'
+import DemoActions from '../examples/typography/actions.vue'
+import actionsCode from '../examples/typography/actions.vue?raw'
 import ApiReference from '../.vitepress/theme/components/ApiReference.vue'
 </script>
 
@@ -18,6 +20,14 @@ import ApiReference from '../.vitepress/theme/components/ApiReference.vue'
 
 <DemoBlock :code="basicCode">
   <DemoBasic />
+</DemoBlock>
+
+## 复制与编辑
+
+四类排版组件都支持 `copyable` 与 `editable`：悬停显示操作按钮，编辑态下 `Enter` 提交、`Esc` 取消，并分别抛出 `copy` / `change`。
+
+<DemoBlock :code="actionsCode">
+  <DemoActions />
 </DemoBlock>
 
 ## API

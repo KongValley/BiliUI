@@ -191,3 +191,112 @@
     }
   }
 }
+
+@include b(input-search) {
+  .#{$namespace}-input__append {
+    padding: 0;
+    background-color: transparent;
+  }
+
+  @include e(button) {
+    display: inline-flex;
+    flex: none;
+    gap: 6px;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 100%;
+    padding: 0 12px;
+    font: inherit;
+    font-size: var(--bili-font-size-sm);
+    color: var(--bili-text-regular);
+    cursor: pointer;
+    background-color: var(--bili-fill-color-light);
+    border: 0;
+    transition:
+      color var(--bili-transition-duration) var(--bili-transition-function),
+      background-color var(--bili-transition-duration) var(--bili-transition-function);
+
+    &:hover {
+      color: var(--bili-color-primary);
+      background-color: var(--bili-fill-color);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    &.is-text {
+      padding: 0 16px;
+      color: var(--bili-color-on-primary);
+      background-color: var(--bili-color-primary);
+
+      &:hover {
+        background-color: var(--bili-color-primary-hover);
+      }
+    }
+  }
+}
+
+@include b(input-otp) {
+  --bili-input-otp-size: 40px;
+  --bili-input-otp-font-size: var(--bili-font-size-md);
+
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+
+  @include m(sm) {
+    --bili-input-otp-size: 32px;
+    --bili-input-otp-font-size: var(--bili-font-size-base);
+  }
+
+  @include m(lg) {
+    --bili-input-otp-size: 48px;
+    --bili-input-otp-font-size: var(--bili-font-size-lg);
+  }
+
+  @include e(cell) {
+    width: var(--bili-input-otp-size);
+    height: var(--bili-input-otp-size);
+    padding: 0;
+    font-family: inherit;
+    font-size: var(--bili-input-otp-font-size);
+    font-weight: var(--bili-font-weight-semibold);
+    font-variant-numeric: tabular-nums;
+    color: var(--bili-text-primary);
+    text-align: center;
+    background-color: var(--bili-bg-container);
+    border: 1px solid var(--bili-border-color);
+    border-radius: var(--bili-radius-base);
+    outline: none;
+    transition:
+      border-color var(--bili-transition-duration) var(--bili-transition-function),
+      box-shadow var(--bili-transition-duration) var(--bili-transition-function);
+
+    &:hover {
+      border-color: var(--bili-color-primary-hover);
+    }
+
+    &:focus {
+      border-color: var(--bili-color-primary);
+      box-shadow: 0 0 0 3px var(--bili-color-primary-light);
+    }
+
+    &.is-filled {
+      border-color: var(--bili-color-primary);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      background-color: var(--bili-bg-disabled);
+    }
+  }
+
+  @include e(separator) {
+    font-size: var(--bili-font-size-base);
+    color: var(--bili-text-placeholder);
+    user-select: none;
+  }
+}

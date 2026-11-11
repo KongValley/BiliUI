@@ -496,3 +496,67 @@
     opacity: 1;
   }
 }
+
+@include b(chart) {
+  // ------------------------------------------------------------------- radar
+  @include e(radar-grid) {
+    fill: var(--bili-fill-color-lighter);
+    stroke: var(--bili-chart-grid-color);
+    stroke-width: 1;
+  }
+
+  @include e(radar-axis) {
+    stroke: var(--bili-chart-grid-color);
+    stroke-width: 1;
+  }
+
+  @include e(radar-point) {
+    cursor: pointer;
+    stroke: var(--bili-bg-container);
+    stroke-width: 1.5;
+    transition: r var(--bili-transition-duration-fast) var(--bili-transition-function-spring);
+  }
+
+  // ----------------------------------------------------------------- scatter
+  @include e(scatter-point) {
+    cursor: pointer;
+    opacity: 0.82;
+    transition:
+      opacity var(--bili-transition-duration-fast) var(--bili-transition-function),
+      r var(--bili-transition-duration-fast) var(--bili-transition-function-spring);
+
+    &.is-active {
+      opacity: 1;
+      stroke: var(--bili-bg-container);
+      stroke-width: 2;
+    }
+  }
+
+  // ------------------------------------------------------------------ funnel
+  @include e(funnel-stage) {
+    cursor: pointer;
+  }
+
+  @include e(funnel-polygon) {
+    transition:
+      filter var(--bili-transition-duration-fast) var(--bili-transition-function),
+      opacity var(--bili-transition-duration-fast) var(--bili-transition-function);
+
+    &.is-active {
+      filter: brightness(1.06);
+    }
+  }
+
+  @include e(funnel-label) {
+    font-size: 12px;
+    font-weight: var(--bili-font-weight-semibold);
+    pointer-events: none;
+    fill: #ffffff;
+  }
+
+  @include e(funnel-value) {
+    font-size: 11px;
+    font-weight: var(--bili-font-weight-regular);
+    opacity: 0.85;
+  }
+}

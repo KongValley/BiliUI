@@ -52,6 +52,7 @@ export default defineConfig({
           items: [
             { text: 'Layout 布局', link: '/components/layout' },
             { text: 'Splitter 面板分割', link: '/components/splitter' },
+            { text: 'Scrollbar 滚动条', link: '/components/scrollbar' },
             { text: 'Grid 栅格', link: '/components/grid' },
             { text: 'Menu 导航菜单', link: '/components/menu' },
             { text: 'Tabs 标签页', link: '/components/tabs' },
@@ -59,13 +60,15 @@ export default defineConfig({
             { text: 'Dropdown 下拉菜单', link: '/components/dropdown' },
             { text: 'Anchor 锚点', link: '/components/anchor' },
             { text: 'Affix 固钉', link: '/components/affix' },
-            { text: 'BackTop 回到顶部', link: '/components/back-top' }
+            { text: 'BackTop 回到顶部', link: '/components/back-top' },
+            { text: 'FloatButton 悬浮按钮', link: '/components/float-button' }
           ]
         },
         {
           text: '表单',
           items: [
             { text: 'Input 输入框', link: '/components/input' },
+            { text: 'InputTag 标签输入', link: '/components/input-tag' },
             { text: 'Checkbox 多选框', link: '/components/checkbox' },
             { text: 'Radio 单选框', link: '/components/radio' },
             { text: 'Segmented 分段控制器', link: '/components/segmented' },
@@ -74,10 +77,12 @@ export default defineConfig({
             { text: 'AutoComplete 自动补全', link: '/components/auto-complete' },
             { text: 'Mention 提及', link: '/components/mention' },
             { text: 'Cascader 级联选择', link: '/components/cascader' },
+            { text: 'CascaderPanel 级联面板', link: '/components/cascader-panel' },
             { text: 'TreeSelect 树选择', link: '/components/tree-select' },
             { text: 'ColorPicker 取色器', link: '/components/color-picker' },
             { text: 'DatePicker 日期选择', link: '/components/date-picker' },
             { text: 'TimePicker 时间选择', link: '/components/time-picker' },
+            { text: 'TimeSelect 固定时间', link: '/components/time-select' },
             { text: 'InputNumber 数字输入', link: '/components/input-number' },
             { text: 'Slider 滑块', link: '/components/slider' },
             { text: 'Upload 上传', link: '/components/upload' },
@@ -91,6 +96,7 @@ export default defineConfig({
           items: [
             { text: 'Tooltip 文字提示', link: '/components/tooltip' },
             { text: 'Dialog 对话框', link: '/components/dialog' },
+            { text: 'MessageBox 消息确认', link: '/components/message-box' },
             { text: 'Drawer 抽屉', link: '/components/drawer' },
             { text: 'Alert 警告提示', link: '/components/alert' },
             { text: 'Message 消息提示', link: '/components/message' },

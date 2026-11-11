@@ -11,6 +11,8 @@ import DemoBasic from '../examples/statistic/basic.vue'
 import basicCode from '../examples/statistic/basic.vue?raw'
 import DemoPrecision from '../examples/statistic/precision.vue'
 import precisionCode from '../examples/statistic/precision.vue?raw'
+import DemoCountdown from '../examples/statistic/countdown.vue'
+import countdownCode from '../examples/statistic/countdown.vue?raw'
 </script>
 
 ## 基础用法
@@ -28,6 +30,32 @@ import precisionCode from '../examples/statistic/precision.vue?raw'
 <DemoBlock :code="precisionCode">
   <DemoPrecision />
 </DemoBlock>
+
+## 倒计时
+
+`BiliStatisticCountdown` 每秒刷新剩余时间，`format` 支持 `DD` / `HH` / `mm` / `ss`；未使用 `DD` 时天会自动折算进小时。
+
+<DemoBlock :code="countdownCode">
+  <DemoCountdown />
+</DemoBlock>
+
+### Countdown Props
+
+| 属性 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| `value` | 目标时间（毫秒时间戳、Date 或日期字符串） | `number \| string \| Date` | `0` |
+| `title` | 指标名称 | `string` | `''` |
+| `prefix` / `suffix` | 前后缀 | `string` | `''` |
+| `format` | 展示格式 | `string` | `'HH:mm:ss'` |
+| `interval` | 刷新间隔（毫秒） | `number` | `1000` |
+| `autoStart` | 挂载后自动开始 | `boolean` | `true` |
+| `color` / `valueStyle` | 数值颜色 / 样式 | `string` / `CSSProperties` | — |
+
+### Countdown Events
+
+| 事件名 | 说明 |
+| --- | --- |
+| `finish` | 倒计时归零时触发一次 |
 
 ## API
 

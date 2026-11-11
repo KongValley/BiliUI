@@ -47,3 +47,10 @@
     margin-left: 2px;
   }
 }
+
+.#{$namespace}-statistic.is-countdown {
+  .#{$namespace}-statistic__value {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+  }
+}

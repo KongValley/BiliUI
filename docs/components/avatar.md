@@ -9,6 +9,8 @@ title: Avatar 头像
 <script setup>
 import DemoBasic from '../examples/avatar/basic.vue'
 import basicCode from '../examples/avatar/basic.vue?raw'
+import DemoGroup from '../examples/avatar/group.vue'
+import groupCode from '../examples/avatar/group.vue?raw'
 </script>
 
 ## 基础用法
@@ -18,6 +20,23 @@ import basicCode from '../examples/avatar/basic.vue?raw'
 <DemoBlock :code="basicCode">
   <DemoBasic />
 </DemoBlock>
+
+## 头像组
+
+`BiliAvatarGroup` 将多个头像叠放展示，`max` 控制可见数量，超出部分折叠为 `+N`；`size` / `shape` 会下发给子头像。
+
+<DemoBlock :code="groupCode">
+  <DemoGroup />
+</DemoBlock>
+
+### AvatarGroup Props
+
+| 属性 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| `max` | 最多展示数量，0 为不限 | `number` | `0` |
+| `size` | 子头像尺寸 | `string \| number` | 继承子头像默认值 |
+| `shape` | 子头像形状 | `'circle' \| 'square'` | `'circle'` |
+| `spacing` | 头像重叠距离，负值表示叠放 | `string \| number` | `-8` |
 
 ## API
 

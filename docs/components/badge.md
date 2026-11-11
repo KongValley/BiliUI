@@ -9,6 +9,8 @@ title: Badge 徽标
 <script setup>
 import DemoBasic from '../examples/badge/basic.vue'
 import basicCode from '../examples/badge/basic.vue?raw'
+import DemoRibbon from '../examples/badge/ribbon.vue'
+import ribbonCode from '../examples/badge/ribbon.vue?raw'
 </script>
 
 ## 基础用法
@@ -18,6 +20,27 @@ import basicCode from '../examples/badge/basic.vue?raw'
 <DemoBlock :code="basicCode">
   <DemoBasic />
 </DemoBlock>
+
+## 缎带角标
+
+`BiliBadgeRibbon` 在内容右上角（或左上角）叠加一条带折角的缎带，适合 VIP、NEW、限时等标记。
+
+<DemoBlock :code="ribbonCode">
+  <DemoRibbon />
+</DemoBlock>
+
+### BadgeRibbon Props
+
+| 属性 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| `text` | 缎带文字 | `string` | `''` |
+| `color` | 自定义背景色 | `string` | 主题主色 |
+| `placement` | 位置 | `'start' \| 'end'` | `'end'` |
+
+| 插槽名 | 说明 |
+| --- | --- |
+| `default` | 被标记的内容 |
+| `text` | 自定义缎带内容 |
 
 ## API
 

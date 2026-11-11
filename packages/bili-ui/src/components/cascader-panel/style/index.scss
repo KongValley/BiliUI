@@ -1,0 +1,99 @@
+@use '../../../styles/mixins' as *;
+
+@include b(cascader-panel) {
+  --bili-cascader-panel-bg: var(--bili-bg-elevated);
+  --bili-cascader-panel-border-color: var(--bili-border-color-light);
+  --bili-cascader-panel-radius: var(--bili-radius-md);
+  --bili-cascader-panel-shadow: var(--bili-shadow-base);
+  --bili-cascader-option-color: var(--bili-text-regular);
+  --bili-cascader-option-hover-bg: var(--bili-fill-color-light);
+  --bili-cascader-option-selected-color: var(--bili-color-primary);
+  --bili-cascader-option-selected-bg: var(--bili-color-primary-light);
+  --bili-cascader-option-disabled-color: var(--bili-text-placeholder);
+
+  display: inline-flex;
+  padding: 4px;
+  background-color: var(--bili-cascader-panel-bg);
+  border: 1px solid var(--bili-cascader-panel-border-color);
+  border-radius: var(--bili-cascader-panel-radius);
+  box-shadow: var(--bili-cascader-panel-shadow);
+
+  @include e(columns) {
+    display: flex;
+    max-height: 264px;
+  }
+
+  @include e(column) {
+    display: flex;
+    flex-direction: column;
+    min-width: 156px;
+    max-height: 264px;
+    padding-right: 4px;
+    overflow-y: auto;
+    border-right: 1px solid var(--bili-border-color-lighter);
+    @include utils-scrollbar;
+
+    &:last-child {
+      padding-right: 0;
+      border-right: 0;
+    }
+  }
+
+  @include e(option) {
+    display: flex;
+    flex-shrink: 0;
+    gap: 6px;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 7px 10px;
+    font-size: var(--bili-font-size-base);
+    line-height: 1.4;
+    color: var(--bili-cascader-option-color);
+    text-align: left;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    border-radius: var(--bili-radius-sm);
+    transition:
+      background-color var(--bili-transition-duration-fast) var(--bili-transition-function),
+      color var(--bili-transition-duration-fast) var(--bili-transition-function);
+
+    &:hover,
+    &.is-active {
+      background-color: var(--bili-cascader-option-hover-bg);
+    }
+
+    &.is-selected {
+      font-weight: var(--bili-font-weight-medium);
+      color: var(--bili-cascader-option-selected-color);
+      background-color: var(--bili-cascader-option-selected-bg);
+    }
+
+    &.is-disabled {
+      color: var(--bili-cascader-option-disabled-color);
+      cursor: not-allowed;
+      background-color: transparent;
+    }
+  }
+
+  @include e(label) {
+    @include utils-ellipsis;
+
+    flex: 1;
+    min-width: 0;
+  }
+
+  @include e(arrow) {
+    flex: none;
+    font-size: 12px;
+    color: var(--bili-text-placeholder);
+  }
+
+  @include e(empty) {
+    padding: 24px 32px;
+    font-size: var(--bili-font-size-sm);
+    color: var(--bili-text-placeholder);
+    text-align: center;
+  }
+}

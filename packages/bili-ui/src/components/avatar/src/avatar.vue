@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { computed, ref, useSlots, watch, type CSSProperties } from 'vue'
+import { computed, inject, onBeforeUnmount, ref, useSlots, watch, type CSSProperties } from 'vue'
 import { useNamespace } from '../../../hooks/use-namespace'
 import { useLocale } from '../../../hooks/use-config'
 import { addUnit } from '../../../utils/dom'
 import BiliIcon from '../../icon/src/icon.vue'
 import { avatarProps } from './avatar'
+import { avatarGroupKey } from './avatar-group'
 
 defineOptions({ name: 'BiliAvatar' })
 
@@ -17,10 +18,21 @@ const emit = defineEmits<{
 const ns = useNamespace('avatar')
 const locale = useLocale()
 const slots = useSlots()
+const group = inject(avatarGroupKey, null)
+const groupId = Symbol('bili-avatar')
+
+if (group) group.register(groupId)
 
 const SIZE_MAP = { sm: 24, md: 32, lg: 40 } as const
 
 const failed = ref(false)
+
+const mergedSize = computed(() => props.size ?? group?.size.value ?? 'md')
+const mergedShape = computed(() => props.shape ?? group?.shape.value ?? 'circle')
+const groupIndex = computed(() => (group ? group.order.value.indexOf(groupId) : -1))
+const hiddenByGroup = computed(
+  () => !!group && group.max.value > 0 && groupIndex.value >= group.max.value
+)
 
 watch(
   () => props.src,
@@ -64,8 +76,8 @@ const initials = computed(() => {
 })
 
 const sizePx = computed(() => {
-  if (typeof props.size === 'number') return props.size
-  return SIZE_MAP[props.size as keyof typeof SIZE_MAP]
+  if (typeof mergedSize.value === 'number') return mergedSize.value
+  return SIZE_MAP[mergedSize.value as keyof typeof SIZE_MAP]
 })
 
 const rootStyle = computed(() => {
@@ -76,12 +88,14 @@ const rootStyle = computed(() => {
     style.height = `${sizePx.value}px`
     style.fontSize = `${Math.max(10, Math.round(sizePx.value * 0.42))}px`
   } else {
-    const cssSize = addUnit(props.size)
+    const cssSize = addUnit(mergedSize.value)
     if (cssSize) {
       style.width = cssSize
       style.height = cssSize
     }
   }
+
+  if (hiddenByGroup.value) style.display = 'none'
 
   return style as CSSProperties
 })
@@ -90,14 +104,17 @@ const handleError = (event: Event) => {
   failed.value = true
   emit('error', event)
 }
+
+onBeforeUnmount(() => group?.unregister(groupId))
 </script>
 
 <template>
   <span
     :class="[
       ns.b(),
-      ns.m(shape),
+      ns.m(mergedShape),
       ns.is('text', showText),
+      ns.is('hidden', hiddenByGroup),
       ns.is('bordered', bordered)
     ]"
     :style="rootStyle"

@@ -15,6 +15,8 @@ import DemoPie from '../examples/chart/pie.vue'
 import pieCode from '../examples/chart/pie.vue?raw'
 import DemoGauge from '../examples/chart/gauge.vue'
 import gaugeCode from '../examples/chart/gauge.vue?raw'
+import DemoExtra from '../examples/chart/extra.vue'
+import extraCode from '../examples/chart/extra.vue?raw'
 </script>
 
 ## 折线图
@@ -48,6 +50,47 @@ import gaugeCode from '../examples/chart/gauge.vue?raw'
 <DemoBlock :code="gaugeCode">
   <DemoGauge />
 </DemoBlock>
+
+## 雷达图、散点图与漏斗图
+
+- `BiliRadarChart`：`indicators` 定义指标轴（可为每个轴设置 `max`），`series.data` 按指标顺序提供数值。
+- `BiliScatterChart`：`series.data` 为 `{ x, y }` 点集合，坐标轴范围自动取整，也可用 `xMin` / `xMax` / `yMin` / `yMax` 固定。
+- `BiliFunnelChart`：`data` 按阶段顺序传入，自动计算占比与梯形宽度。
+
+<DemoBlock :code="extraCode">
+  <DemoExtra />
+</DemoBlock>
+
+### RadarChart Props
+
+| 属性 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| `indicators` | 指标轴 | `Array<{ name: string; max?: number }>` | `[]` |
+| `series` | 数据系列 | `Array<{ name: string; data: number[]; color?: string }>` | `[]` |
+| `levels` | 网格环数 | `number` | `4` |
+| `showLegend` / `showGrid` | 图例 / 网格 | `boolean` | `true` |
+| `height` / `valueFormatter` | 高度 / 数值格式 | `string \| number` / `(value) => string` | `280` / — |
+
+### ScatterChart Props
+
+| 属性 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| `series` | 数据系列 | `Array<{ name: string; data: { x: number; y: number }[]; color?: string }>` | `[]` |
+| `xMin` / `xMax` | X 轴范围 | `number` | 自动 |
+| `yMin` / `yMax` | Y 轴范围 | `number` | 自动 |
+| `pointSize` | 点半径 | `number` | `5` |
+| `showLegend` / `showGrid` | 图例 / 网格 | `boolean` | `true` |
+
+### FunnelChart Props
+
+| 属性 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| `data` | 阶段数据 | `Array<{ name: string; value: number; color?: string }>` | `[]` |
+| `gap` | 阶段间距 | `number` | `4` |
+| `showLabels` | 显示名称与占比 | `boolean` | `true` |
+| `height` / `valueFormatter` | 高度 / 数值格式 | `string \| number` / `(value) => string` | `280` / — |
+
+三个图表都会抛出 `point-click` / `slice-click`，参数包含对应系列、阶段或坐标。
 
 ## LineChart API
 

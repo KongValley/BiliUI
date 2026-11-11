@@ -16,6 +16,7 @@ const emit = defineEmits<{
   'tab-click': [payload: { name: string | number; pane: TabPaneState }]
   'tab-change': [value: string | number]
   'tab-remove': [value: string | number]
+  add: []
 }>()
 
 const ns = useNamespace('tabs')
@@ -220,6 +221,16 @@ const showIndicator = computed(() => props.type === 'line' && indicator.value.vi
         :style="verticalBarStyle"
         aria-hidden="true"
       />
+
+      <button
+        v-if="addable"
+        :class="ns.e('add')"
+        type="button"
+        :aria-label="locale.tabAdd"
+        @click="emit('add')"
+      >
+        <BiliIcon name="plus" :size="14" />
+      </button>
 
       <div v-if="$slots.extra" :class="ns.e('extra')">
         <slot name="extra" />

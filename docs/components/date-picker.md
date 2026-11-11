@@ -13,6 +13,8 @@ import DemoRange from '../examples/date-picker/range.vue'
 import rangeCode from '../examples/date-picker/range.vue?raw'
 import DemoDisabled from '../examples/date-picker/disabled.vue'
 import disabledCode from '../examples/date-picker/disabled.vue?raw'
+import DemoTypes from '../examples/date-picker/types.vue'
+import typesCode from '../examples/date-picker/types.vue?raw'
 </script>
 
 ## 基础用法
@@ -39,6 +41,14 @@ import disabledCode from '../examples/date-picker/disabled.vue?raw'
   <DemoDisabled />
 </DemoBlock>
 
+## 月、年与日期时间
+
+`type="month"` 绑定 `YYYY-MM`，`type="year"` 绑定 `YYYY`；`type="datetime"` 在日期面板底部增加时/分/秒选择，绑定 `YYYY-MM-DD HH:mm:ss`。
+
+<DemoBlock :code="typesCode">
+  <DemoTypes />
+</DemoBlock>
+
 ## API
 
 ### Props
@@ -46,7 +56,7 @@ import disabledCode from '../examples/date-picker/disabled.vue?raw'
 | 属性                | 说明                                               | 类型                                 | 默认值         |
 | ------------------- | -------------------------------------------------- | ------------------------------------ | -------------- |
 | `model-value`       | 绑定值，单日为 `YYYY-MM-DD`，区间为 `[start, end]` | `string \| [string, string] \| null` | `null`         |
-| `type`              | 选择类型                                           | `'date' \| 'daterange'`              | `'date'`       |
+| `type`              | 选择类型                                           | `'date' \| 'daterange' \| 'month' \| 'year' \| 'datetime'` | `'date'`       |
 | `placeholder`       | 单日占位文本                                       | `string`                             | `'请选择日期'` |
 | `start-placeholder` | 区间开始占位文本                                   | `string`                             | `'开始日期'`   |
 | `end-placeholder`   | 区间结束占位文本                                   | `string`                             | `'结束日期'`   |
