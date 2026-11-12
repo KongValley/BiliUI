@@ -1,0 +1,7 @@
+@use '../../../styles/mixins' as *;
+
+@include b(app) {
+  color: var(--bili-text-primary);
+  font-size: var(--bili-font-size-base);
+  line-height: var(--bili-line-height-base);
+}

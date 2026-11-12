@@ -74,7 +74,18 @@ function buildEntry(name) {
   return styles
 }
 
-fs.rmSync(outputDir, { recursive: true, force: true })
+// Remove previously generated style entries without touching the declaration
+// files that vite-plugin-dts emits into the same component directories.
+if (fs.existsSync(outputDir)) {
+  for (const name of componentNames) {
+    fs.rmSync(path.join(outputDir, name, 'style.css'), { force: true })
+  }
+  for (const entry of fs.readdirSync(outputDir, { withFileTypes: true })) {
+    if (entry.isDirectory() && !componentNames.includes(entry.name)) {
+      fs.rmSync(path.join(outputDir, entry.name), { recursive: true, force: true })
+    }
+  }
+}
 
 const summary = []
 for (const name of componentNames) {

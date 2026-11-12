@@ -1,6 +1,8 @@
 import { createVNode, render, type VNode } from 'vue'
 import { getGlobalNamespace } from '../../../hooks/use-namespace'
-import { getGlobalLocale } from '../../../hooks/use-config'
+import { getGlobalLocale, type BiliLocale } from '../../../hooks/use-config'
+import type { ServiceContext } from '../../../utils/service'
+import ConfigScope from '../../config-provider/src/config-scope.vue'
 import NotificationComponent from './notification.vue'
 import type {
   NotificationOptions,
@@ -16,25 +18,31 @@ interface InternalInstance extends NotificationInstance {
   id: number
   wrapper: HTMLElement
   position: NotificationPosition
+  containerKey: string
+  owner?: symbol
 }
 
 const instances: InternalInstance[] = []
-const containers = new Map<NotificationPosition, HTMLElement>()
+const containers = new Map<string, HTMLElement>()
 let seed = 0
 /** Keeps the stack readable on screen; older items close automatically. */
 const MAX_VISIBLE = 6
 
-const getContainer = (position: NotificationPosition): HTMLElement => {
-  const existing = containers.get(position)
+const getContainer = (
+  namespace: string,
+  position: NotificationPosition,
+  locale: BiliLocale
+): HTMLElement => {
+  const key = `${namespace}:${position}`
+  const existing = containers.get(key)
   if (existing && existing.isConnected) return existing
 
   const container = document.createElement('div')
-  const namespace = getGlobalNamespace()
   container.className = `${namespace}-notification-container ${namespace}-notification-container--${position}`
   container.setAttribute('role', 'region')
-  container.setAttribute('aria-label', getGlobalLocale().notification)
+  container.setAttribute('aria-label', locale.notification)
   document.body.appendChild(container)
-  containers.set(position, container)
+  containers.set(key, container)
   return container
 }
 
@@ -45,43 +53,60 @@ const destroy = (id: number) => {
   render(null, instance.wrapper)
   instance.wrapper.remove()
 
-  const container = containers.get(instance.position)
+  const container = containers.get(instance.containerKey)
   if (container && container.childElementCount === 0) {
     container.remove()
-    containers.delete(instance.position)
+    containers.delete(instance.containerKey)
   }
 }
 
-const createNotification = (options: NotificationOptions): NotificationInstance => {
+const createNotification = (
+  options: NotificationOptions,
+  context: ServiceContext = {}
+): NotificationInstance => {
   if (typeof document === 'undefined') {
     return { close: () => undefined }
   }
 
   const position = options.position ?? 'top-right'
+  const namespace = context.config?.namespace ?? getGlobalNamespace()
+  const locale = context.config?.locale ?? getGlobalLocale()
   const id = seed++
   const wrapper = document.createElement('div')
-  wrapper.className = `${getGlobalNamespace()}-notification-wrapper`
+  wrapper.className = `${namespace}-notification-wrapper`
 
-  const vnode: VNode = createVNode(NotificationComponent, {
+  let exposed: { close?: () => void } | null = null
+  const itemVNode: VNode = createVNode(NotificationComponent, {
     title: options.title ?? '',
     message: options.message,
     type: options.type ?? 'info',
     duration: options.duration ?? 4500,
     showClose: options.showClose ?? true,
     showProgress: options.showProgress ?? true,
-    namespace: getGlobalNamespace(),
+    namespace,
+    onVnodeMounted: vnode => {
+      exposed = (vnode.component?.exposed as { close?: () => void } | null) ?? null
+    },
     onClose: () => options.onClose?.(),
     onDestroy: () => destroy(id)
   })
 
+  const vnode: VNode = context.config
+    ? createVNode(ConfigScope, { config: context.config }, { default: () => itemVNode })
+    : itemVNode
+
   render(vnode, wrapper)
-  getContainer(position).appendChild(wrapper)
+
+  const containerKey = `${namespace}:${position}`
+  getContainer(namespace, position, locale).appendChild(wrapper)
 
   const instance: InternalInstance = {
     id,
     wrapper,
     position,
-    close: () => (vnode.component?.exposed as { close?: () => void } | undefined)?.close?.()
+    containerKey,
+    owner: context.owner,
+    close: () => exposed?.close?.()
   }
   instances.push(instance)
 
@@ -94,6 +119,15 @@ const createNotification = (options: NotificationOptions): NotificationInstance 
   return instance
 }
 
+const closeAll = (position?: NotificationPosition, owner?: symbol) => {
+  ;[...instances]
+    .filter(
+      instance =>
+        (!position || instance.position === position) && (!owner || instance.owner === owner)
+    )
+    .forEach(instance => instance.close())
+}
+
 export interface NotificationApi {
   (options: NotificationOptions): NotificationInstance
   success: (options: NotificationOptions) => NotificationInstance
@@ -103,18 +137,32 @@ export interface NotificationApi {
   closeAll: (position?: NotificationPosition) => void
 }
 
-export const BiliNotification = ((options: NotificationOptions) =>
-  createNotification(options)) as NotificationApi
-
-BiliNotification.success = options => createNotification({ ...options, type: 'success' })
-BiliNotification.warning = options => createNotification({ ...options, type: 'warning' })
-BiliNotification.error = options => createNotification({ ...options, type: 'error' })
-BiliNotification.info = options => createNotification({ ...options, type: 'info' })
-BiliNotification.closeAll = position => {
-  ;[...instances]
-    .filter(instance => !position || instance.position === position)
-    .forEach(instance => instance.close())
+export interface CreateNotificationApiOptions {
+  getContext?: () => ServiceContext
+  defaults?: () => Partial<NotificationOptions> | undefined
 }
+
+export const createNotificationApi = (
+  options: CreateNotificationApiOptions = {}
+): NotificationApi => {
+  const { getContext = (): ServiceContext => ({}), defaults } = options
+
+  const create = (params: NotificationOptions, type?: NotificationType): NotificationInstance => {
+    const merged = { ...defaults?.(), ...params }
+    return createNotification({ ...merged, type: type ?? merged.type }, getContext())
+  }
+
+  const api = ((params: NotificationOptions) => create(params)) as NotificationApi
+
+  api.success = params => create(params, 'success')
+  api.warning = params => create(params, 'warning')
+  api.error = params => create(params, 'error')
+  api.info = params => create(params, 'info')
+  api.closeAll = position => closeAll(position, getContext().owner)
+  return api
+}
+
+export const BiliNotification = createNotificationApi()
 
 /** Test helper: unmount everything and reset the container cache. */
 export const __resetNotifications = (): void => {

@@ -12,6 +12,10 @@ import Mention from '../components/mention/src/mention.vue'
 import VirtualList from '../components/virtual-list/src/virtual-list.vue'
 import Text from '../components/typography/src/text.vue'
 import Title from '../components/typography/src/title.vue'
+import Flex from '../components/flex/src/flex.vue'
+import AppContainer from '../components/app/src/app.vue'
+import Splitter from '../components/splitter/src/splitter.vue'
+import SplitterPanel from '../components/splitter/src/splitter-panel.vue'
 
 const columns = [{ label: '名称', prop: 'name' }]
 const data = [{ name: 'Bili UI' }]
@@ -37,7 +41,15 @@ describe('SSR smoke', () => {
             }),
             h(AutoComplete, { options: ['Alpha'] }),
             h(Mention, { options: [{ label: 'Alice', value: 'alice' }] }),
-            h(VirtualList, { data: ['one', 'two'], height: 100, itemHeight: 20 })
+            h(VirtualList, { data: ['one', 'two'], height: 100, itemHeight: 20 }),
+            h(Flex, { gap: 'small' }, () => [h('span', 'flex-a'), h('span', 'flex-b')]),
+            h(AppContainer, null, () => 'app-content'),
+            h(Splitter, { height: 120 }, {
+              default: () => [
+                h(SplitterPanel, { size: 40 }, () => 'panel-a'),
+                h(SplitterPanel, { size: 60 }, () => 'panel-b')
+              ]
+            })
           ])
         )
     }
@@ -51,6 +63,9 @@ describe('SSR smoke', () => {
     expect(html).toContain('bili-ssr-segmented')
     expect(html).toContain('bili-ssr-virtual-list')
     expect(html).toContain('bili-ssr-button')
+    expect(html).toContain('bili-ssr-flex')
+    expect(html).toContain('app-content')
+    expect(html).toContain('bili-ssr-splitter__panel')
   })
 
   it('renders an overlay component in its closed state', async () => {

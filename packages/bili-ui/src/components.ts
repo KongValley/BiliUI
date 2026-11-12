@@ -1,6 +1,7 @@
 import { BiliButton } from './components/button'
 import { BiliIcon } from './components/icon'
 import { BiliSpace } from './components/space'
+import { BiliFlex } from './components/flex'
 import { BiliDivider } from './components/divider'
 import { BiliTag } from './components/tag'
 import { BiliText, BiliTitle, BiliParagraph, BiliLink } from './components/typography'
@@ -54,6 +55,7 @@ import { BiliWatermark } from './components/watermark'
 import { BiliTour } from './components/tour'
 import { BiliQRCode } from './components/qrcode'
 import { BiliConfigProvider } from './components/config-provider'
+import { BiliApp } from './components/app'
 import { BiliForm, BiliFormItem, BiliFormList } from './components/form'
 import { BiliTooltip } from './components/tooltip'
 import { BiliDialog } from './components/dialog'
@@ -72,7 +74,7 @@ import {
   BiliLayoutContent,
   BiliLayoutFooter
 } from './components/layout'
-import { BiliSplitter } from './components/splitter'
+import { BiliSplitter, BiliSplitterPanel } from './components/splitter'
 import { BiliScrollbar } from './components/scrollbar'
 import { BiliMenu, BiliMenuItem, BiliSubMenu } from './components/menu'
 import { BiliSpaceCompact } from './components/space'
@@ -89,6 +91,7 @@ import {
 export * from './components/button'
 export * from './components/icon'
 export * from './components/space'
+export * from './components/flex'
 export * from './components/divider'
 export * from './components/tag'
 export * from './components/typography'
@@ -142,6 +145,7 @@ export * from './components/watermark'
 export * from './components/tour'
 export * from './components/qrcode'
 export * from './components/config-provider'
+export * from './components/app'
 export * from './components/form'
 export * from './components/tooltip'
 export * from './components/dialog'
@@ -165,6 +169,7 @@ export const components = [
   BiliIcon,
   BiliSpace,
   BiliSpaceCompact,
+  BiliFlex,
   BiliDivider,
   BiliTag,
   BiliText,
@@ -240,6 +245,7 @@ export const components = [
   BiliTour,
   BiliQRCode,
   BiliConfigProvider,
+  BiliApp,
   BiliForm,
   BiliFormItem,
   BiliFormList,
@@ -262,6 +268,7 @@ export const components = [
   BiliLayoutContent,
   BiliLayoutFooter,
   BiliSplitter,
+  BiliSplitterPanel,
   BiliScrollbar,
   BiliMenu,
   BiliMenuItem,

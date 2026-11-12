@@ -18,6 +18,20 @@
     overflow: auto;
   }
 
+  @include e(panel-wrapper) {
+    display: contents;
+  }
+
+  @include e(panel) {
+    min-width: 0;
+    min-height: 0;
+    overflow: auto;
+
+    &.is-collapsed {
+      overflow: hidden;
+    }
+  }
+
   @include e(divider) {
     position: relative;
     display: flex;
@@ -69,6 +83,31 @@
     .#{$namespace}-splitter__handle {
       width: 20px;
       height: 2px;
+    }
+  }
+
+  @include when(panels) {
+    display: flex;
+
+    .#{$namespace}-splitter__divider {
+      flex: 0 0 auto;
+    }
+
+    .#{$namespace}-splitter__panel {
+      min-width: 0;
+      min-height: 0;
+    }
+  }
+
+  @include m(horizontal) {
+    &.is-panels {
+      flex-direction: row;
+    }
+  }
+
+  @include m(vertical) {
+    &.is-panels {
+      flex-direction: column;
     }
   }
 

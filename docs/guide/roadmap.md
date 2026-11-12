@@ -1,7 +1,7 @@
 # Bili UI 组件开发计划
 
-> 现状：75 个组件目录 / 112 个对外组件，728 个单测。
-> 进度：P0、P1、P2、P3、P4、P5 已全部完成。
+> 现状：77 个组件目录 / 115 个对外组件，763 个单测。
+> 进度：P0、P1、P2、P3、P4、P5、P6 已全部完成。
 > 每个组件的完成标准一致：`index.ts` + `src` + `style` + `__tests__` + 文档页 + 示例 + 注册导出 + 全量校验通过。
 
 ## 批次划分
@@ -14,6 +14,7 @@
 | P3   | 长尾组件池         | 17     | ✅ 已完成 | 长尾能力已全部落地               |
 | P4   | 扩展组件池         | 7      | ✅ 已完成 | 列表、虚拟列表、排版、分割等     |
 | P5   | 对齐主流库能力     | 6+11  | ✅ 已完成 | 消息确认、滚动条、标签输入等     |
+| P6   | 收口布局与命令式   | 3+1   | ✅ 已完成 | Flex、App、多面板 Splitter、Loading.service |
 
 ---
 
@@ -189,6 +190,20 @@ P3 组件池已全部完成，后续按业务反馈补充新组件。
 - **Tabs**：新增 `addable` 与 `add` 事件。
 - **Chart**：新增 `RadarChart` / `ScatterChart` / `FunnelChart`。
 
+---
+
+## P6 · 收口布局与命令式（3 个组件 + 1 项能力，已完成 ✅）
+
+新组件：
+
+- **Flex 弹性布局 ✅**：`vertical` / `wrap` / `justify` / `align` / `gap` / `component`，支持容器自身的 `flex` 简写。
+- **App 应用容器 ✅**：`useApp()` 返回与当前 `ConfigProvider` 绑定的 `message` / `notification` / `messageBox`，`closeAll` 按 App 隔离；不在 App 内时回退全局服务。
+- **SplitterPanel 多面板 ✅**：默认插槽下渲染任意数量面板，`v-model:sizes` 双向绑定、面板级 `min` / `max` / `collapsible` / `resizable`，原两栏 API 保持不变。
+
+既有能力补强：
+
+- **Loading**：新增 `BiliLoading.service()` 命令式遮罩，支持 `target`、滚动锁引用计数、`setText` 与 `close`。
+
 ## 下一批建议
 
 1. 真实 Nuxt 示例项目与 Nuxt Module 封装，覆盖 SSR 水合与按需样式。
@@ -205,7 +220,7 @@ P3 组件池已全部完成，后续按业务反馈补充新组件。
 - ✅ 文档站新增《样式覆写》指南，主题文档与组件 API 表同步更新
 - ✅ 按需样式：`styles/index.scss` 保持全量入口，同时生成 `dist/components/<component>/style.css`，支持 `import 'bili-ui/components/button/style.css'`（含依赖样式与设计令牌）
 - ✅ 示例可编辑：DemoBlock 支持在线编辑、运行、重置、取消与分享链接，编译结果使用独立 scoped 样式
-- ✅ API 表自动生成：`vue-component-meta` 扫描 112 个组件生成 `/guide/api` 参考页，并支持 `<ApiReference name="BiliButton" />` 按组件内嵌
+- ✅ API 表自动生成：`vue-component-meta` 扫描 115 个组件生成 `/guide/api` 参考页，并支持 `<ApiReference name="BiliButton" />` 按组件内嵌
 - ✅ 文档站组件搜索（VitePress local search 已接入）
 - ✅ SSR：`vue/server-renderer` 组件树冒烟测试覆盖表单、表格、日期、浮层与新组件
 - ✅ 发布：`changeset` 版本管理、npm `publishConfig`、GitHub Actions CI 与 Release 工作流已配置（发布需仓库配置 `NPM_TOKEN`）

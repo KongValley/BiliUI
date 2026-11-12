@@ -64,6 +64,12 @@
     backdrop-filter: blur(2px);
     animation: bili-fade-in var(--bili-transition-duration) var(--bili-transition-function);
   }
+
+  @include when(service) {
+    &.is-overlay {
+      z-index: var(--bili-z-index-loading);
+    }
+  }
 }
 
 .bili-loading-wrapper {

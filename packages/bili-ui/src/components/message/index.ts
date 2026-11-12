@@ -1,5 +1,5 @@
-export { BiliMessage, default } from './src/method'
-export type { MessageApi } from './src/method'
+export { BiliMessage, createMessageApi, default } from './src/method'
+export type { CreateMessageApiOptions, MessageApi } from './src/method'
 export type {
   MessageInstance,
   MessageOptions,

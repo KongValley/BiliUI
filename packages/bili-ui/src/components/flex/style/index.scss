@@ -1,0 +1,15 @@
+@use '../../../styles/mixins' as *;
+
+@include b(flex) {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+
+  @include when(vertical) {
+    flex-direction: column;
+  }
+
+  @include when(wrap) {
+    flex-wrap: wrap;
+  }
+}

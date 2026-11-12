@@ -44,13 +44,15 @@ export default defineConfig({
             { text: 'Avatar 头像', link: '/components/avatar' },
             { text: 'Badge 徽标', link: '/components/badge' },
             { text: 'CodeBlock 代码块', link: '/components/code-block' },
-            { text: 'ConfigProvider 全局配置', link: '/components/config-provider' }
+            { text: 'ConfigProvider 全局配置', link: '/components/config-provider' },
+            { text: 'App 应用容器', link: '/components/app' }
           ]
         },
         {
           text: '布局',
           items: [
             { text: 'Layout 布局', link: '/components/layout' },
+            { text: 'Flex 弹性布局', link: '/components/flex' },
             { text: 'Splitter 面板分割', link: '/components/splitter' },
             { text: 'Scrollbar 滚动条', link: '/components/scrollbar' },
             { text: 'Grid 栅格', link: '/components/grid' },

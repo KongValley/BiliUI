@@ -1,6 +1,8 @@
 import { createVNode, render, type VNode } from 'vue'
 import { getGlobalNamespace } from '../../../hooks/use-namespace'
-import { getGlobalLocale } from '../../../hooks/use-config'
+import { getGlobalLocale, type BiliLocale } from '../../../hooks/use-config'
+import type { ServiceContext } from '../../../utils/service'
+import ConfigScope from '../../config-provider/src/config-scope.vue'
 import MessageComponent from './message.vue'
 import type {
   MessageInstance,
@@ -14,25 +16,31 @@ interface InternalInstance extends MessageInstance {
   id: number
   wrapper: HTMLElement
   position: MessagePosition
+  containerKey: string
+  owner?: symbol
 }
 
 const instances: InternalInstance[] = []
-const containers = new Map<MessagePosition, HTMLElement>()
+const containers = new Map<string, HTMLElement>()
 let seed = 0
 
-const getContainer = (position: MessagePosition): HTMLElement => {
-  const existing = containers.get(position)
+const getContainer = (
+  namespace: string,
+  position: MessagePosition,
+  locale: BiliLocale
+): HTMLElement => {
+  const key = `${namespace}:${position}`
+  const existing = containers.get(key)
   // A cached node can be detached if the host cleared body; recreate in that case.
   if (existing && existing.isConnected) return existing
 
   const container = document.createElement('div')
-  const namespace = getGlobalNamespace()
   container.className = `${namespace}-message-container ${namespace}-message-container--${position}`
   // Screen readers announce new alerts in a live region.
   container.setAttribute('role', 'region')
-  container.setAttribute('aria-label', getGlobalLocale().message)
+  container.setAttribute('aria-label', locale.message)
   document.body.appendChild(container)
-  containers.set(position, container)
+  containers.set(key, container)
   return container
 }
 
@@ -45,25 +53,32 @@ const destroy = (id: number) => {
 
   // Drop the container once nothing is left in it. Checking the DOM (rather than
   // the instance list) also covers hosts that clear `body` between renders.
-  const container = containers.get(instance.position)
+  const container = containers.get(instance.containerKey)
   if (container && container.childElementCount === 0) {
     container.remove()
-    containers.delete(instance.position)
+    containers.delete(instance.containerKey)
   }
 }
 
-const createMessage = (params: MessageParams, type?: MessageType): MessageInstance => {
+const createMessage = (
+  params: MessageParams,
+  type?: MessageType,
+  context: ServiceContext = {}
+): MessageInstance => {
   if (typeof document === 'undefined') {
     return { close: () => undefined }
   }
 
   const options: MessageOptions = typeof params === 'string' ? { message: params } : { ...params }
   const position = options.position ?? 'top'
+  const namespace = context.config?.namespace ?? getGlobalNamespace()
+  const locale = context.config?.locale ?? getGlobalLocale()
   const id = seed++
   const wrapper = document.createElement('div')
-  wrapper.className = `${getGlobalNamespace()}-message-wrapper`
+  wrapper.className = `${namespace}-message-wrapper`
 
-  const vnode: VNode = createVNode(MessageComponent, {
+  let exposed: { close?: () => void } | null = null
+  const itemVNode: VNode = createVNode(MessageComponent, {
     message: options.message,
     type: options.type ?? type ?? 'info',
     duration: options.duration ?? 3000,
@@ -71,22 +86,44 @@ const createMessage = (params: MessageParams, type?: MessageType): MessageInstan
     showProgress: options.showProgress ?? true,
     pauseOnHover: options.pauseOnHover ?? true,
     position,
-    namespace: getGlobalNamespace(),
+    namespace,
+    onVnodeMounted: vnode => {
+      exposed = (vnode.component?.exposed as { close?: () => void } | null) ?? null
+    },
     onClose: () => options.onClose?.(),
     onDestroy: () => destroy(id)
   })
 
+  // Render inside a config scope so App-scoped calls pick up their provider's
+  // locale without mutating the global ConfigProvider fallback.
+  const vnode: VNode = context.config
+    ? createVNode(ConfigScope, { config: context.config }, { default: () => itemVNode })
+    : itemVNode
+
   render(vnode, wrapper)
-  getContainer(position).appendChild(wrapper)
+
+  const containerKey = `${namespace}:${position}`
+  getContainer(namespace, position, locale).appendChild(wrapper)
 
   const instance: InternalInstance = {
     id,
     wrapper,
     position,
-    close: () => (vnode.component?.exposed as { close?: () => void } | undefined)?.close?.()
+    containerKey,
+    owner: context.owner,
+    close: () => exposed?.close?.()
   }
   instances.push(instance)
   return instance
+}
+
+const closeAll = (position?: MessagePosition, owner?: symbol) => {
+  ;[...instances]
+    .filter(
+      instance =>
+        (!position || instance.position === position) && (!owner || instance.owner === owner)
+    )
+    .forEach(instance => instance.close())
 }
 
 export interface MessageApi {
@@ -98,18 +135,32 @@ export interface MessageApi {
   closeAll: (position?: MessagePosition) => void
 }
 
-export const BiliMessage = ((options: MessageParams) =>
-  createMessage(options)) as MessageApi
-
-BiliMessage.success = options => createMessage(options, 'success')
-BiliMessage.warning = options => createMessage(options, 'warning')
-BiliMessage.error = options => createMessage(options, 'error')
-BiliMessage.info = options => createMessage(options, 'info')
-BiliMessage.closeAll = position => {
-  ;[...instances]
-    .filter(instance => !position || instance.position === position)
-    .forEach(instance => instance.close())
+export interface CreateMessageApiOptions {
+  /** Read the current App/ConfigProvider context on every call. */
+  getContext?: () => ServiceContext
+  /** Default options merged into every message created by this API. */
+  defaults?: () => Partial<MessageOptions> | undefined
 }
+
+export const createMessageApi = (options: CreateMessageApiOptions = {}): MessageApi => {
+  const { getContext = (): ServiceContext => ({}), defaults } = options
+
+  const create = (params: MessageParams, type?: MessageType): MessageInstance => {
+    const base: MessageOptions = typeof params === 'string' ? { message: params } : { ...params }
+    return createMessage({ ...defaults?.(), ...base }, type, getContext())
+  }
+
+  const api = ((params: MessageParams) => create(params)) as MessageApi
+
+  api.success = params => create(params, 'success')
+  api.warning = params => create(params, 'warning')
+  api.error = params => create(params, 'error')
+  api.info = params => create(params, 'info')
+  api.closeAll = position => closeAll(position, getContext().owner)
+  return api
+}
+
+export const BiliMessage = createMessageApi()
 
 declare module 'vue' {
   interface ComponentCustomProperties {

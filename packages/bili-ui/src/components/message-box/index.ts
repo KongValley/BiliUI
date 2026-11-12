@@ -1,5 +1,9 @@
-export { BiliMessageBox, default } from './src/method'
-export type { MessageBoxApi, MessageBoxPromise } from './src/method'
+export { BiliMessageBox, createMessageBoxApi, default } from './src/method'
+export type {
+  CreateMessageBoxApiOptions,
+  MessageBoxApi,
+  MessageBoxPromise
+} from './src/method'
 export type {
   MessageBoxAction,
   MessageBoxBeforeClose,

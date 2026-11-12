@@ -3,10 +3,10 @@ import { components } from './components'
 import { BiliMessage } from './components/message'
 import { BiliMessageBox } from './components/message-box'
 import { BiliNotification } from './components/notification'
-import { vLoading } from './components/loading'
+import { vLoading, loadingService } from './components/loading'
 
 export * from './components'
-export { BiliMessage, BiliMessageBox, BiliNotification, vLoading }
+export { BiliMessage, BiliMessageBox, BiliNotification, vLoading, loadingService }
 export type {
   MessageBoxAction,
   MessageBoxApi,
@@ -42,6 +42,7 @@ const BiliUI = {
   install(app: App) {
     components.forEach(component => app.use(component))
     app.directive('loading', vLoading)
+    app.config.globalProperties.$loading = loadingService
     app.config.globalProperties.$message = BiliMessage
     app.config.globalProperties.$notification = BiliNotification
     app.config.globalProperties.$msgbox = BiliMessageBox
