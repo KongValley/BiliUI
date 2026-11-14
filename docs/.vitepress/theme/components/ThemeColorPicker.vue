@@ -110,8 +110,9 @@ onMounted(() => {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
+  margin-left: 4px;
   padding: 0;
   cursor: pointer;
   background: transparent;

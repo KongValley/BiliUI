@@ -7,11 +7,11 @@
   --bili-input-radius: var(--bili-radius-base);
   --bili-input-height: var(--bili-control-height-md);
   --bili-input-padding: var(--bili-control-padding-md);
-  --bili-input-font-size: var(--bili-font-size-base);
+  --bili-input-font-size: var(--bili-control-font-size);
   --bili-input-placeholder-color: var(--bili-text-placeholder);
-  --bili-input-hover-border-color: var(--bili-color-primary-hover);
+  --bili-input-hover-border-color: var(--bili-border-color-hover);
   --bili-input-focus-border-color: var(--bili-color-primary);
-  --bili-input-focus-shadow: var(--bili-color-primary-light);
+  --bili-input-focus-shadow: var(--bili-color-primary-ring);
   --bili-input-disabled-bg: var(--bili-bg-disabled);
 
   display: inline-flex;
@@ -31,7 +31,7 @@
     box-shadow var(--bili-transition-duration) var(--bili-transition-function),
     background-color var(--bili-transition-duration) var(--bili-transition-function);
 
-  &:hover {
+  &:hover:not(.is-disabled) {
     border-color: var(--bili-input-hover-border-color);
   }
 
@@ -167,7 +167,7 @@
   @include m(lg) {
     --bili-input-height: var(--bili-control-height-lg);
     --bili-input-padding: var(--bili-control-padding-lg);
-    --bili-input-font-size: var(--bili-font-size-base);
+    --bili-input-font-size: var(--bili-control-font-size);
   }
 
   @include when(textarea) {
@@ -281,7 +281,7 @@
 
     &:focus {
       border-color: var(--bili-color-primary);
-      box-shadow: 0 0 0 3px var(--bili-color-primary-light);
+      box-shadow: 0 0 0 3px var(--bili-color-primary-ring);
     }
 
     &.is-filled {

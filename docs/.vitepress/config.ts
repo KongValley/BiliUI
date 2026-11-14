@@ -12,7 +12,6 @@ export default defineConfig({
     nav: [
       { text: '指南', link: '/guide/quickstart' },
       { text: '组件', link: '/components/button' },
-      { text: '动效', link: '/guide/motion' },
       { text: '设计', link: '/guide/design' }
     ],
     sidebar: {

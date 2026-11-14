@@ -1,12 +1,12 @@
 @use '../../../styles/mixins' as *;
 
 @include b(tabs) {
-  --bili-tabs-font-size: var(--bili-font-size-base);
+  --bili-tabs-font-size: var(--bili-control-font-size);
   --bili-tabs-color: var(--bili-text-regular);
-  --bili-tabs-height: 40px;
+  --bili-tabs-height: 42px;
   --bili-tabs-gap: 28px;
-  --bili-tabs-tab-color: var(--bili-text-regular);
-  --bili-tabs-hover-color: var(--bili-color-primary);
+  --bili-tabs-tab-color: var(--bili-text-secondary);
+  --bili-tabs-hover-color: var(--bili-text-primary);
   --bili-tabs-active-color: var(--bili-color-primary);
   --bili-tabs-nav-border-color: var(--bili-border-color-light);
   --bili-tabs-indicator-color: var(--bili-color-primary);
@@ -48,15 +48,15 @@
     transition:
       color var(--bili-transition-duration) var(--bili-transition-function),
       background-color var(--bili-transition-duration) var(--bili-transition-function),
-      border-color var(--bili-transition-duration) var(--bili-transition-function),
-      box-shadow var(--bili-transition-duration) var(--bili-transition-function);
+      border-color var(--bili-transition-duration) var(--bili-transition-function);
+
 
     &:hover:not(:disabled) {
       color: var(--bili-tabs-hover-color);
     }
 
     &.is-active {
-      font-weight: var(--bili-font-weight-medium);
+      font-weight: var(--bili-font-weight-semibold);
       color: var(--bili-tabs-active-color);
     }
 
@@ -177,6 +177,8 @@
 
   // ---------------------------------------------------------------- segment
   @include m(segment) {
+    --bili-tabs-active-color: var(--bili-text-primary);
+
     .#{$namespace}-tabs__nav {
       display: inline-flex;
       gap: 2px;
@@ -199,8 +201,8 @@
 
       &.is-active {
         color: var(--bili-text-primary);
-        background-color: var(--bili-bg-container);
-        box-shadow: var(--bili-shadow-sm);
+      background-color: var(--bili-bg-container);
+      outline: 1px solid var(--bili-border-color-light);
       }
     }
   }

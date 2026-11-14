@@ -1,12 +1,14 @@
 @use '../../../styles/mixins' as *;
 
 @include b(table) {
-  --bili-table-font-size: var(--bili-font-size-base);
+  --bili-table-font-size: var(--bili-font-size-sm);
   --bili-table-color: var(--bili-text-regular);
   --bili-table-bg: var(--bili-bg-container);
   --bili-table-border-color: var(--bili-border-color-lighter);
-  --bili-table-cell-padding: 11px 12px;
-  --bili-table-head-bg: var(--bili-bg-muted);
+  --bili-table-cell-padding-x: 16px;
+  --bili-table-cell-padding-y: 11px;
+  --bili-table-cell-padding: var(--bili-table-cell-padding-y) var(--bili-table-cell-padding-x);
+  --bili-table-head-bg: var(--bili-bg-container);
   --bili-table-head-color: var(--bili-text-secondary);
   --bili-table-row-hover-bg: var(--bili-fill-color-lighter);
   --bili-table-striped-bg: var(--bili-bg-muted);
@@ -61,7 +63,7 @@
       position: sticky;
       top: 0;
       z-index: 3;
-      font-size: var(--bili-font-size-sm);
+      font-size: 12px;
       font-weight: var(--bili-font-weight-medium);
       color: var(--bili-table-head-color);
       white-space: nowrap;

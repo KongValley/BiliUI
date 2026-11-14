@@ -4,9 +4,9 @@
   --bili-switch-gap: 8px;
   --bili-switch-font-size: var(--bili-font-size-base);
   --bili-switch-color: var(--bili-text-regular);
-  --bili-switch-width: 44px;
-  --bili-switch-height: 24px;
-  --bili-switch-action-size: 20px;
+  --bili-switch-width: 36px;
+  --bili-switch-height: 20px;
+  --bili-switch-action-size: 16px;
   --bili-switch-padding: 2px;
   --bili-switch-off-bg: var(--bili-fill-color);
   --bili-switch-off-hover-bg: var(--bili-border-color);
@@ -56,9 +56,9 @@
       width var(--bili-transition-duration) var(--bili-transition-function-spring);
   }
 
-  // Squash the thumb slightly on press so the toggle feels physical.
-  &:active:not(.is-disabled) .#{$namespace}-switch__action {
-    width: calc(var(--bili-switch-action-size) + 3px);
+  // Flip the track on interaction without a raised thumb or elastic animation.
+  &:hover:not(.is-disabled) .#{$namespace}-switch__action {
+    width: var(--bili-switch-action-size);
   }
 
   @include e(label) {
@@ -100,24 +100,24 @@
   }
 
   @include m(sm) {
-    --bili-switch-width: 36px;
-    --bili-switch-height: 20px;
-    --bili-switch-action-size: 16px;
+    --bili-switch-width: 30px;
+    --bili-switch-height: 16px;
+    --bili-switch-action-size: 12px;
     font-size: var(--bili-font-size-xs);
 
     .#{$namespace}-switch__action {
-      font-size: 10px;
+      font-size: 9px;
     }
   }
 
   @include m(lg) {
-    --bili-switch-width: 52px;
-    --bili-switch-height: 28px;
-    --bili-switch-action-size: 24px;
+    --bili-switch-width: 44px;
+    --bili-switch-height: 24px;
+    --bili-switch-action-size: 20px;
     font-size: var(--bili-font-size-md);
 
     .#{$namespace}-switch__action {
-      font-size: 14px;
+      font-size: 12px;
     }
   }
 

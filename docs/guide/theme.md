@@ -44,15 +44,15 @@ console.log(themeColorPresets)
 | `--bili-color-warning`    | 警告     | `#e6a23c`  |
 | `--bili-color-danger`     | 危险     | `#e5484d`  |
 | `--bili-color-info`       | 信息     | `#8a919f`  |
-| `--bili-text-primary`     | 主要文字 | `#1f2329`  |
-| `--bili-text-regular`     | 常规文字 | `#4e5969`  |
-| `--bili-text-secondary`   | 次要文字 | `#86909c`  |
-| `--bili-text-placeholder` | 占位文字 | `#b4bac3`  |
-| `--bili-bg-page`          | 页面背景 | `#f5f6f8`  |
+| `--bili-text-primary`     | 主要文字 | `#26262b`  |
+| `--bili-text-regular`     | 常规文字 | `#55565e`  |
+| `--bili-text-secondary`   | 次要文字 | `#878790`  |
+| `--bili-text-placeholder` | 占位文字 | `#acacb4`  |
+| `--bili-bg-page`          | 页面背景 | `#f8f8f9`  |
 | `--bili-bg-container`     | 容器背景 | `#ffffff`  |
 | `--bili-bg-elevated`      | 浮层背景 | `#ffffff`  |
-| `--bili-border-color`     | 边框     | `#d7dbe0`  |
-| `--bili-fill-color`       | 填充     | `#f2f3f5`  |
+| `--bili-border-color`     | 边框     | `#dfdfe3`  |
+| `--bili-fill-color`       | 填充     | `#eeeef1`  |
 
 完整令牌定义位于 `src/styles/var.scss`，也可在文档站的设计规范页查看排版、圆角、阴影与间距令牌。
 
@@ -67,9 +67,9 @@ html.dark {
   --bili-color-primary-active: #e05c85;
   --bili-color-primary-light: #3a1d27;
   --bili-color-on-primary: #2b0a14;
-  --bili-bg-page: #121417;
-  --bili-bg-container: #1b1e23;
-  --bili-text-primary: #e8eaed;
+  --bili-bg-page: #0f1115;
+  --bili-bg-container: #171a1f;
+  --bili-text-primary: #f0f0f2;
 }
 ```
 
@@ -116,6 +116,6 @@ document.documentElement.classList.toggle('dark', media.matches)
 
 ## 设计约束
 
-- 尺寸统一为 `sm` / `md` / `lg`，对应控件高度 28 / 32 / 40 px。
+- 尺寸统一为 `sm` / `md` / `lg`，对应控件高度 30 / 36 / 42 px；紧凑控件字号由 `--bili-control-font-size` 单独控制，不与正文混用。
 - 文本与背景对比度以 WCAG AA 为基线，暗色模式会将主色提亮。
-- 动效时长统一为 `0.2s`，缓动为 `cubic-bezier(0.4, 0, 0.2, 1)`。
+- 动效时长统一为 `0.18s`，缓动为 `cubic-bezier(0.2, 0, 0, 1)`。

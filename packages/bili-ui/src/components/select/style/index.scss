@@ -2,7 +2,7 @@
 
 @include b(select) {
   --bili-select-gap: 6px;
-  --bili-select-font-size: var(--bili-font-size-base);
+  --bili-select-font-size: var(--bili-control-font-size);
   --bili-select-color: var(--bili-text-primary);
   --bili-select-bg: var(--bili-bg-container);
   --bili-select-border-color: var(--bili-border-color);
@@ -10,9 +10,9 @@
   --bili-select-height: var(--bili-control-height-md);
   --bili-select-padding: var(--bili-control-padding-md);
   --bili-select-placeholder-color: var(--bili-text-placeholder);
-  --bili-select-hover-border-color: var(--bili-color-primary-hover);
+  --bili-select-hover-border-color: var(--bili-border-color-hover);
   --bili-select-focus-border-color: var(--bili-color-primary);
-  --bili-select-focus-shadow: var(--bili-color-primary-light);
+  --bili-select-focus-shadow: var(--bili-color-primary-ring);
   --bili-select-disabled-bg: var(--bili-bg-disabled);
 
   position: relative;
@@ -34,11 +34,12 @@
     border-color var(--bili-transition-duration) var(--bili-transition-function),
     box-shadow var(--bili-transition-duration) var(--bili-transition-function);
 
-  &:hover {
+  &:hover:not(.is-disabled) {
     border-color: var(--bili-select-hover-border-color);
   }
 
   &:focus-visible {
+    border-color: var(--bili-select-focus-border-color);
     box-shadow: 0 0 0 3px var(--bili-select-focus-shadow);
   }
 
@@ -212,8 +213,8 @@
   @include e(panel) {
     --bili-select-panel-bg: var(--bili-bg-elevated);
     --bili-select-panel-border-color: var(--bili-border-color-light);
-    --bili-select-panel-radius: var(--bili-radius-md);
-    --bili-select-panel-shadow: var(--bili-shadow-base);
+    --bili-select-panel-radius: var(--bili-radius-lg);
+    --bili-select-panel-shadow: var(--bili-shadow-md);
     --bili-select-option-color: var(--bili-text-regular);
     --bili-select-option-hover-bg: var(--bili-fill-color-light);
     --bili-select-option-selected-color: var(--bili-color-primary);
@@ -288,12 +289,10 @@
     border-radius: var(--bili-radius-sm);
     transition:
       background-color var(--bili-transition-duration-fast) var(--bili-transition-function),
-      color var(--bili-transition-duration-fast) var(--bili-transition-function),
-      padding-left var(--bili-transition-duration) var(--bili-transition-function-out);
+      color var(--bili-transition-duration-fast) var(--bili-transition-function);
 
     &:hover,
     &.is-active {
-      padding-left: 13px;
       background-color: var(--bili-select-option-hover-bg);
     }
 
@@ -307,7 +306,6 @@
       color: var(--bili-select-option-disabled-color);
       cursor: not-allowed;
       background-color: transparent;
-      padding-left: 10px;
     }
   }
 

@@ -3,10 +3,10 @@
 @include b(drawer) {
   --bili-drawer-bg: var(--bili-bg-container);
   --bili-drawer-shadow: var(--bili-shadow-lg);
-  --bili-drawer-radius: var(--bili-radius-lg);
-  --bili-drawer-header-padding: 16px 20px;
-  --bili-drawer-body-padding: 20px;
-  --bili-drawer-footer-padding: 14px 20px;
+  --bili-drawer-radius: var(--bili-radius-xl);
+  --bili-drawer-header-padding: 20px 24px;
+  --bili-drawer-body-padding: 24px;
+  --bili-drawer-footer-padding: 16px 24px;
   --bili-drawer-title-color: var(--bili-text-primary);
   --bili-drawer-close-color: var(--bili-text-secondary);
   --bili-drawer-close-hover-color: var(--bili-text-primary);
@@ -24,7 +24,7 @@
   outline: none;
 
   @include e(overlay) {
-    --bili-drawer-overlay-bg: rgba(15, 18, 23, 0.45);
+    --bili-drawer-overlay-bg: var(--bili-overlay-bg);
     position: fixed;
     inset: 0;
     overflow: hidden;
@@ -98,11 +98,10 @@
     &:hover {
       color: var(--bili-drawer-close-hover-color);
       background-color: var(--bili-drawer-close-hover-bg);
-      transform: rotate(90deg);
     }
 
     &:active {
-      transform: rotate(90deg) scale(0.88);
+      transform: scale(0.92);
     }
   }
 

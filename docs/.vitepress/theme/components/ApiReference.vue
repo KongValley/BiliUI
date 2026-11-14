@@ -180,7 +180,7 @@ const showDefault = (value: string) => (!value || value === 'undefined' ? '—' 
   display: flex;
   gap: 12px;
   align-items: center;
-  margin-bottom: 16px;
+  margin: 20px 0 16px;
 }
 
 .api-reference__search {

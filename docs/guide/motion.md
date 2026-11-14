@@ -1,6 +1,6 @@
 # 动效
 
-Bili UI 的动效目标是**让状态变化被看见，而不是炫技**。所有过渡都控制在 120–320ms 之间，只作用于 `color`、`background-color`、`border-color`、`box-shadow`、`transform`、`opacity` 等不影响布局的属性，避免引起回流和眩晕。
+Bili UI 的动效目标是**让状态变化被看见，而不是炫技**。所有过渡都控制在 120–280ms 之间，只作用于 `color`、`background-color`、`border-color`、`box-shadow`、`transform`、`opacity` 等不影响布局的属性，避免引起回流和眩晕。
 
 ## 动效令牌
 
@@ -8,17 +8,17 @@ Bili UI 的动效目标是**让状态变化被看见，而不是炫技**。所�
 :root {
   /* 时长 */
   --bili-transition-duration-fast: 0.12s; /* 按压、悬停等即时反馈 */
-  --bili-transition-duration: 0.2s; /* 常规状态过渡 */
-  --bili-transition-duration-slow: 0.32s; /* 弹层入场、对话框 */
+  --bili-transition-duration: 0.18s; /* 常规状态过渡 */
+  --bili-transition-duration-slow: 0.28s; /* 弹层入场、对话框 */
 
   /* 缓动 */
-  --bili-transition-function: cubic-bezier(0.4, 0, 0.2, 1); /* 标准 */
+  --bili-transition-function: cubic-bezier(0.2, 0, 0, 1); /* 标准 */
   --bili-transition-function-out: cubic-bezier(0.16, 1, 0.3, 1); /* 入场：快进慢停 */
   --bili-transition-function-in: cubic-bezier(0.4, 0, 1, 1); /* 出场：渐快离场 */
   --bili-transition-function-spring: cubic-bezier(0.34, 1.56, 0.64, 1); /* 弹性回弹 */
 
   /* 按压缩放系数 */
-  --bili-press-scale: 0.96;
+  --bili-press-scale: 0.98;
 }
 ```
 

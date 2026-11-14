@@ -4,13 +4,13 @@
   --bili-pagination-gap: 8px;
   --bili-pagination-font-size: var(--bili-font-size-sm);
   --bili-pagination-color: var(--bili-text-regular);
-  --bili-pagination-item-size: 30px;
+  --bili-pagination-item-size: 32px;
   --bili-pagination-item-radius: var(--bili-radius-base);
   --bili-pagination-item-hover-color: var(--bili-color-primary);
   --bili-pagination-item-hover-bg: var(--bili-fill-color-light);
-  --bili-pagination-item-active-color: var(--bili-color-primary);
-  --bili-pagination-item-active-bg: var(--bili-color-primary-light);
-  --bili-pagination-item-active-border-color: var(--bili-color-primary-hover);
+  --bili-pagination-item-active-color: var(--bili-color-on-primary);
+  --bili-pagination-item-active-bg: var(--bili-color-primary);
+  --bili-pagination-item-active-border-color: var(--bili-color-primary);
   --bili-pagination-item-solid-color: var(--bili-color-on-primary);
   --bili-pagination-item-solid-bg: var(--bili-color-primary);
   display: flex;
@@ -141,7 +141,7 @@
 
     &:focus {
       border-color: var(--bili-color-primary);
-      box-shadow: 0 0 0 3px var(--bili-color-primary-light);
+      box-shadow: 0 0 0 3px var(--bili-color-primary-ring);
     }
   }
 

@@ -34,9 +34,9 @@
   @include e(popup) {
     --bili-dropdown-bg: var(--bili-bg-elevated);
     --bili-dropdown-border-color: var(--bili-border-color-light);
-    --bili-dropdown-radius: var(--bili-radius-md);
+    --bili-dropdown-radius: var(--bili-radius-lg);
     --bili-dropdown-shadow: var(--bili-shadow-md);
-    --bili-dropdown-padding: 6px;
+    --bili-dropdown-padding: 4px;
     --bili-dropdown-item-hover-color: var(--bili-color-primary);
     --bili-dropdown-item-hover-bg: var(--bili-fill-color-light);
     position: absolute;

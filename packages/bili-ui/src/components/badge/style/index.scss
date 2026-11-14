@@ -23,7 +23,7 @@
     white-space: nowrap;
     background-color: var(--bili-badge-color);
     border-radius: var(--bili-radius-round);
-    box-shadow: 0 0 0 1.5px var(--bili-bg-container);
+    box-shadow: 0 0 0 2px var(--bili-bg-container);
     transition:
       transform var(--bili-transition-duration) var(--bili-transition-function-spring),
       opacity var(--bili-transition-duration-fast) var(--bili-transition-function);

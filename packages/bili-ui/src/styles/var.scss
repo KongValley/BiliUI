@@ -13,8 +13,10 @@ $color-warning: #e6a23c;
 $color-danger: #e5484d;
 $color-info: #8a919f;
 
-$font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
-  'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+// Use the visitor's native UI fonts; Chinese falls back to the platform defaults.
+// No custom webfont is downloaded by the library.
+$font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+  'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
 
 // Prefer locally installed programming fonts, then fall back to the platform's
 // monospace. No remote font files are loaded.
@@ -28,27 +30,29 @@ $font-family-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Cascadia Mon
 
   // brand
   --bili-color-primary: #{$color-primary};
-  --bili-color-primary-hover: #{color.mix(#ffffff, $color-primary, 12%)};
-  --bili-color-primary-active: #{color.mix(#000000, $color-primary, 12%)};
-  --bili-color-primary-light: #{color.mix(#ffffff, $color-primary, 92%)};
+  --bili-color-primary-hover: #ec4a7c;
+  --bili-color-primary-active: #c4255b;
+  --bili-color-primary-light: #fff0f5;
+  --bili-color-primary-ring: rgba(224, 53, 107, 0.16);
   --bili-color-on-primary: #ffffff;
 
   // status
   --bili-color-success: #{$color-success};
   --bili-color-success-hover: #{color.mix(#ffffff, $color-success, 12%)};
-  --bili-color-success-light: #{color.mix(#ffffff, $color-success, 92%)};
+  --bili-color-success-light: #eaf7f1;
 
   --bili-color-warning: #{$color-warning};
   --bili-color-warning-hover: #{color.mix(#ffffff, $color-warning, 12%)};
-  --bili-color-warning-light: #{color.mix(#ffffff, $color-warning, 92%)};
+  --bili-color-warning-light: #fdf6ea;
 
   --bili-color-danger: #{$color-danger};
   --bili-color-danger-hover: #{color.mix(#ffffff, $color-danger, 12%)};
-  --bili-color-danger-light: #{color.mix(#ffffff, $color-danger, 92%)};
+  --bili-color-danger-light: #fdedee;
+  --bili-color-danger-ring: rgba(229, 72, 77, 0.14);
 
   --bili-color-info: #{$color-info};
   --bili-color-info-hover: #{color.mix(#ffffff, $color-info, 14%)};
-  --bili-color-info-light: #{color.mix(#ffffff, $color-info, 94%)};
+  --bili-color-info-light: #f3f4f6;
 
   // chart series palette (kept separate so charts can be retinted independently)
   --bili-chart-color-1: #e0356b;
@@ -80,46 +84,48 @@ $font-family-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Cascadia Mon
   --bili-code-punctuation-color: #86909c;
 
   // text
-  --bili-text-primary: #1f2329;
-  --bili-text-regular: #4e5969;
-  --bili-text-secondary: #86909c;
-  --bili-text-placeholder: #b4bac3;
+  --bili-text-primary: #26262b;
+  --bili-text-regular: #55565e;
+  --bili-text-secondary: #878790;
+  --bili-text-placeholder: #acacb4;
   --bili-text-inverse: #ffffff;
 
   // background
-  --bili-bg-page: #f5f6f8;
+  --bili-bg-page: #f8f8f9;
   --bili-bg-container: #ffffff;
   --bili-bg-elevated: #ffffff;
-  --bili-bg-muted: #fafbfc;
-  --bili-bg-disabled: #f2f3f5;
+  --bili-bg-muted: #f6f6f7;
+  --bili-bg-disabled: #f1f1f3;
 
   // border
-  --bili-border-color: #d7dbe0;
-  --bili-border-color-light: #e5e8ec;
-  --bili-border-color-lighter: #eef0f3;
+  --bili-border-color: #dfdfe3;
+  --bili-border-color-hover: #c7c7ce;
+  --bili-border-color-light: #eaeaed;
+  --bili-border-color-lighter: #f0f0f2;
 
   // fill
-  --bili-fill-color: #f2f3f5;
-  --bili-fill-color-light: #f7f8fa;
-  --bili-fill-color-lighter: #fafbfc;
+  --bili-fill-color: #eeeef1;
+  --bili-fill-color-light: #f5f5f6;
+  --bili-fill-color-lighter: #f9f9fa;
 
   // radius
-  --bili-radius-sm: 4px;
-  --bili-radius-base: 6px;
-  --bili-radius-md: 8px;
+  --bili-radius-sm: 6px;
+  --bili-radius-base: 8px;
+  --bili-radius-md: 10px;
   --bili-radius-lg: 12px;
+  --bili-radius-xl: 16px;
   --bili-radius-round: 999px;
 
   // typography
   --bili-font-family: #{$font-family};
   --bili-font-family-mono: #{$font-family-mono};
-  --bili-font-size-xs: 12px;
-  --bili-font-size-sm: 13px;
-  --bili-font-size-base: 14px;
-  --bili-font-size-md: 16px;
-  --bili-font-size-lg: 18px;
-  --bili-font-size-xl: 20px;
-  --bili-font-size-xxl: 24px;
+  --bili-font-size-xs: 13px;
+  --bili-font-size-sm: 14px;
+  --bili-font-size-base: 16px;
+  --bili-font-size-md: 18px;
+  --bili-font-size-lg: 19px;
+  --bili-font-size-xl: 22px;
+  --bili-font-size-xxl: 26px;
   --bili-font-weight-regular: 400;
   --bili-font-weight-medium: 500;
   --bili-font-weight-semibold: 600;
@@ -136,28 +142,30 @@ $font-family-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Cascadia Mon
   --bili-space-8: 32px;
 
   // controls
-  --bili-control-height-sm: 28px;
-  --bili-control-height-md: 32px;
-  --bili-control-height-lg: 40px;
-  --bili-control-padding-sm: 8px;
-  --bili-control-padding-md: 11px;
-  --bili-control-padding-lg: 15px;
+  --bili-control-height-sm: 30px;
+  --bili-control-height-md: 36px;
+  --bili-control-height-lg: 42px;
+  --bili-control-padding-sm: 12px;
+  --bili-control-padding-md: 16px;
+  --bili-control-padding-lg: 20px;
+  --bili-control-font-size: var(--bili-font-size-sm);
 
-  // elevation
-  --bili-shadow-sm: 0 1px 2px rgba(31, 35, 41, 0.06);
-  --bili-shadow-base: 0 4px 12px rgba(31, 35, 41, 0.08);
-  --bili-shadow-md: 0 8px 24px rgba(31, 35, 41, 0.12);
-  --bili-shadow-lg: 0 16px 48px rgba(31, 35, 41, 0.16);
+  // Flat interfaces rely on borders and state colors, not decorative elevation.
+  --bili-shadow-sm: none;
+  --bili-shadow-base: none;
+  --bili-shadow-md: none;
+  --bili-shadow-lg: none;
+  --bili-overlay-bg: rgba(22, 22, 26, 0.38);
 
   // motion
   --bili-transition-duration-fast: 0.12s;
-  --bili-transition-duration: 0.2s;
-  --bili-transition-duration-slow: 0.32s;
-  --bili-transition-function: cubic-bezier(0.4, 0, 0.2, 1);
+  --bili-transition-duration: 0.18s;
+  --bili-transition-duration-slow: 0.28s;
+  --bili-transition-function: cubic-bezier(0.2, 0, 0, 1);
   --bili-transition-function-out: cubic-bezier(0.16, 1, 0.3, 1);
   --bili-transition-function-in: cubic-bezier(0.4, 0, 1, 1);
   --bili-transition-function-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --bili-press-scale: 0.96;
+  --bili-press-scale: 0.98;
 
   // z-index
   --bili-z-index-normal: 1;
@@ -167,5 +175,5 @@ $font-family-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Cascadia Mon
   --bili-z-index-loading: 4000;
 
   // states
-  --bili-disabled-opacity: 0.55;
+  --bili-disabled-opacity: 0.5;
 }

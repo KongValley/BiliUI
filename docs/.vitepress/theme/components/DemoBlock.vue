@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { createApp, type App } from 'vue'
 import * as VueRuntime from 'vue'
 import BiliUI, * as BiliExports from 'bili-ui'
@@ -29,8 +29,6 @@ let liveApp: App | null = null
 let styleElement: HTMLStyleElement | null = null
 let demoId = 0
 let copyTimer: ReturnType<typeof setTimeout> | null = null
-
-const lines = computed(() => (props.code ? props.code.trimEnd().split('\n').length : 0))
 
 const destroyLive = () => {
   if (liveApp) {
@@ -248,15 +246,18 @@ onBeforeUnmount(() => {
       <slot v-else />
     </div>
     <div class="demo-block__toolbar">
-      <span v-if="code" class="demo-block__meta">{{ lines }} 行</span>
-      <button v-if="code" class="demo-block__button" type="button" @click="beginEdit">
-        编辑示例
+      <span class="demo-block__meta"><i />INTERACTIVE</span>
+      <button v-if="code" class="demo-block__button" type="button" title="编辑示例" aria-label="编辑示例" @click="beginEdit">
+        <BiliIcon name="edit" size="15" />
       </button>
-      <button v-if="code" class="demo-block__button" type="button" @click="shareDemo">
-        {{ shared ? '已复制链接' : '分享' }}
+      <button v-if="code" class="demo-block__button" type="button" title="分享示例" :aria-label="shared ? '已复制示例链接' : '分享示例'" @click="shareDemo">
+        <BiliIcon :name="shared ? 'check' : 'link'" size="15" />
       </button>
-      <button class="demo-block__button" type="button" @click="expanded = !expanded">
+      <span v-if="code" class="demo-block__divider" />
+      <button class="demo-block__code-toggle" type="button" :aria-expanded="expanded" @click="expanded = !expanded">
+        <BiliIcon name="code" size="15" />
         {{ expanded ? '收起代码' : '查看代码' }}
+        <BiliIcon :name="expanded ? 'chevron-up' : 'chevron-down'" size="12" />
       </button>
     </div>
 
@@ -294,18 +295,23 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .demo-block {
-  margin: 16px 0 28px;
+  margin: 18px 0 32px;
   overflow: hidden;
-  background: var(--vp-c-bg);
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 10px;
+  background: var(--bili-bg-container);
+  border: 1px solid var(--bili-border-color-light);
+  border-radius: 12px;
+  transition: border-color var(--bili-transition-duration) var(--bili-transition-function);
+}
+
+.demo-block:hover {
+  border-color: var(--bili-border-color);
 }
 
 .demo-block__title {
-  padding: 14px 20px 0;
+  padding: 16px 24px 0;
   font-size: 13px;
   font-weight: 500;
-  color: var(--vp-c-text-2);
+  color: var(--bili-text-primary);
 }
 
 .demo-block__preview {
@@ -313,8 +319,8 @@ onBeforeUnmount(() => {
   flex-wrap: wrap;
   gap: 12px;
   align-items: center;
-  min-height: 80px;
-  padding: 24px;
+  min-height: 104px;
+  padding: 28px;
 }
 
 .demo-block__live {
@@ -324,33 +330,79 @@ onBeforeUnmount(() => {
 .demo-block__toolbar {
   display: flex;
   flex-shrink: 0;
-  gap: 14px;
+  gap: 5px;
   align-items: center;
   justify-content: flex-end;
-  padding: 8px 14px;
+  min-height: 42px;
+  padding: 5px 12px;
+  border-top: 1px solid var(--bili-border-color-lighter);
 }
 
 .demo-block__meta {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
   margin-right: auto;
-  font-size: 12px;
-  color: var(--vp-c-text-3);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  color: var(--bili-text-placeholder);
+}
+
+.demo-block__meta i {
+  width: 4px;
+  height: 4px;
+  background: var(--bili-color-success);
+  border-radius: 50%;
 }
 
 .demo-block__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
   padding: 0;
-  font-family: inherit;
-  font-size: 12px;
-  color: var(--vp-c-brand-1);
+  color: var(--bili-text-secondary);
   cursor: pointer;
   background: transparent;
   border: 0;
-  opacity: 0.9;
-  transition: opacity 0.2s;
+  border-radius: 5px;
+  transition: color var(--bili-transition-duration), background-color var(--bili-transition-duration);
 }
 
 .demo-block__button:hover {
-  opacity: 1;
-  text-decoration: underline;
+  color: var(--bili-text-primary);
+  background: var(--bili-fill-color-light);
+}
+
+.demo-block__divider {
+  width: 1px;
+  height: 14px;
+  margin: 0 6px;
+  background: var(--bili-border-color-light);
+}
+
+.demo-block__code-toggle {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  padding: 5px 6px;
+  font-family: inherit;
+  font-size: 11px;
+  color: var(--bili-text-secondary);
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  border-radius: 5px;
+}
+
+.demo-block__code-toggle:hover {
+  color: var(--bili-text-primary);
+}
+
+.demo-block__code-toggle .bili-icon:first-child {
+  margin-right: 1px;
 }
 
 .demo-block__code {
@@ -388,6 +440,12 @@ onBeforeUnmount(() => {
   gap: 12px;
   align-items: center;
   padding-top: 10px;
+}
+
+.demo-block__editor-actions .demo-block__button {
+  width: auto;
+  padding: 0 10px;
+  font-size: 12px;
 }
 
 .demo-block__editor-hint {

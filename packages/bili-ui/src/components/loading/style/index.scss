@@ -53,7 +53,6 @@
     inset: 0;
     z-index: 10;
     background-color: rgba(255, 255, 255, 0.75);
-    backdrop-filter: blur(1px);
   }
 
   @include when(fullscreen) {
@@ -61,7 +60,6 @@
     inset: 0;
     z-index: var(--bili-z-index-loading);
     background-color: rgba(255, 255, 255, 0.88);
-    backdrop-filter: blur(2px);
     animation: bili-fade-in var(--bili-transition-duration) var(--bili-transition-function);
   }
 

@@ -2,7 +2,7 @@
 
 @include b(message-box) {
   --bili-message-box-bg: var(--bili-bg-container);
-  --bili-message-box-radius: var(--bili-radius-lg);
+  --bili-message-box-radius: var(--bili-radius-base);
   --bili-message-box-shadow: var(--bili-shadow-lg);
   --bili-message-box-width: 420px;
   --bili-message-box-padding: 24px;
@@ -15,11 +15,12 @@
   overflow: hidden;
   background-color: var(--bili-message-box-bg);
   border-radius: var(--bili-message-box-radius);
-  box-shadow: var(--bili-message-box-shadow);
+  border: 1px solid var(--bili-border-color-light);
+  box-shadow: none;
   outline: none;
 
   @include e(overlay) {
-    --bili-message-box-overlay: rgba(15, 18, 23, 0.45);
+    --bili-message-box-overlay: var(--bili-overlay-bg);
     position: fixed;
     inset: 0;
     overflow: auto;
@@ -63,7 +64,6 @@
     &:hover {
       color: var(--bili-text-primary);
       background-color: var(--bili-fill-color);
-      transform: rotate(90deg);
     }
   }
 
@@ -129,7 +129,7 @@
 
     &:focus {
       border-color: var(--bili-color-primary);
-      box-shadow: 0 0 0 3px var(--bili-color-primary-light);
+      box-shadow: 0 0 0 3px var(--bili-color-primary-ring);
     }
 
     &[aria-invalid='true'] {

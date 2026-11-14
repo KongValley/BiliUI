@@ -15,7 +15,7 @@ $tag-types: primary, success, warning, danger, info;
   display: inline-flex;
   align-items: center;
   gap: var(--bili-tag-gap);
-  height: 24px;
+  height: 22px;
   padding: var(--bili-tag-padding);
   font-size: var(--bili-tag-font-size);
   line-height: 1;
@@ -89,7 +89,7 @@ $tag-types: primary, success, warning, danger, info;
   .#{$namespace}-tag--#{$type} {
     --bili-tag-color: var(--bili-color-#{$type});
     --bili-tag-bg: var(--bili-color-#{$type}-light);
-    --bili-tag-border: var(--bili-color-#{$type}-hover);
+    --bili-tag-border: transparent;
   }
 
   .#{$namespace}-tag--#{$type}.#{$namespace}-tag--dark {

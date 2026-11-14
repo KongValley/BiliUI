@@ -2,10 +2,10 @@
 
 @include b(card) {
   --bili-card-bg: var(--bili-bg-container);
-  --bili-card-padding: 16px;
-  --bili-card-radius: var(--bili-radius-md);
+  --bili-card-padding: 24px;
+  --bili-card-radius: var(--bili-radius-lg);
   --bili-card-shadow: none;
-  --bili-card-loading-bg: rgba(255, 255, 255, 0.82);
+  --bili-card-loading-bg: color-mix(in srgb, var(--bili-bg-container) 86%, transparent);
 
   position: relative;
   display: flex;
@@ -44,15 +44,9 @@
     cursor: pointer;
 
     &:hover {
-      --bili-card-shadow: var(--bili-shadow-base);
-      border-color: var(--bili-color-primary-hover);
-      transform: translateY(-2px);
+      border-color: var(--bili-border-color-hover);
     }
 
-    &:active {
-      transform: translateY(0);
-      transition-duration: var(--bili-transition-duration-fast);
-    }
   }
 
   @include e(cover) {
@@ -76,13 +70,13 @@
     gap: 12px;
     align-items: center;
     justify-content: space-between;
-    padding: 14px var(--bili-card-padding) 0;
+    padding: 16px var(--bili-card-padding) 0;
   }
 
   @include e(title) {
     @include utils-ellipsis;
 
-    font-size: var(--bili-font-size-md);
+    font-size: 16px;
     font-weight: var(--bili-font-weight-semibold);
     line-height: 1.4;
     color: var(--bili-text-primary);
@@ -128,7 +122,6 @@
     justify-content: center;
     color: var(--bili-color-primary);
     background-color: var(--bili-card-loading-bg);
-    backdrop-filter: blur(1px);
     animation: bili-fade-in var(--bili-transition-duration) var(--bili-transition-function);
   }
 
@@ -170,7 +163,7 @@
 }
 
 html.dark .bili-card {
-  --bili-card-loading-bg: rgba(27, 30, 35, 0.82);
+  --bili-card-loading-bg: rgba(23, 26, 31, 0.86);
 }
 
 @include b(card-meta) {

@@ -73,8 +73,16 @@
     .#{$namespace}-form-item__control {
       .#{$namespace}-input,
       .#{$namespace}-select,
-      .#{$namespace}-input-number {
+      .#{$namespace}-input-number,
+      .#{$namespace}-textarea,
+      .#{$namespace}-date-picker,
+      .#{$namespace}-time-picker,
+      .#{$namespace}-tree-select,
+      .#{$namespace}-cascader,
+      .#{$namespace}-input-tag,
+      .#{$namespace}-color-picker {
         border-color: var(--bili-color-danger);
+        box-shadow: 0 0 0 3px var(--bili-color-danger-ring);
         animation: bili-shake var(--bili-transition-duration-slow) var(--bili-transition-function);
       }
     }

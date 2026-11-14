@@ -6,8 +6,8 @@
   @include e(content) {
     --bili-popover-color: var(--bili-text-regular);
     --bili-popover-bg: var(--bili-bg-elevated);
-    --bili-popover-border-color: var(--bili-border-color-light);
-    --bili-popover-padding: 12px 14px;
+    --bili-popover-border-color: var(--bili-border-color);
+    --bili-popover-padding: 16px;
     --bili-popover-font-size: var(--bili-font-size-sm);
     --bili-popover-radius: var(--bili-radius-lg);
     --bili-popover-shadow: var(--bili-shadow-md);

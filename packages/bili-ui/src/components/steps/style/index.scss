@@ -140,7 +140,7 @@
       color: var(--bili-color-on-primary);
       background-color: var(--bili-step-active-color);
       border-color: var(--bili-step-active-color);
-      box-shadow: 0 0 0 3px var(--bili-color-primary-light);
+      box-shadow: 0 0 0 3px var(--bili-color-primary-ring);
       animation: bili-step-icon-in var(--bili-transition-duration)
         var(--bili-transition-function-spring);
     }

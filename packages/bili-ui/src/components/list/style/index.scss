@@ -72,7 +72,6 @@
     align-items: center;
     justify-content: center;
     background-color: var(--bili-list-loading-bg);
-    backdrop-filter: blur(1px);
   }
 
   @include m(sm) {

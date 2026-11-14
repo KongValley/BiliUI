@@ -1,57 +1,30 @@
 ---
 layout: home
+pageClass: home-page
 
 hero:
-  name: Bili UI
-  text: Vue 3 PC 组件库
-  tagline: 为桌面端而生的高质量组件库，开箱即用的设计令牌与亮暗双主题
-  image:
-    src: /logo.svg
-    alt: Bili UI
   actions:
     - theme: brand
-      text: 快速开始
+      text: 开始使用
       link: /guide/quickstart
     - theme: alt
-      text: 浏览组件
+      text: 探索组件
       link: /components/button
 
 features:
-  - icon: 🧩
-    title: 115 个对外组件
-    details: 覆盖基础、表单、反馈与数据展示，满足中后台产品的主要搭建场景。
-  - icon: 🎨
-    title: 三层设计令牌
-    details: SCSS 原始值 → 语义 CSS 变量 → 组件变量，支持运行时换肤与精细化定制。
-  - icon: 🌗
-    title: 亮暗双主题
-    details: 通过 html.dark 一键切换，所有组件内置暗色语义适配。
-  - icon: 🛡️
-    title: TypeScript 友好
-    details: 组件 Props、事件与插槽均有完整类型推导，构建产物附带声明文件。
-  - icon: ⚡
-    title: 可摇树的 ESM
-    details: 提供 ESM / CJS 双格式产物，支持全量安装与具名引入两种使用方式。
-  - icon: 📚
-    title: 文档与测试
-    details: 每个组件都有可交互文档、完整 API 表格与核心行为单元测试。
+  - icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M17.5 14v7M14 17.5h7"/></svg>
+    title: 完整，而不臃肿
+    details: 115 个组件覆盖从表单到数据展示的产品场景。清晰的 API，让你专注于真正重要的体验。
+    link: /components/button
+    linkText: 浏览组件
+  - icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 12 9 5 9-5M3 16l9 5 9-5"/></svg>
+    title: 设计，融入代码
+    details: 三层语义令牌贯穿所有组件。运行时主题切换、精细样式覆写，设计系统不再是静态文档。
+    link: /guide/design
+    linkText: 设计规范
+  - icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m8 6-6 6 6 6M16 6l6 6-6 6M14 4l-4 16"/></svg>
+    title: 为 Vue 开发者而生
+    details: 原生 TypeScript 类型、完整的 Vue 3 支持、可摇树 ESM。每一个交互都在真实浏览器中验证。
+    link: /guide/quickstart
+    linkText: 开发指南
 ---
-
-## 快速预览
-
-```vue
-<script setup lang="ts">
-import { ref } from 'vue'
-
-const value = ref('')
-</script>
-
-<template>
-  <BiliSpace>
-    <BiliInput v-model="value" placeholder="请输入内容" clearable />
-    <BiliButton type="primary">搜索</BiliButton>
-  </BiliSpace>
-</template>
-```
-
-更多能力请从 [快速开始](/guide/quickstart) 进入，或直接浏览 [组件总览](/components/button)。

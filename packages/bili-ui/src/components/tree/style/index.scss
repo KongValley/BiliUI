@@ -44,7 +44,7 @@
 
     &:focus {
       border-color: var(--bili-color-primary);
-      box-shadow: 0 0 0 3px var(--bili-color-primary-light);
+      box-shadow: 0 0 0 3px var(--bili-color-primary-ring);
     }
   }
 
@@ -69,7 +69,7 @@
     }
 
     &:focus-visible {
-      box-shadow: 0 0 0 2px var(--bili-color-primary-light);
+      box-shadow: 0 0 0 3px var(--bili-color-primary-ring);
     }
 
     &.is-selected {

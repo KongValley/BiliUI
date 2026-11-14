@@ -6,9 +6,9 @@ $button-types: primary, success, warning, danger, info;
   --bili-button-gap: 6px;
   --bili-button-height: var(--bili-control-height-md);
   --bili-button-padding: var(--bili-control-padding-md);
-  --bili-button-font-size: var(--bili-font-size-base);
-  --bili-button-radius: var(--bili-radius-base);
-  --bili-button-color: var(--bili-text-regular);
+  --bili-button-font-size: var(--bili-control-font-size);
+  --bili-button-radius: 6px;
+  --bili-button-color: var(--bili-text-primary);
   --bili-button-bg: var(--bili-bg-container);
   --bili-button-border: var(--bili-border-color);
   --bili-button-hover-color: var(--bili-color-primary);
@@ -17,6 +17,7 @@ $button-types: primary, success, warning, danger, info;
   --bili-button-active-color: var(--bili-color-primary-active);
   --bili-button-active-bg: var(--bili-color-primary-light);
   --bili-button-active-border: var(--bili-color-primary-active);
+  --bili-button-hover-shadow: none;
   --bili-button-on-color: var(--bili-color-on-primary);
 
   position: relative;
@@ -40,7 +41,6 @@ $button-types: primary, success, warning, danger, info;
   border: 1px solid var(--bili-button-border);
   border-radius: var(--bili-button-radius);
   outline: none;
-  will-change: transform;
   transition:
     color var(--bili-transition-duration) var(--bili-transition-function),
     background-color var(--bili-transition-duration) var(--bili-transition-function),
@@ -52,6 +52,7 @@ $button-types: primary, success, warning, danger, info;
     color: var(--bili-button-hover-color);
     background-color: var(--bili-button-hover-bg);
     border-color: var(--bili-button-hover-border);
+    box-shadow: var(--bili-button-hover-shadow);
   }
 
   &:active:not(:disabled) {
@@ -63,7 +64,8 @@ $button-types: primary, success, warning, danger, info;
   }
 
   &:focus-visible {
-    box-shadow: 0 0 0 3px var(--bili-color-primary-light);
+    outline: 2px solid var(--bili-color-primary);
+    outline-offset: 2px;
   }
 
   @include e(text) {
@@ -78,11 +80,6 @@ $button-types: primary, success, warning, danger, info;
 
   @include e(icon) {
     font-size: 1.05em;
-    transition: transform var(--bili-transition-duration) var(--bili-transition-function-out);
-  }
-
-  &:hover:not(:disabled) .#{$namespace}-button__icon {
-    transform: scale(1.12);
   }
 
   @include m(sm) {
@@ -94,7 +91,7 @@ $button-types: primary, success, warning, danger, info;
   @include m(lg) {
     --bili-button-height: var(--bili-control-height-lg);
     --bili-button-padding: var(--bili-control-padding-lg);
-    --bili-button-font-size: var(--bili-font-size-base);
+    --bili-button-font-size: var(--bili-control-font-size);
   }
 
   @include when(round) {
@@ -137,8 +134,8 @@ $button-types: primary, success, warning, danger, info;
       --bili-button-hover-bg: var(--bili-color-#{$type}-hover);
       --bili-button-hover-border: var(--bili-color-#{$type}-hover);
       --bili-button-active-color: var(--bili-button-on-color);
-      --bili-button-active-bg: var(--bili-color-#{$type});
-      --bili-button-active-border: var(--bili-color-#{$type});
+      --bili-button-active-bg: var(--bili-color-#{$type}-active, var(--bili-color-#{$type}-hover));
+      --bili-button-active-border: var(--bili-color-#{$type}-active, var(--bili-color-#{$type}-hover));
 
       &.is-plain {
         --bili-button-color: var(--bili-color-#{$type});
@@ -152,6 +149,10 @@ $button-types: primary, success, warning, danger, info;
         --bili-button-active-border: var(--bili-color-#{$type});
       }
     }
+  }
+
+  @include m(primary) {
+    --bili-button-hover-shadow: 0 4px 12px var(--bili-color-primary-ring);
   }
 
   @include m(warning) {

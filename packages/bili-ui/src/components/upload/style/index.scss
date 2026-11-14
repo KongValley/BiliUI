@@ -44,7 +44,7 @@
     &.is-dragover {
       background-color: var(--bili-color-primary-light);
       border-color: var(--bili-color-primary);
-      box-shadow: 0 0 0 3px var(--bili-color-primary-light);
+      box-shadow: 0 0 0 3px var(--bili-color-primary-ring);
     }
 
     &:hover .#{$namespace}-upload__upload-icon,

@@ -2,11 +2,11 @@
 
 @include b(dialog) {
   --bili-dialog-bg: var(--bili-bg-container);
-  --bili-dialog-radius: var(--bili-radius-lg);
+  --bili-dialog-radius: 8px;
   --bili-dialog-shadow: var(--bili-shadow-lg);
-  --bili-dialog-header-padding: 18px 20px 8px;
-  --bili-dialog-body-padding: 8px 20px 20px;
-  --bili-dialog-footer-padding: 0 20px 20px;
+  --bili-dialog-header-padding: 20px 24px 10px;
+  --bili-dialog-body-padding: 10px 24px 24px;
+  --bili-dialog-footer-padding: 0 24px 24px;
   --bili-dialog-title-color: var(--bili-text-primary);
   --bili-dialog-close-color: var(--bili-text-secondary);
   --bili-dialog-close-hover-color: var(--bili-text-primary);
@@ -18,11 +18,12 @@
   margin: 15vh auto 30px;
   background-color: var(--bili-dialog-bg);
   border-radius: var(--bili-dialog-radius);
-  box-shadow: var(--bili-dialog-shadow);
+  border: 1px solid var(--bili-border-color-light);
+  box-shadow: none;
   outline: none;
 
   @include e(overlay) {
-    --bili-dialog-overlay-bg: rgba(15, 18, 23, 0.45);
+    --bili-dialog-overlay-bg: var(--bili-overlay-bg);
     position: fixed;
     inset: 0;
     overflow: auto;
@@ -66,11 +67,10 @@
     &:hover {
       color: var(--bili-dialog-close-hover-color);
       background-color: var(--bili-dialog-close-hover-bg);
-      transform: rotate(90deg);
     }
 
     &:active {
-      transform: rotate(90deg) scale(0.88);
+      transform: scale(0.92);
     }
   }
 
@@ -101,23 +101,17 @@
 }
 
 .bili-dialog-enter-active .bili-dialog {
-  transition:
-    transform var(--bili-transition-duration-slow) var(--bili-transition-function-out),
-    opacity var(--bili-transition-duration) var(--bili-transition-function);
+  transition: opacity var(--bili-transition-duration) var(--bili-transition-function);
 }
 
 .bili-dialog-leave-active .bili-dialog {
-  transition:
-    transform var(--bili-transition-duration) var(--bili-transition-function-in),
-    opacity var(--bili-transition-duration-fast) var(--bili-transition-function-in);
+  transition: opacity var(--bili-transition-duration-fast) var(--bili-transition-function-in);
 }
 
 .bili-dialog-enter-from .bili-dialog {
   opacity: 0;
-  transform: translateY(-16px) scale(0.96);
 }
 
 .bili-dialog-leave-to .bili-dialog {
   opacity: 0;
-  transform: translateY(-6px) scale(0.98);
 }

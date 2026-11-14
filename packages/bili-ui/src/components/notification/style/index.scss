@@ -1,8 +1,8 @@
 @use '../../../styles/mixins' as *;
 
 @include b(notification) {
-  --bili-notification-gap: 10px;
-  --bili-notification-padding: 14px 14px 14px 12px;
+  --bili-notification-gap: 12px;
+  --bili-notification-padding: 16px;
   --bili-notification-bg: var(--bili-bg-elevated);
   --bili-notification-border-color: var(--bili-border-color-light);
   --bili-notification-radius: var(--bili-radius-lg);
@@ -56,14 +56,14 @@
 
   @include e(title) {
     margin-bottom: 3px;
-    font-size: var(--bili-font-size-base);
+    font-size: var(--bili-font-size-sm);
     font-weight: var(--bili-font-weight-semibold);
     line-height: 1.4;
     color: var(--bili-text-primary);
   }
 
   @include e(message) {
-    font-size: var(--bili-font-size-sm);
+    font-size: var(--bili-font-size-xs);
     line-height: 1.6;
     color: var(--bili-text-regular);
     word-break: break-word;
@@ -74,8 +74,8 @@
     flex: none;
     align-items: center;
     justify-content: center;
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
     padding: 0;
     color: var(--bili-text-secondary);
     cursor: pointer;

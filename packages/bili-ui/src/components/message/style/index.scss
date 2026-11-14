@@ -6,7 +6,7 @@
   z-index: var(--bili-z-index-message);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   max-width: min(480px, calc(100vw - 32px));
   pointer-events: none;
 
@@ -60,12 +60,12 @@
 
 @include b(message) {
   --bili-message-gap: 8px;
-  --bili-message-padding: 10px 14px;
-  --bili-message-font-size: var(--bili-font-size-base);
+  --bili-message-padding: 12px 16px;
+  --bili-message-font-size: var(--bili-font-size-sm);
   --bili-message-color: var(--bili-text-primary);
   --bili-message-bg: var(--bili-bg-elevated);
   --bili-message-border-color: var(--bili-border-color-light);
-  --bili-message-radius: var(--bili-radius-md);
+  --bili-message-radius: var(--bili-radius-lg);
   --bili-message-shadow: var(--bili-shadow-md);
   position: relative;
   display: inline-flex;

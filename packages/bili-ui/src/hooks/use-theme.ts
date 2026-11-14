@@ -1,5 +1,5 @@
 const THEME_STYLE_ID = 'bili-theme-color'
-const DARK_SURFACE = '#1b1e23'
+const DARK_SURFACE = '#171a1f'
 const DARK_TEXT = '#1f2329'
 const WHITE = '#ffffff'
 
@@ -87,12 +87,16 @@ const buildVariables = (base: Rgb, dark: boolean): string => {
   const light = dark
     ? mix(base, toRgb(DARK_SURFACE), 0.82)
     : mix(base, toRgb(WHITE), 0.92)
+  const ring = `rgba(${Math.round(base.r)}, ${Math.round(base.g)}, ${Math.round(base.b)}, ${
+    dark ? 0.22 : 0.16
+  })`
 
   return [
     `--bili-color-primary:${toHex(base)};`,
     `--bili-color-primary-hover:${toHex(hover)};`,
     `--bili-color-primary-active:${toHex(active)};`,
     `--bili-color-primary-light:${toHex(light)};`,
+    `--bili-color-primary-ring:${ring};`,
     `--bili-color-on-primary:${readableOn(base)};`,
     `--bili-chart-color-1:${toHex(base)};`
   ].join('')

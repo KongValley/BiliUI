@@ -1,0 +1,2213 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bili UI · 组件视觉精致化提案</title>
+<style>
+  /* ============================================================
+     Bili UI · refined visual direction
+     Layer 1 primitives -> Layer 2 semantic -> Layer 3 components
+     ============================================================ */
+  :root {
+    --brand: #e0356b;
+    --brand-hover: #ec4a7c;
+    --brand-active: #c4255b;
+    --brand-soft: #fff0f5;
+    --brand-ring: rgba(224, 53, 107, 0.16);
+
+    --success: #22a06b;
+    --success-soft: #eaf7f1;
+    --warning: #e6a23c;
+    --warning-soft: #fdf6ea;
+    --danger: #e5484d;
+    --danger-soft: #fdedee;
+    --danger-ring: rgba(229, 72, 77, 0.14);
+    --info: #8a919f;
+    --info-soft: #f3f4f6;
+
+    --text-1: #26262b;
+    --text-2: #55565e;
+    --text-3: #878790;
+    --text-4: #acacb4;
+
+    --bg-page: #f8f8f9;
+    --bg-card: #ffffff;
+    --bg-muted: #f6f6f7;
+    --bg-fill: #eeeef1;
+    --bg-disabled: #f1f1f3;
+
+    --border: #dfdfe3;
+    --border-light: #eaeaed;
+    --border-hover: #c7c7ce;
+    --divider: #f0f0f2;
+
+    --radius-sm: 6px;
+    --radius: 8px;
+    --radius-md: 10px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-round: 999px;
+
+    --shadow-sm: none;
+    --shadow: none;
+    --shadow-md: none;
+    --shadow-lg: none;
+    --shadow-brand: none;
+
+    --ease: cubic-bezier(0.2, 0, 0, 1);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --fast: 120ms;
+    --base: 180ms;
+
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+      "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+    --mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+
+    --tooltip-bg: #1d2129;
+    --overlay: rgba(22, 22, 26, 0.38);
+  }
+
+  html[data-theme="dark"] {
+    --brand: #fb7299;
+    --brand-hover: #ff8fb1;
+    --brand-active: #e05c85;
+    --brand-soft: #3a1d27;
+    --brand-ring: rgba(251, 114, 153, 0.22);
+
+    --success: #34c084;
+    --success-soft: #13291f;
+    --warning: #f0b45a;
+    --warning-soft: #2e2415;
+    --danger: #f06a6e;
+    --danger-soft: #331a1c;
+    --danger-ring: rgba(240, 106, 110, 0.2);
+    --info: #9aa1ad;
+    --info-soft: #24282f;
+
+    --text-1: #f0f0f2;
+    --text-2: #c3c9d1;
+    --text-3: #8b939e;
+    --text-4: #667080;
+
+    --bg-page: #0f1115;
+    --bg-card: #171a1f;
+    --bg-muted: #1b1f24;
+    --bg-fill: #232830;
+    --bg-disabled: #242931;
+
+    --border: #2c323b;
+    --border-light: #23282f;
+    --border-hover: #3b424d;
+    --divider: #23282f;
+
+    --shadow-sm: none;
+    --shadow: none;
+    --shadow-md: none;
+    --shadow-lg: none;
+    --shadow-brand: none;
+
+    --tooltip-bg: #2c323b;
+    --overlay: rgba(0, 0, 0, 0.6);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: var(--font);
+    color: var(--text-1);
+    background: var(--bg-page);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; }
+  svg.icon {
+    width: 16px;
+    height: 16px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+  .sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+  /* ------------------------------ layout ------------------------------ */
+  .app {
+    display: grid;
+    grid-template-columns: 232px minmax(0, 1fr);
+    min-height: 100vh;
+  }
+  .sidebar {
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    height: 100vh;
+    padding: 26px 18px 20px;
+    background: var(--bg-card);
+    border-right: 1px solid var(--border-light);
+    z-index: 20;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 6px;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .brand-mark {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    color: #fff;
+    background: var(--brand);
+    border-radius: 6px;
+    box-shadow: var(--shadow-brand);
+  }
+  .brand-mark svg { width: 16px; height: 16px; }
+  .brand small {
+    display: block;
+    margin-top: 2px;
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    color: var(--text-3);
+    text-transform: uppercase;
+  }
+  .side-label {
+    padding: 0 10px;
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    color: var(--text-4);
+    text-transform: uppercase;
+  }
+  .side-nav { display: flex; flex-direction: column; gap: 2px; }
+  .side-nav a {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 7px 10px;
+    font-size: 13px;
+    color: var(--text-3);
+    border-radius: var(--radius);
+    transition: color var(--fast) var(--ease), background var(--fast) var(--ease);
+  }
+  .side-nav a svg { width: 15px; height: 15px; opacity: 0.8; }
+  .side-nav a:hover { color: var(--text-2); background: var(--bg-muted); }
+  .side-nav a.is-active {
+    color: var(--brand);
+    font-weight: 500;
+    background: var(--brand-soft);
+  }
+  .side-nav a.is-active svg { opacity: 1; }
+  .side-foot {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: auto;
+    padding: 14px 6px 0;
+    border-top: 1px solid var(--border-light);
+  }
+  .theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
+    height: 34px;
+    padding: 0 10px;
+    font-size: 12px;
+    color: var(--text-2);
+    background: var(--bg-muted);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: border-color var(--fast) var(--ease), background var(--fast) var(--ease);
+  }
+  .theme-toggle:hover { border-color: var(--border-hover); background: var(--bg-card); }
+  .theme-toggle .toggle-icon {
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    color: var(--brand);
+    background: var(--brand-soft);
+    border-radius: 6px;
+  }
+  .side-version {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-4);
+    text-align: center;
+  }
+
+  main {
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 40px 48px 96px;
+  }
+
+  /* ------------------------------- hero ------------------------------- */
+  .hero {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+    gap: 36px;
+    align-items: center;
+    min-height: 380px;
+    padding: 46px 44px;
+    overflow: hidden;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: var(--shadow-sm);
+  }
+  .hero::before {
+    display: none;
+    pointer-events: none;
+  }
+  .hero-copy { position: relative; z-index: 1; }
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    color: var(--brand);
+    text-transform: uppercase;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 18px;
+    height: 1px;
+    background: currentColor;
+  }
+  .hero h1 {
+    max-width: 520px;
+    margin: 16px 0 14px;
+    font-size: 44px;
+    font-weight: 650;
+    line-height: 1.12;
+    letter-spacing: -0.035em;
+    color: var(--text-1);
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--brand);
+  }
+  .hero p {
+    max-width: 500px;
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--text-3);
+  }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+  .hero-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-4);
+  }
+  .hero-meta .pulse {
+    width: 6px;
+    height: 6px;
+    background: var(--success);
+    border-radius: 50%;
+  }
+
+  .hero-visual { position: relative; z-index: 1; min-height: 280px; }
+  .mini-card {
+    position: relative;
+    z-index: 2;
+    width: min(100%, 318px);
+    margin-left: auto;
+    padding: 18px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: var(--shadow-md);
+    transform: none;
+  }
+  .mini-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .mini-title { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
+  .mini-field { display: block; margin-bottom: 12px; }
+  .mini-field > span {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 11px;
+    color: var(--text-3);
+  }
+  .mini-input {
+    display: flex;
+    align-items: center;
+    height: 32px;
+    padding: 0 10px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-2);
+    background: var(--bg-muted);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius);
+  }
+  .mini-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 34px;
+    font-size: 12px;
+    color: var(--text-2);
+    border-top: 1px solid var(--divider);
+  }
+  .mini-row:first-of-type { border-top: 0; }
+  .hero .mini-card .btn { width: 100%; margin-top: 14px; }
+  .avatar-stack { display: flex; padding-left: 6px; }
+  .avatar {
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    margin-left: -6px;
+    font-size: 9px;
+    font-weight: 600;
+    color: #fff;
+    background: var(--brand);
+    border: 2px solid var(--bg-card);
+    border-radius: 50%;
+  }
+  .avatar:nth-child(2) { background: #4f7cff; }
+  .avatar:nth-child(3) { background: #22a06b; }
+  .avatar:nth-child(4) {
+    color: var(--text-3);
+    background: var(--bg-fill);
+  }
+  .float-chip {
+    position: absolute;
+    top: 12px;
+    left: 2px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 11px;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-2);
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    animation: float 5s ease-in-out infinite;
+  }
+  .float-chip .icon { width: 14px; height: 14px; color: var(--success); }
+  .float-palette {
+    position: absolute;
+    right: -4px;
+    bottom: 4px;
+    display: flex;
+    gap: 5px;
+    padding: 8px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    transform: rotate(2deg);
+  }
+  .float-palette i { width: 14px; height: 14px; border-radius: 4px; }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+  }
+
+  /* ----------------------------- sections ----------------------------- */
+  .section { margin-top: 62px; scroll-margin-top: 28px; }
+  .section-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 20px;
+  }
+  .section-head h2 {
+    margin: 8px 0 0;
+    font-size: 24px;
+    font-weight: 650;
+    letter-spacing: -0.025em;
+  }
+  .section-desc {
+    max-width: 470px;
+    margin: 8px 0 0;
+    font-size: 13px;
+    line-height: 1.75;
+    color: var(--text-3);
+  }
+  .spec-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+    padding: 5px 9px;
+    font-family: var(--mono);
+    font-size: 9.5px;
+    color: var(--text-3);
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+  }
+  .spec-chip b { color: var(--brand); font-weight: 600; }
+
+  .panel {
+    padding: 24px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+  }
+  .panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--divider);
+  }
+  .panel-title { font-size: 13px; font-weight: 600; letter-spacing: -0.01em; }
+  .panel-note {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    color: var(--text-4);
+  }
+  .stack { display: flex; flex-direction: column; gap: 16px; }
+  .row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+  .row-between { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+  .muted { color: var(--text-3); }
+  .mono { font-family: var(--mono); }
+
+  /* ------------------------------ tokens ------------------------------ */
+  .token-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    gap: 16px;
+  }
+  .swatch-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .swatch {
+    padding: 8px;
+    background: var(--bg-muted);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius);
+  }
+  .swatch i {
+    display: block;
+    height: 40px;
+    margin-bottom: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    border-radius: 6px;
+  }
+  .swatch b { display: block; font-size: 10px; font-weight: 500; color: var(--text-2); }
+  .swatch code { font-family: var(--mono); font-size: 9px; color: var(--text-4); }
+  .scale-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    padding: 18px 4px 4px;
+  }
+  .scale-box {
+    flex: 1;
+    display: grid;
+    place-items: center;
+    min-width: 0;
+    height: 54px;
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--text-3);
+    background: var(--bg-muted);
+    border: 1px solid var(--border-light);
+  }
+  .radius-6 { border-radius: 6px; }
+  .radius-8 { border-radius: 8px; }
+  .radius-10 { border-radius: 10px; }
+  .radius-12 { border-radius: 12px; }
+  .radius-16 { border-radius: 16px; }
+  .radius-999 { border-radius: 999px; }
+  .shadow-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+  .shadow-card {
+    display: grid;
+    place-items: center;
+    height: 58px;
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--text-3);
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius);
+  }
+  .shadow-card:nth-child(1) { box-shadow: var(--shadow-sm); }
+  .shadow-card:nth-child(2) { box-shadow: var(--shadow); }
+  .shadow-card:nth-child(3) { box-shadow: var(--shadow-md); }
+  .shadow-card:nth-child(4) { box-shadow: var(--shadow-lg); }
+  .type-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 7px 0;
+    border-bottom: 1px dashed var(--divider);
+  }
+  .type-row:last-child { border-bottom: 0; }
+  .type-row span:last-child { font-family: var(--mono); font-size: 9px; color: var(--text-4); }
+
+  /* ------------------------------ buttons ----------------------------- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 36px;
+    padding: 0 16px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1;
+    white-space: nowrap;
+    color: var(--text-2);
+    background: var(--bg-card);
+    border-color: var(--border);
+    border-radius: 7px;
+    outline: none;
+    cursor: pointer;
+    transition:
+      color var(--fast) var(--ease),
+      background var(--fast) var(--ease),
+      border-color var(--fast) var(--ease),
+      box-shadow var(--fast) var(--ease),
+      transform var(--fast) var(--ease-out);
+  }
+  .btn:focus-visible { box-shadow: 0 0 0 3px var(--brand-ring); }
+  .btn:active:not(:disabled) { transform: scale(0.98); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-primary {
+    color: #fff;
+    background: var(--brand);
+    border-color: var(--brand);
+  }
+  .btn-primary:hover:not(:disabled) {
+    background: var(--brand-hover);
+    border-color: var(--brand-hover);
+    box-shadow: var(--shadow-brand);
+  }
+  .btn-primary:active:not(:disabled) { background: var(--brand-active); border-color: var(--brand-active); }
+  .btn-secondary { background: var(--bg-card); border-color: var(--border); }
+  .btn-secondary:hover:not(:disabled) {
+    color: var(--brand);
+    background: var(--brand-soft);
+    border-color: var(--brand-ring);
+  }
+  .btn-danger {
+    color: #fff;
+    background: var(--danger);
+    border-color: var(--danger);
+  }
+  .btn-danger:hover:not(:disabled) { filter: brightness(1.06); }
+  .btn-ghost { background: transparent; color: var(--text-2); }
+  .btn-ghost:hover:not(:disabled) { background: var(--bg-fill); color: var(--text-1); }
+  .btn-text { height: 28px; padding: 0 6px; color: var(--brand); background: transparent; }
+  .btn-text:hover:not(:disabled) { background: var(--brand-soft); }
+  .btn-sm { height: 30px; padding: 0 12px; font-size: 14px; border-radius: 7px; }
+  .btn-lg { height: 42px; padding: 0 20px; }
+  .btn-round { border-radius: var(--radius-round); }
+  .btn-block { width: 100%; }
+  .btn-icon { width: 36px; padding: 0; }
+  .btn-group { display: inline-flex; }
+  .btn-group .btn { border-radius: 0; margin-left: -1px; }
+  .btn-group .btn:first-child { border-radius: var(--radius) 0 0 var(--radius); margin-left: 0; }
+  .btn-group .btn:last-child { border-radius: 0 var(--radius) var(--radius) 0; }
+  .spinner {
+    width: 14px;
+    height: 14px;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .demo-block { display: flex; flex-direction: column; gap: 14px; }
+  .demo-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+  .demo-label {
+    width: 74px;
+    flex-shrink: 0;
+    font-family: var(--mono);
+    font-size: 9.5px;
+    color: var(--text-4);
+    text-transform: uppercase;
+  }
+  .demo-line { display: flex; align-items: flex-start; gap: 12px; }
+  .demo-line + .demo-line { padding-top: 14px; border-top: 1px dashed var(--divider); }
+
+  /* ------------------------------- forms ------------------------------ */
+  .field { display: flex; flex-direction: column; gap: 7px; }
+  .field-label { font-size: 12px; font-weight: 500; color: var(--text-2); }
+  .field-hint { font-size: 11px; color: var(--text-4); }
+  .field-error { font-size: 11px; color: var(--danger); }
+  .input {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 36px;
+    padding: 0 16px;
+    color: var(--text-2);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    transition: border-color var(--fast) var(--ease), box-shadow var(--fast) var(--ease);
+  }
+  .input:hover { border-color: var(--border-hover); }
+  .input.is-focus { border-color: var(--brand); box-shadow: 0 0 0 3px var(--brand-ring); }
+  .input.is-error { border-color: var(--danger); box-shadow: 0 0 0 3px var(--danger-ring); }
+  .input.is-disabled { background: var(--bg-disabled); border-color: var(--border-light); opacity: 0.7; }
+  .input > .icon { width: 15px; height: 15px; color: var(--text-3); }
+  .input input,
+  .input textarea {
+    width: 100%;
+    min-width: 0;
+    padding: 0;
+    font: inherit;
+    font-size: 13px;
+    color: var(--text-1);
+    background: transparent;
+    border: 0;
+    outline: none;
+  }
+  .input input::placeholder,
+  .input textarea::placeholder { color: var(--text-4); }
+  .textarea {
+    display: block;
+    width: 100%;
+    min-height: 74px;
+    padding: 9px 12px;
+    font: inherit;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-1);
+    resize: vertical;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    outline: none;
+    transition: border-color var(--fast) var(--ease), box-shadow var(--fast) var(--ease);
+  }
+  .textarea:focus { border-color: var(--brand); box-shadow: 0 0 0 3px var(--brand-ring); }
+  .select-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
+    height: 36px;
+    padding: 0 16px;
+    font-size: 13px;
+    color: var(--text-2);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: border-color var(--fast) var(--ease), box-shadow var(--fast) var(--ease);
+  }
+  .select-trigger:hover { border-color: var(--border-hover); }
+  .select-trigger.is-open { border-color: var(--brand); box-shadow: 0 0 0 3px var(--brand-ring); }
+  .menu {
+    padding: 4px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+  }
+  .menu-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 32px;
+    padding: 0 10px;
+    font-size: 13px;
+    color: var(--text-2);
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .menu-item:hover { background: var(--bg-muted); }
+  .menu-item.is-selected { color: var(--brand); font-weight: 500; background: var(--brand-soft); }
+  .menu-item .icon { width: 14px; height: 14px; }
+  .menu-item[aria-disabled="true"] { color: var(--text-4); cursor: not-allowed; background: transparent; }
+  .menu-divider { height: 1px; margin: 4px 6px; background: var(--divider); }
+  .check-row { display: flex; align-items: flex-start; gap: 9px; font-size: 13px; color: var(--text-2); }
+  .check-row small { display: block; margin-top: 2px; font-size: 11px; color: var(--text-4); }
+  .check {
+    position: relative;
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    margin: 1px 0 0;
+    appearance: none;
+    background: var(--bg-card);
+    border: 1.5px solid var(--border-hover);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background var(--fast) var(--ease), border-color var(--fast) var(--ease), box-shadow var(--fast) var(--ease);
+  }
+  .check:hover { border-color: var(--brand); }
+  .check:checked { background: var(--brand); border-color: var(--brand); }
+  .check:checked::after {
+    content: "";
+    position: absolute;
+    top: 1px;
+    left: 4px;
+    width: 4px;
+    height: 8px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  .check:focus-visible { box-shadow: 0 0 0 3px var(--brand-ring); outline: none; }
+  .radio {
+    position: relative;
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    margin: 1px 0 0;
+    appearance: none;
+    background: var(--bg-card);
+    border: 1.5px solid var(--border-hover);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: border var(--fast) var(--ease), box-shadow var(--fast) var(--ease);
+  }
+  .radio:checked { border: 5px solid var(--brand); }
+  .radio:focus-visible { box-shadow: 0 0 0 3px var(--brand-ring); outline: none; }
+  .switch {
+    position: relative;
+    flex-shrink: 0;
+    width: 36px;
+    height: 20px;
+    margin: 0;
+    appearance: none;
+    background: var(--bg-fill);
+    border-radius: var(--radius-round);
+    cursor: pointer;
+    transition: background var(--base) var(--ease);
+  }
+  .switch::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform var(--base) var(--ease-out);
+  }
+  .switch:checked { background: var(--brand); }
+  .switch:checked::after { transform: translateX(16px); }
+  .switch:focus-visible { box-shadow: 0 0 0 3px var(--brand-ring); outline: none; }
+  .switch-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 36px;
+    font-size: 13px;
+    color: var(--text-2);
+  }
+  .switch-row small { display: block; margin-top: 2px; font-size: 11px; color: var(--text-4); }
+  .number {
+    display: inline-flex;
+    height: 32px;
+    overflow: hidden;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+  .number button {
+    width: 30px;
+    color: var(--text-3);
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+  }
+  .number button:hover { color: var(--brand); background: var(--bg-muted); }
+  .number span {
+    display: grid;
+    place-items: center;
+    min-width: 44px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-1);
+    border-right: 1px solid var(--divider);
+    border-left: 1px solid var(--divider);
+  }
+  .slider {
+    width: 100%;
+    height: 4px;
+    appearance: none;
+    background: linear-gradient(to right, var(--brand) 0 62%, var(--bg-fill) 62% 100%);
+    border-radius: 999px;
+    outline: none;
+  }
+  .slider::-webkit-slider-thumb {
+    width: 16px;
+    height: 16px;
+    appearance: none;
+    background: var(--bg-card);
+    border: 2px solid var(--brand);
+    border-radius: 50%;
+    box-shadow: var(--shadow-sm);
+    cursor: pointer;
+  }
+
+  /* ---------------------------- navigation ---------------------------- */
+  .tabs { display: flex; gap: 26px; border-bottom: 1px solid var(--divider); }
+  .tab {
+    position: relative;
+    padding: 11px 1px;
+    font-size: 13px;
+    color: var(--text-3);
+    background: none;
+    border: 0;
+    cursor: pointer;
+    transition: color var(--fast) var(--ease);
+  }
+  .tab:hover { color: var(--text-2); }
+  .tab.is-active { color: var(--brand); font-weight: 600; }
+  .tab.is-active::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: -1px;
+    left: 0;
+    height: 2px;
+    background: var(--brand);
+    border-radius: 2px;
+  }
+  .tab-panel { padding-top: 16px; font-size: 13px; line-height: 1.7; color: var(--text-3); }
+  .card-tabs {
+    display: inline-flex;
+    gap: 2px;
+    padding: 3px;
+    background: var(--bg-muted);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+  }
+  .card-tab {
+    padding: 6px 12px;
+    font-size: 12px;
+    color: var(--text-3);
+    background: transparent;
+    border: 0;
+    border-radius: 7px;
+    cursor: pointer;
+  }
+  .card-tab.is-active {
+    color: var(--text-1);
+    background: var(--bg-card);
+    box-shadow: var(--shadow-sm);
+  }
+  .segmented {
+    display: inline-flex;
+    gap: 2px;
+    padding: 3px;
+    background: var(--bg-fill);
+    border-radius: var(--radius);
+  }
+  .segmented button {
+    height: 26px;
+    padding: 0 12px;
+    font-size: 12px;
+    color: var(--text-3);
+    background: transparent;
+    border: 0;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: color var(--fast) var(--ease), background var(--fast) var(--ease), box-shadow var(--fast) var(--ease);
+  }
+  .segmented button.is-active {
+    color: var(--text-1);
+    font-weight: 500;
+    background: var(--bg-card);
+    box-shadow: var(--shadow-sm);
+  }
+  .pagination { display: flex; align-items: center; gap: 4px; }
+  .page-btn {
+    display: grid;
+    place-items: center;
+    min-width: 32px;
+    height: 32px;
+    padding: 0 8px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-2);
+    background: transparent;
+    border: 0;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: color var(--fast) var(--ease), background var(--fast) var(--ease);
+  }
+  .page-btn:hover { color: var(--brand); background: var(--bg-fill); }
+  .page-btn.is-active { color: #fff; background: var(--brand); }
+  .page-ellipsis { color: var(--text-4); padding: 0 2px; }
+
+  /* --------------------------- data display --------------------------- */
+  .card {
+    padding: 20px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow var(--base) var(--ease), transform var(--base) var(--ease-out);
+  }
+  .card.is-hoverable:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
+  .card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+  .card-title { margin: 0; font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
+  .card-sub { margin: 5px 0 0; font-size: 11px; color: var(--text-4); }
+  .card-body { margin-top: 16px; font-size: 13px; line-height: 1.65; color: var(--text-3); }
+  .stat-value { margin: 10px 0 4px; font-size: 28px; font-weight: 650; letter-spacing: -0.03em; }
+  .stat-value small { font-size: 12px; font-weight: 500; color: var(--text-4); }
+  .stat-trend { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: var(--success); }
+  .stat-trend .icon { width: 13px; height: 13px; }
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    height: 22px;
+    padding: 0 8px;
+    font-size: 11px;
+    color: var(--text-2);
+    background: var(--bg-fill);
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+  }
+  .tag-brand { color: var(--brand); background: var(--brand-soft); }
+  .tag-success { color: var(--success); background: var(--success-soft); }
+  .tag-warning { color: var(--warning); background: var(--warning-soft); }
+  .tag-danger { color: var(--danger); background: var(--danger-soft); }
+  .tag-outline { background: transparent; border-color: var(--border); }
+  .badge-wrap { position: relative; display: inline-flex; }
+  .badge {
+    position: absolute;
+    top: -7px;
+    right: -10px;
+    display: grid;
+    place-items: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 600;
+    color: #fff;
+    background: var(--brand);
+    border: 2px solid var(--bg-card);
+    border-radius: 9px;
+  }
+  .table-wrap { overflow: hidden; border: 1px solid var(--border-light); border-radius: var(--radius-lg); }
+  table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  th {
+    padding: 10px 14px;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-3);
+    text-align: left;
+    background: var(--bg-muted);
+    border-bottom: 1px solid var(--border-light);
+  }
+  td {
+    padding: 12px 14px;
+    color: var(--text-2);
+    border-bottom: 1px solid var(--divider);
+  }
+  tbody tr:last-child td { border-bottom: 0; }
+  tbody tr { transition: background var(--fast) var(--ease); }
+  tbody tr:hover { background: #f8f9fb; }
+  html[data-theme="dark"] tbody tr:hover { background: #1b1f24; }
+  td .cell-main { font-weight: 500; color: var(--text-1); }
+  .table-actions { display: flex; gap: 2px; justify-content: flex-end; }
+  .table-actions button {
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    color: var(--text-3);
+    background: transparent;
+    border: 0;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .table-actions button:hover { color: var(--brand); background: var(--brand-soft); }
+  .progress {
+    height: 6px;
+    overflow: hidden;
+    background: var(--bg-fill);
+    border-radius: 999px;
+  }
+  .progress i {
+    display: block;
+    height: 100%;
+    background: var(--brand);
+    border-radius: inherit;
+  }
+
+  /* ----------------------------- feedback ----------------------------- */
+  .alert {
+    display: flex;
+    gap: 10px;
+    padding: 12px 14px;
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: var(--text-2);
+    background: var(--bg-muted);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius);
+  }
+  .alert .icon { width: 16px; height: 16px; margin-top: 1px; }
+  .alert strong { display: block; margin-bottom: 1px; font-size: 12.5px; color: var(--text-1); }
+  .alert-success { background: var(--success-soft); border-color: transparent; }
+  .alert-success .icon { color: var(--success); }
+  .alert-warning { background: var(--warning-soft); border-color: transparent; }
+  .alert-warning .icon { color: var(--warning); }
+  .alert-danger { background: var(--danger-soft); border-color: transparent; }
+  .alert-danger .icon { color: var(--danger); }
+  .alert-info { background: var(--info-soft); border-color: transparent; }
+  .alert-info .icon { color: var(--info); }
+  .toast-stack {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+  .toast {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-width: 240px;
+    max-width: 420px;
+    padding: 10px 14px;
+    font-size: 12.5px;
+    color: var(--text-1);
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    pointer-events: auto;
+    animation: toast-in var(--base) var(--ease-out);
+  }
+  .toast .icon { width: 16px; height: 16px; }
+  .toast.is-success .icon { color: var(--success); }
+  .toast.is-info .icon { color: var(--info); }
+  .toast.is-warning .icon { color: var(--warning); }
+  .toast.is-leaving { animation: toast-out var(--fast) var(--ease) forwards; }
+  @keyframes toast-in {
+    from { opacity: 0; transform: translateY(-8px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  @keyframes toast-out {
+    to { opacity: 0; transform: translateY(-6px) scale(0.98); }
+  }
+  .notification-stack {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 340px;
+  }
+  .notification {
+    position: relative;
+    display: flex;
+    gap: 11px;
+    padding: 15px 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    animation: toast-in var(--base) var(--ease-out);
+  }
+  .notification > .icon { width: 18px; height: 18px; margin-top: 1px; color: var(--brand); }
+  .notification b { display: block; margin-bottom: 3px; font-size: 13px; font-weight: 600; }
+  .notification p { margin: 0; font-size: 12px; line-height: 1.6; color: var(--text-3); }
+  .notification .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    color: var(--text-4);
+    background: transparent;
+    border: 0;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .notification .close:hover { color: var(--text-2); background: var(--bg-fill); }
+  .notification .close .icon { width: 14px; height: 14px; }
+
+  /* ----------------------------- overlays ----------------------------- */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    background: var(--overlay);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--base) var(--ease), visibility var(--base) var(--ease);
+  }
+  .overlay.is-open { opacity: 1; visibility: visible; }
+  .dialog {
+    width: min(420px, 100%);
+    padding: 24px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-base);
+    box-shadow: var(--shadow-lg);
+    opacity: 0;
+    transition: opacity var(--base) var(--ease);
+  }
+  .overlay.is-open .dialog { opacity: 1; }
+  .dialog-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+  .dialog-title { margin: 0; font-size: 16px; font-weight: 600; letter-spacing: -0.015em; }
+  .dialog-desc { margin: 10px 0 0; font-size: 13px; line-height: 1.7; color: var(--text-3); }
+  .dialog-foot { display: flex; justify-content: flex-end; gap: 8px; margin-top: 24px; }
+  .icon-btn {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    color: var(--text-3);
+    background: transparent;
+    border: 0;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+  }
+  .icon-btn:hover { color: var(--text-1); background: var(--bg-fill); }
+  .icon-btn .icon { width: 15px; height: 15px; }
+
+  .tooltip-demo { position: relative; display: inline-flex; }
+  .tooltip {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    padding: 6px 10px;
+    font-size: 11px;
+    color: #fff;
+    white-space: nowrap;
+    background: var(--tooltip-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    transform: translate(-50%, 2px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--fast) var(--ease), transform var(--fast) var(--ease);
+  }
+  .tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    border: 4px solid transparent;
+    border-top-color: var(--tooltip-bg);
+    transform: translateX(-50%);
+  }
+  .tooltip-demo:hover .tooltip { opacity: 1; transform: translate(-50%, 0); }
+  .popover-wrap { position: relative; display: inline-flex; }
+  .popover {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    z-index: 30;
+    width: 262px;
+    padding: 14px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-4px);
+    transition: opacity var(--fast) var(--ease), transform var(--fast) var(--ease), visibility var(--fast);
+  }
+  .popover.is-open { opacity: 1; visibility: visible; transform: translateY(0); }
+  .popover h4 { margin: 0 0 4px; font-size: 13px; font-weight: 600; }
+  .popover p { margin: 0 0 12px; font-size: 11.5px; line-height: 1.6; color: var(--text-3); }
+  .splitter-demo {
+    display: flex;
+    height: 190px;
+    overflow: hidden;
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+  }
+  .splitter-pane { min-width: 0; padding: 16px; overflow: auto; }
+  .splitter-pane:first-child { flex: 0 0 32%; background: var(--bg-muted); }
+  .splitter-pane:last-child { flex: 1; }
+  .splitter-bar {
+    position: relative;
+    flex: 0 0 8px;
+    background: var(--divider);
+    cursor: col-resize;
+    transition: background var(--fast) var(--ease);
+  }
+  .splitter-bar:hover, .splitter-bar.is-dragging { background: var(--brand-ring); }
+  .splitter-bar::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 2px;
+    height: 22px;
+    background: var(--border-hover);
+    border-radius: 2px;
+    transform: translate(-50%, -50%);
+  }
+  .pane-title { margin: 0 0 10px; font-size: 11px; font-weight: 600; color: var(--text-3); letter-spacing: 0.06em; text-transform: uppercase; }
+  .pane-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 7px;
+    font-size: 12px;
+    color: var(--text-2);
+    border-radius: 6px;
+  }
+  .pane-item.is-active { color: var(--brand); background: var(--brand-soft); }
+  .pane-item .icon { width: 14px; height: 14px; }
+  .pane-body { font-size: 12.5px; line-height: 1.8; color: var(--text-3); }
+  .pane-body strong { color: var(--text-1); }
+
+  .footer {
+    margin-top: 64px;
+    padding: 26px 28px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+  }
+  .footer h3 { margin: 0 0 6px; font-size: 14px; font-weight: 600; }
+  .footer p { margin: 0; font-size: 12px; line-height: 1.7; color: var(--text-3); }
+  .footer code { font-family: var(--mono); font-size: 10.5px; color: var(--brand); }
+
+  /* --------------------------- type scale --------------------------- */
+  .hero h1 { font-size: 50px; }
+  .hero p { font-size: 15px; }
+  .section-head h2 { font-size: 27px; }
+  .section-desc { font-size: 14px; }
+  .side-nav a { font-size: 14px; }
+  .brand { font-size: 16px; }
+  .btn { font-size: 14px; }
+  .btn-sm { font-size: 14px; }
+  .btn-lg { font-size: 15px; }
+  .demo-label { font-size: 10.5px; }
+  .field-label,
+  .check-row,
+  .switch-row { font-size: 14px; }
+  .field-hint,
+  .field-error { font-size: 12px; }
+  .input input,
+  .input textarea,
+  .textarea,
+  .select-trigger,
+  .menu-item { font-size: 14px; }
+  .tab { font-size: 14px; }
+  .card-tab,
+  .segmented button,
+  .page-btn { font-size: 13px; }
+  .panel-title { font-size: 14px; }
+  .panel-note,
+  .spec-chip { font-size: 10px; }
+  .card-title { font-size: 15px; }
+  .card-sub { font-size: 12px; }
+  .card-body { font-size: 14px; }
+  .stat-value { font-size: 30px; }
+  .tag { font-size: 12px; }
+  table { font-size: 13.5px; }
+  th { font-size: 12px; }
+  .alert,
+  .toast { font-size: 13.5px; }
+  .notification b { font-size: 14px; }
+  .notification p { font-size: 13px; }
+  .tooltip { font-size: 12px; }
+  .popover p { font-size: 12.5px; }
+  .splitter-pane,
+  .pane-body { font-size: 13px; }
+  .footer p { font-size: 13px; }
+
+  @media (max-width: 1380px) {
+    .float-chip { display: none; }
+  }
+  @media (max-width: 1080px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-visual { display: none; }
+    .token-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 900px) {
+    .app { grid-template-columns: 1fr; }
+    .sidebar {
+      position: relative;
+      height: auto;
+      flex-direction: row;
+      align-items: center;
+      padding: 12px 16px;
+      border-right: 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .sidebar .side-label, .sidebar .side-nav, .sidebar .side-version { display: none; }
+    .side-foot { margin: 0 0 0 auto; padding: 0; border: 0; }
+    .theme-toggle { width: auto; }
+    main { padding: 24px 18px 64px; }
+    .hero { padding: 28px 22px; border-radius: 16px; }
+    .hero h1 { font-size: 32px; }
+    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+    .section-head { align-items: flex-start; flex-direction: column; gap: 10px; }
+  }
+</style>
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3Z"/><path d="M19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8L19 16Z"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+  <symbol id="i-palette" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18h1.5a2 2 0 0 0 0-4H12a1.5 1.5 0 0 1 0-3h4a5 5 0 0 0 5-5c0-3.3-4-6-9-6Z"/><circle cx="7.5" cy="9" r=".8" fill="currentColor"/><circle cx="10" cy="6.5" r=".8" fill="currentColor"/><circle cx="14" cy="6.5" r=".8" fill="currentColor"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 12 9 5 9-5"/><path d="m3 16 9 5 9-5"/></symbol>
+  <symbol id="i-box" viewBox="0 0 24 24"><path d="M21 8v8a2 2 0 0 1-1 1.7l-7 4a2 2 0 0 1-2 0l-7-4A2 2 0 0 1 3 16V8a2 2 0 0 1 1-1.7l7-4a2 2 0 0 1 2 0l7 4A2 2 0 0 1 21 8Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></symbol>
+  <symbol id="i-input" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2.5"/><path d="M7 10h6"/><path d="M7 14h3"/></symbol>
+  <symbol id="i-tabs" viewBox="0 0 24 24"><path d="M4 8h5l1.5 2H20v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8Z"/><path d="M9 8V6a2 2 0 0 1 2-2h3"/></symbol>
+  <symbol id="i-data" viewBox="0 0 24 24"><path d="M4 19V5"/><path d="M4 19h16"/><path d="M8 16v-5"/><path d="M12 16V8"/><path d="M16 16v-3"/><path d="M20 16V6"/></symbol>
+  <symbol id="i-message" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-8 8H6l-3 2 1-5a8 8 0 1 1 17-5Z"/><path d="M9 11h6"/><path d="M9 14h4"/></symbol>
+  <symbol id="i-layout" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2.5"/><path d="M9 3v18"/><path d="M9 9h12"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+  <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4.5 4.5L19 7"/></symbol>
+  <symbol id="i-check-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.3 2.3 4.7-5"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12"/><path d="m18 6-12 12"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></symbol>
+  <symbol id="i-warning" viewBox="0 0 24 24"><path d="M10.3 4.2 2.8 17a2 2 0 0 0 1.7 3h15a2 2 0 0 0 1.7-3L13.7 4.2a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+  <symbol id="i-error" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m9 9 6 6"/><path d="m15 9-6 6"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="M5 12h14"/></symbol>
+  <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+  <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m14 7 5 5-5 5"/></symbol>
+  <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="M12 19V5"/><path d="m7 10 5-5 5 5"/></symbol>
+  <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/><circle cx="19" cy="12" r="1" fill="currentColor"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M8 3v4"/><path d="M16 3v4"/><path d="M3 10h18"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.9 4.9 1.4 1.4"/><path d="m17.7 17.7 1.4 1.4"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m4.9 19.1 1.4-1.4"/><path d="m17.7 6.3 1.4-1.4"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.5 6.5 0 0 0 9.8 9.8Z"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M8 13h8"/><path d="M8 17h5"/></symbol>
+</svg>
+
+<div class="app">
+  <aside class="sidebar">
+    <a class="brand" href="#top">
+      <span class="brand-mark"><svg class="icon"><use href="#i-spark"/></svg></span>
+      <span>Bili UI<small>Visual proposal</small></span>
+    </a>
+
+    <div>
+      <div class="side-label">Overview</div>
+      <nav class="side-nav">
+        <a href="#tokens" class="is-active"><svg class="icon"><use href="#i-palette"/></svg>设计令牌</a>
+        <a href="#buttons"><svg class="icon"><use href="#i-box"/></svg>按钮</a>
+        <a href="#forms"><svg class="icon"><use href="#i-input"/></svg>表单控件</a>
+        <a href="#navigation"><svg class="icon"><use href="#i-tabs"/></svg>导航</a>
+        <a href="#data"><svg class="icon"><use href="#i-data"/></svg>数据展示</a>
+        <a href="#feedback"><svg class="icon"><use href="#i-message"/></svg>反馈</a>
+        <a href="#overlays"><svg class="icon"><use href="#i-layers"/></svg>浮层与容器</a>
+      </nav>
+    </div>
+
+    <div class="side-foot">
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="切换亮暗主题">
+        <span class="toggle-icon" id="themeIcon"><svg class="icon"><use href="#i-moon"/></svg></span>
+        <span id="themeLabel">暗色预览</span>
+      </button>
+      <span class="side-version">v0.2 · 2026.11</span>
+    </div>
+  </aside>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow">Bili UI · Design Direction 01</span>
+        <h1>组件视觉<br /><em>精致化提案</em></h1>
+        <p>
+          保留品牌粉的识别度，用更轻的边框、更柔的阴影和更明确的六态反馈，
+          让 77 个组件看起来更统一、更耐看。所有调整仅发生在设计令牌与样式层。
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#buttons">查看组件预览 <svg class="icon"><use href="#i-arrow-right"/></svg></a>
+          <a class="btn btn-secondary" href="#tokens">设计令牌</a>
+        </div>
+        <div class="hero-meta"><span class="pulse"></span>零 API 变更 · 亮暗双主题 · 4 个新增令牌</div>
+      </div>
+
+      <div class="hero-visual" aria-hidden="true">
+        <div class="float-chip"><svg class="icon"><use href="#i-check-circle"/></svg>已保存</div>
+        <div class="mini-card">
+          <div class="mini-head">
+            <span class="mini-title">发布设置</span>
+            <span class="tag tag-brand">Beta</span>
+          </div>
+          <label class="mini-field">
+            <span>版本号</span>
+            <div class="mini-input">2.4.0</div>
+          </label>
+          <div class="mini-row"><span>自动发布</span><span class="switch" style="pointer-events:none"></span></div>
+          <div class="mini-row">
+            <span>通知成员</span>
+            <div class="avatar-stack"><span class="avatar">L</span><span class="avatar">K</span><span class="avatar">Y</span><span class="avatar">+3</span></div>
+          </div>
+          <button class="btn btn-primary" type="button">确认发布</button>
+        </div>
+        <div class="float-palette">
+          <i style="background:#e0356b"></i>
+          <i style="background:#ec4a7c"></i>
+          <i style="background:#fff0f5"></i>
+          <i style="background:#1d2129"></i>
+          <i style="background:#22a06b"></i>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="tokens">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">01 / Foundations</span>
+          <h2>设计令牌</h2>
+          <p class="section-desc">三层令牌结构保持不变：原始值 → 语义变量 → 组件变量。新增 `primary-ring` 与 `radius-xl`，统一焦点与浮层。</p>
+        </div>
+        <span class="spec-chip">token layer <b>3 层</b></span>
+      </div>
+
+      <div class="token-grid">
+        <div class="panel">
+          <div class="panel-head">
+            <span class="panel-title">品牌与语义色</span>
+            <span class="panel-note">light / dark</span>
+          </div>
+          <div class="swatch-grid">
+            <div class="swatch"><i style="background:var(--brand)"></i><b>Primary</b><code>#E0356B</code></div>
+            <div class="swatch"><i style="background:var(--brand-hover)"></i><b>Hover</b><code>#EC4A7C</code></div>
+            <div class="swatch"><i style="background:var(--brand-soft)"></i><b>Soft</b><code>#FFF0F5</code></div>
+            <div class="swatch"><i style="background:var(--text-1)"></i><b>Text</b><code>#1D2129</code></div>
+            <div class="swatch"><i style="background:var(--success)"></i><b>Success</b><code>#22A06B</code></div>
+            <div class="swatch"><i style="background:var(--warning)"></i><b>Warning</b><code>#E6A23C</code></div>
+            <div class="swatch"><i style="background:var(--danger)"></i><b>Danger</b><code>#E5484D</code></div>
+            <div class="swatch"><i style="background:var(--info)"></i><b>Info</b><code>#8A919F</code></div>
+          </div>
+          <div class="scale-row">
+            <div class="scale-box radius-6">sm 6</div>
+            <div class="scale-box radius-8">base 8</div>
+            <div class="scale-box radius-10">md 10</div>
+            <div class="scale-box radius-12">lg 12</div>
+            <div class="scale-box radius-16">xl 16</div>
+            <div class="scale-box radius-999">round</div>
+          </div>
+        </div>
+
+        <div class="stack">
+          <div class="panel">
+            <div class="panel-head">
+              <span class="panel-title">阴影层级</span>
+              <span class="panel-note">rgba(20,23,28,·)</span>
+            </div>
+            <div class="shadow-grid">
+              <div class="shadow-card">sm</div>
+              <div class="shadow-card">base</div>
+              <div class="shadow-card">md</div>
+              <div class="shadow-card">lg</div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-head">
+              <span class="panel-title">字号</span>
+              <span class="panel-note">System UI / 1.5</span>
+            </div>
+            <div class="type-row"><span style="font-size:26px;font-weight:650;letter-spacing:-.03em">组件设计</span><span>26 / 650</span></div>
+            <div class="type-row"><span style="font-size:19px;font-weight:600">组件设计</span><span>19 / 600</span></div>
+            <div class="type-row"><span style="font-size:15px;font-weight:500">组件设计</span><span>15 / 500</span></div>
+            <div class="type-row"><span style="font-size:13px;color:var(--text-3)">辅助说明文本</span><span>13 / 400</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="buttons">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">02 / Actions</span>
+          <h2>按钮</h2>
+          <p class="section-desc">主操作保持品牌粉，hover 增加柔光而不发亮；active 轻微缩放，focus 统一 3px 环。</p>
+        </div>
+        <span class="spec-chip">h <b>32</b> · radius <b>8</b> · gap <b>6</b></span>
+      </div>
+
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-head"><span class="panel-title">类型</span><span class="panel-note">default / hover / active</span></div>
+          <div class="demo-block">
+            <div class="demo-line">
+              <span class="demo-label">type</span>
+              <div class="demo-row">
+                <button class="btn btn-primary" type="button">主要按钮</button>
+                <button class="btn btn-secondary" type="button">次要按钮</button>
+                <button class="btn btn-danger" type="button">危险操作</button>
+              </div>
+            </div>
+            <div class="demo-line">
+              <span class="demo-label">low</span>
+              <div class="demo-row">
+                <button class="btn btn-ghost" type="button">幽灵按钮</button>
+                <button class="btn btn-text" type="button">文字按钮</button>
+                <button class="btn btn-primary btn-round" type="button">胶囊按钮</button>
+              </div>
+            </div>
+            <div class="demo-line">
+              <span class="demo-label">icon</span>
+              <div class="demo-row">
+                <button class="btn btn-primary" type="button"><svg class="icon"><use href="#i-plus"/></svg>新建</button>
+                <button class="btn btn-secondary btn-icon" type="button" aria-label="设置"><svg class="icon"><use href="#i-settings"/></svg></button>
+                <div class="btn-group">
+                  <button class="btn btn-secondary" type="button">左</button>
+                  <button class="btn btn-secondary" type="button">中</button>
+                  <button class="btn btn-secondary" type="button">右</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><span class="panel-title">尺寸与状态</span><span class="panel-note">28 / 32 / 40</span></div>
+          <div class="demo-block">
+            <div class="demo-line">
+              <span class="demo-label">size</span>
+              <div class="demo-row">
+                <button class="btn btn-primary btn-sm" type="button">小按钮</button>
+                <button class="btn btn-primary" type="button">默认按钮</button>
+                <button class="btn btn-primary btn-lg" type="button">大按钮</button>
+              </div>
+            </div>
+            <div class="demo-line">
+              <span class="demo-label">state</span>
+              <div class="demo-row">
+                <button class="btn btn-primary" type="button" disabled>禁用</button>
+                <button class="btn btn-primary" type="button"><span class="spinner"></span>发布中</button>
+                <button class="btn btn-secondary" type="button" disabled>禁用次要</button>
+              </div>
+            </div>
+            <div class="demo-line">
+              <span class="demo-label">focus</span>
+              <div class="demo-row">
+                <button class="btn btn-secondary" type="button" style="box-shadow:0 0 0 3px var(--brand-ring);border-color:var(--brand)">键盘焦点</button>
+                <button class="btn btn-primary" type="button" style="box-shadow:0 0 0 3px var(--brand-ring)">主色焦点</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="forms">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">03 / Forms</span>
+          <h2>表单控件</h2>
+          <p class="section-desc">边框在静止时尽量退后，hover 只提亮边框，focus 才使用品牌色与焦点环。错误态使用状态色，不替换主色。</p>
+        </div>
+        <span class="spec-chip">h <b>32</b> · padding <b>12</b> · ring <b>3px</b></span>
+      </div>
+
+      <div class="grid-2">
+        <div class="panel stack">
+          <div class="panel-head" style="margin-bottom:0"><span class="panel-title">输入框</span><span class="panel-note">six states</span></div>
+          <label class="field">
+            <span class="field-label">项目名称</span>
+            <div class="input"><input value="Bili UI" /></div>
+            <span class="field-hint">默认态：边框 #E3E6EA</span>
+          </label>
+          <label class="field">
+            <span class="field-label">聚焦态</span>
+            <div class="input is-focus">
+              <svg class="icon"><use href="#i-search"/></svg>
+              <input value="component" />
+              <svg class="icon" style="width:13px;height:13px"><use href="#i-close"/></svg>
+            </div>
+            <span class="field-hint">主色边框 + 3px primary-ring</span>
+          </label>
+          <label class="field">
+            <span class="field-label">错误态</span>
+            <div class="input is-error"><input value="bili-ui" /></div>
+            <span class="field-error">仓库名已被占用</span>
+          </label>
+          <label class="field">
+            <span class="field-label">禁用态</span>
+            <div class="input is-disabled"><input value="不可编辑" disabled /></div>
+          </label>
+          <label class="field">
+            <span class="field-label">备注</span>
+            <textarea class="textarea" placeholder="补充说明…"></textarea>
+          </label>
+        </div>
+
+        <div class="panel stack">
+          <div class="panel-head" style="margin-bottom:0"><span class="panel-title">选择与开关</span><span class="panel-note">select / check / switch</span></div>
+          <div class="field">
+            <span class="field-label">发布环境</span>
+            <button class="select-trigger" type="button">
+              <span>生产环境</span>
+              <svg class="icon"><use href="#i-chevron"/></svg>
+            </button>
+          </div>
+          <div class="menu">
+            <div class="menu-item is-selected"><span>生产环境</span><svg class="icon"><use href="#i-check"/></svg></div>
+            <div class="menu-item"><span>预发布环境</span></div>
+            <div class="menu-item"><span>开发环境</span></div>
+            <div class="menu-divider"></div>
+            <div class="menu-item" aria-disabled="true"><span>自定义环境</span><span class="tag" style="height:18px;font-size:9px">即将上线</span></div>
+          </div>
+          <div class="stack" style="gap:10px">
+            <label class="check-row"><input class="check" type="checkbox" checked /><span>启用自动构建<small>每次 push 到 main 后触发</small></span></label>
+            <label class="check-row"><input class="check" type="checkbox" /><span>发送失败通知</span></label>
+            <label class="check-row"><input class="radio" type="radio" name="env" checked /><span>仅构建当前分支</span></label>
+            <label class="check-row"><input class="radio" type="radio" name="env" /><span>构建全部关联分支</span></label>
+          </div>
+          <label class="switch-row">
+            <span>生产环境自动发布<small>关闭后需要手动确认</small></span>
+            <input class="switch" type="checkbox" checked />
+          </label>
+          <label class="switch-row">
+            <span>构建缓存</span>
+            <input class="switch" type="checkbox" />
+          </label>
+          <div class="row" style="justify-content:space-between">
+            <span class="field-label">实例数量</span>
+            <div class="number">
+              <button type="button" aria-label="减少"><svg class="icon"><use href="#i-minus"/></svg></button>
+              <span>3</span>
+              <button type="button" aria-label="增加"><svg class="icon"><use href="#i-plus"/></svg></button>
+            </div>
+          </div>
+          <div class="field">
+            <div class="row" style="justify-content:space-between"><span class="field-label">资源配额</span><span class="mono" style="font-size:10px;color:var(--text-4)">62%</span></div>
+            <input class="slider" type="range" min="0" max="100" value="62" aria-label="资源配额" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="navigation">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">04 / Navigation</span>
+          <h2>导航与切换</h2>
+          <p class="section-desc">下划线保持 2px 主色，标签文字在激活时加粗；卡片式与分段式使用统一的 8px 圆角。</p>
+        </div>
+        <span class="spec-chip">indicator <b>2px</b> · active <b>600</b></span>
+      </div>
+
+      <div class="panel">
+        <div class="tabs" role="tablist" aria-label="组件分类">
+          <button class="tab is-active" type="button" role="tab" aria-selected="true" data-tab="overview">概览</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" data-tab="tokens">令牌</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" data-tab="a11y">无障碍</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" data-tab="changelog">更新记录</button>
+        </div>
+        <div class="tab-panel" id="tabPanel">Bili UI 目前包含 77 个组件目录、115 个对外组件。本次提案只调整视觉层，不改变组件行为。</div>
+
+        <div class="row" style="justify-content:space-between;margin-top:22px;flex-wrap:wrap;gap:14px">
+          <div class="card-tabs" role="tablist" aria-label="视图">
+            <button class="card-tab is-active" type="button">全部</button>
+            <button class="card-tab" type="button">表单</button>
+            <button class="card-tab" type="button">反馈</button>
+          </div>
+          <div class="segmented" role="group" aria-label="密度">
+            <button class="is-active" type="button">舒适</button>
+            <button type="button">紧凑</button>
+          </div>
+          <div class="pagination" aria-label="分页">
+            <button class="page-btn" type="button" aria-label="上一页"><svg class="icon" style="transform:rotate(90deg)"><use href="#i-chevron"/></svg></button>
+            <button class="page-btn is-active" type="button">1</button>
+            <button class="page-btn" type="button">2</button>
+            <button class="page-btn" type="button">3</button>
+            <span class="page-ellipsis">…</span>
+            <button class="page-btn" type="button">12</button>
+            <button class="page-btn" type="button" aria-label="下一页"><svg class="icon" style="transform:rotate(-90deg)"><use href="#i-chevron"/></svg></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="data">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">05 / Data</span>
+          <h2>数据展示</h2>
+          <p class="section-desc">卡片用 12px 圆角与极浅边框建立层级；表头退到辅助色，行 hover 只做轻微底色变化，避免粉色调泛滥。</p>
+        </div>
+        <span class="spec-chip">card <b>12</b> · row <b>44</b></span>
+      </div>
+
+      <div class="grid-3">
+        <article class="card is-hoverable">
+          <div class="card-head">
+            <div>
+              <h3 class="card-title">构建通过率</h3>
+              <p class="card-sub">最近 30 天</p>
+            </div>
+            <span class="tag tag-success"><svg class="icon" style="width:11px;height:11px"><use href="#i-arrow-up"/></svg> 4.2%</span>
+          </div>
+          <div class="stat-value">98.6<small>%</small></div>
+          <div class="progress" style="margin-top:8px"><i style="width:98.6%"></i></div>
+          <div class="card-body" style="margin-top:10px">1,284 次构建中 1,266 次成功。</div>
+        </article>
+
+        <article class="card is-hoverable">
+          <div class="card-head">
+            <div>
+              <h3 class="card-title">组件覆盖</h3>
+              <p class="card-sub">77 个目录</p>
+            </div>
+            <span class="tag tag-brand">P6</span>
+          </div>
+          <div class="stat-value">115<small style="margin-left:4px">exports</small></div>
+          <div class="row" style="gap:6px;margin-top:8px">
+            <span class="tag tag-outline">表单</span>
+            <span class="tag tag-outline">反馈</span>
+            <span class="tag tag-outline">布局</span>
+            <span class="tag tag-outline">图表</span>
+          </div>
+          <div class="card-body" style="margin-top:10px">763 个单测覆盖核心交互。</div>
+        </article>
+
+        <article class="card is-hoverable">
+          <div class="card-head">
+            <div>
+              <h3 class="card-title">待处理</h3>
+              <p class="card-sub">需要你确认</p>
+            </div>
+            <span class="badge-wrap">
+              <span class="icon-btn" style="background:var(--bg-muted)"><svg class="icon"><use href="#i-bell"/></svg></span>
+              <span class="badge">3</span>
+            </span>
+          </div>
+          <div class="stack" style="gap:10px;margin-top:16px">
+            <div class="row" style="justify-content:space-between;font-size:12px;color:var(--text-2)"><span>视觉方向确认</span><span class="tag tag-warning">待定</span></div>
+            <div class="row" style="justify-content:space-between;font-size:12px;color:var(--text-2)"><span>暗色对比度检查</span><span class="tag tag-brand">进行中</span></div>
+            <div class="row" style="justify-content:space-between;font-size:12px;color:var(--text-2)"><span>组件回归</span><span class="tag">未开始</span></div>
+          </div>
+        </article>
+      </div>
+
+      <div class="table-wrap" style="margin-top:16px">
+        <table>
+          <thead>
+            <tr><th>组件</th><th>分类</th><th>状态</th><th>测试</th><th style="text-align:right">操作</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="cell-main">Button</span></td>
+              <td>基础</td>
+              <td><span class="tag tag-success">稳定</span></td>
+              <td class="mono">12</td>
+              <td><div class="table-actions"><button type="button" aria-label="复制"><svg class="icon"><use href="#i-copy"/></svg></button><button type="button" aria-label="更多"><svg class="icon"><use href="#i-more"/></svg></button></div></td>
+            </tr>
+            <tr>
+              <td><span class="cell-main">Select</span></td>
+              <td>表单</td>
+              <td><span class="tag tag-success">稳定</span></td>
+              <td class="mono">18</td>
+              <td><div class="table-actions"><button type="button" aria-label="复制"><svg class="icon"><use href="#i-copy"/></svg></button><button type="button" aria-label="更多"><svg class="icon"><use href="#i-more"/></svg></button></div></td>
+            </tr>
+            <tr>
+              <td><span class="cell-main">Splitter</span></td>
+              <td>布局</td>
+              <td><span class="tag tag-brand">Beta</span></td>
+              <td class="mono">11</td>
+              <td><div class="table-actions"><button type="button" aria-label="复制"><svg class="icon"><use href="#i-copy"/></svg></button><button type="button" aria-label="更多"><svg class="icon"><use href="#i-more"/></svg></button></div></td>
+            </tr>
+            <tr>
+              <td><span class="cell-main">Tour</span></td>
+              <td>反馈</td>
+              <td><span class="tag tag-warning">待验收</span></td>
+              <td class="mono">9</td>
+              <td><div class="table-actions"><button type="button" aria-label="复制"><svg class="icon"><use href="#i-copy"/></svg></button><button type="button" aria-label="更多"><svg class="icon"><use href="#i-more"/></svg></button></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" id="feedback">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">06 / Feedback</span>
+          <h2>反馈</h2>
+          <p class="section-desc">消息与通知使用 12px 圆角与低饱和状态浅底；点击下方按钮可以预览真实动效。</p>
+        </div>
+        <span class="spec-chip">radius <b>12</b> · shadow <b>md</b></span>
+      </div>
+
+      <div class="grid-2">
+        <div class="panel stack">
+          <div class="panel-head" style="margin-bottom:0"><span class="panel-title">Alert</span><span class="panel-note">inline</span></div>
+          <div class="alert alert-success"><svg class="icon"><use href="#i-check-circle"/></svg><div><strong>构建成功</strong>所有 763 个测试用例通过，可以发布。</div></div>
+          <div class="alert alert-warning"><svg class="icon"><use href="#i-warning"/></svg><div><strong>存在未提交修改</strong>发布前请先提交或暂存当前工作区。</div></div>
+          <div class="alert alert-danger"><svg class="icon"><use href="#i-error"/></svg><div><strong>类型检查失败</strong>Button 组件的 props 类型不匹配。</div></div>
+          <div class="alert alert-info"><svg class="icon"><use href="#i-info"/></svg><div><strong>提示</strong>暗色模式下的对比度已同步校验。</div></div>
+        </div>
+
+        <div class="panel stack">
+          <div class="panel-head" style="margin-bottom:0"><span class="panel-title">Message / Notification</span><span class="panel-note">interactive</span></div>
+          <div class="row">
+            <button class="btn btn-secondary" type="button" data-toast="success">显示成功消息</button>
+            <button class="btn btn-secondary" type="button" data-toast="warning">显示警告消息</button>
+            <button class="btn btn-secondary" type="button" id="notifyBtn">显示通知</button>
+          </div>
+          <div class="alert alert-info" style="margin-top:2px"><svg class="icon"><use href="#i-info"/></svg><div>消息顶部居中堆叠，通知右上角堆叠，均支持自动关闭与手动关闭。</div></div>
+          <div class="panel-head" style="margin-bottom:0;padding-top:14px"><span class="panel-title">Progress</span><span class="panel-note">6px</span></div>
+          <div class="stack" style="gap:10px">
+            <div class="row" style="justify-content:space-between;font-size:11px;color:var(--text-3)"><span>文档迁移</span><span class="mono">72%</span></div>
+            <div class="progress"><i style="width:72%"></i></div>
+            <div class="row" style="justify-content:space-between;font-size:11px;color:var(--text-3)"><span>组件回归</span><span class="mono">38%</span></div>
+            <div class="progress"><i style="width:38%;background:var(--warning)"></i></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="overlays">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">07 / Overlays</span>
+          <h2>浮层与容器</h2>
+          <p class="section-desc">Dialog 16px 圆角 + 大阴影，遮罩加 2px 模糊；Tooltip / Popover / Dropdown 共用一套圆角与阴影层级。</p>
+        </div>
+        <span class="spec-chip">dialog <b>16</b> · blur <b>2px</b></span>
+      </div>
+
+      <div class="grid-2">
+        <div class="panel stack">
+          <div class="panel-head" style="margin-bottom:0"><span class="panel-title">Tooltip / Popover</span><span class="panel-note">hover / click</span></div>
+          <div class="row" style="gap:12px">
+            <span class="tooltip-demo">
+              <button class="btn btn-secondary" type="button">悬停查看提示</button>
+              <span class="tooltip" role="tooltip">复制组件链接</span>
+            </span>
+
+            <span class="popover-wrap" id="popoverWrap">
+              <button class="btn btn-secondary" type="button" id="popoverBtn">打开 Popover</button>
+              <div class="popover" id="popover" role="dialog" aria-label="筛选">
+                <h4>筛选组件</h4>
+                <p>按分类、状态或测试覆盖率筛选当前列表。</p>
+                <div class="row" style="gap:6px;margin-bottom:12px">
+                  <span class="tag tag-brand">表单</span>
+                  <span class="tag">反馈</span>
+                  <span class="tag">布局</span>
+                </div>
+                <div class="row" style="justify-content:flex-end">
+                  <button class="btn btn-text" type="button" id="popoverReset">重置</button>
+                  <button class="btn btn-primary btn-sm" type="button" id="popoverClose">应用</button>
+                </div>
+              </div>
+            </span>
+
+            <button class="btn btn-danger" type="button" id="dialogBtn">打开确认框</button>
+          </div>
+          <div class="card" style="margin-top:4px">
+            <div class="card-head"><div><h3 class="card-title">卡片容器</h3><p class="card-sub">12px radius · shadow-sm</p></div><span class="tag tag-brand">Container</span></div>
+            <div class="card-body">卡片与表格共用同一套边框、圆角与阴影令牌，避免页面出现多种容器语言。</div>
+          </div>
+        </div>
+
+        <div class="panel stack">
+          <div class="panel-head" style="margin-bottom:0"><span class="panel-title">Splitter 多面板</span><span class="panel-note">drag me</span></div>
+          <div class="splitter-demo" id="splitter">
+            <div class="splitter-pane">
+              <p class="pane-title">导航</p>
+              <div class="pane-item is-active"><svg class="icon"><use href="#i-grid"/></svg>概览</div>
+              <div class="pane-item"><svg class="icon"><use href="#i-box"/></svg>组件</div>
+              <div class="pane-item"><svg class="icon"><use href="#i-layers"/></svg>令牌</div>
+              <div class="pane-item"><svg class="icon"><use href="#i-doc"/></svg>文档</div>
+            </div>
+            <div class="splitter-bar" id="splitterBar" role="separator" aria-orientation="vertical" aria-valuenow="32" tabindex="0"></div>
+            <div class="splitter-pane">
+              <p class="pane-title">内容</p>
+              <p class="pane-body"><strong>拖动中间分隔条</strong>调整左右比例。分隔条 hover 时使用品牌浅色，拖动时保持 8px 宽度，面板内容独立滚动。</p>
+              <div class="row" style="margin-top:12px"><span class="tag tag-success">稳定</span><span class="tag tag-brand">可折叠</span><span class="tag">键盘可达</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <h3>下一步</h3>
+      <p>确认方向后，按 <code>var.scss → dark.scss → 基础控件 → 容器与反馈</code> 的顺序落地；不改动任何 Props / Events / Slots。完整规范见 <code>design/component-ui-spec.md</code>。</p>
+    </footer>
+  </main>
+</div>
+
+<!-- dialog -->
+<div class="overlay" id="dialogOverlay" aria-hidden="true">
+  <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="dialogTitle">
+    <div class="dialog-head">
+      <div>
+        <h3 class="dialog-title" id="dialogTitle">归档这个组件？</h3>
+        <p class="dialog-desc">归档后组件将从文档侧边栏移除，但不会删除源码。你仍然可以在归档列表中恢复它。</p>
+      </div>
+      <button class="icon-btn" type="button" id="dialogClose" aria-label="关闭"><svg class="icon"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="dialog-foot">
+      <button class="btn btn-secondary" type="button" id="dialogCancel">取消</button>
+      <button class="btn btn-primary" type="button" id="dialogConfirm">确认归档</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-stack" id="toastStack" aria-live="polite"></div>
+<div class="notification-stack" id="notificationStack" aria-live="polite"></div>
+
+<script>
+  (() => {
+    const root = document.documentElement;
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const themeLabel = document.getElementById('themeLabel');
+
+    const setTheme = theme => {
+      root.dataset.theme = theme;
+      const dark = theme === 'dark';
+      themeIcon.innerHTML = `<svg class="icon"><use href="#${dark ? 'i-sun' : 'i-moon'}"/></svg>`;
+      themeLabel.textContent = dark ? '亮色预览' : '暗色预览';
+    };
+    setTheme('light');
+    themeToggle.addEventListener('click', () => {
+      setTheme(root.dataset.theme === 'dark' ? 'light' : 'dark');
+    });
+
+    // scroll spy
+    const navLinks = [...document.querySelectorAll('.side-nav a')];
+    const sections = navLinks
+      .map(link => document.querySelector(link.getAttribute('href')))
+      .filter(Boolean);
+    if (sections.length) {
+      const syncNav = () => {
+        const y = window.scrollY + 280;
+        let current = sections[0].id;
+        for (const section of sections) {
+          if (section.offsetTop <= y) current = section.id;
+        }
+        navLinks.forEach(link => {
+          link.classList.toggle('is-active', link.getAttribute('href') === `#${current}`);
+        });
+      };
+      window.addEventListener('scroll', syncNav, { passive: true });
+      syncNav();
+    }
+
+    // tabs
+    const tabs = [...document.querySelectorAll('.tab')];
+    const tabPanel = document.getElementById('tabPanel');
+    const copy = {
+      overview: 'Bili UI 目前包含 77 个组件目录、115 个对外组件。本次提案只调整视觉层，不改变组件行为。',
+      tokens: '新增 primary-ring 与 radius-xl；圆角从 6/8/12 调整为 6/8/10/12/16，焦点环统一为 3px。',
+      a11y: '所有交互元素保留 focus-visible 环；亮暗主题正文对比度目标 ≥ 4.5:1，状态不只依赖颜色传达。',
+      changelog: 'P6 新增 Flex、App、Splitter 多面板与 Loading.service；后续视觉升级将按组件分批落地。'
+    };
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(item => {
+          const active = item === tab;
+          item.classList.toggle('is-active', active);
+          item.setAttribute('aria-selected', String(active));
+        });
+        tabPanel.textContent = copy[tab.dataset.tab] || copy.overview;
+      });
+    });
+
+    // segmented + card tabs
+    document.querySelectorAll('.segmented, .card-tabs').forEach(group => {
+      group.addEventListener('click', event => {
+        const button = event.target.closest('button');
+        if (!button) return;
+        [...group.querySelectorAll('button')].forEach(item => item.classList.toggle('is-active', item === button));
+      });
+    });
+
+    // pagination
+    const pagination = document.querySelector('.pagination');
+    pagination?.addEventListener('click', event => {
+      const button = event.target.closest('.page-btn');
+      if (!button || button.getAttribute('aria-label')) return;
+      [...pagination.querySelectorAll('.page-btn')].forEach(item => item.classList.remove('is-active'));
+      button.classList.add('is-active');
+    });
+
+    // toast
+    const toastStack = document.getElementById('toastStack');
+    const toastIcons = { success: 'i-check-circle', warning: 'i-warning', info: 'i-info', error: 'i-error' };
+    const toastText = { success: '发布成功，构建产物已上传', warning: '存在未提交修改，请检查工作区', info: '组件样式已刷新', error: '构建失败，请查看日志' };
+    const showToast = type => {
+      const toast = document.createElement('div');
+      toast.className = `toast is-${type}`;
+      toast.innerHTML = `<svg class="icon"><use href="#${toastIcons[type]}"/></svg><span>${toastText[type]}</span>`;
+      toastStack.appendChild(toast);
+      setTimeout(() => {
+        toast.classList.add('is-leaving');
+        setTimeout(() => toast.remove(), 200);
+      }, 2600);
+    };
+    document.querySelectorAll('[data-toast]').forEach(button => {
+      button.addEventListener('click', () => showToast(button.dataset.toast));
+    });
+
+    // notification
+    const notificationStack = document.getElementById('notificationStack');
+    document.getElementById('notifyBtn').addEventListener('click', () => {
+      const item = document.createElement('div');
+      item.className = 'notification';
+      item.innerHTML = `
+        <svg class="icon"><use href="#i-bell"/></svg>
+        <div>
+          <b>视觉方案已生成</b>
+          <p>组件预览页已经可以评审，包含亮暗两套主题。</p>
+        </div>
+        <button class="close" type="button" aria-label="关闭通知"><svg class="icon"><use href="#i-close"/></svg></button>
+      `;
+      item.querySelector('.close').addEventListener('click', () => item.remove());
+      notificationStack.appendChild(item);
+      setTimeout(() => {
+        item.style.transition = 'opacity .2s ease, transform .2s ease';
+        item.style.opacity = '0';
+        item.style.transform = 'translateY(-6px)';
+        setTimeout(() => item.remove(), 220);
+      }, 5000);
+    });
+
+    // popover
+    const popover = document.getElementById('popover');
+    const popoverWrap = document.getElementById('popoverWrap');
+    const closePopover = () => popover.classList.remove('is-open');
+    document.getElementById('popoverBtn').addEventListener('click', event => {
+      event.stopPropagation();
+      popover.classList.toggle('is-open');
+    });
+    document.getElementById('popoverClose').addEventListener('click', closePopover);
+    document.getElementById('popoverReset').addEventListener('click', closePopover);
+    document.addEventListener('click', event => {
+      if (!popoverWrap.contains(event.target)) closePopover();
+    });
+
+    // dialog
+    const overlay = document.getElementById('dialogOverlay');
+    const dialogConfirm = document.getElementById('dialogConfirm');
+    const openDialog = () => {
+      overlay.classList.add('is-open');
+      overlay.setAttribute('aria-hidden', 'false');
+      dialogConfirm.focus();
+    };
+    const closeDialog = () => {
+      overlay.classList.remove('is-open');
+      overlay.setAttribute('aria-hidden', 'true');
+    };
+    document.getElementById('dialogBtn').addEventListener('click', openDialog);
+    document.getElementById('dialogClose').addEventListener('click', closeDialog);
+    document.getElementById('dialogCancel').addEventListener('click', closeDialog);
+    dialogConfirm.addEventListener('click', () => {
+      closeDialog();
+      showToast('success');
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') {
+        closeDialog();
+        closePopover();
+      }
+    });
+
+    // splitter
+    const splitter = document.getElementById('splitter');
+    const bar = document.getElementById('splitterBar');
+    const leftPane = splitter.querySelector('.splitter-pane');
+    let dragging = false;
+    const setRatio = clientX => {
+      const rect = splitter.getBoundingClientRect();
+      const ratio = Math.min(0.72, Math.max(0.2, (clientX - rect.left) / rect.width));
+      leftPane.style.flexBasis = `${(ratio * 100).toFixed(1)}%`;
+      bar.setAttribute('aria-valuenow', Math.round(ratio * 100));
+    };
+    bar.addEventListener('pointerdown', event => {
+      dragging = true;
+      bar.classList.add('is-dragging');
+      bar.setPointerCapture?.(event.pointerId);
+      event.preventDefault();
+    });
+    bar.addEventListener('pointermove', event => {
+      if (dragging) setRatio(event.clientX);
+    });
+    bar.addEventListener('pointerup', () => {
+      dragging = false;
+      bar.classList.remove('is-dragging');
+    });
+    bar.addEventListener('pointercancel', () => {
+      dragging = false;
+      bar.classList.remove('is-dragging');
+    });
+    bar.addEventListener('keydown', event => {
+      if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+      event.preventDefault();
+      const current = Number(bar.getAttribute('aria-valuenow')) || 32;
+      const next = Math.min(72, Math.max(20, current + (event.key === 'ArrowRight' ? 4 : -4)));
+      leftPane.style.flexBasis = `${next}%`;
+      bar.setAttribute('aria-valuenow', String(next));
+    });
+  })();
+</script>
+</body>
+</html>

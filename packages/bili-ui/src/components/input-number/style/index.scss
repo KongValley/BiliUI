@@ -19,7 +19,7 @@
     box-shadow var(--bili-transition-duration) var(--bili-transition-function);
 
   &:hover {
-    border-color: var(--bili-color-primary-hover);
+    border-color: var(--bili-border-color-hover);
   }
 
   @include e(input) {
@@ -27,7 +27,7 @@
     min-width: 0;
     padding: 0 10px;
     font: inherit;
-    font-size: var(--bili-font-size-base);
+    font-size: var(--bili-control-font-size);
     font-variant-numeric: tabular-nums;
     color: var(--bili-text-primary);
     background: transparent;
@@ -83,7 +83,7 @@
 
   @include is(focused) {
     border-color: var(--bili-color-primary);
-    box-shadow: 0 0 0 2px var(--bili-color-primary-light);
+    box-shadow: 0 0 0 3px var(--bili-color-primary-ring);
   }
 
   @include is(disabled) {

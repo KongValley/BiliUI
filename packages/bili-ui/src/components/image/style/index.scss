@@ -133,7 +133,6 @@
   color: var(--bili-image-viewer-color);
   user-select: none;
   background-color: var(--bili-image-viewer-bg);
-  backdrop-filter: blur(2px);
   outline: none;
 
   @include e(canvas) {
@@ -220,7 +219,6 @@
     padding: 6px 10px;
     background-color: var(--bili-image-viewer-actions-bg);
     border-radius: var(--bili-radius-round);
-    backdrop-filter: blur(6px);
     transform: translateX(-50%);
   }
 
