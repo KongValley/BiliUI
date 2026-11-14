@@ -136,9 +136,12 @@
     tab-size: 2;
   }
 
-  // Descendant form (specificity 0,2,0) so host page rules such as
-  // `.vp-doc code { font-family: var(--vp-font-family-base) }` cannot win.
-  .#{$namespace}-code-block__code {
+  // The global `[class^="bili-"]` reset paints every namespaced element with the
+  // UI font, so re-assert the mono stack on the code body and everything inside
+  // it: highlight tokens and line numbers carry their own bili- classes too.
+  .#{$namespace}-code-block__pre,
+  .#{$namespace}-code-block__code,
+  .#{$namespace}-code-block__code * {
     font-family: var(--bili-font-family-mono);
   }
 

@@ -69,5 +69,5 @@ import scrollCode from '../examples/code-block/scroll.vue?raw'
 - 渲染使用文本节点而非 `v-html`，代码内容不会被当作 HTML 执行。
 - 高亮是轻量分词，不构建完整语法树；超大文件可以设置 `:highlight="false"` 以降低开销。
 - 复制优先使用 `navigator.clipboard`，非安全上下文会回退到 `document.execCommand('copy')`。
-- 等宽字体优先使用本机已安装的 JetBrains Mono、Fira Code、Cascadia Code 等编程字体，未安装时回退到系统等宽字体；不加载任何远程字体文件。
+- 等宽字体优先使用 Cascadia Code，其次为 JetBrains Mono、Fira Code 等本机已安装的编程字体，未安装时回退到系统等宽字体；不加载任何远程字体文件。
 - 颜色取自 `--bili-code-*` 设计令牌，亮/暗主题自动适配，也可以按需覆盖。

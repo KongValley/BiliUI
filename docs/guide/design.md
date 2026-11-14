@@ -25,6 +25,15 @@ Bili UI 的设计目标是：**清晰、克制、有温度**。阅读界面以�
 
 使用操作系统原生的界面字体：Windows 由 Segoe UI 处理英文与中文界面，macOS / iOS 使用系统字体，其他平台优先使用 Roboto、Noto Sans 等可用字体。无需下载字体文件，也不会额外引入 CDN 请求。
 
+代码块与行内代码使用独立的等宽栈，优先 Cascadia Code，其次为本机可能安装的其他编程字体，最后回退到平台等宽字体：
+
+```css
+--bili-font-family-mono: 'Cascadia Code', 'Cascadia Mono', 'JetBrains Mono', 'Fira Code',
+  'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, 'Source Code Pro', 'IBM Plex Mono',
+  'Roboto Mono', 'Ubuntu Mono', 'DejaVu Sans Mono', 'Liberation Mono', 'Courier New', ui-monospace,
+  monospace;
+```
+
 正文使用系统常规字重（400），按钮、标题和状态文本使用 `500 / 600 / 700`。
 
 | 令牌 | 字号 | 典型用途 |
