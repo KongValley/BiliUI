@@ -1,6 +1,6 @@
 {
   "name": "@kongvalley/bili-ui",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Bili UI - a modern Vue 3 PC component library.",
   "type": "module",
   "license": "MIT",
