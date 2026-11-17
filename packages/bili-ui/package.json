@@ -1,5 +1,5 @@
 {
-  "name": "bili-ui",
+  "name": "@kongvalley/bili-ui",
   "version": "0.1.0",
   "description": "Bili UI - a modern Vue 3 PC component library.",
   "type": "module",
@@ -11,6 +11,15 @@
     "ui",
     "bili-ui"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KongValley/BiliUI.git",
+    "directory": "packages/bili-ui"
+  },
+  "homepage": "https://github.com/KongValley/BiliUI#readme",
+  "bugs": {
+    "url": "https://github.com/KongValley/BiliUI/issues"
+  },
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",

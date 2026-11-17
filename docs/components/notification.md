@@ -24,7 +24,7 @@ import basicCode from '../examples/notification/basic.vue?raw'
 ### 命令式
 
 ```ts
-import { BiliNotification } from 'bili-ui'
+import { BiliNotification } from '@kongvalley/bili-ui'
 
 BiliNotification.success({ title: '同步完成', message: '已同步 128 条记录' })
 BiliNotification.warning({ message: '磁盘使用率 92%', position: 'bottom-right' })

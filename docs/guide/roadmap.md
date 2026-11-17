@@ -218,7 +218,7 @@ P3 组件池已全部完成，后续按业务反馈补充新组件。
 - ✅ 运行时主题色：`setThemeColor` / `resetThemeColor` 自动派生亮暗变量与图表主色，文档站导航栏提供预设和自定义颜色切换
 - ✅ 样式覆写：50+ 组件提供组件级 CSS 变量，BackTop / Affix / Watermark / QRCode 的动态尺寸与位置改为 CSS 变量消费；浮层支持 `popper-class` / `overlay-class` / `panel-class` / `preview-class`，多实例主题可隔离
 - ✅ 文档站新增《样式覆写》指南，主题文档与组件 API 表同步更新
-- ✅ 按需样式：`styles/index.scss` 保持全量入口，同时生成 `dist/components/<component>/style.css`，支持 `import 'bili-ui/components/button/style.css'`（含依赖样式与设计令牌）
+- ✅ 按需样式：`styles/index.scss` 保持全量入口，同时生成 `dist/components/<component>/style.css`，支持 `import '@kongvalley/bili-ui/components/button/style.css'`（含依赖样式与设计令牌）
 - ✅ 示例可编辑：DemoBlock 支持在线编辑、运行、重置、取消与分享链接，编译结果使用独立 scoped 样式
 - ✅ API 表自动生成：`vue-component-meta` 扫描 115 个组件生成 `/guide/api` 参考页，并支持 `<ApiReference name="BiliButton" />` 按组件内嵌
 - ✅ 文档站组件搜索（VitePress local search 已接入）

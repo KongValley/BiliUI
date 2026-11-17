@@ -14,7 +14,7 @@ const accordion = ref('a')
           Bili UI 是一套基于 Vue 3 与 TypeScript 的 PC 端组件库，内置亮暗双主题与三层设计令牌。
         </BiliCollapseItem>
         <BiliCollapseItem name="install" title="如何安装？">
-          <code>pnpm add bili-ui</code>，然后在入口中 <code>app.use(BiliUI)</code>。
+          <code>pnpm add @kongvalley/bili-ui</code>，然后在入口中 <code>app.use(BiliUI)</code>。
         </BiliCollapseItem>
         <BiliCollapseItem name="theme" title="自定义主题" icon="settings">
           覆盖 <code>--bili-color-primary</code> 等语义变量即可完成换肤。

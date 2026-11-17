@@ -18,6 +18,6 @@
     "vue-component-meta": "^3.3.14"
   },
   "dependencies": {
-    "bili-ui": "workspace:*"
+    "@kongvalley/bili-ui": "workspace:*"
   }
 }

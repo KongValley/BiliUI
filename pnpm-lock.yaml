@@ -38,7 +38,7 @@ importers:
 
   docs:
     dependencies:
-      bili-ui:
+      '@kongvalley/bili-ui':
         specifier: workspace:*
         version: link:../packages/bili-ui
     devDependencies:

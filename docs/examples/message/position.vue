@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BiliMessage } from 'bili-ui'
+import { BiliMessage } from '@kongvalley/bili-ui'
 
 const positions = [
   { key: 'top', label: '顶部居中' },

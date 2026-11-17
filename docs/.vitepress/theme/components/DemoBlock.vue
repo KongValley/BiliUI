@@ -2,7 +2,7 @@
 import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { createApp, type App } from 'vue'
 import * as VueRuntime from 'vue'
-import BiliUI, * as BiliExports from 'bili-ui'
+import BiliUI, * as BiliExports from '@kongvalley/bili-ui'
 
 const props = withDefaults(
   defineProps<{
@@ -140,7 +140,7 @@ const convertImports = (source: string) => {
     (_, names: string) => `const { ${toBinding(names)} } = __VUE__;`
   )
   code = code.replace(
-    /import\s*\{([\s\S]*?)\}\s*from\s*['"]bili-ui['"];?/g,
+    /import\s*\{([\s\S]*?)\}\s*from\s*['"]@kongvalley\/bili-ui['"];?/g,
     (_, names: string) => `const { ${toBinding(names)} } = __BILI__;`
   )
   return code
@@ -271,7 +271,7 @@ onBeforeUnmount(() => {
       <div class="demo-block__editor-actions">
         <span v-if="error" class="demo-block__error">{{ error }}</span>
         <span v-else class="demo-block__editor-hint">
-          支持单文件 Vue 示例，可导入 vue / bili-ui
+          支持单文件 Vue 示例，可导入 vue / @kongvalley/bili-ui
         </span>
         <button class="demo-block__button" type="button" @click="resetDraft">重置</button>
         <button class="demo-block__button" type="button" @click="cancelEdit">取消</button>

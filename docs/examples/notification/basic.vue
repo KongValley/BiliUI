@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BiliNotification } from 'bili-ui'
+import { BiliNotification } from '@kongvalley/bili-ui'
 
 const trigger = () => {
   BiliNotification.success({

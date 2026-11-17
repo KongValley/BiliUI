@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { UploadFile } from 'bili-ui'
+import type { UploadFile } from '@kongvalley/bili-ui'
 
 const files = ref<UploadFile[]>([])
 const pictureFiles = ref<UploadFile[]>([])

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const jsonCode = `{
-  "name": "bili-ui",
+  "name": "@kongvalley/bili-ui",
   "version": "0.1.0",
   "components": [
     "Button",

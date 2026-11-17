@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BiliDialog, BiliMessage, BiliMessageBox } from 'bili-ui'
+import { BiliDialog, BiliMessage, BiliMessageBox } from '@kongvalley/bili-ui'
 
 const openAlert = () => {
   BiliMessageBox.alert('当前版本已经是最新版本。', '检查更新')

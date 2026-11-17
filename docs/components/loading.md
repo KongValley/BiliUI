@@ -38,7 +38,7 @@ import serviceCode from '../examples/loading/service.vue?raw'
 </DemoBlock>
 
 ```ts
-import { BiliLoading } from 'bili-ui'
+import { BiliLoading } from '@kongvalley/bili-ui'
 
 const loading = BiliLoading.service({ text: '保存中…' })
 loading.setText('即将完成…')

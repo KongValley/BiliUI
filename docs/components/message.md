@@ -47,7 +47,7 @@ import positionCode from '../examples/message/position.vue?raw'
 ### 调用方式
 
 ```ts
-import { BiliMessage } from 'bili-ui'
+import { BiliMessage } from '@kongvalley/bili-ui'
 
 BiliMessage('普通消息')
 BiliMessage.success('成功消息')

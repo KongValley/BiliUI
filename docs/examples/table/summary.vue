@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { TableColumn } from 'bili-ui'
+import type { TableColumn } from '@kongvalley/bili-ui'
 
 const columns: TableColumn[] = [
   { prop: 'item', label: '项目', minWidth: 180 },

@@ -183,7 +183,7 @@ export default defineConfig({
     },
     resolve: {
       alias: {
-        'bili-ui': fileURLToPath(new URL('../../packages/bili-ui/src/index.ts', import.meta.url))
+        '@kongvalley/bili-ui': fileURLToPath(new URL('../../packages/bili-ui/src/index.ts', import.meta.url))
       }
     }
   }

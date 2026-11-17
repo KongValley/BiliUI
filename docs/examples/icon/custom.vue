@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { addIcons } from 'bili-ui'
+import { addIcons } from '@kongvalley/bili-ui'
 
 addIcons({
   // 描边图标：默认模式，用 currentColor 描边

@@ -5,8 +5,8 @@ Bili UI 是一套基于 Vue 3 + TypeScript 的 PC 端组件库，采用 SCSS + B
 ## 安装
 
 ```bash
-pnpm add bili-ui
-# 或 npm install bili-ui
+pnpm add @kongvalley/bili-ui
+# 或 npm install @kongvalley/bili-ui
 ```
 
 本库以 `vue` 作为 peer dependency，请确保项目中使用 Vue 3.4 及以上版本。
@@ -15,8 +15,8 @@ pnpm add bili-ui
 
 ```ts
 import { createApp } from 'vue'
-import BiliUI from 'bili-ui'
-import 'bili-ui/style.css'
+import BiliUI from '@kongvalley/bili-ui'
+import '@kongvalley/bili-ui/style.css'
 import App from './App.vue'
 
 createApp(App).use(BiliUI).mount('#app')
@@ -33,8 +33,8 @@ this.$message.success('操作成功')
 
 ```vue
 <script setup lang="ts">
-import { BiliButton, BiliInput, BiliMessage } from 'bili-ui'
-import 'bili-ui/style.css'
+import { BiliButton, BiliInput, BiliMessage } from '@kongvalley/bili-ui'
+import '@kongvalley/bili-ui/style.css'
 </script>
 
 <template>
@@ -74,8 +74,8 @@ document.documentElement.classList.toggle('dark')
 
 ```ts
 // plugins/bili-ui.ts
-import BiliUI from 'bili-ui'
-import 'bili-ui/style.css'
+import BiliUI from '@kongvalley/bili-ui'
+import '@kongvalley/bili-ui/style.css'
 
 export default defineNuxtPlugin(nuxtApp => {
   nuxtApp.vueApp.use(BiliUI)

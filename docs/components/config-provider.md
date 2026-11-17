@@ -40,7 +40,7 @@ import namespaceCode from '../examples/config-provider/namespace.vue?raw'
 </DemoBlock>
 
 ```ts
-import { enUSLocale } from 'bili-ui'
+import { enUSLocale } from '@kongvalley/bili-ui'
 ```
 
 也可以只覆盖少量字段，例如 `{ confirm: 'OK', cancel: 'Back' }`，其余字段继续使用当前语言。
@@ -165,7 +165,7 @@ import { enUSLocale } from 'bili-ui'
 自定义组件可以读取同一份配置：
 
 ```ts
-import { useConfig, useLocale, useNamespace, formatLocale, enUSLocale } from 'bili-ui'
+import { useConfig, useLocale, useNamespace, formatLocale, enUSLocale } from '@kongvalley/bili-ui'
 
 const config = useConfig() // ComputedRef<{ size, zIndex, namespace, locale }>
 const locale = useLocale() // ComputedRef<BiliLocale>

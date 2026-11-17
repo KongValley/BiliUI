@@ -24,7 +24,7 @@ import ApiReference from '../.vitepress/theme/components/ApiReference.vue'
 
 ```vue
 <script setup lang="ts">
-import { useApp } from 'bili-ui'
+import { useApp } from '@kongvalley/bili-ui'
 
 const { message, notification, messageBox } = useApp()
 </script>

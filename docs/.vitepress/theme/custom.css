@@ -1,6 +1,7 @@
 :root {
-  --vp-font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
-    Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+  --vp-font-family-base:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
+    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
   --vp-font-family-mono: var(--bili-font-family-mono);
   --vp-c-bg: var(--bili-bg-container);
   --vp-c-bg-alt: var(--bili-bg-page);
@@ -187,7 +188,9 @@ a:focus-visible {
   margin: 2px 0;
   padding: 6px 12px;
   border-radius: 6px;
-  transition: color var(--bili-transition-duration), background-color var(--bili-transition-duration);
+  transition:
+    color var(--bili-transition-duration),
+    background-color var(--bili-transition-duration);
 }
 
 .VPSidebarItem .link .text {
@@ -446,155 +449,23 @@ a:focus-visible {
 }
 
 /* Homepage */
-.home-page .VPHero {
-  padding-top: 88px;
-  padding-bottom: 54px;
+.home-page .VPHome {
+  margin-bottom: 0;
 }
 
-.home-page .VPHero .container {
-  gap: 64px;
+.home-page .home-hero {
+  padding: 88px 32px 72px;
+  border-bottom: 1px solid var(--bili-border-color-lighter);
+}
+
+.home-page .home-hero__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(48px, 6vw, 88px);
   align-items: center;
-  justify-content: space-between;
-  max-width: 1200px;
-}
-
-.home-page .VPHero .main {
-  flex: 0 1 440px;
-  order: 1;
-}
-
-.home-page .VPHero.has-image .main {
-  width: auto;
-  max-width: 440px;
-  margin: 0;
-}
-
-.home-page .VPHero .image {
-  order: 2;
-  flex: 1 1 520px;
-  width: auto;
-  max-width: 552px;
-  margin: 0;
-}
-
-.home-page .VPHero .image-container {
   width: 100%;
-  max-width: none;
-  margin: 0;
-  transform: none;
-}
-
-.home-page .VPHero .image-bg {
-  display: none;
-}
-
-.home-page .VPHero .heading,
-.home-page .VPHero .tagline {
-  display: none;
-}
-
-.home-page .VPHero .actions {
-  gap: 10px;
-  padding-top: 24px;
-}
-
-.home-page .VPHero .action {
-  flex: none;
-}
-
-.home-page .VPButton {
-  height: 36px;
-  padding: 0 18px;
-  font-size: 13px;
-  font-weight: 500;
-  border-radius: 6px;
-  transition: background-color var(--bili-transition-duration), border-color var(--bili-transition-duration);
-}
-
-.home-page .VPFeatures {
-  padding: 0 32px 48px;
-}
-
-.home-page .VPFeatures .container {
-  max-width: 1280px;
-  border-top: 1px solid var(--bili-border-color-lighter);
-}
-
-.home-page .VPFeatures .items {
-  gap: 0;
-  padding-top: 28px;
-}
-
-.home-page .VPFeature {
-  position: relative;
-  padding: 24px 36px 24px 0;
-  background: transparent;
-  border: 0;
-  border-radius: 0;
-}
-
-.home-page .VPFeature + .VPFeature {
-  padding-left: 36px;
-}
-
-.home-page .VPFeature + .VPFeature::before {
-  position: absolute;
-  top: 24px;
-  bottom: 24px;
-  left: 0;
-  width: 1px;
-  content: '';
-  background: var(--bili-border-color-lighter);
-}
-
-.home-page .VPFeature.link:hover {
-  border-color: transparent;
-}
-
-.home-page .VPFeature .box {
-  padding: 0;
-}
-
-.home-page .VPFeature .icon {
-  width: 34px;
-  height: 34px;
-  margin-bottom: 20px;
-  color: var(--bili-text-primary);
-  background: var(--bili-fill-color-light);
-  border: 1px solid var(--bili-border-color-lighter);
-  border-radius: 9px;
-}
-
-.home-page .VPFeature .title {
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 1.5;
-  letter-spacing: -0.02em;
-}
-
-.home-page .VPFeature .details {
-  max-width: 330px;
-  padding-top: 10px;
-  font-size: 13px;
-  font-weight: 400;
-  line-height: 1.85;
-  color: var(--bili-text-secondary);
-}
-
-.home-page .VPFeature .link-text {
-  padding-top: 14px;
-}
-
-.home-page .VPFeature .link-text-value {
-  gap: 6px;
-  align-items: center;
-  font-size: 12px;
-  font-weight: 400;
-  color: var(--bili-text-regular);
-}
-
-.home-page .VPFeature:hover .link-text-value {
-  color: var(--bili-color-primary);
+  max-width: 1216px;
+  margin: 0 auto;
 }
 
 .home-page .VPHomeContent {
@@ -627,24 +498,9 @@ a:focus-visible {
   }
 }
 
-@media (min-width: 960px) {
-  .home-page .VPHero {
-    min-height: calc(100vh - 144px);
-  }
-}
-
 @media (max-width: 1280px) {
   .VPDoc .container {
     padding-right: 28px;
-  }
-
-  .home-page .VPHero .container {
-    max-width: 1120px;
-  }
-
-  .home-page .VPHero .main {
-    width: 100%;
-    max-width: 460px;
   }
 }
 
@@ -659,15 +515,6 @@ a:focus-visible {
 
   .VPDocFooter {
     padding-right: 0;
-  }
-
-  .home-page .VPHero {
-    padding-top: 64px;
-  }
-
-  .home-page .VPHero .container {
-    flex-direction: column;
-    gap: 44px;
   }
 
   .VPNavBar .title {
@@ -686,30 +533,19 @@ a:focus-visible {
   .VPNavBarAppearance .VPSwitch .check {
     transform: translateX(10px);
   }
+}
 
-  .home-page .VPHero.has-image .main {
-    width: 100%;
-    max-width: 640px;
-    margin: 0;
+@media (max-width: 1199px) {
+  .home-page .home-hero {
+    padding-top: 56px;
+    padding-bottom: 52px;
   }
 
-  .home-page .VPHero .image {
-    order: 2;
-    width: 100%;
-    max-width: 640px;
-    margin: 0;
-  }
-
-  .home-page .VPHero .image-container {
-    height: auto;
-  }
-
-  .home-page .VPFeature {
-    padding-right: 24px;
-  }
-
-  .home-page .VPFeature + .VPFeature {
-    padding-left: 24px;
+  .home-page .home-hero__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 44px;
+    align-items: stretch;
   }
 }
 
@@ -736,34 +572,12 @@ a:focus-visible {
     min-width: 104px;
   }
 
-  .home-page .VPHero {
+  .home-page .home-hero {
     padding: 44px 20px 40px;
   }
 
-  .home-page .VPHero .actions {
-    padding-top: 24px;
-  }
-
-  .home-page .VPFeatures {
-    padding: 0 20px 32px;
-  }
-
-  .home-page .VPFeatures .items {
-    padding-top: 4px;
-  }
-
-  .home-page .VPFeature,
-  .home-page .VPFeature + .VPFeature {
-    padding: 22px 0;
-    border-bottom: 1px solid var(--bili-border-color-lighter);
-  }
-
-  .home-page .VPFeature + .VPFeature::before {
-    display: none;
-  }
-
-  .home-page .VPFeature .icon {
-    margin-bottom: 14px;
+  .home-page .home-hero__inner {
+    gap: 34px;
   }
 }
 

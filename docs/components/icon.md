@@ -40,7 +40,7 @@ import customCode from '../examples/icon/custom.vue?raw'
 适合全项目复用的业务图标，注册一次即可在任何地方用 `name` 引用：
 
 ```ts
-import { addIcons } from 'bili-ui'
+import { addIcons } from '@kongvalley/bili-ui'
 
 addIcons({
   // 描边图标：数组即 path 的 d 值列表
@@ -155,7 +155,7 @@ import {
   getIcon,
   getIconNames,
   getIconGroups
-} from 'bili-ui'
+} from '@kongvalley/bili-ui'
 
 iconNames                // ['arrow-left', 'arrow-right', ...] 全部内置图标名
 iconGroups['方向导航']    // ['arrow-left', 'arrow-right', ...] 按类别分组

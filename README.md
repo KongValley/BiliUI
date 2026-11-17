@@ -40,8 +40,8 @@ pnpm docs:build # 构建文档站
 
 ```ts
 import { createApp } from 'vue'
-import BiliUI from 'bili-ui'
-import 'bili-ui/style.css'
+import BiliUI from '@kongvalley/bili-ui'
+import '@kongvalley/bili-ui/style.css'
 import App from './App.vue'
 
 createApp(App).use(BiliUI).mount('#app')
@@ -51,9 +51,9 @@ createApp(App).use(BiliUI).mount('#app')
 
 ```vue
 <script setup lang="ts">
-import { BiliButton, BiliInput } from 'bili-ui'
-import 'bili-ui/components/button/style.css'
-import 'bili-ui/components/input/style.css'
+import { BiliButton, BiliInput } from '@kongvalley/bili-ui'
+import '@kongvalley/bili-ui/components/button/style.css'
+import '@kongvalley/bili-ui/components/input/style.css'
 </script>
 
 <template>

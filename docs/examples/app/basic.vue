@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { BiliApp } from 'bili-ui'
+import type { BiliApp } from '@kongvalley/bili-ui'
 
 const appRef = ref<InstanceType<typeof BiliApp> | null>(null)
 

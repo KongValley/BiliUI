@@ -22,7 +22,7 @@ import basicCode from '../examples/message-box/basic.vue?raw'
 ## 调用方式
 
 ```ts
-import { BiliMessageBox } from 'bili-ui'
+import { BiliMessageBox } from '@kongvalley/bili-ui'
 
 await BiliMessageBox.alert('操作已完成', '提示')
 

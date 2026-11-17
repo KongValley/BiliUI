@@ -1,6 +1,6 @@
 import DefaultTheme from 'vitepress/theme'
 import type { Theme } from 'vitepress'
-import BiliUI from 'bili-ui'
+import BiliUI from '@kongvalley/bili-ui'
 import '../../../packages/bili-ui/src/styles/index.scss'
 import './custom.css'
 import DemoBlock from './components/DemoBlock.vue'

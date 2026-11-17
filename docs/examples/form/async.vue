@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
-import { BiliMessage } from 'bili-ui'
+import { BiliMessage } from '@kongvalley/bili-ui'
 
 const formRef = ref()
 const model = reactive({ username: '' })

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onBeforeUnmount, ref } from 'vue'
-import { BiliLoading } from 'bili-ui'
+import { BiliLoading } from '@kongvalley/bili-ui'
 
 const instance = ref<ReturnType<typeof BiliLoading.service> | null>(null)
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BiliDialog, BiliMessage } from 'bili-ui'
+import { BiliDialog, BiliMessage } from '@kongvalley/bili-ui'
 
 const openConfirm = async () => {
   try {

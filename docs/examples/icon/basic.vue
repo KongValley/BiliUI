@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { iconGroups, iconNames } from 'bili-ui'
+import { iconGroups, iconNames } from '@kongvalley/bili-ui'
 
 // `iconGroups` is the curated category list; anything registered elsewhere but
 // missing from a group still shows up under "其他".

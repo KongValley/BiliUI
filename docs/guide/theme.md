@@ -21,7 +21,7 @@ Bili UI 的样式分为三层令牌：**SCSS 原始值** → **语义 CSS 变量
 `setThemeColor` 会写入一份同时包含亮色与暗色派生值的样式，组件、浮层和图表会自动跟随：
 
 ```ts
-import { setThemeColor, resetThemeColor, themeColorPresets } from 'bili-ui'
+import { setThemeColor, resetThemeColor, themeColorPresets } from '@kongvalley/bili-ui'
 
 setThemeColor('#4f7cff') // 自动派生 hover / active / light / on-primary
 resetThemeColor() // 恢复品牌默认色

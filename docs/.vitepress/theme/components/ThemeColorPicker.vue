@@ -6,9 +6,9 @@ import {
   resetThemeColor,
   setThemeColor,
   themeColorPresets
-} from 'bili-ui'
+} from '@kongvalley/bili-ui'
 
-const STORAGE_KEY = 'bili-ui-theme-color'
+const STORAGE_KEY = '@kongvalley/bili-ui-theme-color'
 const current = ref(getThemeColor())
 
 const apply = (color: string) => {

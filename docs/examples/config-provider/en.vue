@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { enUSLocale } from 'bili-ui'
+import { enUSLocale } from '@kongvalley/bili-ui'
 
 const options = [
   { label: 'Option A', value: 'a' },
